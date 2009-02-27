@@ -1,0 +1,131 @@
+<?xml version="1.0"?>
+
+<project name="NBuilder"
+         default="build"
+         xmlns="http://nant.sf.net/nightly/2006-03-08-0.85/nant.xsd"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://nant.sf.net/nightly/2006-03-08-0.85/nant.xsd Tools\nant-0.85\schema\nant.xsd">
+
+  <!-- COMMON PROPERTIES -->
+  <property name="project.name" value="${project::get-name()}" />
+  <readregistry property="devenv.path" key="SOFTWARE\Microsoft\VisualStudio\9.0\InstallDir" hive="LocalMachine" />
+  <property name="devenv.com" value="${devenv.path}devenv.com" />
+  <property name="tf.exe" value="${devenv.path}\TF.exe" />
+  <property name="root.dir" overwrite="false" value="${path::get-full-path(project::get-base-directory() + '\..')}" />
+  <property name="source.dir" value="${root.dir}Source" />
+  <property name="tools.dir" value="${root.dir}Lib\Tools" />
+  <property name="build.dir" value="${root.dir}Builds" />
+  <property name="artifacts.dir" value="${root.dir}..\Artifacts" />
+  <property name="release.compile.args" value="/build Release" />
+
+  <property name="ncover.exe" value="${tools.dir}\NCover-1.5.8\NCover.Console.exe" />
+  <property name="nunit.exe" value="${tools.dir}\Test\NUnit\bin\nunit-console.exe" />
+  
+  <property name="build.label" value="${project.name}-1.0.0.0"></property>
+  <!-- Set the build label to the cruise control.net label, if it exists -->
+  <property name="build.label" value="${CCNetLabel}" if="${property::exists('CCNetLabel')}" />
+
+  <!-- Strip off the project name -->
+  <property name="build.label" value="${string::replace(build.label, project.name + '-', '')}" />
+  <property name="current.build.dir" value="${build.dir}\${project.name} Build ${build.label}" />
+  <!-- eg: "Builds\ProjectName - Build 1.0.0.23\ProjectName.dll" -->
+  <property name="path.to.published.dll" value="${current.build.dir}\${project.name}.dll" />
+
+  <!-- PROJECT SPECIFIC -->
+  <property name="solution.filename" value="${source.dir}\NBuilder.sln" />
+  <property name="path.to.dll" value="${source.dir}\FizzWare.NBuilder\bin\Release\FizzWare.NBuilder.dll" />
+  <property name="tests.dll" value="${source.dir}\FizzWare.NBuilder.Tests\bin\Debug\NBuilder.Tests.dll" />
+
+  <!-- TASKS -->
+  <loadtasks assembly="${tools.dir}/nantcontrib-0.85/bin/NAnt.Contrib.Tasks.dll" />
+  <loadtasks assembly="${tools.dir}/NCoverExplorer/NCoverExplorer.NAntTasks.dll" />
+
+  <echo>Build label is: ${build.label}</echo>
+
+  <!-- TARGETS -->
+  <!--<target name="build" depends="clean, cover.unit.and.functional.tests, set.assemblyinfo, compile.release, publish.msi" />-->
+  <target name="build" depends="clean, set.assemblyinfo, compile.release, publish.dll" />
+
+  <target name="clean">
+    <delete>
+      <fileset basedir="${source.dir}\">
+        <include name="/**/bin/**" />
+        <include name="/**/obj/**" />
+      </fileset>
+    </delete>
+  </target>
+
+  <target name="compile.release">
+    <exec
+      program="${devenv.com}"
+      basedir="${devenv.path}"
+      commandline="${solution.filename} ${release.compile.args}"
+      append="true"
+      failonerror="true" />
+  </target>
+
+  <target name="generic.msbuild">
+    <msbuild project="${my.project}">
+      <arg value="/t:Rebuild" />
+      <arg value="/v:q" />
+      <!-- The double backslash "\\" in the following line is NOT a mistake! The MSBuild project gets confused without it... -->
+      <property name="SolutionDir" value="${source.dir}\\"/>
+    </msbuild>
+  </target>
+
+  <target name="compile.tests">
+    <property name="my.project" value="${source.dir}\Dtc.ResourceManager.Tests\Dtc.ResourceManager.Tests.csproj" />
+    <call target="generic.msbuild"/>
+  </target>
+
+  <target name="cover.unit.and.functional.tests" depends="compile.tests">
+
+    <property name="tests.dll" value="${source.dir}\Dtc.ResourceManager.Tests\bin\Debug\Dtc.ResourceManager.Tests.dll" />
+
+    <ncover program="${ncover.exe}"
+        commandLineExe="${nunit.exe}"
+        commandLineArgs="&quot;${tests.dll}&quot; /xml:&quot;${build.dir}\UnitTests.xml&quot; /exclude=Acceptance /nologo"
+        workingDirectory="${root.dir}"
+        failonerror="true"
+        coverageFile="${build.dir}\Tests.ncover.xml"
+        logLevel="Normal"
+        logFile="${build.dir}\Tests.ncover.log"
+        excludeAttributes="CoverageExcludeAttribute">
+
+      <assemblies basedir="${source.dir}">
+        <include name="**/DTC.Harlequin.CDM.Contracts.dll" />
+        <include name="**/DTC.Harlequin.CDM.ServiceHost.dll" />
+      </assemblies>
+
+    </ncover>
+    
+  </target>
+
+
+  <target name="publish.dll">
+    <!-- Make sure the build directory exists -->
+    <mkdir dir="${build.dir}" if="${not directory::exists(build.dir)}" failonerror="true"/>
+    <mkdir dir="${current.build.dir}" if="${not directory::exists(current.build.dir)}" failonerror="true"/>
+
+    <copy file="${path.to.dll}"
+        tofile="${path.to.published.dll}"></copy>
+    
+  </target>
+
+  <target name="set.assemblyinfo">
+    <attrib file="${source.dir}\CommonAssemblyInfo.cs" readonly="false" />
+
+    <!-- Generate a new version of the solution wide assembly info file with an updated build number -->
+    <asminfo language="CSharp" output="${source.dir}\CommonAssemblyInfo.cs">
+      <imports>
+        <import namespace="System.Reflection"/>
+        <import namespace="System.Runtime.CompilerServices"/>
+      </imports>
+      <attributes>
+        <attribute type="AssemblyVersionAttribute" value="${build.label}"/>
+        <attribute type="AssemblyConfigurationAttribute" value="Release" />
+      </attributes>
+    </asminfo>
+  </target>
+
+</project>
