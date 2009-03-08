@@ -1,5 +1,3 @@
-using FizzWare.NBuilder.Picking;
-
 namespace FizzWare.NBuilder
 {
     public class With

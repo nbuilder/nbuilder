@@ -57,6 +57,7 @@
     <Compile Include="SingleObjectBuilderTests.cs" />
     <Compile Include="TestModel\BasketItem.cs" />
     <Compile Include="TestModel\Category.cs" />
+    <Compile Include="TestModel\ImmutableObject.cs" />
     <Compile Include="TestModel\Product.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestModel\ShoppingBasket.cs" />

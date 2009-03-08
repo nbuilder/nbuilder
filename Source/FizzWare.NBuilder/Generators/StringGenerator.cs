@@ -1,7 +1,7 @@
 using System.Text.RegularExpressions;
 
 
-namespace FizzWare.NBuilder.Generators
+namespace FizzWare.NBuilder
 {
     public class StringGenerator : IGenerator<string>
     {

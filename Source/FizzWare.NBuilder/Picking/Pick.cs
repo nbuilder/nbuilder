@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Diagnostics;
-using FizzWare.NBuilder.Generators;
 
 namespace FizzWare.NBuilder
 {

@@ -1,6 +1,6 @@
 using System;
 
-namespace FizzWare.NBuilder.Generators
+namespace FizzWare.NBuilder
 {
     public class SequentialGenerator<T> : IGenerator<T> where T : IConvertible
     {

@@ -4,7 +4,7 @@ namespace FizzWare.NBuilder.PropertyValueNaming
 {
     public interface IPropertyValueNamingStategy<T>
     {
-        void SetValues(IList<T> obj);
-        void SetValue(T obj);
+        void SetValuesOfAll(IList<T> obj);
+        void SetValuesOf(T obj);
     }
 }

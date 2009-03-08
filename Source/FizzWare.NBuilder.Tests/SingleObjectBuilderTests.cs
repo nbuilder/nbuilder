@@ -16,7 +16,7 @@ namespace FizzWare.NBuilder.Tests
         {
             var taxType = Builder<TaxType>.CreateNew()
                                           .With(x => x.Name = "VAT")
-                                          .And(x => x.Percentage = 15m).Value;
+                                          .And(x => x.Percentage = 15m).Build();
 
             Assert.That(taxType.Name, Is.EqualTo("VAT"));
             Assert.That(taxType.Percentage, Is.EqualTo(15m));
@@ -25,10 +25,10 @@ namespace FizzWare.NBuilder.Tests
         [Test]
         public void ShouldBeAbleToUseDo_And()
         {
-            var product = Builder<Product>.CreateNew().Value;
-            var product2 = Builder<Product>.CreateNew().Value;
+            var product = Builder<Product>.CreateNew().Build();
+            var product2 = Builder<Product>.CreateNew().Build();
 
-            var shoppingBasket = Builder<ShoppingBasket>.CreateNew().Do(x => x.Add(product, 2)).And(x => x.Add(product2, 5)).Value;
+            var shoppingBasket = Builder<ShoppingBasket>.CreateNew().Do(x => x.Add(product, 2)).And(x => x.Add(product2, 5)).Build();
 
             Assert.That(shoppingBasket.Items.Count, Is.EqualTo(2));
             Assert.That(shoppingBasket.Items.First(x => x.Product == product) != null);

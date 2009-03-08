@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace FizzWare.NBuilder.Generators
+namespace FizzWare.NBuilder
 {
     public class RandomGenerator<T> : IGenerator<T>  where T : IConvertible
     {

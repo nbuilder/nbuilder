@@ -48,6 +48,7 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="BuilderException.cs" />
     <Compile Include="Generators\SequentialGenerator.cs" />
     <Compile Include="Picking\AtLeastPickerConstraint.cs" />
     <Compile Include="Picking\BetweenPickerConstraint.cs" />
@@ -61,6 +62,7 @@
     <Compile Include="Picking\Pick.cs" />
     <Compile Include="Picking\PickerConstraint.cs" />
     <Compile Include="PropertyValueNaming\SequentialPropertyNameNamingStrategy.cs" />
+    <Compile Include="ReflectionUtil.cs" />
     <Compile Include="SingleObjectBuilder.cs" />
     <Compile Include="Generators\StringGenerator.cs" />
     <Compile Include="Generators\UniqueGenerationScope.cs" />

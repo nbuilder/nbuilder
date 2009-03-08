@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using FizzWare.NBuilder;
-using FizzWare.NBuilder.Generators;
 using FizzWare.NBuilder.Tests.TestModel;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
@@ -17,7 +16,7 @@ namespace FizzWare.NBuilder.Tests
         public void ShouldBeAbleToCreateAList()
         {
             var productList =
-                Builder<Product>.CreateListOfSize(50).WhereTheFirst(25).Have(x => x.Title = "TitleOne").List;
+                Builder<Product>.CreateListOfSize(50).WhereTheFirst(25).Have(x => x.Title = "TitleOne").Build();
 
             for (int i = 0; i < 25; i++)
             {
@@ -29,7 +28,7 @@ namespace FizzWare.NBuilder.Tests
         public void ShouldBeAbleToUseWhereTheLast()
         {
             var productList =
-                Builder<Product>.CreateListOfSize(100).WhereTheLast(50).Have(x => x.Title = "TitleOne").List;
+                Builder<Product>.CreateListOfSize(100).WhereTheLast(50).Have(x => x.Title = "TitleOne").Build();
 
             for (int i = 0; i < 50; i++)
                 Assert.That(productList[i].Title, Is.Not.EqualTo("TitleOne"));
@@ -43,7 +42,7 @@ namespace FizzWare.NBuilder.Tests
         {
             var productList =
                 Builder<Product>.CreateListOfSize(50).WhereTheFirst(25).Have(x => x.Title = "TitleOne").AndTheNext(25).Have
-                    (x => x.Title = "TitleTwo").List;
+                    (x => x.Title = "TitleTwo").Build();
 
             for (int i = 0; i < 25; i++)
             {
@@ -60,7 +59,7 @@ namespace FizzWare.NBuilder.Tests
         public void ShouldBeAbleToUseAnd()
         {
             var productList =
-                Builder<Product>.CreateListOfSize(50).WhereTheFirst(25).Have(x => x.Title = "TitleOne").And(x => x.Description = "DescriptionOne").List;
+                Builder<Product>.CreateListOfSize(50).WhereTheFirst(25).Have(x => x.Title = "TitleOne").And(x => x.Description = "DescriptionOne").Build();
 
             for (int i = 0; i < 25; i++)
             {
@@ -81,7 +80,7 @@ namespace FizzWare.NBuilder.Tests
             var product = new Product();
             product.Title = "TitleOne";
 
-            var productList = Builder<Product>.CreateListOfSize(10).BasedOn(product).List;
+            var productList = Builder<Product>.CreateListOfSize(10).BasedOn(product).Build();
 
             Assert.That(productList, Has.All.Property("Title").EqualTo("TitleOne"));
         }
@@ -89,14 +88,14 @@ namespace FizzWare.NBuilder.Tests
         [Test]
         public void ShouldBeAbleToUseBetweenPickerConstraint()
         {
-            IList<Category> categoryList = Builder<Category>.CreateListOfSize(20).List;
+            IList<Category> categoryList = Builder<Category>.CreateListOfSize(20).Build();
 
             var productList = Builder<Product>.CreateListOfSize(10000)
                 .WhereAll()
                 .Have(
                 x =>
                 x.Categories = Pick.UniqueRandomListOf<Category>(With.Between(1).And(5).Elements).From(categoryList))
-                .And(x => x.Title = "TheTitle").List;
+                .And(x => x.Title = "TheTitle").Build();
 
             foreach (var product in productList)
             {
@@ -109,12 +108,12 @@ namespace FizzWare.NBuilder.Tests
         [Test]
         public void BetweenPickerConstraintCountsShouldBeDifferent()
         {
-            IList<Category> categoryList = Builder<Category>.CreateListOfSize(20).List;
+            IList<Category> categoryList = Builder<Category>.CreateListOfSize(20).Build();
 
             var productList = Builder<Product>.CreateListOfSize(1000)
                 .WhereAll()
                 .Have(x => x.Categories = Pick.UniqueRandomListOf<Category>(With.Between(50).And(100).Elements).From(categoryList))
-                .And(x => x.Title = "TheTitle").List;
+                .And(x => x.Title = "TheTitle").Build();
 
             bool different = false;
             // Check the counts are different
@@ -133,12 +132,12 @@ namespace FizzWare.NBuilder.Tests
         [Test]
         public void ShouldBeAbleToUseExactlyPickerConstraint()
         {
-            IList<Category> categoryList = Builder<Category>.CreateListOfSize(20).List;
+            IList<Category> categoryList = Builder<Category>.CreateListOfSize(20).Build();
 
             var productList = Builder<Product>.CreateListOfSize(20)
                 .WhereAll()
                 .Have(x => x.Categories = Pick.UniqueRandomListOf<Category>(With.Exactly(6).Elements).From(categoryList))
-                .And(x => x.Title = "TheTitle").List;
+                .And(x => x.Title = "TheTitle").Build();
 
             foreach (var product in productList)
             {
@@ -150,12 +149,12 @@ namespace FizzWare.NBuilder.Tests
         [Test]
         public void ShouldBeAbleToUseUpToPickerConstraint()
         {
-            IList<Category> categoryList = Builder<Category>.CreateListOfSize(20).List;
+            IList<Category> categoryList = Builder<Category>.CreateListOfSize(20).Build();
 
             var productList = Builder<Product>.CreateListOfSize(20)
                 .WhereAll()
                 .Have(x => x.Categories = Pick.UniqueRandomListOf<Category>(With.UpTo(5).Elements).From(categoryList))
-                .List;
+                .Build();
 
             foreach (var product in productList)
             {
@@ -166,12 +165,12 @@ namespace FizzWare.NBuilder.Tests
         [Test]
         public void ShouldBeAbleToUseAtLeastPickerConstraint()
         {
-            IList<Category> categoryList = Builder<Category>.CreateListOfSize(20).List;
+            IList<Category> categoryList = Builder<Category>.CreateListOfSize(20).Build();
 
             var productList = Builder<Product>.CreateListOfSize(20)
                 .WhereAll()
                 .Have(x => x.Categories = Pick.UniqueRandomListOf<Category>(With.AtLeast(5).Elements).From(categoryList))
-                .List;
+                .Build();
 
             foreach (var product in productList)
             {
@@ -197,7 +196,7 @@ namespace FizzWare.NBuilder.Tests
                     .And(x => x.QuantityInStock = 5)
                 .WhereRandom(90)
                   .Have(x => x.Description = "DESCRIPTION")
-                .List;
+                .Build();
 
             for (int i = 0; i <  10; i++)
                 Assert.That(products[i].QuantityInStock, Is.EqualTo(5));
@@ -218,16 +217,16 @@ namespace FizzWare.NBuilder.Tests
 
             var taxType = Builder<TaxType>.CreateNew()
                                           .With(x => x.Name = "VAT")
-                                          .And(x => x.Percentage = 15m).Value;
+                                          .And(x => x.Percentage = 15m).Build();
 
-            var categories = Builder<Category>.CreateListOfSize(10).List;
+            var categories = Builder<Category>.CreateListOfSize(10).Build();
 
             var products = Builder<Product>.CreateListOfSize(50)
                 .WhereAll()
                 .Have(x => x.TaxType = taxType)
                 .And(x => x.PriceBeforeTax = decimalGenerator.Generate())
                 .And(x => x.Categories = Pick.UniqueRandomListOf<Category>(With.Between(1).And(2).Elements).From(categories))
-                .List;
+                .Build();
 
             Assert.That(products, Has.All.Property("TaxType", taxType));
         }
@@ -237,12 +236,12 @@ namespace FizzWare.NBuilder.Tests
         {
             // eg 50 Products - 50 different tax types
 
-            var taxTypes = Builder<TaxType>.CreateListOfSize(50).List;
+            var taxTypes = Builder<TaxType>.CreateListOfSize(50).Build();
 
             var products = Builder<Product>.CreateListOfSize(50)
                 .WhereAll()
                 .Have(x => x.TaxType = Pick.Unique<TaxType>().From(taxTypes))
-                .List;
+                .Build();
 
             List<TaxType> assignedTaxTypes = new List<TaxType>();
 
@@ -253,7 +252,7 @@ namespace FizzWare.NBuilder.Tests
         [Test]
         public void ByDefaultShouldIncrementNumberFieldsStartingWith1()
         {
-            var products = Builder<Product>.CreateListOfSize(10).List;
+            var products = Builder<Product>.CreateListOfSize(10).Build();
 
             for (int i = 0; i < products.Count; i++)
             {
@@ -264,7 +263,7 @@ namespace FizzWare.NBuilder.Tests
         [Test]
         public void ByDefaultShouldStringFieldsShouldBeTheirNameThenTheirOneBasedIndex()
         {
-            var products = Builder<Product>.CreateListOfSize(10).List;
+            var products = Builder<Product>.CreateListOfSize(10).Build();
 
             for (int i = 0; i < products.Count; i++)
             {
@@ -280,15 +279,40 @@ namespace FizzWare.NBuilder.Tests
             //           You want to be able to add this object to every element of your built list
             //           using the fluent interface.
 
-            var product = Builder<Product>.CreateNew().Value;
-            var product2 = Builder<Product>.CreateNew().Value;
+            var product = Builder<Product>.CreateNew().Build();
+            var product2 = Builder<Product>.CreateNew().Build();
 
-            var baskets = Builder<ShoppingBasket>.CreateListOfSize(5).WhereAll().HaveDoneToThem(x => x.Add(product, 1)).And(x => x.Add(product2, 2)).List;
+            var baskets = Builder<ShoppingBasket>.CreateListOfSize(5).WhereAll().HaveDoneToThem(x => x.Add(product, 1)).And(x => x.Add(product2, 2)).Build();
 
             for (int i = 0; i < baskets.Count; i++)
             {
                 Assert.That(baskets[i].Items.Count, Is.EqualTo(2));
             }
+        }
+
+        [Test]
+        public void ShouldBeAbleToPassInConstructorArgs()
+        {
+            const string prop1 = "Prop1Value";
+            const string prop2 = "Prop2Value";
+
+            var list = Builder<ImmutableObject>
+                .WithConstructorArgs(prop1, prop2)
+                .CreateListOfSize(2)
+                .Build();;
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                Assert.That(list[i].Prop1, Is.EqualTo(prop1));
+                Assert.That(list[i].Prop2, Is.EqualTo(prop2));
+            }
+        }
+
+        [Test]
+        [ExpectedException(typeof(MissingMethodException))]
+        public void ShouldComplainIfTooManyConstructorArgsPassedIn()
+        {
+            Builder<ImmutableObject>.WithConstructorArgs("arg1", "arg2", "arg3").CreateListOfSize(1).Build();
         }
     }
 }

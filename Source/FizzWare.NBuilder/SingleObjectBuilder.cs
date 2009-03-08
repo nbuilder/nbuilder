@@ -1,16 +1,24 @@
 using System;
 using FizzWare.NBuilder.PropertyValueNaming;
+using System.Linq.Expressions;
+using System.Reflection;
 
 namespace FizzWare.NBuilder
 {
-    public class SingleObjectBuilder<T> where T : new()
+    public class SingleObjectBuilder<T>
     {
         private readonly T builtObj;
 
         public SingleObjectBuilder(IPropertyValueNamingStategy<T> stategy)
         {
-            builtObj = new T();
-            stategy.SetValue(builtObj);
+            builtObj = ReflectionUtil.CreateInstanceOf<T>();
+            stategy.SetValuesOf(builtObj);
+        }
+
+        public SingleObjectBuilder(IPropertyValueNamingStategy<T> strategy, params object[] args)
+        {
+            builtObj = ReflectionUtil.CreateInstanceOf<T>(args);
+            strategy.SetValuesOf(builtObj);
         }
 
         public SingleObjectBuilder(T basedOn)
@@ -42,12 +50,9 @@ namespace FizzWare.NBuilder
             return this;
         }
 
-        public T Value
+        public T Build()
         {
-            get
-            {
-                return builtObj;
-            }
+            return builtObj;
         }
     }
 }

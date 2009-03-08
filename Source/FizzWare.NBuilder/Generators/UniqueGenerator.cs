@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace FizzWare.NBuilder.Generators
+namespace FizzWare.NBuilder
 {
     public class UniqueRandomGenerator<T> : RandomGenerator<T> where T : IConvertible
     {

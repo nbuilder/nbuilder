@@ -1,4 +1,4 @@
-namespace FizzWare.NBuilder.Picking
+namespace FizzWare.NBuilder
 {
     public class BetweenPickerConstraint : PickerConstraint
     {
@@ -21,12 +21,15 @@ namespace FizzWare.NBuilder.Picking
         public override int GetStart(int max)
         {
             start = random.Next(lower, upper);
+            start--;
             return start;
         }
 
         public override int GetEnd(int max)
         {
-            return random.Next(start, upper);
+            var end = random.Next(start, upper);
+            end++;
+            return end;
         }
 
         public BetweenPickerConstraint And(int end)

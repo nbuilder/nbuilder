@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using FizzWare.NBuilder.Generators;
 using FizzWare.NBuilder.PropertyValueNaming;
 
 namespace FizzWare.NBuilder
 {
-    public class ListBuilder<T> where T : new()
+    public class ListBuilder<T> 
     {
         private readonly IList<T> builtObjects = new List<T>();
 
@@ -17,10 +16,20 @@ namespace FizzWare.NBuilder
         {
             for (int i = 0; i < size; i++)
             {
-                builtObjects.Add(new T());
+                builtObjects.Add(ReflectionUtil.CreateInstanceOf<T>());
             }
 
-            namingStategy.SetValues(builtObjects.ToList());
+            namingStategy.SetValuesOfAll(builtObjects.ToList());
+        }
+
+        public ListBuilder(int size, IPropertyValueNamingStategy<T> namingStategy, params object[] args)
+        {
+            for (int i = 0; i < size; i++)
+            {
+                builtObjects.Add(ReflectionUtil.CreateInstanceOf<T>(args));
+            }
+
+            namingStategy.SetValuesOfAll(builtObjects.ToList());
         }
 
         public ListBuilder(int size, T basedOn)
@@ -151,12 +160,9 @@ namespace FizzWare.NBuilder
             return HaveDoneToThem(action);
         }
     
-        public IList<T> List
+        public IList<T> Build()
         {
-            get
-            {
-                return builtObjects;
-            }
+            return builtObjects;
         }
     }
 }

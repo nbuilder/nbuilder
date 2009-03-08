@@ -1,4 +1,4 @@
-namespace FizzWare.NBuilder.Picking
+namespace FizzWare.NBuilder
 {
     public  class AtLeastPickerConstraint : PickerConstraint
     {

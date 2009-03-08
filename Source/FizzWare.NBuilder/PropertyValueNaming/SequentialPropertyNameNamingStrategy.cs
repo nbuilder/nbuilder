@@ -7,22 +7,25 @@ namespace FizzWare.NBuilder.PropertyValueNaming
 {
     public class SequentialPropertyNameNamingStrategy<T> : IPropertyValueNamingStategy<T>
     {
-        public void SetValues(IList<T> objects)
+        public void SetValuesOfAll(IList<T> objects)
         {
+            const BindingFlags FLAGS = (BindingFlags.Public | BindingFlags.Instance);
+
             var type = typeof(T);
 
             for (int i = 0; i < objects.Count; i++)
             {
-                foreach (var propertyInfo in type.GetProperties())
-                {
+                foreach (var propertyInfo in type.GetProperties(FLAGS))
                     SetPropertyValue(propertyInfo, objects[i], i+1);
-                }
             }
         }
 
         private static void SetPropertyValue(PropertyInfo propertyInfo, T obj, int sequenceNumber)
         {
             Type propertyType = propertyInfo.PropertyType;
+
+            if (propertyInfo.GetSetMethod() == null)
+                return;
 
             if (propertyType == typeof(short))
             {
@@ -108,7 +111,7 @@ namespace FizzWare.NBuilder.PropertyValueNaming
             }
         }
 
-        public void SetValue(T obj)
+        public void SetValuesOf(T obj)
         {
             var type = typeof(T);
 
