@@ -65,7 +65,6 @@
     <Compile Include="Integration\UsingTheSingleObjectBuilder.cs" />
     <Compile Include="Integration\UsingTheSingleObjectBuilderWithAClassThatHasANonParameterlessConstructor.cs" />
     <Compile Include="Integration\UsingTheSingleObjectBuilderWithAStruct.cs" />
-    <Compile Include="StubMyClassRepository.cs" />
     <Compile Include="TestClasses\MyHierarchicalClass.cs" />
     <Compile Include="Unit\BuilderPersisterTests.cs" />
     <Compile Include="Unit\BuilderSetupTests.cs" />
