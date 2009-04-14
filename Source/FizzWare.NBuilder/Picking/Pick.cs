@@ -1,30 +1,24 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace FizzWare.NBuilder
 {
-    public class Pick
+    public class Pick<T>
     {
-        public static T RandomSingle<T>(IList<T> fromList)
+        public static UniqueRandomPicker<T> UniqueRandomList(int count)
         {
-            int listSize = fromList.Count;
-            int randomIndex = new RandomGenerator<int>(0, listSize).Generate();
-            return fromList[randomIndex];
+            return new UniqueRandomPicker<T>(With.Exactly(count).Elements, new UniqueRandomGenerator<int>());
         }
 
-        public static UniqueRandomPicker<T> UniqueRandomListOf<T>(int count)
+        public static UniqueRandomPicker<T> UniqueRandomList(Constraint constraint)
         {
-            return new UniqueRandomPicker<T>(With.Exactly(count).Elements);
+            return new UniqueRandomPicker<T>(constraint, new UniqueRandomGenerator<int>());
         }
 
-        public static UniqueRandomPicker<T> UniqueRandomListOf<T>(PickerConstraint constraint)
+        public static T RandomItemFrom(IList<T> list)
         {
-            return new UniqueRandomPicker<T>(constraint);
-        }
-
-        public static UniqueSinglePicker<T> Unique<T>()
-        {
-            return new UniqueSinglePicker<T>();
+            return new RandomItemPicker<T>(list, new RandomGenerator<int>()).Pick();
         }
     }
 }

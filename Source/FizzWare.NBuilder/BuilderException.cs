@@ -11,5 +11,10 @@ namespace FizzWare.NBuilder
             : base (message)
         {
         }
+
+        public BuilderException(string message, Exception innerException)
+            : base (message, innerException)
+        {
+        }
     }
 }

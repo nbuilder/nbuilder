@@ -1,6 +1,10 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using FizzWare.NBuilder;
+using FizzWare.NBuilder.Tests;
+
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
@@ -8,9 +12,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("FizzWare.NBuilder.Tests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Diamond Trading Company")]
+[assembly: AssemblyCompany("FizzWare")]
 [assembly: AssemblyProduct("FizzWare.NBuilder.Tests")]
-[assembly: AssemblyCopyright("Copyright © Diamond Trading Company 2009")]
+[assembly: AssemblyCopyright("Copyright © FizzWare 2009")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

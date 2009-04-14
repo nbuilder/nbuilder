@@ -1,0 +1,6 @@
+<Configuration>
+  <NamespaceFolders>
+    <SkipFolder>2A91787B-AFB7-4A4C-A5D5-836F578F2DB6/d:Generators</SkipFolder>
+    <SkipFolder>2A91787B-AFB7-4A4C-A5D5-836F578F2DB6/d:Picking</SkipFolder>
+  </NamespaceFolders>
+</Configuration>

@@ -5,38 +5,32 @@ namespace FizzWare.NBuilder
 {
     public class UniqueRandomPicker<T>
     {
-        readonly Random random = new Random((int)DateTime.Now.Ticks);
-        readonly List<int> trackedValues = new List<int>();
+        private readonly IConstraint constraint;
+        private readonly IUniqueRandomGenerator<int> uniqueRandomGenerator;
 
-        private readonly PickerConstraint constraint;
-
-        public UniqueRandomPicker(PickerConstraint constraint)
+        public UniqueRandomPicker(IConstraint constraint, IUniqueRandomGenerator<int> uniqueRandomGenerator)
         {
             this.constraint = constraint;
+            this.uniqueRandomGenerator = uniqueRandomGenerator;
         }
 
         public IList<T> From(IList<T> listToPickFrom)
         {
-            List<T> list = new List<T>();
+            uniqueRandomGenerator.Reset();
 
-            int start = constraint.GetStart(listToPickFrom.Count);
-            int end = constraint.GetEnd(listToPickFrom.Count);
+            int capacity = listToPickFrom.Count;
+            var listToReturn = new List<T>();
 
-            end = end - start;
+            int end = constraint.GetEnd();
 
             for (int i = 0; i < end; i++)
             {
-                int index = random.Next(0, listToPickFrom.Count);
+                int index = uniqueRandomGenerator.Generate(0, capacity - 1);
 
-                while (trackedValues.Contains(index))
-                    index = random.Next(0, listToPickFrom.Count);
-
-                trackedValues.Add(index);
-
-                list.Add(listToPickFrom[index]);
+                listToReturn.Add(listToPickFrom[index]);
             }
 
-            return list;
+            return listToReturn;
         }
     }
 }

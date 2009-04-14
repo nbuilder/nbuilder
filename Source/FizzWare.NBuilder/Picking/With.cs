@@ -1,25 +1,27 @@
+using System;
+
 namespace FizzWare.NBuilder
 {
     public class With
     {
-        public static UpToPickerConstraint UpTo(int count)
+        public static UpToConstraint UpTo(int count)
         {
-            return new UpToPickerConstraint(count);
+            return new UpToConstraint(new RandomGenerator<int>(), count);
         }
 
-        public static BetweenPickerConstraint Between(int lower)
+        public static BetweenConstraint Between(int lower)
         {
-            return new BetweenPickerConstraint(lower);
+            return new BetweenConstraint(new RandomGenerator<int>(), lower);
         }
 
-        public static ExactlyPickerConstraint Exactly(int count)
+        public static BetweenConstraint Between(int lower, int upper)
         {
-            return new ExactlyPickerConstraint(count);
+            return new BetweenConstraint(new RandomGenerator<int>(), lower, upper);
         }
 
-        public static AtLeastPickerConstraint AtLeast(int atLeast)
+        public static ExactlyConstraint Exactly(int count)
         {
-            return new AtLeastPickerConstraint(atLeast);
+            return new ExactlyConstraint(count);
         }
     }
 }

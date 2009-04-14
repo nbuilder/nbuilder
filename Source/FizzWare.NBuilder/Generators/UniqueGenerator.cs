@@ -3,27 +3,27 @@ using System.Collections.Generic;
 
 namespace FizzWare.NBuilder
 {
-    public class UniqueRandomGenerator<T> : RandomGenerator<T> where T : IConvertible
+    public class UniqueRandomGenerator<T> : RandomGenerator<T>, IUniqueRandomGenerator<T> where T : IConvertible
     {
         private readonly List<T> trackedValues = new List<T>();
 
-        public UniqueRandomGenerator(T min, T max) 
-            : base(min, max)
+        public override T Generate(int lower, int upper)
         {
-        }
-
-        public override T Generate()
-        {
-            T value = base.Generate();
+            T value = base.Generate(lower, upper);
 
             // loop round until the value is unique
             while (trackedValues.Contains(value))
-                value = base.Generate();
+                value = base.Generate(lower, upper);
 
             // add it to the list of values that have been provided
             trackedValues.Add(value);
 
             return value;
+        }
+
+        public void Reset()
+        {
+            trackedValues.Clear();
         }
     }
 }

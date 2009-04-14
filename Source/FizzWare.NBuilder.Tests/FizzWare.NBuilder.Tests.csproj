@@ -39,6 +39,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Lib\Test\NUnit\nunit.framework.extensions.dll</HintPath>
     </Reference>
+    <Reference Include="Rhino.Mocks, Version=3.5.0.1337, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Lib\Test\RhinoMocks\Rhino.Mocks.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -53,24 +57,58 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ListBuilderTests.cs" />
-    <Compile Include="SingleObjectBuilderTests.cs" />
-    <Compile Include="TestModel\BasketItem.cs" />
-    <Compile Include="TestModel\Category.cs" />
-    <Compile Include="TestModel\ImmutableObject.cs" />
-    <Compile Include="TestModel\Product.cs" />
+    <Compile Include="Integration\ListBuilderNegativeTests.cs" />
+    <Compile Include="Integration\UsingHierarchyGenerator.cs" />
+    <Compile Include="Integration\UsingListBuilderWithAClassThatHasANonParameterlessConstructor.cs" />
+    <Compile Include="Integration\UsingListBuilderWithAStruct.cs" />
+    <Compile Include="Integration\UsingPickers.cs" />
+    <Compile Include="Integration\UsingTheSingleObjectBuilder.cs" />
+    <Compile Include="Integration\UsingTheSingleObjectBuilderWithAClassThatHasANonParameterlessConstructor.cs" />
+    <Compile Include="Integration\UsingTheSingleObjectBuilderWithAStruct.cs" />
+    <Compile Include="StubMyClassRepository.cs" />
+    <Compile Include="TestClasses\MyHierarchicalClass.cs" />
+    <Compile Include="Unit\BuilderPersisterTests.cs" />
+    <Compile Include="Unit\BuilderSetupTests.cs" />
+    <Compile Include="Unit\PersistenceExtensionTests.cs" />
+    <Compile Include="Unit\Extensibility\EvenDeclaration.cs" />
+    <Compile Include="Unit\HierarchyGeneratorTests.cs" />
+    <Compile Include="Unit\OperableExtensionTests.cs" />
+    <Compile Include="Unit\PathTests.cs" />
+    <Compile Include="Unit\Picking\RandomItemPickerTests.cs" />
+    <Compile Include="Unit\Picking\UniqueRandomPickerTests.cs" />
+    <Compile Include="Unit\Picking\UpToConstraintTests.cs" />
+    <Compile Include="Unit\Picking\ExactlyConstraintTests.cs" />
+    <Compile Include="Unit\Picking\PickTests.cs" />
+    <Compile Include="Unit\ShouldBeAbleToUseBuilderSetup.cs" />
+    <Compile Include="Unit\TestListBuilderExtensions.cs" />
+    <Compile Include="Unit\UniqueRandomGeneratorTests.cs" />
+    <Compile Include="Unit\DeclarationQueueTests.cs" />
+    <Compile Include="Unit\DistinctAffectedItemCalculatorTests.cs" />
+    <Compile Include="Unit\ExtensibilityTests.cs" />
+    <Compile Include="Unit\GlobalDeclarationTests.cs" />
+    <Compile Include="Unit\Picking\BetweenConstraintTests.cs" />
+    <Compile Include="Unit\RandomDeclarationTests.cs" />
+    <Compile Include="Unit\RandomGeneratorTests.cs" />
+    <Compile Include="Unit\RangeDeclarationTests.cs" />
+    <Compile Include="Unit\ListBuilderTests.cs" />
+    <Compile Include="Unit\ListBuilderExtensionsTests.cs" />
+    <Compile Include="Unit\SequentialPropertyNamerUsingAStructTests.cs" />
+    <Compile Include="TestClasses\MyStruct.cs" />
+    <Compile Include="TestClasses\SimpleClass.cs" />
+    <Compile Include="Unit\SingleObjectBuilderTests.cs" />
+    <Compile Include="TestClasses\MyClassWithConstructor.cs" />
+    <Compile Include="Unit\SequentialPropertyNamerTests.cs" />
+    <Compile Include="Integration\UsingListBuilderWithAClassThatHasAParameterlessConstructor.cs" />
+    <Compile Include="TestClasses\MyClass.cs" />
+    <Compile Include="Unit\ReflectionUtilTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestModel\ShoppingBasket.cs" />
-    <Compile Include="TestModel\Tax.cs" />
+    <Compile Include="Unit\ObjectBuilderTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FizzWare.NBuilder\FizzWare.NBuilder.csproj">
       <Project>{2A91787B-AFB7-4A4C-A5D5-836F578F2DB6}</Project>
       <Name>FizzWare.NBuilder</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="TestModel\ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
