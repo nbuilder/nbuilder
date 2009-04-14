@@ -16,11 +16,6 @@ namespace FizzWare.NBuilder.Implementation
             this.amount = amount;
         }
 
-        public RandomDeclaration(IListBuilderImpl<T> listBuilderImpl, IObjectBuilder<T> objectBuilder, IUniqueRandomGenerator<int> uniqueRandomGenerator, int amount)
-            : this(listBuilderImpl, objectBuilder, uniqueRandomGenerator, amount, 0, listBuilderImpl.Capacity)
-        {
-        }
-
         public override void Construct()
         {
             for (int i = 0; i < amount; i++)
@@ -33,7 +28,8 @@ namespace FizzWare.NBuilder.Implementation
         {
             for (int i = 0; i < amount; i++)
             {
-                int index = uniqueRandomGenerator.Generate(Start, End);
+                int index = uniqueRandomGenerator.Generate(Start, End); // was End - 1
+
                 AddItemToMaster(myList[i], masterList, index);
             }
         }

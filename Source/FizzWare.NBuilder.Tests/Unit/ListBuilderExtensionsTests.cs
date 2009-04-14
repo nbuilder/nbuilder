@@ -152,24 +152,6 @@ namespace FizzWare.NBuilder.Tests.Unit
             ListBuilderExtensions.AndTheNext(listBuilderImpl, 0);
         }
 
-        //[Test]
-        //[ExpectedException(typeof(ArgumentException))]
-        //public void AndTheNextAmountMustBeValidInRelationToTheCapacityOfTheList()
-        //{
-        //    var declarations = mocks.DynamicMock<IDeclarationQueue<MyClass>>();
-
-        //    using (mocks.Record())
-        //    {
-        //        declarations.Expect(x => x.Peek()).Return(new RangeDeclaration<MyClass>(
-        //                                                      listBuilderImpl, null, 0, 5));
-                
-        //        listBuilderImpl.Expect(x => x.Capacity).Return(10).Repeat.Any();
-        //        listBuilderImpl.Expect(x => x.Declarations).Return(declarations);
-        //    }
-
-        //    ListBuilderExtensions.AndTheNext(listBuilderImpl, 10);
-        //}
-
         // This doesn't seem to work - must be a bug in nunit
         //[ExpectedException(typeof(ArgumentException), ExpectedMessage = "start", MatchType = MessageMatch.Contains)]
         [Test]
@@ -310,6 +292,52 @@ namespace FizzWare.NBuilder.Tests.Unit
                 Assert.That(whereSection.Start, Is.EqualTo(10));
                 Assert.That(whereSection.End, Is.EqualTo(19));                
             }
+        }
+
+        [Test]
+        public void WhereRandomShouldReturnRandomDeclarationOfRangeOfWholeList()
+        {
+            const int amount = 5;
+            const int end = listSize - 1;
+
+            var randomDeclaration = new RandomDeclaration<MyClass>(listBuilderImpl, null, null, amount, 0, end);
+
+            using (mocks.Record())
+            {
+                listBuilderImpl.Expect(x => x.Capacity).Return(listSize).Repeat.Any();
+                listBuilderImpl.Expect(x => x.AddDeclaration(Arg<RandomDeclaration<MyClass>>.Matches(y => y.Start == 0 && y.End == end))).Return(randomDeclaration);
+            }
+
+            IDeclaration<MyClass> declaration;
+            using (mocks.Playback())
+            {
+                declaration = (IDeclaration<MyClass>)ListBuilderExtensions.WhereRandom(listBuilderImpl, amount);
+            }
+
+            Assert.That(declaration.Start, Is.EqualTo(0));
+            Assert.That(declaration.End, Is.EqualTo(end));
+        }
+
+        [Test]
+        public void WhereRandomCanReturnDeclarationForASectionOfTheList()
+        {
+            const int amount = 5;
+            const int start = 10;
+            const int end = 20;
+
+            var randomDeclaration = new RandomDeclaration<MyClass>(listBuilderImpl, null, null, amount, start, end);
+
+            using (mocks.Record())
+            {
+                listBuilderImpl.Expect(x => x.Capacity).Return(listSize).Repeat.Any();
+                listBuilderImpl.Expect(x => x.AddDeclaration(Arg<RandomDeclaration<MyClass>>.Matches(y => y.Start == start && y.End == end))).Return(randomDeclaration);
+            }
+
+            
+            var declaration = (IDeclaration<MyClass>)ListBuilderExtensions.WhereRandom(listBuilderImpl, amount, start, end);
+
+            Assert.That(declaration.Start, Is.EqualTo(start));
+            Assert.That(declaration.End, Is.EqualTo(end));
         }
 
         [Test]

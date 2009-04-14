@@ -24,6 +24,8 @@ namespace FizzWare.NBuilder
         {
             var listBuilderImpl = GetListBuilderImpl<T>(listBuilder);
 
+            // TODO: Put these in a specification
+
             Guard.Against(amount < 1, "WhereTheLast amount must be 1 or greater");
             Guard.Against(amount > listBuilderImpl.Capacity, "WhereTheLast amount must be less than the size of the list that is being generated");
 
@@ -35,11 +37,18 @@ namespace FizzWare.NBuilder
         public static IOperable<T> WhereRandom<T>(this IListBuilder<T> listBuilder, int amount)
         {
             var listBuilderImpl = GetListBuilderImpl<T>(listBuilder);
+            return WhereRandom(listBuilderImpl, amount, 0, listBuilderImpl.Capacity - 1);
+        }
 
+        public static IOperable<T> WhereRandom<T>(this IListBuilder<T> listBuilder, int amount, int start, int end)
+        {
+            var listBuilderImpl = GetListBuilderImpl<T>(listBuilder);
+
+            // TODO: Put these in a specification
             Guard.Against(amount < 1, "WhereRandom amount must be 1 or greater");
             Guard.Against(amount > listBuilderImpl.Capacity, "WhereRandom amount must be less than the size of the list that is being generated");
 
-            var declaration = new RandomDeclaration<T>(listBuilderImpl, listBuilderImpl.CreateObjectBuilder(), new UniqueRandomGenerator<int>(), amount);
+            var declaration = new RandomDeclaration<T>(listBuilderImpl, listBuilderImpl.CreateObjectBuilder(), new UniqueRandomGenerator<int>(), amount, start, end);
             return (IOperable<T>)listBuilderImpl.AddDeclaration(declaration);
         }
 
@@ -48,6 +57,7 @@ namespace FizzWare.NBuilder
             var listBuilderImpl = GetListBuilderImpl<T>(listBuilder);
             var capacity = listBuilderImpl.Capacity;
 
+            // TODO: Put these in a specification
             Guard.Against(start < 0, "WhereSection - start must be zero or greater");
             Guard.Against(start >= capacity, "WhereSection - start must be less than the capacity");
 
@@ -62,6 +72,7 @@ namespace FizzWare.NBuilder
 
         public static IOperable<T> AndTheNext<T>(this IListBuilder<T> listBuilder, int amount)
         {
+            // TODO: Put this in a specification
             Guard.Against(amount < 1, "AndTheNext - amount must be one or greater");
 
             var listBuilderImpl = GetListBuilderImpl<T>(listBuilder);
