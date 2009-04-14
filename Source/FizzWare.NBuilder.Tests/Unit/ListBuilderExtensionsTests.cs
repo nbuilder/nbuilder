@@ -339,26 +339,27 @@ namespace FizzWare.NBuilder.Tests.Unit
             Assert.That(declaration.Start, Is.EqualTo(start));
             Assert.That(declaration.End, Is.EqualTo(end));
         }
+        
+        // TODO: Finish
+        //[Test]
+        //public void ShouldBeAbleToUseBuildHierarchy()
+        //{
+        //    var hierarchySpec = mocks.Stub<IHierarchySpec<MyClass>>();
 
-        [Test]
-        public void ShouldBeAbleToUseBuildHierarchy()
-        {
-            var hierarchySpec = mocks.Stub<IHierarchySpec<MyClass>>();
+        //    using (mocks.Record())
+        //    {
+        //        listBuilderImpl.Expect(x => x.Build()).Return(new List<MyClass>()).Repeat.Any();
+        //    }
 
-            using (mocks.Record())
-            {
-                listBuilderImpl.Expect(x => x.Build()).Return(new List<MyClass>()).Repeat.Any();
-            }
-
-            using (mocks.Playback())
-            {
+        //    using (mocks.Playback())
+        //    {
                 
-                var list = ListBuilderExtensions.BuildHierarchy(listBuilderImpl, hierarchySpec);
+        //        var list = ListBuilderExtensions.BuildHierarchy(listBuilderImpl, hierarchySpec);
 
-                Assert.That(list, Is.TypeOf(typeof(List<MyClass>)));
+        //        Assert.That(list, Is.TypeOf(typeof(List<MyClass>)));
 
-           }
-        }
+        //   }
+        //}
     }
     // ReSharper restore InvokeAsExtensionMethod
 }

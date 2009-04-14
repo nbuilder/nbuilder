@@ -127,19 +127,21 @@ namespace FizzWare.NBuilder
             return listBuilderImpl;
         }
 
-        public static IList<T> BuildHierarchy<T>(this IListBuilder<T> listBuilder, IHierarchySpec<T> hierarchySpec)
-        {
-            HierarchyGenerator<T> generator = new HierarchyGenerator<T>(listBuilder.Build(), hierarchySpec, new RandomGenerator<int>(), new SequentialPropertyNamer<T>(new ReflectionUtil()));
-            return generator.Generate();
-        }
+        // TODO: Finish
+        //public static IList<T> BuildHierarchy<T>(this IListBuilder<T> listBuilder, IHierarchySpec<T> hierarchySpec)
+        //{
+        //    HierarchyGenerator<T> generator = new HierarchyGenerator<T>(listBuilder.Build(), hierarchySpec, new RandomGenerator<int>(), new SequentialPropertyNamer<T>(new ReflectionUtil()));
+        //    return generator.Generate();
+        //}
 
-        public static IList<T> PersistHierarchy<T>(this IListBuilder<T> listBuilder, IHierarchySpec<T> hierarchySpec)
-        {
-            var list = BuildHierarchy(listBuilder, hierarchySpec);
+        // TODO: Finish
+        //public static IList<T> PersistHierarchy<T>(this IListBuilder<T> listBuilder, IHierarchySpec<T> hierarchySpec)
+        //{
+        //    var list = BuildHierarchy(listBuilder, hierarchySpec);
 
-            var persistenceService = BuilderSetup.GetPersistenceService();
-            persistenceService.Persist(list);
-            return list;
-        }
+        //    var persistenceService = BuilderSetup.GetPersistenceService();
+        //    persistenceService.Persist(list);
+        //    return list;
+        //}
     }
 }
