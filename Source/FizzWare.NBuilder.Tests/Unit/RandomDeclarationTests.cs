@@ -17,10 +17,10 @@ namespace FizzWare.NBuilder.Tests.Unit
         private IListBuilderImpl<MyClass> listBuilderImpl;
         private IObjectBuilder<MyClass> objectBuilder;
         private IUniqueRandomGenerator<int> uniqueRandomGenerator;
-        private const int start = 0;
-        private const int end = 9;
         private const int amount = 5;
         private const int listSize = 10;
+        private const int start = 0;
+        private const int end = listSize - 1;
 
         [SetUp]
         public void SetUp()

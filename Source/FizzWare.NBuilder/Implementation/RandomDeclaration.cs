@@ -33,7 +33,7 @@ namespace FizzWare.NBuilder.Implementation
         {
             for (int i = 0; i < amount; i++)
             {
-                int index = uniqueRandomGenerator.Generate(Start, End - 1);
+                int index = uniqueRandomGenerator.Generate(Start, End);
                 AddItemToMaster(myList[i], masterList, index);
             }
         }

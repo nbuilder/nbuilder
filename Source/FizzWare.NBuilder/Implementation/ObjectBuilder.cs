@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -124,28 +123,6 @@ namespace FizzWare.NBuilder.Implementation
         public IObjectBuilder<T> Prototype()
         {
             return new ObjectBuilder<T>(reflectionUtil);
-        }
-    }
-
-    public class MultiFunction
-    {
-        private readonly Expression expression;
-        private readonly object list;
-
-        public MultiFunction(Expression expression, object list)
-        {
-            this.expression = expression;
-            this.list = list;
-        }
-
-        public void Call<T>(T obj)
-        {
-            IEnumerable enumerable = list as IEnumerable;
-
-            foreach (var item in enumerable)
-            {
-                ((LambdaExpression) expression).Compile().DynamicInvoke(obj, item);
-            }
         }
     }
 }
