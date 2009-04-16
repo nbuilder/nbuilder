@@ -65,14 +65,21 @@
     <Compile Include="Integration\UsingTheSingleObjectBuilder.cs" />
     <Compile Include="Integration\UsingTheSingleObjectBuilderWithAClassThatHasANonParameterlessConstructor.cs" />
     <Compile Include="Integration\UsingTheSingleObjectBuilderWithAStruct.cs" />
+    <Compile Include="TestClasses\MyClassInheritor.cs" />
+    <Compile Include="TestClasses\MyClassWithOptionalConstructor.cs" />
     <Compile Include="TestClasses\MyHierarchicalClass.cs" />
-    <Compile Include="Unit\BuilderPersisterTests.cs" />
     <Compile Include="Unit\BuilderSetupTests.cs" />
+    <Compile Include="TestClasses\IMyInterface.cs" />
+    <Compile Include="TestClasses\IMyOtherInterface.cs" />
+    <Compile Include="Unit\SequentialGeneratorMultiTypeTests.cs" />
+    <Compile Include="Unit\SequentialGeneratorTests.cs" />
+    <Compile Include="Unit\SingleObjectBuilderExtensionsTests.cs" />
     <Compile Include="Unit\PersistenceExtensionTests.cs" />
     <Compile Include="Unit\Extensibility\EvenDeclaration.cs" />
     <Compile Include="Unit\HierarchyGeneratorTests.cs" />
     <Compile Include="Unit\OperableExtensionTests.cs" />
     <Compile Include="Unit\PathTests.cs" />
+    <Compile Include="Unit\PersistenceServiceTests.cs" />
     <Compile Include="Unit\Picking\RandomItemPickerTests.cs" />
     <Compile Include="Unit\Picking\UniqueRandomPickerTests.cs" />
     <Compile Include="Unit\Picking\UpToConstraintTests.cs" />
@@ -94,7 +101,6 @@
     <Compile Include="Unit\SequentialPropertyNamerUsingAStructTests.cs" />
     <Compile Include="TestClasses\MyStruct.cs" />
     <Compile Include="TestClasses\SimpleClass.cs" />
-    <Compile Include="Unit\SingleObjectBuilderTests.cs" />
     <Compile Include="TestClasses\MyClassWithConstructor.cs" />
     <Compile Include="Unit\SequentialPropertyNamerTests.cs" />
     <Compile Include="Integration\UsingListBuilderWithAClassThatHasAParameterlessConstructor.cs" />
@@ -102,6 +108,7 @@
     <Compile Include="Unit\ReflectionUtilTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Unit\ObjectBuilderTests.cs" />
+    <Compile Include="Unit\WithTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FizzWare.NBuilder\FizzWare.NBuilder.csproj">

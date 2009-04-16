@@ -14,12 +14,14 @@ namespace FizzWare.NBuilder.Tests.Unit
     {
         private MockRepository mocks;
         private IPersistenceService persistenceService;
+        private IMyClassRepository repository;
 
         [SetUp]
         public void SetUp()
         {
             mocks = new MockRepository();
             persistenceService = mocks.DynamicMock<IPersistenceService>();
+            repository = mocks.DynamicMock<IMyClassRepository>();
 
             BuilderSetup.RegisterPersistenceService(this.persistenceService);
         }
@@ -42,6 +44,22 @@ namespace FizzWare.NBuilder.Tests.Unit
             }
 
             BuilderSetup.SetPersistenceMethod<MyClass>(func);
+        }
+
+        [Test]
+        public void ShouldBeAbleToAddASinglePersister()
+        {
+            Action<MyClass> func = x => repository.Save(x);
+
+            using (mocks.Record())
+            {
+                persistenceService.Expect(x => x.SetPersistenceMethod(func));
+            }
+
+            using (mocks.Playback())
+            {
+                BuilderSetup.SetPersistenceMethod<MyClass>(func);
+            }
         }
     }
 }

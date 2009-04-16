@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Data.SqlClient;
 
-namespace FizzWare.NBuilder.FunctionalTests
+namespace FizzWare.NBuilder.FunctionalTests.Support
 {
     public class Database
     {

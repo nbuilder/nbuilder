@@ -98,12 +98,10 @@
     <Compile Include="PropertyNaming\SequentialPropertyNamer.cs" />
     <Compile Include="Implementation\RangeDeclaration.cs" />
     <Compile Include="Implementation\ReflectionUtil.cs" />
-    <Compile Include="Generators\StringGenerator.cs" />
     <Compile Include="Generators\UniqueGenerationScope.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Generators\UniqueGenerator.cs" />
     <Compile Include="Picking\UniqueRandomPicker.cs" />
-    <Compile Include="Picking\UniqueSinglePicker.cs" />
     <Compile Include="Picking\UpToConstraint.cs" />
     <Compile Include="Picking\With.cs" />
     <Compile Include="SingleObjectBuilderExtensions.cs" />

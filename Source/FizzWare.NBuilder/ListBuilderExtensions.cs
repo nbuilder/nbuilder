@@ -76,7 +76,7 @@ namespace FizzWare.NBuilder
             Guard.Against(amount < 1, "AndTheNext - amount must be one or greater");
 
             var listBuilderImpl = GetListBuilderImpl<T>(listBuilder);
-            var lastDeclaration = listBuilderImpl.Declarations.Peek();
+            var lastDeclaration = listBuilderImpl.Declarations.GetLastItem();
             var rangeDeclaration = lastDeclaration as RangeDeclaration<T>;
 
             if (rangeDeclaration == null)
@@ -95,7 +95,7 @@ namespace FizzWare.NBuilder
         public static IOperable<T> AndThePrevious<T>(this IListBuilder<T> listBuilder, int amount)
         {
             var listBuilderImpl = GetListBuilderImpl<T>(listBuilder);
-            var lastDeclaration = listBuilderImpl.Declarations.Peek();
+            var lastDeclaration = listBuilderImpl.Declarations.GetLastItem();
 
             var rangeDeclaration = lastDeclaration as RangeDeclaration<T>;
 

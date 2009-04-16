@@ -1,67 +1,32 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using FizzWare.NBuilder.Tests.TestClasses;
-using NUnit.Framework;
 using Rhino.Mocks;
-using NUnit.Framework.SyntaxHelpers;
+using NUnit.Framework;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
     [TestFixture]
-    public class BuilderPersisterTests
+    public class PersistenceServiceTests
     {
         private MockRepository mocks;
         private IMyClassRepository repository;
+        private IMyClassRepository repository2;
 
         [SetUp]
         public void SetUp()
         {
             mocks = new MockRepository();
             repository = mocks.DynamicMock<IMyClassRepository>();
+            repository2 = mocks.DynamicMock<IMyClassRepository>();
         }
 
         [TearDown]
         public void TearDown()
         {
             mocks.VerifyAll();
-        }
-
-        [Test]
-        public void ShouldBeAbleToAddASinglePersister()
-        {
-            using (mocks.Record())
-            {
-            }
-
-            using (mocks.Playback())
-            {
-                Action<MyClass> func = x => repository.Save(x);
-
-                PersistenceService persistenceService = new PersistenceService();
-                persistenceService.SetPersistenceMethod(func);
-
-                Assert.That(persistenceService.Persisters, Has.Count(1));
-            }
-        }
-
-        [Test]
-        public void ShouldBeAbleToAddAListPersister()
-        {
-            using (mocks.Record())
-            {
-            }
-
-            using (mocks.Playback())
-            {
-                Action<IList<MyClass>> func = x => repository.SaveAll(x);
-
-                PersistenceService persistenceService = new PersistenceService();
-                persistenceService.SetPersistenceMethod(func);
-
-                Assert.That(persistenceService.Persisters, Has.Count(1));
-            }
         }
 
         [Test]
@@ -89,7 +54,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             IList<MyClass> list = new List<MyClass>();
 
             PersistenceService persistenceService = new PersistenceService();
-            persistenceService.SetPersistenceMethod<MyClass>(x => repository.SaveAll(x));
+            persistenceService.SetPersistenceMethod<IList<MyClass>>(x => repository.SaveAll(x));
 
             using (mocks.Record())
             {
@@ -105,17 +70,20 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Test]
         public void ShouldReplaceExistingPersister()
         {
+            var obj = new MyClass();
+
+            PersistenceService persistenceService = new PersistenceService();
+            persistenceService.SetPersistenceMethod<MyClass>(x => repository.Save(x));
+            persistenceService.SetPersistenceMethod<MyClass>(x => repository2.Save(x));
+
             using (mocks.Record())
             {
-
+                repository2.Expect(x => x.Save(obj));
             }
 
             using (mocks.Playback())
             {
-                PersistenceService persistenceService = new PersistenceService();
-                persistenceService.SetPersistenceMethod<MyClass>(x => repository.SaveAll(x));
-
-                persistenceService.SetPersistenceMethod<MyClass>(x => repository.SaveAll(x));
+                persistenceService.Persist(obj);
             }
         }
     }

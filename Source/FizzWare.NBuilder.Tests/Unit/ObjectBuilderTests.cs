@@ -11,22 +11,13 @@ using NUnit.Framework.SyntaxHelpers;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
-    public interface IMyClass
-    {
-        void Add(IMyOtherClass myOtherClass);
-    }
-
-    public interface IMyOtherClass
-    {
-        
-    }
-
     [TestFixture]
     public class ObjectBuilderTests
     {
         private IReflectionUtil reflectionUtil;
         private ObjectBuilder<MyClass> builder;
         private ObjectBuilder<MyClassWithConstructor> myClassWithConstructorBuilder;
+        private ObjectBuilder<MyClassWithOptionalConstructor> myClassWithOptionalConstructorBuilder;
         private MockRepository mocks;
 
         [SetUp]
@@ -38,6 +29,7 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             builder = new ObjectBuilder<MyClass>(reflectionUtil);
             myClassWithConstructorBuilder = new ObjectBuilder<MyClassWithConstructor>(reflectionUtil);
+            myClassWithOptionalConstructorBuilder = new ObjectBuilder<MyClassWithOptionalConstructor>(reflectionUtil);
         }
 
         [TearDown]
@@ -74,6 +66,27 @@ namespace FizzWare.NBuilder.Tests.Unit
             using (mocks.Playback())
             {
                 myClassWithConstructorBuilder
+                        .WithConstructorArgs(arg1, arg2)
+                        .Construct();
+            }
+        }
+
+        [Test]
+        public void ShouldBeAbleToConstructAnObjectWithOptionalConstructorArgs()
+        {
+            // ctor: public MyClassWithOptionalConstructor(string arg1, int arg2)
+
+            const string arg1 = "test";
+            const int arg2 = 2;
+
+            using (mocks.Record())
+            {
+                reflectionUtil.Expect(x => x.CreateInstanceOf<MyClassWithOptionalConstructor>(arg1, arg2)).Return(new MyClassWithOptionalConstructor(arg1, arg2));
+            }
+
+            using (mocks.Playback())
+            {
+                myClassWithOptionalConstructorBuilder
                         .WithConstructorArgs(arg1, arg2)
                         .Construct();
             }
@@ -166,15 +179,15 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Test]
         public void ShouldBeAbleToUseDoMultiple()
         {
-            var myClass = mocks.DynamicMock<IMyClass>();
-            var list = new List<IMyOtherClass> { mocks.Stub<IMyOtherClass>(), mocks.Stub<IMyOtherClass>(), mocks.Stub<IMyOtherClass>() };
+            var myClass = mocks.DynamicMock<IMyInterface>();
+            var list = new List<IMyOtherInterface> { mocks.Stub<IMyOtherInterface>(), mocks.Stub<IMyOtherInterface>(), mocks.Stub<IMyOtherInterface>() };
 
-            var builder2 = new ObjectBuilder<IMyClass>(reflectionUtil);
+            var builder2 = new ObjectBuilder<IMyInterface>(reflectionUtil);
 
             using (mocks.Record())
             {
                 const int listSize = 3;
-                myClass.Expect(x => x.Add(Arg<IMyOtherClass>.Is.TypeOf)).Repeat.Times(listSize);
+                myClass.Expect(x => x.Add(Arg<IMyOtherInterface>.Is.TypeOf)).Repeat.Times(listSize);
             }
 
             using (mocks.Playback())

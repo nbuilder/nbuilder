@@ -13,16 +13,6 @@ namespace FizzWare.NBuilder
             Persisters = new Dictionary<Type, Expression>();
         }
 
-        public void SetPersistenceMethod<T>(Action<IList<T>> saveMethod)
-        {
-            var expr = ToExpression(saveMethod);
-
-            if (Persisters.ContainsKey(typeof(IList<T>)))
-                Persisters[typeof (IList<T>)] = expr;
-            else
-                Persisters.Add(typeof(IList<T>), expr);
-        }
-
         public void SetPersistenceMethod<T>(Action<T> saveMethod)
         {
             var expr = ToExpression(saveMethod);

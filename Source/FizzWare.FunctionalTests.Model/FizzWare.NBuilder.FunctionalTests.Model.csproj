@@ -83,6 +83,7 @@
   <ItemGroup>
     <Compile Include="BasketItem.cs" />
     <Compile Include="Category.cs" />
+    <Compile Include="IProduct.cs" />
     <Compile Include="Product.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\BaseActiveRecordRepository.cs" />
@@ -97,6 +98,7 @@
     <Compile Include="Repositories\TaxTypeRepository.cs" />
     <Compile Include="ShoppingBasket.cs" />
     <Compile Include="Tax.cs" />
+    <Compile Include="WarehouseLocation.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

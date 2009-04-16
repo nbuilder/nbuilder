@@ -42,5 +42,22 @@ namespace FizzWare.NBuilder.Tests.Unit.Picking
                 Assert.That(end, Is.EqualTo(2));
             }
         }
+
+        [Test]
+        public void ShouldBeAbleToAddUpperUsingAnd()
+        {
+            using (mocks.Record())
+            {
+                uniqueRandomGenerator.Expect(x => x.Generate(lower, upper)).Return(2);
+            }
+
+            var constraint = new BetweenConstraint(uniqueRandomGenerator, lower);
+            constraint.And(upper);
+
+            using (mocks.Playback())
+            {
+                constraint.GetEnd();
+            }
+        }
     }
 }

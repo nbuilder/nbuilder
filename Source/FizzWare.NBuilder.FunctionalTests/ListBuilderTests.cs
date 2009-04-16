@@ -1,4 +1,6 @@
-﻿using FizzWare.NBuilder.FunctionalTests.Model;
+﻿using System.Data;
+using FizzWare.NBuilder.FunctionalTests.Model;
+using FizzWare.NBuilder.FunctionalTests.Support;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 
@@ -150,15 +152,78 @@ namespace FizzWare.NBuilder.FunctionalTests
         }
 
         [Test]
+        public void UsingTheSequentialGenerator()
+        {
+            var generator = new SequentialGenerator<int> { Direction = GeneratorDirection.Descending, Increment = 2 };
+            generator.ResetTo(6);
+
+            var products = Builder<Product>
+                .CreateListOfSize(3)
+                .WhereAll()
+                    .Have(x => x.Id = generator.Generate())
+                .Build();
+
+            Assert.That(products[0].Id, Is.EqualTo(4));
+            Assert.That(products[1].Id, Is.EqualTo(2));
+            Assert.That(products[2].Id, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void UsingTheWithBetween_And_SyntaxForGreaterReadability()
+        {
+            var categories = Builder<Category>.CreateListOfSize(50).Build();
+
+            var products = Builder<Product>
+                            .CreateListOfSize(500)
+                            .WhereAll()
+                                .Have(x => x.Categories = Pick<Category>.UniqueRandomList(With.Between(5).And(10).Elements).From(categories))
+                            .Build();
+
+            foreach (var product in products)
+            {
+                Assert.That(product.Categories.Count, Is.AtLeast(5));
+                Assert.That(product.Categories.Count, Is.AtMost(10));
+            }
+        }
+
+        [Test]
+        public void UsingPick_UpTo_AndHaveDoneToThemForAll()
+        {
+            var categories = Builder<Category>.CreateListOfSize(10).Persist();
+
+            var products = Builder<Product>
+                .CreateListOfSize(50)
+                .WhereAll()
+                .HaveDoneToThemForAll( (x, y) => x.AddToCategory(y), Pick<Category>.UniqueRandomList(With.UpTo(4).Elements).From(categories))
+                .Persist();
+
+            DataTable productCategoriesTable = Database.GetContentsOf(Database.Tables.ProductCategory);
+
+            Assert.That(productCategoriesTable.Rows.Count, Is.LessThanOrEqualTo(50 * 4));
+        }
+
+        [Test]
         public void PersistingAListOfProductsAndCategories()
         {
-            var categories = Builder<Category>.CreateListOfSize(50).Persist();
+            const int numProducts = 500;
+            const int numCategories = 50;
+            const int numCategoriesForEachProduct = 5;
+
+            var categories = Builder<Category>.CreateListOfSize(numCategories).Persist();
 
             Builder<Product>
-                .CreateListOfSize(500)
+                .CreateListOfSize(numProducts)
                 .WhereAll()
-                    .Have(x => x.Categories = Pick<Category>.UniqueRandomList(With.Between(5, 10).Elements).From(categories))
+                    .Have(x => x.Categories = Pick<Category>.UniqueRandomList(With.Exactly(numCategoriesForEachProduct).Elements).From(categories))
                 .Persist(); // NB: Persistence is setup in the SetupFixture class
+
+            DataTable productsTable = Database.GetContentsOf(Database.Tables.Product);
+            DataTable categoriesTable = Database.GetContentsOf(Database.Tables.Category);
+            DataTable productCategoriesTable = Database.GetContentsOf(Database.Tables.ProductCategory);
+
+            Assert.That(productsTable.Rows.Count, Is.EqualTo(numProducts));
+            Assert.That(categoriesTable.Rows.Count, Is.EqualTo(numCategories));
+            Assert.That(productCategoriesTable.Rows.Count, Is.EqualTo(numCategoriesForEachProduct * numProducts));
         }
 
         [Test]
@@ -185,23 +250,155 @@ namespace FizzWare.NBuilder.FunctionalTests
         }
 
         [Test]
+        public void DifferentPartsOfTheListCanBeConstructedDifferently()
+        {
+            var basket1 = new ShoppingBasket();
+            var product1 = new Product();
+            const int quantity1 = 5;
+
+            var basket2 = new ShoppingBasket();
+            var product2 = new Product();
+            const int quantity2 = 7;
+
+            var items = Builder<BasketItem>
+                .CreateListOfSize(4)
+                .WhereTheFirst(2)
+                    .AreConstructedWith(basket1, product1, quantity1)
+                .AndTheNext(2)
+                    .AreConstructedWith(basket2, product2, quantity2)
+                .Build();
+
+            Assert.That(items[0].Basket, Is.EqualTo(basket1));
+            Assert.That(items[0].Basket, Is.EqualTo(basket1));
+            Assert.That(items[0].Basket, Is.EqualTo(basket1));
+            Assert.That(items[0].Basket, Is.EqualTo(basket1));
+            Assert.That(items[0].Basket, Is.EqualTo(basket1));
+            Assert.That(items[0].Basket, Is.EqualTo(basket1));
+        }
+
+        [Test]
+        [ExpectedException(typeof(BuilderException))]
+        public void WillComplainIfYouDoNotSupplyConstructorArgsWhenRequired()
+        {
+            Builder<BasketItem>.CreateListOfSize(10).Build();
+        }
+
+        [Test]
+        [ExpectedException(typeof(TypeCreationException))]
+        public void WillComplainIfYouDoNotSupplyArgsMatchingOneOfTheConstructors()
+        {
+            Builder<BasketItem>
+                 .CreateListOfSize(10)
+                 .WhereAll()
+                 .AreConstructedWith().Build();
+        }
+
+        [Test]
+        public void ChainingDeclarationsTogether()
+        {
+            var list = Builder<Product>
+                .CreateListOfSize(30)
+                .WhereTheFirst(10)
+                    .Have(x => x.Title = "Special Title 1")
+                .AndTheNext(10)
+                    .Have(x => x.Title = "Special Title 2")
+                .AndTheNext(10)
+                    .Have(x => x.Title = "Special Title 3")
+                .Build();
+
+            Assert.That(list[0].Title, Is.EqualTo("Special Title 1"));
+            Assert.That(list[9].Title, Is.EqualTo("Special Title 1"));
+            Assert.That(list[10].Title, Is.EqualTo("Special Title 2"));
+            Assert.That(list[19].Title, Is.EqualTo("Special Title 2"));
+            Assert.That(list[20].Title, Is.EqualTo("Special Title 3"));
+            Assert.That(list[29].Title, Is.EqualTo("Special Title 3"));
+        }
+
+        [Test]
+        public void UsingAndThePrevious()
+        {
+            var list = Builder<Product>
+                .CreateListOfSize(30)
+                .WhereTheLast(10)
+                    .Have(x => x.Title = "Special Title 1")
+                .AndThePrevious(10)
+                    .Have(x => x.Title = "Special Title 2")
+                .Build();
+
+            Assert.That(list[10].Title, Is.EqualTo("Special Title 2"));
+            Assert.That(list[19].Title, Is.EqualTo("Special Title 2"));
+            Assert.That(list[20].Title, Is.EqualTo("Special Title 1"));
+            Assert.That(list[29].Title, Is.EqualTo("Special Title 1"));
+        }
+
+        [Test]
+        public void UsingWhereSection()
+        {
+            var list = Builder<Product>
+                .CreateListOfSize(30)
+                .WhereAll()
+                    .Have(x => x.Title = "Special Title 1")
+                .WhereSection(12, 14)
+                    .Have(x => x.Title = "Special Title 2")
+                .WhereSection(16, 18)
+                    .Have(x => x.Title = "Special Title 3")
+                .Build();
+
+            // All
+            Assert.That(list[0].Title, Is.EqualTo("Special Title 1"));
+            Assert.That(list[1].Title, Is.EqualTo("Special Title 1"));
+            // ...
+            Assert.That(list[29].Title, Is.EqualTo("Special Title 1"));
+
+            // Section 1 - 12 - 14
+            Assert.That(list[12].Title, Is.EqualTo("Special Title 2"));
+            Assert.That(list[13].Title, Is.EqualTo("Special Title 2"));
+            Assert.That(list[14].Title, Is.EqualTo("Special Title 2"));
+
+            // Section 2 - 16 - 18
+            Assert.That(list[16].Title, Is.EqualTo("Special Title 3"));
+            Assert.That(list[17].Title, Is.EqualTo("Special Title 3"));
+            Assert.That(list[18].Title, Is.EqualTo("Special Title 3"));
+        }
+
+        [Test]
+        public void UsingWhereSectionAndAndTheNext()
+        {
+            var list = Builder<Product>
+                .CreateListOfSize(30)
+                .WhereAll()
+                    .Have(x => x.Title = "Special Title 1")
+                .WhereSection(12, 14)
+                    .Have(x => x.Title = "Special Title 2")
+                .AndTheNext(2)
+                    .Have(x => x.Title = "Special Title 3")
+                .Build();
+
+            Assert.That(list[0].Title, Is.EqualTo("Special Title 1"));
+            Assert.That(list[15].Title, Is.EqualTo("Special Title 3"));
+        }
+
+        [Test]
         [Description("You can use HaveDoneToThemForAll to do something to all the items in the declaration")]
         public void UsingHaveDoneToThem()
         {
-            var children = Builder<Category>.CreateListOfSize(2).Build();
+            var children = Builder<Category>.CreateListOfSize(3).Build();
 
             var categories = Builder<Category>
                 .CreateListOfSize(10)
                 .WhereTheFirst(2)
                     .HaveDoneToThem(x => x.AddChild(children[0]))
+                    .And(x => x.AddChild(children[1]))
                 .AndTheNext(2)
-                    .HaveDoneToThem(x => x.AddChild(children[1]))
+                    .HaveDoneToThem(x => x.AddChild(children[2]))
                 .Build();
                 
             Assert.That(categories[0].Children[0], Is.EqualTo(children[0]));
+            Assert.That(categories[0].Children[1], Is.EqualTo(children[1]));
             Assert.That(categories[1].Children[0], Is.EqualTo(children[0]));
-            Assert.That(categories[2].Children[0], Is.EqualTo(children[1]));
-            Assert.That(categories[3].Children[0], Is.EqualTo(children[1]));
+            Assert.That(categories[1].Children[1], Is.EqualTo(children[1]));
+            Assert.That(categories[2].Children[0], Is.EqualTo(children[2]));
+            Assert.That(categories[3].Children[0], Is.EqualTo(children[2]));
         }
 
         [Test]
@@ -242,6 +439,98 @@ namespace FizzWare.NBuilder.FunctionalTests
                 Assert.That(product.Categories[3], Is.EqualTo(categories[3]));
                 Assert.That(product.Categories[4], Is.EqualTo(categories[4]));
             }
+        }
+
+        [Test]
+        public void UsingSequentialGenerators()
+        {
+            var decimalGenerator = new SequentialGenerator<decimal>
+                                       {
+                                           Increment = 10,
+                                           Direction = GeneratorDirection.Descending
+                                       };
+
+            decimalGenerator.ResetTo(2000);
+
+            var intGenerator = new SequentialGenerator<int> {Increment = 10000};
+
+            var list = Builder<Product>.CreateListOfSize(3)
+                .WhereAll()
+                    .Have(x => x.PriceBeforeTax = decimalGenerator.Generate())
+                    .And(x => x.Id = intGenerator.Generate())
+                .Build();
+
+            Assert.That(list[0].PriceBeforeTax, Is.EqualTo(1990));
+            Assert.That(list[1].PriceBeforeTax, Is.EqualTo(1980));
+            Assert.That(list[2].PriceBeforeTax, Is.EqualTo(1970));
+
+            Assert.That(list[0].Id, Is.EqualTo(10000));
+            Assert.That(list[1].Id, Is.EqualTo(20000));
+            Assert.That(list[2].Id, Is.EqualTo(30000));
+        }
+
+        [Test]
+        public void UsingRandomGenerator()
+        {
+            var generator = new RandomGenerator<int>();
+
+            var list = Builder<Product>.CreateListOfSize(3)
+                .WhereAll()
+                .Have(x => x.QuantityInStock = generator.Generate(1000, 2000))
+                .Build();
+
+            Assert.That(list[0].QuantityInStock, Is.AtLeast(1000));
+            Assert.That(list[0].QuantityInStock, Is.AtMost(2000));
+
+            Assert.That(list[1].QuantityInStock, Is.AtLeast(1000));
+            Assert.That(list[1].QuantityInStock, Is.AtMost(2000));
+
+            Assert.That(list[2].QuantityInStock, Is.AtLeast(1000));
+            Assert.That(list[2].QuantityInStock, Is.AtMost(2000));
+        }
+
+        [Test]
+        [ExpectedException(typeof(BuilderException))]
+        public void WillNotLetYouDoThingsThatDoNotMakeSense()
+        {
+            Builder<Product>
+                .CreateListOfSize(10)
+                .WhereTheFirst(5)
+                    .Have(x => x.Title = "titleone")
+                .AndTheNext(10)
+                    .Have(x => x.Title = "titletwo")
+                .Build();
+        }
+
+        [Test]
+        public void SupportsStructsButDoesNotSupportAutomaticallyNamingTheProperties()
+        {
+            var locations = Builder<WarehouseLocation>
+                .CreateListOfSize(10)
+                .Build();
+
+            Assert.That(locations, Has.Count(10));
+            Assert.That(locations[0].Location, Is.EqualTo(0));
+            Assert.That(locations[1].Location, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void StructsCanHavePropertyAssignments()
+        {
+            // ctor: WarehouseLocation(char aisle, int shelf, int location)
+
+            var locations = Builder<WarehouseLocation>
+                .CreateListOfSize(10)
+                .WhereSection(5,6)
+                .AreConstructedWith('A', 1, 2)
+                .Build();
+
+            Assert.That(locations[5].Aisle, Is.EqualTo('A'));
+            Assert.That(locations[6].Aisle, Is.EqualTo('A'));
+            Assert.That(locations[5].Shelf, Is.EqualTo(1));
+            Assert.That(locations[6].Shelf, Is.EqualTo(1));
+            Assert.That(locations[5].Location, Is.EqualTo(2));
+            Assert.That(locations[6].Location, Is.EqualTo(2));
         }
     }
 }

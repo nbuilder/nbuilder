@@ -14,6 +14,5 @@ namespace FizzWare.NBuilder.Implementation
         void CallFunctions(T obj);
         T Construct();
         T Name(T obj);
-        IObjectBuilder<T> Prototype();
     }
 }

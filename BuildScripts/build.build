@@ -13,13 +13,14 @@
   <property name="tf.exe" value="${devenv.path}\TF.exe" />
   <property name="root.dir" overwrite="false" value="${path::get-full-path(project::get-base-directory() + '\..')}" />
   <property name="source.dir" value="${root.dir}Source" />
-  <property name="tools.dir" value="${root.dir}Lib\Tools" />
+  <property name="lib.dir" value="${root.dir}Lib" />
+  <property name="tools.dir" value="${lib.dir}\Tools" />
   <property name="build.dir" value="${root.dir}Builds" />
   <property name="artifacts.dir" value="${root.dir}..\Artifacts" />
   <property name="release.compile.args" value="/build Release" />
 
   <property name="ncover.exe" value="${tools.dir}\NCover-1.5.8\NCover.Console.exe" />
-  <property name="nunit.exe" value="${tools.dir}\Test\NUnit\bin\nunit-console.exe" />
+  <property name="nunit.exe" value="${lib.dir}\Test\NUnit\nunit-console.exe" />
   
   <property name="build.label" value="${project.name}-1.0.0.0"></property>
   <!-- Set the build label to the cruise control.net label, if it exists -->
@@ -34,7 +35,7 @@
   <!-- PROJECT SPECIFIC -->
   <property name="solution.filename" value="${source.dir}\NBuilder.sln" />
   <property name="path.to.dll" value="${source.dir}\FizzWare.NBuilder\bin\Release\FizzWare.NBuilder.dll" />
-  <property name="tests.dll" value="${source.dir}\FizzWare.NBuilder.Tests\bin\Debug\NBuilder.Tests.dll" />
+  <property name="tests.dll" value="${source.dir}\FizzWare.NBuilder.Tests\bin\Debug\FizzWare.NBuilder.Tests.dll" />
 
   <!-- TASKS -->
   <loadtasks assembly="${tools.dir}/nantcontrib-0.85/bin/NAnt.Contrib.Tasks.dll" />
@@ -44,7 +45,7 @@
 
   <!-- TARGETS -->
   <!--<target name="build" depends="clean, cover.unit.tests, set.assemblyinfo, compile.release, publish.msi" />-->
-  <target name="build" depends="clean, set.assemblyinfo, compile.release, publish.dll" />
+  <target name="build" depends="clean, cover.unit.tests, set.assemblyinfo, compile.release, publish.dll" />
 
   <target name="clean">
     <delete>
@@ -82,7 +83,7 @@
 
     <ncover program="${ncover.exe}"
         commandLineExe="${nunit.exe}"
-        commandLineArgs="&quot;${tests.dll}&quot; /xml:&quot;${build.dir}\UnitTests.xml&quot; /exclude=Acceptance /nologo"
+        commandLineArgs="&quot;${tests.dll}&quot; /xml:&quot;${build.dir}\UnitTests.xml&quot; /nologo"
         workingDirectory="${root.dir}"
         failonerror="true"
         coverageFile="${current.build.dir}\Tests.ncover.xml"

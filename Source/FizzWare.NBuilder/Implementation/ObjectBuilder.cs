@@ -101,6 +101,10 @@ namespace FizzWare.NBuilder.Implementation
             {
                 obj = reflectionUtil.CreateInstanceOf<T>(constructorArgs);
             }
+            else if (constructorArgs != null)
+            {
+                obj = reflectionUtil.CreateInstanceOf<T>(constructorArgs);
+            }
             else if (!requiresArgs)
             {
                 obj = reflectionUtil.CreateInstanceOf<T>();
@@ -118,11 +122,6 @@ namespace FizzWare.NBuilder.Implementation
         {
             propertyNamer.SetValuesOf(obj);
             return obj;
-        }
-
-        public IObjectBuilder<T> Prototype()
-        {
-            return new ObjectBuilder<T>(reflectionUtil);
         }
     }
 }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using FizzWare.NBuilder.Tests.TestClasses;
-using FizzWare.NBuilder.Tests.Unit;
 using NUnit.Framework;
 
 namespace FizzWare.NBuilder.Tests.Integration
@@ -35,7 +34,93 @@ namespace FizzWare.NBuilder.Tests.Integration
         [ExpectedException(typeof(BuilderException))]
         public void ShouldComplainIfYouTryToCreateAnInterface()
         {
-            Builder<IMyClass>.CreateListOfSize(10).Build();
+            Builder<IMyInterface>.CreateListOfSize(10).Build();
+        }
+
+        [Test]
+        [ExpectedException(typeof(BuilderException))]
+        public void ShouldComplainIfAndThePreviousRangeWillBeTooBig()
+        {
+            Builder<MyClass>
+                .CreateListOfSize(10)
+                .WhereTheLast(5)
+                    .Have(x => x.StringOne = "test")
+                .AndThePrevious(6)
+                    .Have(x => x.Int = 2)
+                .Build();
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentException))]
+        public void ShouldComplainIfWhereRandomAmountTooBig()
+        {
+            Builder<MyClass>
+                .CreateListOfSize(10)
+                .WhereRandom(11)
+                    .Have(x => x.StringOne = "test")
+                .Build();
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentException))]
+        public void ShouldComplainIfWhereRandomAmountTooBigForRange()
+        {
+            Builder<MyClass>
+                .CreateListOfSize(10)
+                .WhereRandom(5, 0, 3)
+                    .Have(x => x.StringOne = "test")
+                .Build();
+        }
+
+        [Test]
+        [ExpectedException(typeof(BuilderException))]
+        public void ShouldComplainIfWhereRandomRangeTooBig()
+        {
+            Builder<MyClass>
+                .CreateListOfSize(10)
+                .WhereRandom(5, 0, 11)
+                    .Have(x => x.StringOne = "test")
+                .Build();
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentException))]
+        public void ShouldComplainIfSizeOfListLessThanOne()
+        {
+            Builder<MyClass>.CreateListOfSize(0).Build();
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentException))]
+        public void ShouldComplainIfSectionGreaterThanListSize()
+        {
+            Builder<MyClass>
+                .CreateListOfSize(10)
+                .WhereSection(0, 10)
+                    .Have(x => x.StringOne = "test")
+                .Build();
+        }
+
+        [Test]
+        [ExpectedException(typeof(BuilderException))]
+        public void CanOnlyUseAndTheNextAfterAnotherDeclaration()
+        {
+            Builder<MyClass>
+                .CreateListOfSize(10)
+                .AndTheNext(5)
+                    .Have(x => x.StringOne = "test")
+                .Build();
+        }
+
+        [Test]
+        [ExpectedException(typeof(BuilderException))]
+        public void CanOnlyUseAndThePreviousAfterAnotherDeclaration()
+        {
+            Builder<MyClass>
+                .CreateListOfSize(10)
+                .AndThePrevious(5)
+                    .Have(x => x.StringOne = "test")
+                .Build();
         }
     }
 }

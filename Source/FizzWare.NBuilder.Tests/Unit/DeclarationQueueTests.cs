@@ -107,7 +107,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         public void ShouldBeAbleToPeek()
         {
             declarations.Enqueue(declaration1);
-            Assert.That(declarations.Peek(), Is.SameAs(declaration1));
+            Assert.That(declarations.GetLastItem(), Is.SameAs(declaration1));
             Assert.That(declarations.Count, Is.EqualTo(1));
         }
 

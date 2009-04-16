@@ -5,6 +5,8 @@ using System.Text;
 
 namespace FizzWare.NBuilder.Tests.TestClasses
 {
+    #pragma warning disable 169 // Fields are not used
+    #pragma warning disable 649 // Properties never assigned to
     public class MyClass
     {
         private string _hasADefaultValue = "DefaultValue";
@@ -38,6 +40,26 @@ namespace FizzWare.NBuilder.Tests.TestClasses
         public uint Uint { get; set; }
         public ulong Ulong { get; set; }
 
+        public DateTime DateTime { get; set; }
+
+        public bool Bool { get; set; }
+
+        internal int InternalInt { get; set; }
+        private int PrivateInt { get; set; }
+        protected int ProtectedInt { get; set; }
+
+        public static int StaticInt { get; set; }
+
+        public int PublicFieldInt;
+        
+        private int PrivateFieldInt;
+        
+        private int ProtectedFieldInt;
+
+        internal int InternalFieldInt;
+
+        public int IntGetterOnly { get; private set; }
+
         public virtual void DoSomething()
         {
         }
@@ -47,4 +69,6 @@ namespace FizzWare.NBuilder.Tests.TestClasses
             SimpleClasses.Add(simpleClass);
         }
     }
+    #pragma warning restore 169
+    #pragma warning restore 649
 }

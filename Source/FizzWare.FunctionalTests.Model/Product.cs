@@ -6,7 +6,7 @@ using FizzWare.NBuilder.FunctionalTests.Model;
 namespace FizzWare.NBuilder.FunctionalTests.Model
 {
     [ActiveRecord]
-    public class Product
+    public class Product : IProduct
     {
         public Product()
         {
@@ -37,6 +37,8 @@ namespace FizzWare.NBuilder.FunctionalTests.Model
             ColumnRef = "CategoryId", 
             Cascade = ManyRelationCascadeEnum.AllDeleteOrphan)]
         public IList<Category> Categories { get; set; }
+
+        public WarehouseLocation Location { get; set; }
 
         public decimal Tax
         { 

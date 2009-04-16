@@ -147,5 +147,26 @@ namespace FizzWare.NBuilder.Tests.Integration
                 Assert.That(objects[i].SimpleClasses.Count, Is.EqualTo(1));
             }
         }
+
+        [Test]
+        public void ShouldBeAbleToUseAndTheNextAfterASectionDeclaration()
+        {
+            var objects = Builder<MyClass>
+                .CreateListOfSize(10)
+                .WhereSection(0, 4)
+                    .Have(x => x.Int = 1)
+                .AndTheNext(3)
+                    .Have(x => x.Int = 2)
+                .Build();
+
+            Assert.That(objects[0].Int, Is.EqualTo(1));
+            Assert.That(objects[1].Int, Is.EqualTo(1));
+            Assert.That(objects[2].Int, Is.EqualTo(1));
+            Assert.That(objects[3].Int, Is.EqualTo(1));
+            Assert.That(objects[4].Int, Is.EqualTo(1));
+            Assert.That(objects[5].Int, Is.EqualTo(2));
+            Assert.That(objects[6].Int, Is.EqualTo(2));
+            Assert.That(objects[7].Int, Is.EqualTo(2));
+        }
     }
 }

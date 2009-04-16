@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Reflection;
 using FizzWare.NBuilder.Implementation;
 using FizzWare.NBuilder.PropertyNaming;
 using FizzWare.NBuilder.Tests.TestClasses;
@@ -13,11 +15,12 @@ namespace FizzWare.NBuilder.Tests.Unit
     {
         private IList<MyClass> theList;
         private const int listSize = 1000;
+        private IReflectionUtil reflectionUtil;
 
         [TestFixtureSetUp]
         public void SetUp()
         {
-            var reflectionUtil = MockRepository.GenerateStub<IReflectionUtil>();
+            reflectionUtil = MockRepository.GenerateStub<IReflectionUtil>();
             reflectionUtil.Stub(x => x.IsDefaultValue(null)).IgnoreArguments().Return(true).Repeat.Any();
 
             theList = new List<MyClass>();
@@ -132,6 +135,22 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
 
         [Test]
+        public void ShouldAlternateBooleanValues()
+        {
+            Assert.That(theList[0].Bool, Is.False);
+            Assert.That(theList[1].Bool, Is.True);
+            Assert.That(theList[2].Bool, Is.False);
+            Assert.That(theList[3].Bool, Is.True);
+        }
+
+        [Test]
+        public void ShouldAssignCurrentDateThenCurrentDatePlus_N_DaysToDateTimeProperties()
+        {
+            Assert.That(theList[0].DateTime, Is.EqualTo(DateTime.Now.Date));
+            Assert.That(theList[9].DateTime, Is.EqualTo(DateTime.Now.Date.AddDays(9)));
+        }
+
+        [Test]
         public void ShouldOnlyNamePropertiesThatAreNullOrDefault()
         {
             var myClass = new MyClass();
@@ -153,6 +172,97 @@ namespace FizzWare.NBuilder.Tests.Unit
             Assert.That(theList[9].HasADefaultValue, Is.EqualTo(myClass.HasADefaultValue));
 
             reflectionUtil.VerifyAllExpectations();
+        }
+
+        [Test]
+        public void ShouldNotTouchInternalProperties()
+        {
+            Assert.That(theList[0].InternalInt, Is.EqualTo(0));
+            Assert.That(theList[9].InternalInt, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void ShouldNotTouchPrivateProperties()
+        {
+            var prop0 = typeof(MyClass).GetProperty("PrivateInt", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(theList[0], null);
+            var prop9 = typeof(MyClass).GetProperty("PrivateInt", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(theList[9], null);
+
+            Assert.That(prop0, Is.EqualTo(0));
+            Assert.That(prop9, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void ShouldNotTouchProtectedIntProperties()
+        {
+            var prop0 = typeof(MyClass).GetProperty("ProtectedInt", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(theList[0], null);
+            var prop9 = typeof(MyClass).GetProperty("ProtectedInt", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(theList[9], null);
+
+            Assert.That(prop0, Is.EqualTo(0));
+            Assert.That(prop9, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void ShouldBeAbleToSetPropertiesUsingACustomSequenceIdentifier()
+        {
+            var myClass = new MyClass();
+            new SequentialPropertyNamer<MyClass>(reflectionUtil).SetValuesOf(myClass, 2, "2.2.2");
+
+            Assert.That(myClass.Int, Is.EqualTo(2));
+            Assert.That(myClass.StringOne, Is.EqualTo("StringOne2.2.2"));
+            Assert.That(myClass.StringTwo, Is.EqualTo("StringTwo2.2.2"));
+        }
+
+        [Test]
+        public void SupportsInheritedClasses()
+        {
+            var myClassInheritor = new MyClassInheritor();
+            new SequentialPropertyNamer<MyClassInheritor>(reflectionUtil).SetValuesOf(myClassInheritor);
+
+            Assert.That(myClassInheritor.Int, Is.EqualTo(1));
+            Assert.That(myClassInheritor.AnotherProperty, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void DoesNotNameStaticProperties()
+        {
+            Assert.That(MyClass.StaticInt, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void ShouldNamePublicFields()
+        {
+            Assert.That(theList[0].PublicFieldInt, Is.EqualTo(1));
+            Assert.That(theList[9].PublicFieldInt, Is.EqualTo(10));
+        }
+
+        [Test]
+        public void ShouldNotTouchPrivateFields()
+        {
+            var prop0 = typeof(MyClass).GetField("PrivateFieldInt", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(theList[0]);
+            var prop9 = typeof(MyClass).GetField("PrivateFieldInt", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(theList[9]);
+
+            Assert.That(prop0, Is.EqualTo(0));
+            Assert.That(prop9, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void ShouldNotTouchProtectedFields()
+        {
+            var prop0 = typeof(MyClass).GetField("ProtectedFieldInt", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(theList[0]);
+            var prop9 = typeof(MyClass).GetField("ProtectedFieldInt", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(theList[9]);
+
+            Assert.That(prop0, Is.EqualTo(0));
+            Assert.That(prop9, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void ShouldNotTouchInternalFields()
+        {
+            var prop0 = typeof(MyClass).GetField("InternalFieldInt", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(theList[0]);
+            var prop9 = typeof(MyClass).GetField("InternalFieldInt", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(theList[9]);
+
+            Assert.That(prop0, Is.EqualTo(0));
+            Assert.That(prop9, Is.EqualTo(0));
         }
     }
 }

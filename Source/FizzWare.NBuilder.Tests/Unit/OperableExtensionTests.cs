@@ -52,7 +52,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
 
         [Test]
-        public void ShouldBeAbleToPassListIntoHaveDoneToThem()
+        public void ShouldBeAbleToUseHaveDoneToThemForAll()
         {
             var simpleClasses = new List<SimpleClass>();
             Action<MyClass, SimpleClass> action = (x, y) => x.Add(y);
@@ -64,6 +64,43 @@ namespace FizzWare.NBuilder.Tests.Unit
             }
             
             OperableExtensions.HaveDoneToThemForAll((IOperable<MyClass>)operable, action, simpleClasses);
+        }
+
+        [Test]
+        public void ShouldBeAbleToUseHaveDoneToThem()
+        {
+            Action<MyClass> action = x => x.DoSomething();
+
+            using (mocks.Record())
+            {
+                operable.Expect(x => x.ObjectBuilder).Return(objectBuilder);
+                objectBuilder.Expect(x => x.Do(action)).Return(objectBuilder);
+            }
+
+            OperableExtensions.HaveDoneToThem((IOperable<MyClass>)operable, action);
+        }
+
+        [Test]
+        public void ShouldBeAbleToUseAndToAddAnAction()
+        {
+            Action<MyClass> action = x => x.DoSomething();
+
+            using (mocks.Record())
+            {
+                operable.Expect(x => x.ObjectBuilder).Return(objectBuilder);
+                objectBuilder.Expect(x => x.Do(action)).Return(objectBuilder);
+            }
+
+            OperableExtensions.And((IOperable<MyClass>)operable, action);
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentException))]
+        public void ShouldComplainIfOperableIsNotAlsoOfTypeIDeclaration()
+        {
+            var operableOnly = mocks.DynamicMock<IOperable<MyClass>>();
+
+            OperableExtensions.Have(operableOnly, x => x.StringOne = "test");
         }
     }
     // ReSharper restore InvokeAsExtensionMethod

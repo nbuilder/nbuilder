@@ -47,7 +47,7 @@ namespace FizzWare.NBuilder.Implementation
         public IOperable<T> WhereAll()
         {
             declarations.Enqueue(new GlobalDeclaration<T>(this, CreateObjectBuilder()));
-            return (IOperable<T>)declarations.Peek();
+            return (IOperable<T>)declarations.GetLastItem();
         }
 
         public void Construct()
@@ -58,8 +58,7 @@ namespace FizzWare.NBuilder.Implementation
                 )
             {
                 throw new BuilderException(
-                    @"No WhereAll() was specified and the total affected item count 
-                                            of all of the other operations was less than the capacity of the list");
+                    @"The type requires constructor args but they have not be supplied for all the elements of the list");
             }
 
             if (declarations.GetDistinctAffectedItemCount() < this.Capacity && !declarations.ContainsGlobalDeclaration())
@@ -84,7 +83,7 @@ namespace FizzWare.NBuilder.Implementation
 
             var list = mainList.ToList();
 
-            propertyNamer.SetValuesOfAllIn(list);
+            Name(list);
             declarations.CallFunctions(list);
 
             return list;
@@ -93,7 +92,7 @@ namespace FizzWare.NBuilder.Implementation
         public IDeclaration<T> AddDeclaration(IDeclaration<T> declaration)
         {
             this.declarations.Enqueue(declaration);
-            return declarations.Peek();
+            return declarations.GetLastItem();
         }
     }
 }

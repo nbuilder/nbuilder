@@ -40,10 +40,10 @@ namespace FizzWare.NBuilder.Implementation
                 throw new ArgumentException("The initial list must contain at least " + requiredSize + " items");
         }
 
-        public HierarchyGenerator(IList<T> initialList, IHierarchySpec<T> spec, IRandomGenerator<int> randomGenerator, IPropertyNamer<T> propertyNamer)
-            : this (initialList, spec.AddMethod, spec.NumberOfRoots, spec.Depth, spec.MinimumChildren, spec.MaximumChildren, randomGenerator, propertyNamer )
-        {
-        }
+        //public HierarchyGenerator(IList<T> initialList, IHierarchySpec<T> spec, IRandomGenerator<int> randomGenerator, IPropertyNamer<T> propertyNamer)
+        //    : this (initialList, spec.AddMethod, spec.NumberOfRoots, spec.Depth, spec.MinimumChildren, spec.MaximumChildren, randomGenerator, propertyNamer )
+        //{
+        //}
 
         public IList<T> Generate()
         {

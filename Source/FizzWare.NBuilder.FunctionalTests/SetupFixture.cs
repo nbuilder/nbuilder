@@ -5,9 +5,9 @@ using System.Text;
 using Castle.ActiveRecord;
 using Castle.ActiveRecord.Framework.Config;
 using FizzWare.NBuilder;
-using FizzWare.NBuilder.FunctionalTests;
 using FizzWare.NBuilder.FunctionalTests.Model;
 using FizzWare.NBuilder.FunctionalTests.Model.Repositories;
+using FizzWare.NBuilder.FunctionalTests.Support;
 using NUnit.Framework;
 
 [SetUpFixture]

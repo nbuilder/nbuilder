@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using FizzWare.NBuilder.FunctionalTests.Model.Repositories;
 
-namespace FizzWare.NBuilder.FunctionalTests
+namespace FizzWare.NBuilder.FunctionalTests.Support
 {
     /// <summary>
     /// Very simple IoC

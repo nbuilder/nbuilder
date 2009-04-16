@@ -4,7 +4,7 @@ namespace FizzWare.NBuilder.Implementation
     {
         void Enqueue(T item);
         T Dequeue();
-        T Peek();
+        T GetLastItem();
         int Count { get; }
     }
 }

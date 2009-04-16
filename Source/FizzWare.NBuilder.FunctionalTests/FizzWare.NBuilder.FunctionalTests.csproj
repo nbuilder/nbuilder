@@ -86,10 +86,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Database.cs" />
-    <Compile Include="Dependency.cs" />
+    <Compile Include="BuilderSetupTests.cs" />
+    <Compile Include="Extensibility\CustomOperableExtensions.cs" />
+    <Compile Include="Support\Database.cs" />
+    <Compile Include="Support\Dependency.cs" />
+    <Compile Include="Extensibility\ExtensibilityTests.cs" />
     <Compile Include="HierarchyBuilderTests.cs" />
     <Compile Include="ListBuilderTests.cs" />
+    <Compile Include="Extensibility\LocationGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SetupFixture.cs" />
     <Compile Include="SingleObjectBuilderTests.cs" />

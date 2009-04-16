@@ -214,7 +214,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             using (mocks.Record())
             {
                 listBuilderImpl.Expect(x => x.CreateObjectBuilder()).Return(null);
-                declarationQueue.Expect(x => x.Peek()).Return(rangeDeclaration);
+                declarationQueue.Expect(x => x.GetLastItem()).Return(rangeDeclaration);
                 listBuilderImpl.Expect(x => x.Declarations).Return(declarationQueue);
                 listBuilderImpl.Expect(x => x.AddDeclaration(Arg<RangeDeclaration<MyClass>>.Is.TypeOf)).Return(null);
             }
@@ -239,7 +239,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             {
                 listBuilderImpl.Expect(x => x.Capacity).Return(listSize);
                 listBuilderImpl.Expect(x => x.CreateObjectBuilder()).Return(null);
-                declarationQueue.Expect(x => x.Peek()).Return(rangeDeclaration);
+                declarationQueue.Expect(x => x.GetLastItem()).Return(rangeDeclaration);
                 listBuilderImpl.Expect(x => x.Declarations).Return(declarationQueue);
                 listBuilderImpl.Expect(x => x.AddDeclaration(Arg<RangeDeclaration<MyClass>>.Is.TypeOf)).Throw(new BuilderException(""));
             }
@@ -259,7 +259,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             using (mocks.Record())
             {
                 listBuilderImpl.Expect(x => x.CreateObjectBuilder()).Return(null);
-                declarationQueue.Expect(x => x.Peek()).Return(rangeDeclaration);
+                declarationQueue.Expect(x => x.GetLastItem()).Return(rangeDeclaration);
                 listBuilderImpl.Expect(x => x.Declarations).Return(declarationQueue);
                 listBuilderImpl.Expect(x => x.AddDeclaration(Arg<RangeDeclaration<MyClass>>.Is.TypeOf)).Return(null);
             }

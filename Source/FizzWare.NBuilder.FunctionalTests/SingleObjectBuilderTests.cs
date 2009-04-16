@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using FizzWare.NBuilder.FunctionalTests.Model;
+using FizzWare.NBuilder.FunctionalTests.Support;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 
@@ -29,7 +30,7 @@ namespace FizzWare.NBuilder.FunctionalTests
         {
             var product = Builder<Product>.CreateNew().Build();
 
-            // Note: The asserts here are intentionally verbose to show how NBuilder works
+            // Note: The assertions are intentionally verbose to show how NBuilder works
 
             Assert.That(product.Id, Is.EqualTo(1));
             Assert.That(product.Title, Is.EqualTo("Title1"));
@@ -65,6 +66,24 @@ namespace FizzWare.NBuilder.FunctionalTests
             Assert.That(product.Title, Is.EqualTo("Title1"));
             Assert.That(product.Description, Is.EqualTo("A custom description here"));
             Assert.That(product.Id, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void SettingMultipleProperties()
+        {
+            var product = Builder<Product>
+                .CreateNew()
+                .With(x => x.Title = "Special title")
+                .And(x => x.Description = "Special description") 
+                .And(x => x.Id = 2)
+                .Build();
+
+            Assert.That(product.Title, Is.EqualTo("Special title"));
+            Assert.That(product.Description, Is.EqualTo("Special description"));
+            Assert.That(product.Id, Is.EqualTo(2));
+
+            // NB: You can call With() multiple times too, but And() is provided
+            //     to improve readability
         }
 
         [Test]
@@ -104,6 +123,22 @@ namespace FizzWare.NBuilder.FunctionalTests
         }
 
         [Test]
+        public void CallingMultipleMethods()
+        {
+            var child = Builder<Category>.CreateNew().Build();
+            var anotherChild = Builder<Category>.CreateNew().Build();
+
+            var category = Builder<Category>
+                .CreateNew()
+                    .Do(x => x.AddChild(child))
+                    .And(x => x.AddChild(anotherChild))
+                .Build();
+
+            Assert.That(category.Children[0], Is.EqualTo(child));
+            Assert.That(category.Children[1], Is.EqualTo(anotherChild));
+        }
+
+        [Test]
         [Description("Multi functions allow you to call a method on an object on each item in a list")]
         public void UsingMultiFunctions()
         {
@@ -121,6 +156,14 @@ namespace FizzWare.NBuilder.FunctionalTests
             Assert.That(product.Categories[2], Is.EqualTo(categories[2]));
             Assert.That(product.Categories[3], Is.EqualTo(categories[3]));
             Assert.That(product.Categories[4], Is.EqualTo(categories[4]));
+        }
+
+        [Test]
+        [ExpectedException(typeof(TypeCreationException))]
+        public void NBuilderIsNotAMockingFramework() // (!)
+        {
+            Builder<IProduct>.CreateNew().Build();
+            //      ^
         }
     }
 }

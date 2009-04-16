@@ -38,9 +38,9 @@ namespace FizzWare.NBuilder.Implementation
             return item;
         }
 
-        public IDeclaration<T> Peek()
+        public IDeclaration<T> GetLastItem()
         {
-            return queuedDeclarations.First();
+            return queuedDeclarations.LastOrDefault();
         }
 
         public int Count
