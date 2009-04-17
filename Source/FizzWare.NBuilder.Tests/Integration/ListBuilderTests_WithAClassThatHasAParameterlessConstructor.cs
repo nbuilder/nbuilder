@@ -247,11 +247,18 @@ namespace FizzWare.NBuilder.Tests.Integration
         [Test]
         public void ShouldBeAbleToDisableAutomaticPropertyNaming()
         {
-            BuilderSetup.AutoNameProperties = false;
-            var list = Builder<MyClass>.CreateListOfSize(10).Build();
+            try
+            {
+                BuilderSetup.AutoNameProperties = false;
+                var list = Builder<MyClass>.CreateListOfSize(10).Build();
 
-            Assert.That(list[0].Int, Is.EqualTo(0));
-            Assert.That(list[9].Int, Is.EqualTo(0));
+                Assert.That(list[0].Int, Is.EqualTo(0));
+                Assert.That(list[9].Int, Is.EqualTo(0));
+            }
+            finally
+            {
+                BuilderSetup.ResetToDefaults();
+            }
         }
 
         [Test]

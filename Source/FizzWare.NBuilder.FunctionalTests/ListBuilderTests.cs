@@ -25,6 +25,12 @@ namespace FizzWare.NBuilder.FunctionalTests
             Database.Clear();
         }
 
+        [TearDown]
+        public void TearDown()
+        {
+            BuilderSetup.ResetToDefaults();
+        }
+
         [Test]
         public void CreatingAList()
         {
@@ -536,22 +542,15 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void AutomaticPropertyAndPublicFieldNamingCanBeSwitchedOff()
         {
-            try
-            {
-                BuilderSetup.AutoNameProperties = false;
+            BuilderSetup.AutoNameProperties = false;
 
-                var products = Builder<Product>.CreateListOfSize(10).Build();
+            var products = Builder<Product>.CreateListOfSize(10).Build();
 
-                Assert.That(products[0].Title, Is.Null);
-                Assert.That(products[9].Title, Is.Null);
+            Assert.That(products[0].Title, Is.Null);
+            Assert.That(products[9].Title, Is.Null);
 
-                Assert.That(products[0].Id, Is.EqualTo(0));
-                Assert.That(products[9].Id, Is.EqualTo(0));
-            }
-            finally
-            {
-                BuilderSetup.ResetToDefaults();
-            }
+            Assert.That(products[0].Id, Is.EqualTo(0));
+            Assert.That(products[9].Id, Is.EqualTo(0));
         }
 
         [Test]
@@ -568,6 +567,12 @@ namespace FizzWare.NBuilder.FunctionalTests
             // Other properties are still given automatic values as normal
             Assert.That(products[0].QuantityInStock, Is.EqualTo(1));
             Assert.That(products[9].QuantityInStock, Is.EqualTo(10));
+        }
+
+        [Test]
+        public void TurnOffAutoPropertyNaming()
+        {
+            
         }
     }
 }

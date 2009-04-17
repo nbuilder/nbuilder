@@ -26,9 +26,12 @@ namespace FizzWare.NBuilder
 
         public virtual long Next(long min, long max)
         {
-            byte[] buffer = new byte[sizeof(long)];
-            rnd.NextBytes(buffer);
-            return BitConverter.ToInt64(buffer, 0);
+            byte[] buf = new byte[8];
+
+            rnd.NextBytes(buf);
+            double num = Math.Abs(BitConverter.ToDouble(buf, 0));
+
+            return (long)(num * ((double)max - (double)min) + min);
         }
 
         public virtual float Next(float min, float max)
@@ -73,7 +76,7 @@ namespace FizzWare.NBuilder
             long minTicks = min.Ticks;
             long maxTicks = max.Ticks;
 
-            return DateTime.FromBinary(Next(minTicks, maxTicks));
+            return new DateTime(Next(minTicks, maxTicks-1));
         }
 
         public virtual bool Next()

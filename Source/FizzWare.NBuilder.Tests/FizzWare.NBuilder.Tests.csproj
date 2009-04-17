@@ -72,6 +72,10 @@
     <Compile Include="Unit\BuilderSetupTests.cs" />
     <Compile Include="TestClasses\IMyInterface.cs" />
     <Compile Include="TestClasses\IMyOtherInterface.cs" />
+    <Compile Include="Unit\RandomValuePropertyNamerTestFixture.cs" />
+    <Compile Include="Unit\RandomValuePropertyNamerTests_Default.cs" />
+    <Compile Include="Unit\RandomValuePropertyNamerTests_LoremIpsumStrings.cs" />
+    <Compile Include="Unit\RandomValuePropertyNamerTests_PositiveOnly.cs" />
     <Compile Include="Unit\SequentialGeneratorMultiTypeTests.cs" />
     <Compile Include="Unit\SequentialGeneratorTests.cs" />
     <Compile Include="Unit\SingleObjectBuilderExtensionsTests.cs" />
