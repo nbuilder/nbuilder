@@ -6,17 +6,17 @@ namespace FizzWare.NBuilder
     {
         public static UpToConstraint UpTo(int count)
         {
-            return new UpToConstraint(new RandomGenerator<int>(), count);
+            return new UpToConstraint(new RandomGenerator(), count);
         }
 
         public static BetweenConstraint Between(int lower)
         {
-            return new BetweenConstraint(new RandomGenerator<int>(), lower);
+            return new BetweenConstraint(new RandomGenerator(), lower);
         }
 
         public static BetweenConstraint Between(int lower, int upper)
         {
-            return new BetweenConstraint(new RandomGenerator<int>(), lower, upper);
+            return new BetweenConstraint(new RandomGenerator(), lower, upper);
         }
 
         public static ExactlyConstraint Exactly(int count)

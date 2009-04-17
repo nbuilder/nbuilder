@@ -10,7 +10,7 @@ namespace FizzWare.NBuilder.Implementation
         IObjectBuilder<T> With<TFunc>(Func<T, TFunc> func);
         IObjectBuilder<T> Do(Action<T> action);
         IObjectBuilder<T> DoMultiple<U>(Action<T, U> action, IList<U> list);
-        IObjectBuilder<T> WithNamingStrategy(IPropertyNamer<T> thePropertyNamer);
+        IObjectBuilder<T> WithPropertyNamer(IPropertyNamer thePropertyNamer);
         void CallFunctions(T obj);
         T Construct();
         T Name(T obj);

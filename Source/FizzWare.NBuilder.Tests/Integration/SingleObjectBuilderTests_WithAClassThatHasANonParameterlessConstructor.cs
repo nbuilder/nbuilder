@@ -9,7 +9,7 @@ using NUnit.Framework.SyntaxHelpers;
 namespace FizzWare.NBuilder.Tests.Integration
 {
     [TestFixture]
-    public class UsingTheSingleObjectBuilderWithAClassThatHasANonParameterlessConstructor
+    public class SingleObjectBuilderTests_WithAClassThatHasANonParameterlessConstructor
     {
         private const string theString = "string";
         private const decimal theDecimal = 10m;

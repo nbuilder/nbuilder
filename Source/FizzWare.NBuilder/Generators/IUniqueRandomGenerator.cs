@@ -1,6 +1,6 @@
 namespace FizzWare.NBuilder
 {
-    public interface IUniqueRandomGenerator<T> : IRandomGenerator<T>
+    public interface IUniqueRandomGenerator : IRandomGenerator
     {
         void Reset();
     }

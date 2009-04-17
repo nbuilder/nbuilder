@@ -5,10 +5,10 @@ namespace FizzWare.NBuilder
     public class RandomItemPicker<T>
     {
         private readonly IList<T> from;
-        private readonly IRandomGenerator<int> randomGenerator;
+        private readonly IRandomGenerator randomGenerator;
         private readonly int max;
 
-        public RandomItemPicker(IList<T> from, IRandomGenerator<int> randomGenerator)
+        public RandomItemPicker(IList<T> from, IRandomGenerator randomGenerator)
         {
             this.from = from;
             this.randomGenerator = randomGenerator;
@@ -17,7 +17,7 @@ namespace FizzWare.NBuilder
 
         public T Pick()
         {
-            int index = randomGenerator.Generate(0, max);
+            int index = randomGenerator.Next(0, max);
             return from[index];
         }
     }

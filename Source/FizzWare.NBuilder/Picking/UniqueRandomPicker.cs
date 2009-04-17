@@ -6,9 +6,9 @@ namespace FizzWare.NBuilder
     public class UniqueRandomPicker<T>
     {
         private readonly IConstraint constraint;
-        private readonly IUniqueRandomGenerator<int> uniqueRandomGenerator;
+        private readonly IUniqueRandomGenerator uniqueRandomGenerator;
 
-        public UniqueRandomPicker(IConstraint constraint, IUniqueRandomGenerator<int> uniqueRandomGenerator)
+        public UniqueRandomPicker(IConstraint constraint, IUniqueRandomGenerator uniqueRandomGenerator)
         {
             this.constraint = constraint;
             this.uniqueRandomGenerator = uniqueRandomGenerator;
@@ -25,7 +25,7 @@ namespace FizzWare.NBuilder
 
             for (int i = 0; i < end; i++)
             {
-                int index = uniqueRandomGenerator.Generate(0, capacity - 1);
+                int index = uniqueRandomGenerator.Next(0, capacity - 1);
 
                 listToReturn.Add(listToPickFrom[index]);
             }

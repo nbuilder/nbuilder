@@ -13,23 +13,22 @@ using NUnit.Framework;
 [SetUpFixture]
 public class SetupFixture
 {
-    private static bool setup;
+    private bool setup;
+    private static bool arInitialized;
 
-    [TestFixtureSetUp]
-    public void TestFixtureSetUp()
+    [SetUp]
+    public void SetUp()
     {
+        EnsureActiveRecordInitialized();
+
         if (setup)
             return;
 
         setup = true;
 
-        ActiveRecordStarter.Initialize(typeof(Product).Assembly, ActiveRecordSectionHandler.Instance);  
-
-        ActiveRecordStarter.CreateSchema();
-
         BuilderSetup.SetPersistenceMethod<Product>
             (
-                x => 
+                x =>
                 {
                     var productRepository = Dependency.Resolve<IProductRepository>();
                     productRepository.Create(x);
@@ -80,5 +79,18 @@ public class SetupFixture
                     productRepository.CreateAll(x);
                 }
             );
+    }
+
+    [TestFixtureSetUp]
+    public void EnsureActiveRecordInitialized()
+    {
+        if (arInitialized)
+            return;
+
+        arInitialized = true;
+
+        ActiveRecordStarter.Initialize(typeof(Product).Assembly, ActiveRecordSectionHandler.Instance);
+
+        ActiveRecordStarter.CreateSchema();
     }
 }

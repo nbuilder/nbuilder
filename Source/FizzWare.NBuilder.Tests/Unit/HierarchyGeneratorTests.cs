@@ -13,7 +13,7 @@ namespace FizzWare.NBuilder.Tests.Unit
     public class HierarchyGeneratorTests
     {
         private MockRepository mocks;
-        private IRandomGenerator<int> randomGenerator;
+        private IRandomGenerator randomGenerator;
         private int numberOfRoots;
         private int depth;
         private int minCategories;
@@ -21,15 +21,15 @@ namespace FizzWare.NBuilder.Tests.Unit
         private IList<MyHierarchicalClass> sourceList;
         private int categoryCount;
         private HierarchyGenerator<MyHierarchicalClass> hierarchyGenerator;
-        private IPropertyNamer<MyHierarchicalClass> propertyNamer;
+        private IPropertyNamer propertyNamer;
 
         [SetUp]
         public void SetUp()
         {
             mocks = new MockRepository();
-            randomGenerator = mocks.DynamicMock<IRandomGenerator<int>>();
+            randomGenerator = mocks.DynamicMock<IRandomGenerator>();
             sourceList = mocks.DynamicMock<IList<MyHierarchicalClass>>();
-            propertyNamer = mocks.DynamicMock<IPropertyNamer<MyHierarchicalClass>>();
+            propertyNamer = mocks.DynamicMock<IPropertyNamer>();
 
             categoryCount = 1000;
             numberOfRoots = 4;
@@ -65,7 +65,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             using (mocks.Record())
             {
                 sourceList.Expect(x => x.Count).Return(categoryCount).Repeat.Any();
-                randomGenerator.Expect(x => x.Generate(minCategories, maxCategories)).Return(1).Repeat.Times(12);
+                randomGenerator.Expect(x => x.Next(minCategories, maxCategories)).Return(1).Repeat.Times(12);
                 sourceList.Expect(x => x[0]).Return(new MyHierarchicalClass()).Repeat.Any();
                 sourceList.Expect(x => x.RemoveAt(0)).Repeat.Any();
             }
@@ -81,7 +81,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         [ExpectedException(typeof(ArgumentException))]
         public void ShouldComplainIfInitialListIsNotBigEnough()
         {
-            int requiredSizeOfList = numberOfRoots*depth*maxCategories;
+            int requiredSizeOfList = numberOfRoots * depth * maxCategories;
 
             using (mocks.Record())
             {
@@ -91,44 +91,6 @@ namespace FizzWare.NBuilder.Tests.Unit
             using (mocks.Playback())
             {
                 hierarchyGenerator = new HierarchyGenerator<MyHierarchicalClass>(sourceList, (x, y) => x.AddChild(y), numberOfRoots, depth, minCategories, maxCategories, randomGenerator, propertyNamer);
-            }
-        }
-
-        [Test]
-        public void ShouldApplyNamingStrategy()
-        {
-            var initialList = Builder<MyHierarchicalClass>.CreateListOfSize(60).Build();
-
-            using (mocks.Record())
-            {
-                randomGenerator.Expect(x => x.Generate(minCategories, maxCategories)).Return(1).Repeat.Any();
-                
-                propertyNamer.Expect(x => x.SetValuesOf(initialList[0], 1, "1"));
-                propertyNamer.Expect(x => x.SetValuesOf(initialList[1], 2, "2"));
-                propertyNamer.Expect(x => x.SetValuesOf(initialList[2], 3, "3"));
-                propertyNamer.Expect(x => x.SetValuesOf(initialList[3], 4, "4"));
-
-                propertyNamer.Expect(x => x.SetValuesOf(initialList[4], 1, "1.1"));
-                propertyNamer.Expect(x => x.SetValuesOf(initialList[5], 1, "1.1.1"));
-                propertyNamer.Expect(x => x.SetValuesOf(initialList[6], 1, "1.1.1.1"));
-
-                propertyNamer.Expect(x => x.SetValuesOf(initialList[7], 1, "2.1"));
-                propertyNamer.Expect(x => x.SetValuesOf(initialList[8], 1, "2.1.1"));
-                propertyNamer.Expect(x => x.SetValuesOf(initialList[9], 1, "2.1.1.1"));
-
-                propertyNamer.Expect(x => x.SetValuesOf(initialList[10], 1, "3.1"));
-                propertyNamer.Expect(x => x.SetValuesOf(initialList[11], 1, "3.1.1"));
-                propertyNamer.Expect(x => x.SetValuesOf(initialList[12], 1, "3.1.1.1"));
-
-                propertyNamer.Expect(x => x.SetValuesOf(initialList[13], 1, "4.1"));
-                propertyNamer.Expect(x => x.SetValuesOf(initialList[14], 1, "4.1.1"));
-                propertyNamer.Expect(x => x.SetValuesOf(initialList[15], 1, "4.1.1.1"));
-            }
-
-            using (mocks.Playback())
-            {
-                hierarchyGenerator = new HierarchyGenerator<MyHierarchicalClass>(initialList, (x, y) => x.AddChild(y), numberOfRoots, depth, minCategories, maxCategories, randomGenerator, propertyNamer);
-                hierarchyGenerator.Generate();
             }
         }
     }

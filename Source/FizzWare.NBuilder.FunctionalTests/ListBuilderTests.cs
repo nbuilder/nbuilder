@@ -12,16 +12,16 @@ namespace FizzWare.NBuilder.FunctionalTests
     [TestFixture]
     public class ListBuilderTests
     {
-        [TestFixtureSetUp]
-        public void TestFixtureSetUp()
-        {
-            // Need to call this explicitly here to overcome a bug in resharper's test runner
-            new SetupFixture().TestFixtureSetUp();
-        }
-
+        /// <summary>
+        /// Tests the fixture set up.
+        /// </summary>
         [SetUp]
         public void SetUp()
         {
+            // Need to call this explicitly here to overcome a bug in resharper's test runner
+            new SetupFixture().SetUp();
+
+            // Clear all the database tables
             Database.Clear();
         }
 
@@ -77,12 +77,12 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void UsingAGenerator()
         {
-            var generator = new RandomGenerator<decimal>();
+            var generator = new RandomGenerator();
 
             var products = Builder<Product>
                 .CreateListOfSize(10)
                 .WhereAll()
-                    .Have(x => x.PriceBeforeTax = generator.Generate(50, 1000))
+                    .Have(x => x.PriceBeforeTax = generator.Next(50, 1000))
                 .Build();
 
 
@@ -472,11 +472,11 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void UsingRandomGenerator()
         {
-            var generator = new RandomGenerator<int>();
+            var generator = new RandomGenerator();
 
             var list = Builder<Product>.CreateListOfSize(3)
                 .WhereAll()
-                .Have(x => x.QuantityInStock = generator.Generate(1000, 2000))
+                .Have(x => x.QuantityInStock = generator.Next(1000, 2000))
                 .Build();
 
             Assert.That(list[0].QuantityInStock, Is.AtLeast(1000));
@@ -531,6 +531,43 @@ namespace FizzWare.NBuilder.FunctionalTests
             Assert.That(locations[6].Shelf, Is.EqualTo(1));
             Assert.That(locations[5].Location, Is.EqualTo(2));
             Assert.That(locations[6].Location, Is.EqualTo(2));
+        }
+
+        [Test]
+        public void AutomaticPropertyAndPublicFieldNamingCanBeSwitchedOff()
+        {
+            try
+            {
+                BuilderSetup.AutoNameProperties = false;
+
+                var products = Builder<Product>.CreateListOfSize(10).Build();
+
+                Assert.That(products[0].Title, Is.Null);
+                Assert.That(products[9].Title, Is.Null);
+
+                Assert.That(products[0].Id, Is.EqualTo(0));
+                Assert.That(products[9].Id, Is.EqualTo(0));
+            }
+            finally
+            {
+                BuilderSetup.ResetToDefaults();
+            }
+        }
+
+        [Test]
+        public void ItIsPossibleToSwitchOffAutomaticPropertyNamingForASinglePropertyOfASpecificType()
+        {
+            BuilderSetup.DisablePropertyNamingFor<Product, int>(x => x.Id);
+
+            var products = Builder<Product>.CreateListOfSize(10).Build();
+
+            // The Product.Id will always be its default value
+            Assert.That(products[0].Id, Is.EqualTo(0));
+            Assert.That(products[9].Id, Is.EqualTo(0));
+
+            // Other properties are still given automatic values as normal
+            Assert.That(products[0].QuantityInStock, Is.EqualTo(1));
+            Assert.That(products[9].QuantityInStock, Is.EqualTo(10));
         }
     }
 }

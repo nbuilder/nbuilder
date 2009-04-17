@@ -16,7 +16,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         private RandomDeclaration<MyClass> declaration;
         private IListBuilderImpl<MyClass> listBuilderImpl;
         private IObjectBuilder<MyClass> objectBuilder;
-        private IUniqueRandomGenerator<int> uniqueRandomGenerator;
+        private IUniqueRandomGenerator uniqueRandomGenerator;
         private const int amount = 5;
         private const int listSize = 10;
         private const int start = 0;
@@ -28,7 +28,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             mocks = new MockRepository();
             listBuilderImpl = mocks.DynamicMock<IListBuilderImpl<MyClass>>();
             objectBuilder = mocks.DynamicMock<IObjectBuilder<MyClass>>();
-            uniqueRandomGenerator = mocks.DynamicMock<IUniqueRandomGenerator<int>>();
+            uniqueRandomGenerator = mocks.DynamicMock<IUniqueRandomGenerator>();
 
             declaration = new RandomDeclaration<MyClass>(listBuilderImpl, objectBuilder, uniqueRandomGenerator, amount, start, end);
         }
@@ -58,11 +58,11 @@ namespace FizzWare.NBuilder.Tests.Unit
             {
                 objectBuilder.Expect(x => x.Construct()).Return(new MyClass()).Repeat.Times(amount);
 
-                uniqueRandomGenerator.Expect(x => x.Generate(start, end)).Return(0);
-                uniqueRandomGenerator.Expect(x => x.Generate(start, end)).Return(2);
-                uniqueRandomGenerator.Expect(x => x.Generate(start, end)).Return(4);
-                uniqueRandomGenerator.Expect(x => x.Generate(start, end)).Return(6);
-                uniqueRandomGenerator.Expect(x => x.Generate(start, end)).Return(8);
+                uniqueRandomGenerator.Expect(x => x.Next(start, end)).Return(0);
+                uniqueRandomGenerator.Expect(x => x.Next(start, end)).Return(2);
+                uniqueRandomGenerator.Expect(x => x.Next(start, end)).Return(4);
+                uniqueRandomGenerator.Expect(x => x.Next(start, end)).Return(6);
+                uniqueRandomGenerator.Expect(x => x.Next(start, end)).Return(8);
             }
 
             using (mocks.Ordered())

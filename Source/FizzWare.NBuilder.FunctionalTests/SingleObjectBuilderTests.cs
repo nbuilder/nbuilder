@@ -12,16 +12,12 @@ namespace FizzWare.NBuilder.FunctionalTests
     [TestFixture]
     public class SingleObjectBuilderTests
     {
-        [TestFixtureSetUp]
-        public void TestFixtureSetUp()
-        {
-            // Need to call this explicitly here to overcome a bug in resharper's test runner
-            new SetupFixture().TestFixtureSetUp();
-        }
-
         [SetUp]
         public void SetUp()
         {
+            // Need to call this explicitly here to overcome a bug in resharper's test runner
+            new SetupFixture().SetUp();
+
             Database.Clear();
         }
 

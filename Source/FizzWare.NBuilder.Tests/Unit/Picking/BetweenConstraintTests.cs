@@ -12,7 +12,7 @@ namespace FizzWare.NBuilder.Tests.Unit.Picking
     public class BetweenConstraintTests
     {
         private MockRepository mocks;
-        private IUniqueRandomGenerator<int> uniqueRandomGenerator;
+        private IUniqueRandomGenerator uniqueRandomGenerator;
         private int lower;
         private int upper;
 
@@ -20,7 +20,7 @@ namespace FizzWare.NBuilder.Tests.Unit.Picking
         public void SetUp()
         {
             mocks = new MockRepository();
-            uniqueRandomGenerator = mocks.StrictMock<IUniqueRandomGenerator<int>>();
+            uniqueRandomGenerator = mocks.StrictMock<IUniqueRandomGenerator>();
         }
 
         [Test]
@@ -32,7 +32,7 @@ namespace FizzWare.NBuilder.Tests.Unit.Picking
 
             using (mocks.Record())
             {
-                uniqueRandomGenerator.Expect(x => x.Generate(lower, upper)).Return(2);
+                uniqueRandomGenerator.Expect(x => x.Next(lower, upper)).Return(2);
             }
 
             using (mocks.Ordered())
@@ -48,7 +48,7 @@ namespace FizzWare.NBuilder.Tests.Unit.Picking
         {
             using (mocks.Record())
             {
-                uniqueRandomGenerator.Expect(x => x.Generate(lower, upper)).Return(2);
+                uniqueRandomGenerator.Expect(x => x.Next(lower, upper)).Return(2);
             }
 
             var constraint = new BetweenConstraint(uniqueRandomGenerator, lower);

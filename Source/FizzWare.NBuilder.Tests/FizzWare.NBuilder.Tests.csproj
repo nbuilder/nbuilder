@@ -58,13 +58,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Integration\ListBuilderNegativeTests.cs" />
-    <Compile Include="Integration\UsingHierarchyGenerator.cs" />
-    <Compile Include="Integration\UsingListBuilderWithAClassThatHasANonParameterlessConstructor.cs" />
-    <Compile Include="Integration\UsingListBuilderWithAStruct.cs" />
-    <Compile Include="Integration\UsingPickers.cs" />
-    <Compile Include="Integration\UsingTheSingleObjectBuilder.cs" />
-    <Compile Include="Integration\UsingTheSingleObjectBuilderWithAClassThatHasANonParameterlessConstructor.cs" />
-    <Compile Include="Integration\UsingTheSingleObjectBuilderWithAStruct.cs" />
+    <Compile Include="Integration\MockPropertyNamerTests.cs" />
+    <Compile Include="Integration\HierarchyGeneratorTests.cs" />
+    <Compile Include="Integration\ListBuilderTests_WithAClassThatHasANonParameterlessConstructor.cs" />
+    <Compile Include="Integration\ListBuilderTests_WithAStruct.cs" />
+    <Compile Include="Integration\PickerTests.cs" />
+    <Compile Include="Integration\SingleObjectBuilderTests_WithAClassThatHasAParameterlessConstructor.cs" />
+    <Compile Include="Integration\SingleObjectBuilderTests_WithAClassThatHasANonParameterlessConstructor.cs" />
+    <Compile Include="Integration\SingleObjectBuilderTests_WithAStruct.cs" />
     <Compile Include="TestClasses\MyClassInheritor.cs" />
     <Compile Include="TestClasses\MyClassWithOptionalConstructor.cs" />
     <Compile Include="TestClasses\MyHierarchicalClass.cs" />
@@ -103,7 +104,7 @@
     <Compile Include="TestClasses\SimpleClass.cs" />
     <Compile Include="TestClasses\MyClassWithConstructor.cs" />
     <Compile Include="Unit\SequentialPropertyNamerTests.cs" />
-    <Compile Include="Integration\UsingListBuilderWithAClassThatHasAParameterlessConstructor.cs" />
+    <Compile Include="Integration\ListBuilderTests_WithAClassThatHasAParameterlessConstructor.cs" />
     <Compile Include="TestClasses\MyClass.cs" />
     <Compile Include="Unit\ReflectionUtilTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

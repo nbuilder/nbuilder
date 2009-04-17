@@ -142,7 +142,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Test]
         public void ShouldBeAbleToUseANamingStrategy()
         {
-            IPropertyNamer<MyClass> propertyNamer = MockRepository.GenerateMock<IPropertyNamer<MyClass>>();
+            IPropertyNamer propertyNamer = MockRepository.GenerateMock<IPropertyNamer>();
 
             using (mocks.Record())
             {
@@ -151,7 +151,7 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             using (mocks.Playback())
             {
-                builder.WithNamingStrategy(propertyNamer);
+                builder.WithPropertyNamer(propertyNamer);
                 builder.Name(new MyClass());
             }
         }
@@ -160,7 +160,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         public void ShouldBeAbleToUseBuild()
         {
             var myClass = new MyClass();
-            IPropertyNamer<MyClass> propertyNamer = MockRepository.GenerateMock<IPropertyNamer<MyClass>>();
+            IPropertyNamer propertyNamer = MockRepository.GenerateMock<IPropertyNamer>();
 
             using (mocks.Record())
             {
@@ -170,7 +170,7 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             using (mocks.Playback())
             {
-                builder.WithNamingStrategy(propertyNamer);
+                builder.WithPropertyNamer(propertyNamer);
                 builder.With(x => x.Float = 2f);
                 builder.Build();
             }

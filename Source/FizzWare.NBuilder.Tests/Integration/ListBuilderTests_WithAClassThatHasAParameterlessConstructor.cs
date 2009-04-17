@@ -2,18 +2,29 @@
 using System.Linq;
 using System.Text;
 using FizzWare.NBuilder;
+using FizzWare.NBuilder.PropertyNaming;
 using FizzWare.NBuilder.Tests.TestClasses;
 using FizzWare.NBuilder.Tests.Unit;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using System.Linq.Expressions;
 using System.Reflection;
+using Rhino.Mocks;
+using System.Collections.Generic;
 
 namespace FizzWare.NBuilder.Tests.Integration
 {
     [TestFixture]
-    public class UsingListBuilderWithAClassThatHasAParameterlessConstructor
+    public class ListBuilderTests_WithAClassThatHasAParameterlessConstructor
     {
+        private MockRepository mocks;
+
+        [SetUp]
+        public void SetUp()
+        {
+            mocks = new MockRepository();
+        }
+
         [Test]
         public void ShouldBeAbleToCreateAList()
         {
@@ -167,6 +178,101 @@ namespace FizzWare.NBuilder.Tests.Integration
             Assert.That(objects[5].Int, Is.EqualTo(2));
             Assert.That(objects[6].Int, Is.EqualTo(2));
             Assert.That(objects[7].Int, Is.EqualTo(2));
+        }
+
+        [Test]
+        public void ShouldBeAbleToDisableAutoPropertyNaming()
+        {
+            try
+            {
+                BuilderSetup.AutoNameProperties = false;
+
+                var list = Builder<MyClass>.CreateListOfSize(10).Build();
+
+                Assert.That(list[0].Int, Is.EqualTo(0));
+                Assert.That(list[9].Int, Is.EqualTo(0));
+
+                Assert.That(list[0].StringOne, Is.Null);
+                Assert.That(list[9].StringOne, Is.Null);
+            }
+            finally
+            {
+                BuilderSetup.AutoNameProperties = true;
+            }
+        }
+
+        [Test]
+        public void ShouldBeAbleToSpecifyADefaultCustomPropertyNamer()
+        {
+            try
+            {
+                BuilderSetup.SetDefaultPropertyNamer(new MockPropertyNamerTests());
+                Builder<MyClass>.CreateListOfSize(10).Build();
+                Assert.That(MockPropertyNamerTests.SetValuesOfAllInCallCount, Is.EqualTo(1));
+            }
+            finally
+            {
+                BuilderSetup.ResetToDefaults();
+            }
+        }
+
+        [Test]
+        public void ShouldBeAbleToSpecifyACustomPropertyNamerForASpecificType()
+        {
+            try
+            {
+                IPropertyNamer propertyNamer = mocks.DynamicMock<IPropertyNamer>();
+
+                BuilderSetup.SetPropertyNamerFor<MyClass>(propertyNamer);
+
+                using (mocks.Record())
+                {
+                    propertyNamer.Expect(x => x.SetValuesOfAllIn(Arg<IList<MyClass>>.Is.TypeOf)).Repeat.Once();
+                }
+
+                using (mocks.Playback())
+                {
+                    Builder<MyClass>.CreateListOfSize(10).Build();
+                    Builder<SimpleClass>.CreateListOfSize(10).Build();
+                }
+
+                mocks.VerifyAll();
+            }
+            finally
+            {
+                BuilderSetup.ResetToDefaults();
+            }
+        }
+
+        [Test]
+        public void ShouldBeAbleToDisableAutomaticPropertyNaming()
+        {
+            BuilderSetup.AutoNameProperties = false;
+            var list = Builder<MyClass>.CreateListOfSize(10).Build();
+
+            Assert.That(list[0].Int, Is.EqualTo(0));
+            Assert.That(list[9].Int, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void ShouldBeAbleToDisableAutomaticPropertyNamingForASpecificFieldOfASpecificType()
+        {
+            try
+            {
+                BuilderSetup.DisablePropertyNamingFor<MyClass, int>(x => x.Int);
+
+                var list = Builder<MyClass>.CreateListOfSize(10).Build();
+
+                Assert.That(list[0].Int, Is.EqualTo(0));
+                Assert.That(list[0].Long, Is.EqualTo(1));
+
+                Assert.That(list[9].Int, Is.EqualTo(0));
+                Assert.That(list[9].Long, Is.EqualTo(10));
+            }
+            finally
+            {
+                BuilderSetup.ResetToDefaults();
+            }
         }
     }
 }

@@ -9,7 +9,7 @@ namespace FizzWare.NBuilder.Implementation
     public class ObjectBuilder<T> : IObjectBuilder<T>
     {
         private readonly IReflectionUtil reflectionUtil;
-        private IPropertyNamer<T> propertyNamer;
+        private IPropertyNamer propertyNamer;
         private object[] constructorArgs;
 
         private readonly List<Expression> functions = new List<Expression>();
@@ -62,7 +62,7 @@ namespace FizzWare.NBuilder.Implementation
             return (x, y) => method(x, y);
         }
 
-        public IObjectBuilder<T> WithNamingStrategy(IPropertyNamer<T> thePropertyNamer)
+        public IObjectBuilder<T> WithPropertyNamer(IPropertyNamer thePropertyNamer)
         {
             this.propertyNamer = thePropertyNamer;
             return this;
@@ -120,6 +120,9 @@ namespace FizzWare.NBuilder.Implementation
 
         public T Name(T obj)
         {
+            if (!BuilderSetup.AutoNameProperties)
+                return obj;
+
             propertyNamer.SetValuesOf(obj);
             return obj;
         }

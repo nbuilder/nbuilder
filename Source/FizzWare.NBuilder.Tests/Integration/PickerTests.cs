@@ -9,7 +9,7 @@ using NUnit.Framework.SyntaxHelpers;
 namespace FizzWare.NBuilder.Tests.Integration
 {
     [TestFixture]
-    public class UsingPickers
+    public class PickerTests
     {
         [Test]
         public void ShouldBeAbleToPickUsingExactlyConstraint()

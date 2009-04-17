@@ -12,10 +12,10 @@ namespace FizzWare.NBuilder.FunctionalTests
     //[TestFixture]
     //public class HierarchyBuilderTests
     //{
-    //    [TestFixtureSetUp]
-    //    public void TestFixtureSetUp()
+    //    [SetUp]
+    //    public void SetUp()
     //    {
-    //        new SetupFixture().TestFixtureSetUp();
+    //        new SetupFixture().SetUp();
     //    }
 
     //    [Test]

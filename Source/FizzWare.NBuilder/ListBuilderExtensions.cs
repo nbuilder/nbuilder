@@ -48,7 +48,7 @@ namespace FizzWare.NBuilder
             Guard.Against(amount < 1, "WhereRandom amount must be 1 or greater");
             Guard.Against(amount > listBuilderImpl.Capacity, "WhereRandom amount must be less than the size of the list that is being generated");
 
-            var declaration = new RandomDeclaration<T>(listBuilderImpl, listBuilderImpl.CreateObjectBuilder(), new UniqueRandomGenerator<int>(), amount, start, end);
+            var declaration = new RandomDeclaration<T>(listBuilderImpl, listBuilderImpl.CreateObjectBuilder(), new UniqueRandomGenerator(), amount, start, end);
             return (IOperable<T>)listBuilderImpl.AddDeclaration(declaration);
         }
 
@@ -130,7 +130,7 @@ namespace FizzWare.NBuilder
         // TODO: Finish
         //public static IList<T> BuildHierarchy<T>(this IListBuilder<T> listBuilder, IHierarchySpec<T> hierarchySpec)
         //{
-        //    HierarchyGenerator<T> generator = new HierarchyGenerator<T>(listBuilder.Build(), hierarchySpec, new RandomGenerator<int>(), new SequentialPropertyNamer<T>(new ReflectionUtil()));
+        //    HierarchyGenerator<T> generator = new HierarchyGenerator<T>(listBuilder.Build(), hierarchySpec, new RandomGenerator(), new SequentialPropertyNamer<T>(new ReflectionUtil()));
         //    return generator.Generate();
         //}
 

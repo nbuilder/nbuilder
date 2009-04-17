@@ -14,14 +14,14 @@ namespace FizzWare.NBuilder.Tests.Unit.Picking
     {
         private MockRepository mocks;
         private IConstraint constraint;
-        private IUniqueRandomGenerator<int> uniqueRandomGenerator;
+        private IUniqueRandomGenerator uniqueRandomGenerator;
 
         [SetUp]
         public void SetUp()
         {
             mocks = new MockRepository();
             constraint = mocks.DynamicMock<IConstraint>();
-            uniqueRandomGenerator = mocks.DynamicMock<IUniqueRandomGenerator<int>>();
+            uniqueRandomGenerator = mocks.DynamicMock<IUniqueRandomGenerator>();
         }
 
         [TearDown]
@@ -46,7 +46,7 @@ namespace FizzWare.NBuilder.Tests.Unit.Picking
                 uniqueRandomGenerator.Expect(x => x.Reset());
                 list.Expect(x => x.Count).Return(capacity);
                 constraint.Expect(x => x.GetEnd()).Return(end);
-                uniqueRandomGenerator.Expect(x => x.Generate(0, capacity - 1)).Return(randomIndex).Repeat.Times(end);
+                uniqueRandomGenerator.Expect(x => x.Next(0, capacity - 1)).Return(randomIndex).Repeat.Times(end);
                 list.Expect(x => x[randomIndex]).Return(new MyClass());
             }
 

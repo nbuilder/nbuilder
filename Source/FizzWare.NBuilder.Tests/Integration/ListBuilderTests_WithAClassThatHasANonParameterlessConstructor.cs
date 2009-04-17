@@ -5,7 +5,7 @@ using NUnit.Framework.SyntaxHelpers;
 namespace FizzWare.NBuilder.Tests.Integration
 {
     [TestFixture]
-    public class UsingListBuilderWithAClassThatHasANonParameterlessConstructor
+    public class ListBuilderTests_WithAClassThatHasANonParameterlessConstructor
     {
         private const string theString = "TheString";
         private const decimal theDecimal = 10m;
@@ -35,12 +35,6 @@ namespace FizzWare.NBuilder.Tests.Integration
 
             Assert.That(list[0].String, Is.EqualTo(theString));
             Assert.That(list[0].Decimal, Is.EqualTo(theDecimal));
-        }
-
-        [Test]
-        public void ShouldComplainIfNoConstructorArgsExistForAllDeclarations()
-        {
-
         }
     }
 }

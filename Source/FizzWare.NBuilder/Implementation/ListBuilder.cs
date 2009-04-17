@@ -10,7 +10,7 @@ namespace FizzWare.NBuilder.Implementation
     public class ListBuilder<T> : IListBuilderImpl<T>
     {
         private readonly int size;
-        private readonly IPropertyNamer<T> propertyNamer;
+        private readonly IPropertyNamer propertyNamer;
         private readonly IReflectionUtil reflectionUtil;
         private readonly T[] mainList;
         private readonly DeclarationQueue<T> declarations;
@@ -28,10 +28,10 @@ namespace FizzWare.NBuilder.Implementation
             get { return declarations; }
         }
 
-        public ListBuilder(int size, IPropertyNamer<T> valuePropertyNamer, IReflectionUtil reflectionUtil)
+        public ListBuilder(int size, IPropertyNamer propertyNamer, IReflectionUtil reflectionUtil)
         {
             this.size = size;
-            this.propertyNamer = valuePropertyNamer;
+            this.propertyNamer = propertyNamer;
             this.reflectionUtil = reflectionUtil;
 
             mainList = new T[size];
@@ -72,6 +72,9 @@ namespace FizzWare.NBuilder.Implementation
 
         public IList<T> Name(IList<T> list)
         {
+            if (!BuilderSetup.AutoNameProperties)
+                return list;
+
             propertyNamer.SetValuesOfAllIn(list);
             return list;
         }

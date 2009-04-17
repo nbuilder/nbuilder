@@ -15,7 +15,7 @@ namespace FizzWare.NBuilder.Tests.Unit
     public class ListBuilderTests
     {
         private IReflectionUtil reflectionUtil;
-        private IPropertyNamer<MyClass> propertyNamer;
+        private IPropertyNamer propertyNamer;
         private readonly MyClass myClass = new MyClass();
         private const int listSize = 10;
 
@@ -27,7 +27,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             mocks = new MockRepository();
 
             reflectionUtil = mocks.StrictMock<IReflectionUtil>();
-            propertyNamer = mocks.StrictMock<IPropertyNamer<MyClass>>();
+            propertyNamer = mocks.StrictMock<IPropertyNamer>();
         }
 
         [TearDown]

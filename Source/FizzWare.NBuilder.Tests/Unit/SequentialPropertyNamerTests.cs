@@ -28,7 +28,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             for (int i = 0; i < listSize; i++)
                 theList.Add(new MyClass());
             
-            new SequentialPropertyNamer<MyClass>(reflectionUtil).SetValuesOfAllIn(theList);
+            new SequentialPropertyNamer(reflectionUtil).SetValuesOfAllIn(theList);
         }
 
         [Test]
@@ -166,7 +166,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             for (int i = 0; i < listSize; i++)
                 theList.Add(new MyClass());
 
-            new SequentialPropertyNamer<MyClass>(reflectionUtil).SetValuesOfAllIn(theList);
+            new SequentialPropertyNamer(reflectionUtil).SetValuesOfAllIn(theList);
 
             Assert.That(theList[0].HasADefaultValue, Is.EqualTo(myClass.HasADefaultValue));
             Assert.That(theList[9].HasADefaultValue, Is.EqualTo(myClass.HasADefaultValue));
@@ -202,21 +202,10 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
 
         [Test]
-        public void ShouldBeAbleToSetPropertiesUsingACustomSequenceIdentifier()
-        {
-            var myClass = new MyClass();
-            new SequentialPropertyNamer<MyClass>(reflectionUtil).SetValuesOf(myClass, 2, "2.2.2");
-
-            Assert.That(myClass.Int, Is.EqualTo(2));
-            Assert.That(myClass.StringOne, Is.EqualTo("StringOne2.2.2"));
-            Assert.That(myClass.StringTwo, Is.EqualTo("StringTwo2.2.2"));
-        }
-
-        [Test]
         public void SupportsInheritedClasses()
         {
             var myClassInheritor = new MyClassInheritor();
-            new SequentialPropertyNamer<MyClassInheritor>(reflectionUtil).SetValuesOf(myClassInheritor);
+            new SequentialPropertyNamer(reflectionUtil).SetValuesOf(myClassInheritor);
 
             Assert.That(myClassInheritor.Int, Is.EqualTo(1));
             Assert.That(myClassInheritor.AnotherProperty, Is.EqualTo(1));

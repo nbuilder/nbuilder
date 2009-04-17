@@ -6,10 +6,10 @@ namespace FizzWare.NBuilder.Implementation
 {
     public class RandomDeclaration<T> : RangeDeclaration<T>
     {
-        private readonly IUniqueRandomGenerator<int> uniqueRandomGenerator;
+        private readonly IUniqueRandomGenerator uniqueRandomGenerator;
         private readonly int amount;
 
-        public RandomDeclaration(IListBuilderImpl<T> listBuilderImpl, IObjectBuilder<T> objectBuilder, IUniqueRandomGenerator<int> uniqueRandomGenerator, int amount, int start, int end) 
+        public RandomDeclaration(IListBuilderImpl<T> listBuilderImpl, IObjectBuilder<T> objectBuilder, IUniqueRandomGenerator uniqueRandomGenerator, int amount, int start, int end) 
             : base(listBuilderImpl, objectBuilder, start, end)
         {
             this.uniqueRandomGenerator = uniqueRandomGenerator;
@@ -28,7 +28,7 @@ namespace FizzWare.NBuilder.Implementation
         {
             for (int i = 0; i < amount; i++)
             {
-                int index = uniqueRandomGenerator.Generate(Start, End); // was End - 1
+                int index = uniqueRandomGenerator.Next(Start, End); // was End - 1
 
                 AddItemToMaster(myList[i], masterList, index);
             }

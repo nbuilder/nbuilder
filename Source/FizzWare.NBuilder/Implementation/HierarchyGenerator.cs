@@ -14,14 +14,14 @@ namespace FizzWare.NBuilder.Implementation
         private readonly int depth;
         private readonly int min;
         private readonly int max;
-        private readonly IRandomGenerator<int> randomGenerator;
-        private readonly IPropertyNamer<T> propertyNamer;
+        private readonly IRandomGenerator randomGenerator;
+        private readonly IPropertyNamer propertyNamer;
         private List<T> hierarchy;
         private int listCount;
 
         private Path path;
 
-        public HierarchyGenerator(IList<T> initialList, Action<T, T> addMethod, int numberOfRoots, int depth, int min, int max, IRandomGenerator<int> randomGenerator, IPropertyNamer<T> propertyNamer)
+        public HierarchyGenerator(IList<T> initialList, Action<T, T> addMethod, int numberOfRoots, int depth, int min, int max, IRandomGenerator randomGenerator, IPropertyNamer propertyNamer)
         {
             this.initialList = initialList;
             this.action = addMethod;
@@ -40,7 +40,7 @@ namespace FizzWare.NBuilder.Implementation
                 throw new ArgumentException("The initial list must contain at least " + requiredSize + " items");
         }
 
-        //public HierarchyGenerator(IList<T> initialList, IHierarchySpec<T> spec, IRandomGenerator<int> randomGenerator, IPropertyNamer<T> propertyNamer)
+        //public HierarchyGenerator(IList<T> initialList, IHierarchySpec<T> spec, IRandomGenerator randomGenerator, IPropertyNamer propertyNamer)
         //    : this (initialList, spec.AddMethod, spec.NumberOfRoots, spec.Depth, spec.MinimumChildren, spec.MaximumChildren, randomGenerator, propertyNamer )
         //{
         //}
@@ -59,7 +59,7 @@ namespace FizzWare.NBuilder.Implementation
 
                 path.SetCurrent(sequenceNumber);
 
-                propertyNamer.SetValuesOf(item, sequenceNumber, path.ToString());
+                //propertyNamer.SetValuesOf(item, sequenceNumber, path.ToString());
 
                 hierarchy.Add(item);
                 initialList.RemoveAt(0);
@@ -78,7 +78,7 @@ namespace FizzWare.NBuilder.Implementation
 
         private void AddChildren(T item, int currDepth)
         {
-            int numberOfChildrenToAdd = randomGenerator.Generate(min, max);
+            int numberOfChildrenToAdd = randomGenerator.Next(min, max);
 
             if (numberOfChildrenToAdd > 0)
                 path.IncreaseDepth();
@@ -91,7 +91,7 @@ namespace FizzWare.NBuilder.Implementation
                 int sequenceNumber = i + 1;
 
                 path.SetCurrent(sequenceNumber);
-                propertyNamer.SetValuesOf(child, sequenceNumber, path.ToString());
+                //propertyNamer.SetValuesOf(child, sequenceNumber, path.ToString());
 
                 action(item, child);
 

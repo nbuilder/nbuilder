@@ -12,14 +12,14 @@ namespace FizzWare.NBuilder.Tests.Unit.Picking
     public class UpToConstraintTests
     {
         private MockRepository mocks;
-        private IUniqueRandomGenerator<int> uniqueRandomGenerator;
+        private IUniqueRandomGenerator uniqueRandomGenerator;
         private const int count = 5;
 
         [SetUp]
         public void SetUp()
         {
             mocks = new MockRepository();
-            uniqueRandomGenerator = mocks.StrictMock<IUniqueRandomGenerator<int>>();
+            uniqueRandomGenerator = mocks.StrictMock<IUniqueRandomGenerator>();
         }
 
         [Test]
@@ -29,7 +29,7 @@ namespace FizzWare.NBuilder.Tests.Unit.Picking
 
             using (mocks.Record())
             {
-                uniqueRandomGenerator.Expect(x => x.Generate(0, count)).Return(1);
+                uniqueRandomGenerator.Expect(x => x.Next(0, count)).Return(1);
             }
 
             using (mocks.Ordered())

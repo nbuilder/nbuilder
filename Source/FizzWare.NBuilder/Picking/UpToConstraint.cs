@@ -4,18 +4,18 @@ namespace FizzWare.NBuilder
 {
     public class UpToConstraint : Constraint
     {
-        private readonly IRandomGenerator<int> uniqueRandomGenerator;
+        private readonly IRandomGenerator randomGenerator;
         private readonly int upper;
 
-        public UpToConstraint(IRandomGenerator<int> uniqueRandomGenerator, int upper)
+        public UpToConstraint(IRandomGenerator uniqueRandomGenerator, int upper)
         {
-            this.uniqueRandomGenerator = uniqueRandomGenerator;
+            this.randomGenerator = uniqueRandomGenerator;
             this.upper = upper;
         }
 
         public override int GetEnd()
         {
-            return uniqueRandomGenerator.Generate(0, upper);
+            return randomGenerator.Next(0, upper);
         }
     }
 }

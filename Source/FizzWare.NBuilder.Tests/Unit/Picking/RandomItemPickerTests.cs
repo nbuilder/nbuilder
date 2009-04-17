@@ -13,14 +13,14 @@ namespace FizzWare.NBuilder.Tests.Unit.Picking
     public class RandomItemPickerTests
     {
         private MockRepository mocks;
-        private IRandomGenerator<int> randomGenerator;
+        private IRandomGenerator randomGenerator;
         private IList<MyClass> list;
 
         [SetUp]
         public void SetUp()
         {
             mocks = new MockRepository();
-            randomGenerator = mocks.DynamicMock<IRandomGenerator<int>>();
+            randomGenerator = mocks.DynamicMock<IRandomGenerator>();
             list = mocks.DynamicMock<IList<MyClass>>();
         }
 
@@ -38,7 +38,7 @@ namespace FizzWare.NBuilder.Tests.Unit.Picking
             using (mocks.Record())
             {
                 list.Expect(x => x.Count).Return(listCount);
-                randomGenerator.Expect(x => x.Generate(0, listCount - 1)).Return(2);
+                randomGenerator.Expect(x => x.Next(0, listCount - 1)).Return(2);
                 list.Expect(x => x[2]).Return(new MyClass());
             }
 
