@@ -50,5 +50,11 @@ namespace FizzWare.NBuilder.Tests.Unit
                 new RandomValuePropertyNamer(generator, reflectionUtil, false).SetValuesOfAllIn(theList);
             }
         }
+
+        [Test]
+        public void ShouldBeAbleToCreateUsingDefaultConstructor()
+        {
+            new RandomValuePropertyNamer();
+        }
     }
 }

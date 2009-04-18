@@ -20,5 +20,32 @@ namespace FizzWare.NBuilder.FunctionalTests.Extensibility
             // Return the operable object
             return operable;
         }
+
+        public static IOperable<Product> HaveLongTitles(this IOperable<Product> operable)
+        {
+            ((IDeclaration<Product>) operable).ObjectBuilder.With(x => x.Title = "");
+            return operable;
+        }
+
+        public static IListBuilder<Product> WhereAllHaveLongTitles(this IListBuilder<Product> listBuilder)
+        {
+            var listBuilderImpl = (IListBuilderImpl<Product>) listBuilder;
+            var declaration = new GlobalDeclaration<Product>(listBuilderImpl, listBuilderImpl.CreateObjectBuilder());
+            declaration.Have(x => x.Title = "");
+
+            return declaration;
+        }
+    }
+
+    public class Testit
+    {
+        public void Do()
+        {
+            Builder<Product>
+                .CreateListOfSize(10)
+                .WhereAll()
+                    .HaveLongTitles()
+                .Build();
+        }
     }
 }
