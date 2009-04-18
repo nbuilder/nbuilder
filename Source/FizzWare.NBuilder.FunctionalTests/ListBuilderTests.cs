@@ -1,6 +1,9 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using FizzWare.NBuilder.FunctionalTests.Model;
 using FizzWare.NBuilder.FunctionalTests.Support;
+using FizzWare.NBuilder.Implementation;
+using FizzWare.NBuilder.PropertyNaming;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 
@@ -125,21 +128,6 @@ namespace FizzWare.NBuilder.FunctionalTests
         }
 
         [Test]
-        public void PersistingATaxTypeAnd100Products()
-        {
-            var taxType = Builder<TaxType>.CreateNew().Persist();
-
-            Builder<Product>.CreateListOfSize(100)
-                .WhereAll()
-                    .Have(x => x.TaxType = taxType)
-                .Persist(); // NB: Persistence is setup in the SetupFixture class
-
-            var dbProducts = Database.GetContentsOf(Database.Tables.Product);
-
-            Assert.That(dbProducts.Rows.Count, Is.EqualTo(100));
-        }
-
-        [Test]
         public void CreatingAListOfProductsAndAddingThemToCategories()
         {
             var categories = Builder<Category>.CreateListOfSize(50).Build();
@@ -191,47 +179,7 @@ namespace FizzWare.NBuilder.FunctionalTests
                 Assert.That(product.Categories.Count, Is.AtMost(10));
             }
         }
-
-        [Test]
-        public void UsingPick_UpTo_AndHaveDoneToThemForAll()
-        {
-            var categories = Builder<Category>.CreateListOfSize(10).Persist();
-
-            var products = Builder<Product>
-                .CreateListOfSize(50)
-                .WhereAll()
-                .HaveDoneToThemForAll( (x, y) => x.AddToCategory(y), Pick<Category>.UniqueRandomList(With.UpTo(4).Elements).From(categories))
-                .Persist();
-
-            DataTable productCategoriesTable = Database.GetContentsOf(Database.Tables.ProductCategory);
-
-            Assert.That(productCategoriesTable.Rows.Count, Is.LessThanOrEqualTo(50 * 4));
-        }
-
-        [Test]
-        public void PersistingAListOfProductsAndCategories()
-        {
-            const int numProducts = 500;
-            const int numCategories = 50;
-            const int numCategoriesForEachProduct = 5;
-
-            var categories = Builder<Category>.CreateListOfSize(numCategories).Persist();
-
-            Builder<Product>
-                .CreateListOfSize(numProducts)
-                .WhereAll()
-                    .Have(x => x.Categories = Pick<Category>.UniqueRandomList(With.Exactly(numCategoriesForEachProduct).Elements).From(categories))
-                .Persist(); // NB: Persistence is setup in the SetupFixture class
-
-            DataTable productsTable = Database.GetContentsOf(Database.Tables.Product);
-            DataTable categoriesTable = Database.GetContentsOf(Database.Tables.Category);
-            DataTable productCategoriesTable = Database.GetContentsOf(Database.Tables.ProductCategory);
-
-            Assert.That(productsTable.Rows.Count, Is.EqualTo(numProducts));
-            Assert.That(categoriesTable.Rows.Count, Is.EqualTo(numCategories));
-            Assert.That(productCategoriesTable.Rows.Count, Is.EqualTo(numCategoriesForEachProduct * numProducts));
-        }
-
+        
         [Test]
         public void CreatingAListOfATypeWithAConstructor()
         {
@@ -570,9 +518,14 @@ namespace FizzWare.NBuilder.FunctionalTests
         }
 
         [Test]
-        public void TurnOffAutoPropertyNaming()
+        public void SpecifyingADifferentDefaultPropertyNamer()
         {
-            
+            BuilderSetup.SetDefaultPropertyNamer(new RandomValuePropertyNamer(new RandomGenerator(), new ReflectionUtil(), true, DateTime.Now, DateTime.Now.AddDays(10), true));
+
+            var products = Builder<Product>.CreateListOfSize(10).Build();
+
+            Assert.That(products[0].Title, Is.Not.EqualTo("StringOne1"));
+            Assert.That(products[9].Title, Is.Not.EqualTo("StringOne10"));
         }
     }
 }

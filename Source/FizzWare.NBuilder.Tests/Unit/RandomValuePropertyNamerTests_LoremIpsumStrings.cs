@@ -11,9 +11,16 @@ using Rhino.Mocks;
 namespace FizzWare.NBuilder.Tests.Unit
 {
     [TestFixture]
-    public class RandomValuePropertyNamerTests_LoremIpsumStrings : RandomValuePropertyNamerTestFixture
+    public class RandomValuePropertyNamerTests_LoremIpsumStrings
     {
-        public override void TestFixtureSetUp()
+        protected MockRepository mocks;
+        protected IRandomGenerator generator;
+        protected IList<MyClass> theList;
+        protected const int listSize = 10;
+        protected IReflectionUtil reflectionUtil;
+
+        [SetUp]
+        public void SetUp()
         {
             mocks = new MockRepository();
 

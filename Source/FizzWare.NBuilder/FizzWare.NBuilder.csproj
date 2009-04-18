@@ -49,6 +49,7 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Implementation\MultiFunction.cs" />
+    <Compile Include="PersistenceMethodNotFoundException.cs" />
     <Compile Include="PersistenceService.cs" />
     <Compile Include="BuilderSetup.cs" />
     <Compile Include="Generators\IRandomGenerator.cs" />

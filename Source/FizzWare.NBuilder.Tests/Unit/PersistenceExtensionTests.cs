@@ -44,10 +44,10 @@ namespace FizzWare.NBuilder.Tests.Unit
             using (mocks.Record())
             {
                 singleObjectBuilder.Expect(x => x.Build()).Return(obj);
-                persistenceService.Expect(x => x.Persist(obj));
+                persistenceService.Expect(x => x.Create(obj));
             }
 
-            BuilderSetup.RegisterPersistenceService(persistenceService);
+            BuilderSetup.SetPersistenceService(persistenceService);
 
             using (mocks.Playback())
             {
@@ -61,10 +61,10 @@ namespace FizzWare.NBuilder.Tests.Unit
             using (mocks.Record())
             {
                 listBuilderImpl.Expect(x => x.Build()).Return(theList);
-                persistenceService.Expect(x => x.Persist(theList));
+                persistenceService.Expect(x => x.Create(theList));
             }
 
-            BuilderSetup.RegisterPersistenceService(persistenceService);
+            BuilderSetup.SetPersistenceService(persistenceService);
 
             using (mocks.Playback())
             {
@@ -78,11 +78,11 @@ namespace FizzWare.NBuilder.Tests.Unit
             using (mocks.Record())
             {
                 listBuilderImpl.Expect(x => x.Build()).Return(theList);
-                persistenceService.Expect(x => x.Persist(theList));
+                persistenceService.Expect(x => x.Create(theList));
                 ((IDeclaration<MyClass>) operable).Expect(x => x.ListBuilderImpl).Return(listBuilderImpl);
             }
 
-            BuilderSetup.RegisterPersistenceService(persistenceService);
+            BuilderSetup.SetPersistenceService(persistenceService);
 
             using (mocks.Playback())
             {

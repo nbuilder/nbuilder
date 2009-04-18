@@ -22,5 +22,8 @@ namespace FizzWare.NBuilder
         DateTime Next(DateTime min, DateTime max);
 
         bool Next();
+
+        // TODO: Add NextString() to this interface
+        //string NextString(int minLength, int maxLength);
     }
 }

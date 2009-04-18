@@ -44,8 +44,7 @@
   <echo>Build label is: ${build.label}</echo>
 
   <!-- TARGETS -->
-  <!--<target name="build" depends="clean, cover.unit.tests, set.assemblyinfo, compile.release, publish.msi" />-->
-  <target name="build" depends="clean, cover.unit.tests, set.assemblyinfo, compile.release, publish.dll" />
+  <target name="build" depends="clean, create.output.directory, cover.unit.tests, set.assemblyinfo, compile.release, publish.dll" />
 
   <target name="clean">
     <delete>
@@ -99,11 +98,13 @@
     
   </target>
 
-
-  <target name="publish.dll">
-    <!-- Make sure the build directory exists -->
+  <target name="create.output.directory">
+     <!-- Make sure the build directory exists -->
     <mkdir dir="${build.dir}" if="${not directory::exists(build.dir)}" failonerror="true"/>
     <mkdir dir="${current.build.dir}" if="${not directory::exists(current.build.dir)}" failonerror="true"/>
+  </target>
+
+  <target name="publish.dll">
 
     <copy file="${path.to.dll}"
         tofile="${path.to.published.dll}"></copy>

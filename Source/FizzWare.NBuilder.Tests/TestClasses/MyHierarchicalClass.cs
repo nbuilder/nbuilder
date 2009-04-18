@@ -7,6 +7,8 @@ namespace FizzWare.NBuilder.Tests.TestClasses
         public IList<MyHierarchicalClass> Children { get; set; }
         public MyHierarchicalClass Parent { get; set; }
 
+        public string Title { get; set; }
+
         public MyHierarchicalClass()
         {
             Children = new List<MyHierarchicalClass>();

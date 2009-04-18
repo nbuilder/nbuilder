@@ -41,7 +41,7 @@ namespace FizzWare.NBuilder
             defaultPropertyNamer = propertyNamer;
         }
 
-        public static void RegisterPersistenceService(IPersistenceService service)
+        public static void SetPersistenceService(IPersistenceService service)
         {
             persistenceService = service;
         }
@@ -51,9 +51,14 @@ namespace FizzWare.NBuilder
             return persistenceService;
         }
 
-        public static void SetPersistenceMethod<T>(Action<T> saveMethod)
+        public static void SetCreatePersistenceMethod<T>(Action<T> saveMethod)
         {
-            persistenceService.SetPersistenceMethod(saveMethod);
+            persistenceService.SetPersistenceCreateMethod(saveMethod);
+        }
+
+        public static void SetUpdatePersistenceMethod<T>(Action<T> saveMethod)
+        {
+            persistenceService.SetPersistenceUpdateMethod(saveMethod);
         }
 
         public static void SetPropertyNamerFor<T>(IPropertyNamer propertyNamer)

@@ -9,6 +9,7 @@ using NUnit.Framework.SyntaxHelpers;
 
 namespace FizzWare.NBuilder.FunctionalTests
 {
+    // Note: The assertions are intentionally verbose to show how NBuilder works
     [TestFixture]
     public class SingleObjectBuilderTests
     {
@@ -26,29 +27,11 @@ namespace FizzWare.NBuilder.FunctionalTests
         {
             var product = Builder<Product>.CreateNew().Build();
 
-            // Note: The assertions are intentionally verbose to show how NBuilder works
-
             Assert.That(product.Id, Is.EqualTo(1));
             Assert.That(product.Title, Is.EqualTo("Title1"));
             Assert.That(product.Description, Is.EqualTo("Description1"));
             Assert.That(product.PriceBeforeTax, Is.EqualTo(1m));
             Assert.That(product.QuantityInStock, Is.EqualTo(1));
-        }
-
-        [Test]
-        public void PersistingAnObect()
-        {
-            Builder<Product>.CreateNew().Persist();
-
-            // Go directly to the database to do some asserts
-            var dataTable = Database.GetContentsOf(Database.Tables.Product);
-
-            Assert.That(dataTable.Rows.Count, Is.EqualTo(1));
-
-            Assert.That(dataTable.Rows[0]["Title"], Is.EqualTo("Title1"));
-            Assert.That(dataTable.Rows[0]["Description"], Is.EqualTo("Description1"));
-            Assert.That(dataTable.Rows[0]["PriceBeforeTax"], Is.EqualTo(1m));
-            Assert.That(dataTable.Rows[0]["QuantityInStock"], Is.EqualTo(1));
         }
 
         [Test]
@@ -88,7 +71,6 @@ namespace FizzWare.NBuilder.FunctionalTests
             var basket = Builder<ShoppingBasket>.CreateNew().Build();
             var product = Builder<Product>.CreateNew().Build();
             const int quantity = 5;
-
 
             // BasketItem's ctor: BasketItem(ShoppingBasket basket, Product product, int quantity)
             var basketItem = Builder<BasketItem>

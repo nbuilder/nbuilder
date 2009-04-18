@@ -25,7 +25,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             persistenceService = mocks.DynamicMock<IPersistenceService>();
             repository = mocks.DynamicMock<IMyClassRepository>();
 
-            BuilderSetup.RegisterPersistenceService(this.persistenceService);
+            BuilderSetup.SetPersistenceService(this.persistenceService);
         }
 
         [Test]
@@ -35,33 +35,29 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
 
         [Test]
-        public void ShouldBeAbleToSetPersistenceMethod()
+        public void ShouldBeAbleToSetCreatePersistenceMethod()
         {
-            const IMyClassRepository repository = null;
             Action<MyClass> func = x => repository.Save(x);
 
             using (mocks.Record())
             {
-                persistenceService.Expect(x => x.SetPersistenceMethod(func));
+                persistenceService.Expect(x => x.SetPersistenceCreateMethod(func));
             }
 
-            BuilderSetup.SetPersistenceMethod<MyClass>(func);
+            BuilderSetup.SetCreatePersistenceMethod<MyClass>(func);
         }
 
         [Test]
-        public void ShouldBeAbleToAddASinglePersister()
+        public void ShouldBeAbleToSetUpdatePersistenceMethod()
         {
             Action<MyClass> func = x => repository.Save(x);
 
             using (mocks.Record())
             {
-                persistenceService.Expect(x => x.SetPersistenceMethod(func));
+                persistenceService.Expect(x => x.SetPersistenceUpdateMethod(func));
             }
 
-            using (mocks.Playback())
-            {
-                BuilderSetup.SetPersistenceMethod<MyClass>(func);
-            }
+            BuilderSetup.SetUpdatePersistenceMethod<MyClass>(func);
         }
     }
 }

@@ -15,13 +15,14 @@ namespace FizzWare.NBuilder.Implementation
         private readonly int min;
         private readonly int max;
         private readonly IRandomGenerator randomGenerator;
-        private readonly IPropertyNamer propertyNamer;
+        private readonly Func<T, string, string> namingMethod;
+        private readonly IPersistenceService persistenceService;
         private List<T> hierarchy;
         private int listCount;
 
         private Path path;
 
-        public HierarchyGenerator(IList<T> initialList, Action<T, T> addMethod, int numberOfRoots, int depth, int min, int max, IRandomGenerator randomGenerator, IPropertyNamer propertyNamer)
+        public HierarchyGenerator(IList<T> initialList, Action<T, T> addMethod, int numberOfRoots, int depth, int min, int max, IRandomGenerator randomGenerator, Func<T, string, string> namingMethod, IPersistenceService persistenceService)
         {
             this.initialList = initialList;
             this.action = addMethod;
@@ -30,20 +31,16 @@ namespace FizzWare.NBuilder.Implementation
             this.min = min;
             this.max = max;
             this.randomGenerator = randomGenerator;
-            this.propertyNamer = propertyNamer;
+            this.namingMethod = namingMethod;
+            this.persistenceService = persistenceService;
 
             this.listCount = initialList.Count;
 
-            int requiredSize = numberOfRoots*depth*max;
+            int requiredSize = numberOfRoots * depth * (depth * max);
 
             if (listCount < requiredSize)
                 throw new ArgumentException("The initial list must contain at least " + requiredSize + " items");
         }
-
-        //public HierarchyGenerator(IList<T> initialList, IHierarchySpec<T> spec, IRandomGenerator randomGenerator, IPropertyNamer propertyNamer)
-        //    : this (initialList, spec.AddMethod, spec.NumberOfRoots, spec.Depth, spec.MinimumChildren, spec.MaximumChildren, randomGenerator, propertyNamer )
-        //{
-        //}
 
         public IList<T> Generate()
         {
@@ -59,9 +56,13 @@ namespace FizzWare.NBuilder.Implementation
 
                 path.SetCurrent(sequenceNumber);
 
-                //propertyNamer.SetValuesOf(item, sequenceNumber, path.ToString());
+                if (namingMethod != null)
+                    namingMethod(item, path.ToString());
 
                 hierarchy.Add(item);
+
+                TryPersistCreate(item);
+
                 initialList.RemoveAt(0);
                 listCount--;
             }
@@ -73,7 +74,21 @@ namespace FizzWare.NBuilder.Implementation
                 AddChildren(hierarchy[i], 0);
             }
 
+            TryPersistUpdateAll((IList<T>)hierarchy);
+
             return hierarchy;
+        }
+
+        private void TryPersistUpdateAll(IList<T> list)
+        {
+            if (persistenceService != null)
+                persistenceService.Update(list);
+        }
+
+        private void TryPersistCreate(T item)
+        {
+            if (persistenceService != null)
+                persistenceService.Create(item);
         }
 
         private void AddChildren(T item, int currDepth)
@@ -91,9 +106,13 @@ namespace FizzWare.NBuilder.Implementation
                 int sequenceNumber = i + 1;
 
                 path.SetCurrent(sequenceNumber);
-                //propertyNamer.SetValuesOf(child, sequenceNumber, path.ToString());
+
+                if  (namingMethod != null)
+                    namingMethod(child, path.ToString());
 
                 action(item, child);
+
+                TryPersistCreate(child);
 
                 if (currDepth < (depth - 1))
                 {

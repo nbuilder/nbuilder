@@ -26,7 +26,7 @@ public class SetupFixture
 
         setup = true;
 
-        BuilderSetup.SetPersistenceMethod<Product>
+        BuilderSetup.SetCreatePersistenceMethod<Product>
             (
                 x =>
                 {
@@ -35,7 +35,7 @@ public class SetupFixture
                 }
             );
 
-        BuilderSetup.SetPersistenceMethod<IList<Product>>
+        BuilderSetup.SetCreatePersistenceMethod<IList<Product>>
             (
                 x =>
                 {
@@ -44,7 +44,7 @@ public class SetupFixture
                 }
             );
 
-        BuilderSetup.SetPersistenceMethod<TaxType>
+        BuilderSetup.SetCreatePersistenceMethod<TaxType>
             (
                 x =>
                 {
@@ -53,7 +53,7 @@ public class SetupFixture
                 }
             );
 
-        BuilderSetup.SetPersistenceMethod<IList<TaxType>>
+        BuilderSetup.SetCreatePersistenceMethod<IList<TaxType>>
             (
                 x =>
                 {
@@ -62,7 +62,7 @@ public class SetupFixture
                 }
             );
 
-        BuilderSetup.SetPersistenceMethod<Category>
+        BuilderSetup.SetCreatePersistenceMethod<Category>
             (
                 x =>
                 {
@@ -71,12 +71,30 @@ public class SetupFixture
                 }
             );
 
-        BuilderSetup.SetPersistenceMethod<IList<Category>>
+        BuilderSetup.SetCreatePersistenceMethod<IList<Category>>
             (
                 x =>
                 {
                     var productRepository = Dependency.Resolve<ICategoryRepository>();
                     productRepository.CreateAll(x);
+                }
+            );
+
+        BuilderSetup.SetUpdatePersistenceMethod<Category>
+            (
+                x =>
+                {
+                    var productRepository = Dependency.Resolve<ICategoryRepository>();
+                    productRepository.Save(x);
+                }
+            );
+
+        BuilderSetup.SetUpdatePersistenceMethod<IList<Category>>
+            (
+                x =>
+                {
+                    var productRepository = Dependency.Resolve<ICategoryRepository>();
+                    productRepository.SaveAll(x);
                 }
             );
     }

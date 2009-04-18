@@ -9,5 +9,6 @@ namespace FizzWare.NBuilder
         int MinimumChildren { get; set; }
         int MaximumChildren { get; set; }
         Action<T, T> AddMethod { get; set; }
+        Func<T, string, string> NamingMethod { get; set; }
     }
 }

@@ -23,7 +23,7 @@ namespace FizzWare.NBuilder
             var obj = singleObjectBuilder.Build();
 
             IPersistenceService persistenceService = BuilderSetup.GetPersistenceService();
-            persistenceService.Persist(obj);
+            persistenceService.Create(obj);
 
             return obj;
         }
@@ -40,7 +40,7 @@ namespace FizzWare.NBuilder
             var list = listBuilder.Build();
 
             var persistenceService = BuilderSetup.GetPersistenceService();
-            persistenceService.Persist(list);
+            persistenceService.Create(list);
             return list;
         }
     }

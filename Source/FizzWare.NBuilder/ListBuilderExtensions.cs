@@ -127,21 +127,28 @@ namespace FizzWare.NBuilder
             return listBuilderImpl;
         }
 
-        // TODO: Finish
-        //public static IList<T> BuildHierarchy<T>(this IListBuilder<T> listBuilder, IHierarchySpec<T> hierarchySpec)
-        //{
-        //    HierarchyGenerator<T> generator = new HierarchyGenerator<T>(listBuilder.Build(), hierarchySpec, new RandomGenerator(), new SequentialPropertyNamer<T>(new ReflectionUtil()));
-        //    return generator.Generate();
-        //}
+        public static IList<T> BuildHierarchy<T>(this IListBuilder<T> listBuilder, IHierarchySpec<T> hierarchySpec)
+        {
+            var list = listBuilder.Build();
 
-        // TODO: Finish
-        //public static IList<T> PersistHierarchy<T>(this IListBuilder<T> listBuilder, IHierarchySpec<T> hierarchySpec)
-        //{
-        //    var list = BuildHierarchy(listBuilder, hierarchySpec);
+            var hierarchy = new HierarchyGenerator<T>(list, hierarchySpec.AddMethod, hierarchySpec.NumberOfRoots, hierarchySpec.Depth,
+                                      hierarchySpec.MinimumChildren, hierarchySpec.MaximumChildren,
+                                      new RandomGenerator(), hierarchySpec.NamingMethod, null).Generate();
 
-        //    var persistenceService = BuilderSetup.GetPersistenceService();
-        //    persistenceService.Persist(list);
-        //    return list;
-        //}
+            return hierarchy;
+        }
+
+        public static IList<T> PersistHierarchy<T>(this IListBuilder<T> listBuilder, IHierarchySpec<T> hierarchySpec)
+        {
+            // 1. Create
+            var list = listBuilder.Build();
+
+            // 2. Reorganise
+            var hierarchy = new HierarchyGenerator<T>(list, hierarchySpec.AddMethod, hierarchySpec.NumberOfRoots, hierarchySpec.Depth,
+                                      hierarchySpec.MinimumChildren, hierarchySpec.MaximumChildren,
+                                      new RandomGenerator(), hierarchySpec.NamingMethod, BuilderSetup.GetPersistenceService()).Generate();
+
+            return hierarchy;
+        }
     }
 }

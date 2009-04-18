@@ -9,6 +9,7 @@ using Rhino.Mocks;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
+    // TODO: These tests aren't great and are in need of some attention
     [TestFixture]
     public class HierarchyGeneratorTests
     {
@@ -21,7 +22,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         private IList<MyHierarchicalClass> sourceList;
         private int categoryCount;
         private HierarchyGenerator<MyHierarchicalClass> hierarchyGenerator;
-        private IPropertyNamer propertyNamer;
+        private Func<MyHierarchicalClass, string, string> namingMethod;
 
         [SetUp]
         public void SetUp()
@@ -29,13 +30,14 @@ namespace FizzWare.NBuilder.Tests.Unit
             mocks = new MockRepository();
             randomGenerator = mocks.DynamicMock<IRandomGenerator>();
             sourceList = mocks.DynamicMock<IList<MyHierarchicalClass>>();
-            propertyNamer = mocks.DynamicMock<IPropertyNamer>();
 
             categoryCount = 1000;
             numberOfRoots = 4;
             depth = 3;
             minCategories = 0;
             maxCategories = 5;
+
+            namingMethod = (x, y) => x.Title = y;
         }
 
         [TearDown]
@@ -53,7 +55,7 @@ namespace FizzWare.NBuilder.Tests.Unit
                 sourceList.Expect(x => x[0]).Return(new MyHierarchicalClass()).Repeat.Times(numberOfRoots);
             }
 
-            hierarchyGenerator = new HierarchyGenerator<MyHierarchicalClass>(sourceList, (x, y) => x.AddChild(y), numberOfRoots, depth, minCategories, maxCategories, randomGenerator, propertyNamer);
+            hierarchyGenerator = new HierarchyGenerator<MyHierarchicalClass>(sourceList, (x, y) => x.AddChild(y), numberOfRoots, depth, minCategories, maxCategories, randomGenerator, namingMethod, null);
             IList<MyHierarchicalClass> hierarchy = hierarchyGenerator.Generate();
 
             Assert.That(hierarchy.Count, Is.EqualTo(numberOfRoots));
@@ -72,7 +74,30 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             using (mocks.Playback())
             {
-                hierarchyGenerator = new HierarchyGenerator<MyHierarchicalClass>(sourceList, (x, y) => x.AddChild(y), numberOfRoots, depth, minCategories, maxCategories, randomGenerator, propertyNamer);
+                hierarchyGenerator = new HierarchyGenerator<MyHierarchicalClass>(sourceList, (x, y) => x.AddChild(y), numberOfRoots, depth, minCategories, maxCategories, randomGenerator, namingMethod, null);
+                hierarchyGenerator.Generate();
+            }
+        }
+
+        [Test]
+        public void ShouldTryToPersistIfPersistenceServiceSupplied()
+        {
+            IPersistenceService persistenceService = mocks.DynamicMock<IPersistenceService>();
+
+            using (mocks.Record())
+            {
+                sourceList.Expect(x => x.Count).Return(categoryCount).Repeat.Any();
+                randomGenerator.Expect(x => x.Next(minCategories, maxCategories)).Return(1).Repeat.Times(12);
+                sourceList.Expect(x => x[0]).Return(new MyHierarchicalClass()).Repeat.Any();
+                sourceList.Expect(x => x.RemoveAt(0)).Repeat.Any();
+
+                persistenceService.Expect(x => x.Create(Arg<MyHierarchicalClass>.Is.TypeOf)).Repeat.Times(12);
+                persistenceService.Expect(x => x.Update(Arg<IList<MyHierarchicalClass>>.Is.TypeOf)).Repeat.Times(1);
+            }
+
+            using (mocks.Playback())
+            {
+                hierarchyGenerator = new HierarchyGenerator<MyHierarchicalClass>(sourceList, (x, y) => x.AddChild(y), numberOfRoots, depth, minCategories, maxCategories, randomGenerator, namingMethod, persistenceService);
                 hierarchyGenerator.Generate();
             }
         }
@@ -81,7 +106,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         [ExpectedException(typeof(ArgumentException))]
         public void ShouldComplainIfInitialListIsNotBigEnough()
         {
-            int requiredSizeOfList = numberOfRoots * depth * maxCategories;
+            int requiredSizeOfList = numberOfRoots * depth * (depth * maxCategories);
 
             using (mocks.Record())
             {
@@ -90,7 +115,7 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             using (mocks.Playback())
             {
-                hierarchyGenerator = new HierarchyGenerator<MyHierarchicalClass>(sourceList, (x, y) => x.AddChild(y), numberOfRoots, depth, minCategories, maxCategories, randomGenerator, propertyNamer);
+                hierarchyGenerator = new HierarchyGenerator<MyHierarchicalClass>(sourceList, (x, y) => x.AddChild(y), numberOfRoots, depth, minCategories, maxCategories, randomGenerator, namingMethod, null);
             }
         }
     }

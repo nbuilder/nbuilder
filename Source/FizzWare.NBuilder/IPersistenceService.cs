@@ -5,8 +5,11 @@ namespace FizzWare.NBuilder
 {
     public interface IPersistenceService
     {
-        void Persist<T>(T obj);
-        void Persist<T>(IList<T> obj);
-        void SetPersistenceMethod<T>(Action<T> saveMethod);
+        void Create<T>(T obj);
+        void Create<T>(IList<T> obj);
+        void Update<T>(T obj);
+        void Update<T>(IList<T> obj);
+        void SetPersistenceCreateMethod<T>(Action<T> saveMethod);
+        void SetPersistenceUpdateMethod<T>(Action<T> saveMethod);
     }
 }

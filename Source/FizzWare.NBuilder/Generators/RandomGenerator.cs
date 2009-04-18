@@ -5,6 +5,9 @@ using System.Text;
 
 namespace FizzWare.NBuilder
 {
+    // NVResharper incorrectly advises that the typecasts are redundant
+
+    // ReSharper disable RedundantCast
     public class RandomGenerator : IRandomGenerator
     {
         private readonly Random rnd;
@@ -26,17 +29,15 @@ namespace FizzWare.NBuilder
 
         public virtual long Next(long min, long max)
         {
-            byte[] buf = new byte[8];
-
-            rnd.NextBytes(buf);
-            double num = Math.Abs(BitConverter.ToDouble(buf, 0));
-
-            return (long)(num * ((double)max - (double)min) + min);
+            double rn = (max * 1.0 - min * 1.0) * rnd.NextDouble() + min * 1.0;
+            return Convert.ToInt64(rn);
         }
 
         public virtual float Next(float min, float max)
         {
+
             return (float) Next((int) min, (int)max);
+
         }
 
         public virtual double Next(double min, double max)
@@ -75,8 +76,11 @@ namespace FizzWare.NBuilder
         {
             long minTicks = min.Ticks;
             long maxTicks = max.Ticks;
+            double rn = (Convert.ToDouble(maxTicks)
+               - Convert.ToDouble(minTicks)) * rnd.NextDouble()
+               + Convert.ToDouble(minTicks);
+            return new DateTime(Convert.ToInt64(rn));
 
-            return new DateTime(Next(minTicks, maxTicks-1));
         }
 
         public virtual bool Next()
@@ -102,5 +106,12 @@ namespace FizzWare.NBuilder
             rnd.NextBytes(buffer);
             return BitConverter.ToUInt64(buffer, 0);
         }
+
+        // TODO: Implement NextString()
+        //public virtual string NextString(int minLength, int maxLength)
+        //{
+
+        //}
     }
+    // ReSharper restore RedundantCast
 }

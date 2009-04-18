@@ -340,26 +340,45 @@ namespace FizzWare.NBuilder.Tests.Unit
             Assert.That(declaration.End, Is.EqualTo(end));
         }
         
-        // TODO: Finish
-        //[Test]
-        //public void ShouldBeAbleToUseBuildHierarchy()
-        //{
-        //    var hierarchySpec = mocks.Stub<IHierarchySpec<MyClass>>();
+        [Test]
+        public void ShouldBeAbleToUseBuildHierarchy()
+        {
+            var hierarchySpec = mocks.Stub<IHierarchySpec<MyClass>>();
 
-        //    using (mocks.Record())
-        //    {
-        //        listBuilderImpl.Expect(x => x.Build()).Return(new List<MyClass>()).Repeat.Any();
-        //    }
+            using (mocks.Record())
+            {
+                listBuilderImpl.Expect(x => x.Build()).Return(new List<MyClass>()).Repeat.Any();
+            }
 
-        //    using (mocks.Playback())
-        //    {
+            using (mocks.Playback())
+            {
                 
-        //        var list = ListBuilderExtensions.BuildHierarchy(listBuilderImpl, hierarchySpec);
+                var list = ListBuilderExtensions.BuildHierarchy(listBuilderImpl, hierarchySpec);
 
-        //        Assert.That(list, Is.TypeOf(typeof(List<MyClass>)));
+                Assert.That(list, Is.TypeOf(typeof(List<MyClass>)));
+           }
+        }
 
-        //   }
-        //}
+        [Test]
+        public void ShouldBeAbleToUsePersistHierarchy()
+        {
+            var hierarchySpec = mocks.Stub<IHierarchySpec<MyClass>>();
+            var persistenceService = mocks.DynamicMock<IPersistenceService>();
+
+            BuilderSetup.SetPersistenceService(persistenceService);
+
+            using (mocks.Record())
+            {
+                listBuilderImpl.Expect(x => x.Build()).Return(new List<MyClass>()).Repeat.Any();
+                persistenceService.Expect(x => x.Create(Arg<MyClass>.Is.TypeOf)).Repeat.Any();
+                persistenceService.Expect(x => x.Update(Arg<IList<MyClass>>.Is.TypeOf)).Repeat.Once();
+            }
+
+            using (mocks.Playback())
+            {
+                ListBuilderExtensions.PersistHierarchy(listBuilderImpl, hierarchySpec);
+            }
+        }
     }
     // ReSharper restore InvokeAsExtensionMethod
 }
