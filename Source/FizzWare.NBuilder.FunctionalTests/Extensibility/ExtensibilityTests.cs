@@ -33,7 +33,6 @@ namespace FizzWare.NBuilder.FunctionalTests.Extensibility
                 .WhereAll()
                 .HaveWarehouseLocations() // This will only appear when using Builder<Product>
                 .Build();
-
             
             Assert.That(products[0].Location.Aisle, Is.EqualTo('A'));
             Assert.That(products[0].Location.Shelf, Is.EqualTo(1));

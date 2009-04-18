@@ -11,12 +11,12 @@ namespace FizzWare.NBuilder.FunctionalTests.Extensibility
         static LocationGenerator()
         {
             charGenerator = new SequentialGenerator<char>();
-            charGenerator.ResetTo((char)64);
-
             shelfGenerator = new SequentialGenerator<int>();
-
             locGenerator = new SequentialGenerator<int> {Increment = 1000};
-            locGenerator.ResetTo(6500);
+
+            charGenerator.StartingWith('A');
+            shelfGenerator.StartingWith(1);
+            locGenerator.StartingWith(7500);
         }
 
         public static WarehouseLocation Generate()

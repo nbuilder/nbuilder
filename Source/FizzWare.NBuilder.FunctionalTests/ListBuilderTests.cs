@@ -64,6 +64,18 @@ namespace FizzWare.NBuilder.FunctionalTests
             Assert.That(products[9].PriceBeforeTax, Is.EqualTo(10m));
         }
 
+        public void UsingWhereAllToSetValues()
+        {
+            var products = Builder<Product>
+                .CreateListOfSize(10)
+                .WhereAll()
+                    .Have(x => x.Title = "A special title")
+                .Build();
+
+            for (int i = 0; i < products.Count; i++)
+                Assert.That(products[i].Title, Is.EqualTo("A special title"));
+        }
+
         [Test]
         public void SettingTheValueOfAProperty()
         {
@@ -149,7 +161,7 @@ namespace FizzWare.NBuilder.FunctionalTests
         public void UsingTheSequentialGenerator()
         {
             var generator = new SequentialGenerator<int> { Direction = GeneratorDirection.Descending, Increment = 2 };
-            generator.ResetTo(6);
+            generator.StartingWith(6);
 
             var products = Builder<Product>
                 .CreateListOfSize(3)
@@ -157,9 +169,9 @@ namespace FizzWare.NBuilder.FunctionalTests
                     .Have(x => x.Id = generator.Generate())
                 .Build();
 
-            Assert.That(products[0].Id, Is.EqualTo(4));
-            Assert.That(products[1].Id, Is.EqualTo(2));
-            Assert.That(products[2].Id, Is.EqualTo(0));
+            Assert.That(products[0].Id, Is.EqualTo(6));
+            Assert.That(products[1].Id, Is.EqualTo(4));
+            Assert.That(products[2].Id, Is.EqualTo(2));
         }
 
         [Test]
@@ -404,7 +416,7 @@ namespace FizzWare.NBuilder.FunctionalTests
                                            Direction = GeneratorDirection.Descending
                                        };
 
-            decimalGenerator.ResetTo(2000);
+            decimalGenerator.StartingWith(2000);
 
             var intGenerator = new SequentialGenerator<int> {Increment = 10000};
 
@@ -414,13 +426,13 @@ namespace FizzWare.NBuilder.FunctionalTests
                     .And(x => x.Id = intGenerator.Generate())
                 .Build();
 
-            Assert.That(list[0].PriceBeforeTax, Is.EqualTo(1990));
-            Assert.That(list[1].PriceBeforeTax, Is.EqualTo(1980));
-            Assert.That(list[2].PriceBeforeTax, Is.EqualTo(1970));
+            Assert.That(list[0].PriceBeforeTax, Is.EqualTo(2000));
+            Assert.That(list[1].PriceBeforeTax, Is.EqualTo(1990));
+            Assert.That(list[2].PriceBeforeTax, Is.EqualTo(1980));
 
-            Assert.That(list[0].Id, Is.EqualTo(10000));
-            Assert.That(list[1].Id, Is.EqualTo(20000));
-            Assert.That(list[2].Id, Is.EqualTo(30000));
+            Assert.That(list[0].Id, Is.EqualTo(0));
+            Assert.That(list[1].Id, Is.EqualTo(10000));
+            Assert.That(list[2].Id, Is.EqualTo(20000));
         }
 
         [Test]

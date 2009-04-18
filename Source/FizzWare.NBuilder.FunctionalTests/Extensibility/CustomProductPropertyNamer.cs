@@ -23,9 +23,9 @@ namespace FizzWare.NBuilder.FunctionalTests.Extensibility
 
         public override void SetValuesOfAllIn<T>(IList<T> objects)
         {
-            aisleGenerator.ResetTo((char)64);
-            shelfGenerator.ResetTo(0);
-            locGenerator.ResetTo(0);
+            aisleGenerator.StartingWith('A');
+            shelfGenerator.StartingWith(2);
+            locGenerator.StartingWith(1000);
             base.SetValuesOfAllIn(objects);
         }
 

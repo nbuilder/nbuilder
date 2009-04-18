@@ -28,23 +28,31 @@ namespace FizzWare.NBuilder
                 throw new InvalidOperationException("Sequential generator does not support " + typeof(T).Name);
 
             Increment = (T)Convert.ChangeType(1, typeof(T));
+
+            StartingWith(default(T));
         }
 
         private T next;
+        private bool hasBeenReset;
 
         public T Generate()
         {
-            Advance();
+            if (!hasBeenReset)
+                Advance();
+
+            hasBeenReset = false;
+
             T val = (T)Convert.ChangeType(next, typeof (T));
             return val;
         }
 
-        public void ResetTo(T resetTo)
+        public virtual void StartingWith(T nextValueToGenerate)
         {
-            next = resetTo;
+            next = nextValueToGenerate;
+            hasBeenReset = true;
         }
 
-        private void Advance()
+        protected virtual void Advance()
         {
             if (typeof(T) == typeof(short))
             {
@@ -130,9 +138,16 @@ namespace FizzWare.NBuilder
             if (typeof(T) == typeof(byte))
             {
                 if (Direction == GeneratorDirection.Ascending)
-                    PerformAdvance(x => Convert.ToByte(x), (x, y) => Convert.ToByte(x + y));
+                {
+                    // TODO: Add this check in for all types
+                    //if (Convert.ToByte(next) < byte.MaxValue)
+                        PerformAdvance(x => Convert.ToByte(x), (x, y) => Convert.ToByte(x + y));
+                }
                 else
-                    PerformAdvance(x => Convert.ToByte(x), (x, y) => Convert.ToByte(x - y));
+                {
+                    if (Convert.ToByte(next) > 0)
+                        PerformAdvance(x => Convert.ToByte(x), (x, y) => Convert.ToByte(x - y));
+                }
             }
 
             if (typeof(T) == typeof(char))

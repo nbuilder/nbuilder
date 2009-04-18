@@ -89,6 +89,7 @@
     <Compile Include="BuilderSetupTests.cs" />
     <Compile Include="Extensibility\CustomOperableExtensions.cs" />
     <Compile Include="Extensibility\CustomProductPropertyNamer.cs" />
+    <Compile Include="PersistenceTests.cs" />
     <Compile Include="Support\Database.cs" />
     <Compile Include="Support\Dependency.cs" />
     <Compile Include="Extensibility\ExtensibilityTests.cs" />

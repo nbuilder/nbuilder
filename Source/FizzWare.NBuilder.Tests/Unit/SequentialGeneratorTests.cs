@@ -21,29 +21,29 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Test]
         public void ShouldBeAbleToGenerate()
         {
+            Assert.That(generator.Generate(), Is.EqualTo(0));
             Assert.That(generator.Generate(), Is.EqualTo(1));
             Assert.That(generator.Generate(), Is.EqualTo(2));
-            Assert.That(generator.Generate(), Is.EqualTo(3));
         }
 
         [Test]
         public void ShouldBeAbleToSetIncrement()
         {
             generator.Increment = 2;
+            Assert.That(generator.Generate(), Is.EqualTo(0));
             Assert.That(generator.Generate(), Is.EqualTo(2));
             Assert.That(generator.Generate(), Is.EqualTo(4));
             Assert.That(generator.Generate(), Is.EqualTo(6));
-            Assert.That(generator.Generate(), Is.EqualTo(8));
         }
 
         [Test]
         public void ShouldBeAbleToGenerateInReverse()
         {
             generator.Direction = GeneratorDirection.Descending;
+            Assert.That(generator.Generate(), Is.EqualTo(0));
             Assert.That(generator.Generate(), Is.EqualTo(-1));
             Assert.That(generator.Generate(), Is.EqualTo(-2));
             Assert.That(generator.Generate(), Is.EqualTo(-3));
-            Assert.That(generator.Generate(), Is.EqualTo(-4));
         }
     }
 }
