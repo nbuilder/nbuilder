@@ -26,77 +26,18 @@ public class SetupFixture
 
         setup = true;
 
-        BuilderSetup.SetCreatePersistenceMethod<Product>
-            (
-                x =>
-                {
-                    var productRepository = Dependency.Resolve<IProductRepository>();
-                    productRepository.Create(x);
-                }
-            );
+        var productRepository = Dependency.Resolve<IProductRepository>();
+        var taxTypeRepository = Dependency.Resolve<ITaxTypeRepository>();
+        var categoryRepository = Dependency.Resolve<ICategoryRepository>();
 
-        BuilderSetup.SetCreatePersistenceMethod<IList<Product>>
-            (
-                x =>
-                {
-                    var productRepository = Dependency.Resolve<IProductRepository>();
-                    productRepository.CreateAll(x);
-                }
-            );
-
-        BuilderSetup.SetCreatePersistenceMethod<TaxType>
-            (
-                x =>
-                {
-                    var productRepository = Dependency.Resolve<ITaxTypeRepository>();
-                    productRepository.Create(x);
-                }
-            );
-
-        BuilderSetup.SetCreatePersistenceMethod<IList<TaxType>>
-            (
-                x =>
-                {
-                    var productRepository = Dependency.Resolve<ITaxTypeRepository>();
-                    productRepository.CreateAll(x);
-                }
-            );
-
-        BuilderSetup.SetCreatePersistenceMethod<Category>
-            (
-                x =>
-                {
-                    var productRepository = Dependency.Resolve<ICategoryRepository>();
-                    productRepository.Create(x);
-                }
-            );
-
-        BuilderSetup.SetCreatePersistenceMethod<IList<Category>>
-            (
-                x =>
-                {
-                    var productRepository = Dependency.Resolve<ICategoryRepository>();
-                    productRepository.CreateAll(x);
-                }
-            );
-
-        BuilderSetup.SetUpdatePersistenceMethod<Category>
-            (
-                x =>
-                {
-                    var productRepository = Dependency.Resolve<ICategoryRepository>();
-                    productRepository.Save(x);
-                }
-            );
-
-        BuilderSetup.SetUpdatePersistenceMethod<IList<Category>>
-            (
-                x =>
-                {
-                    var productRepository = Dependency.Resolve<ICategoryRepository>();
-                    productRepository.SaveAll(x);
-                }
-            );
+        BuilderSetup.SetCreatePersistenceMethod<Product> ( productRepository.Create );
+        BuilderSetup.SetCreatePersistenceMethod<IList<Product>> ( productRepository.CreateAll);
+        BuilderSetup.SetCreatePersistenceMethod<TaxType>( taxTypeRepository.Create );
+        BuilderSetup.SetCreatePersistenceMethod<IList<TaxType>> ( taxTypeRepository.CreateAll );
+        BuilderSetup.SetCreatePersistenceMethod<Category> ( categoryRepository.Create );
+        BuilderSetup.SetCreatePersistenceMethod<IList<Category>> ( categoryRepository.CreateAll );
+        BuilderSetup.SetUpdatePersistenceMethod<Category> ( categoryRepository.Save );
+        BuilderSetup.SetUpdatePersistenceMethod<IList<Category>> ( categoryRepository.SaveAll );
     }
 
     [TestFixtureSetUp]
