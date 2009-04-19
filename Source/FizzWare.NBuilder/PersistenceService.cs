@@ -4,20 +4,17 @@ using System.Linq.Expressions;
 
 namespace FizzWare.NBuilder
 {
+    public delegate void PersistenceMethod<T>(T obj);
+
     public class PersistenceService : IPersistenceService
     {
-        public Dictionary<Type, Expression> CreateMethods { get; set; }
-        public Dictionary<Type, Expression> UpdateMethods { get; set; }
+        public Dictionary<Type, MulticastDelegate> CreateMethods { get; set; }
+        public Dictionary<Type, MulticastDelegate> UpdateMethods { get; set; }
 
         public PersistenceService()
         {
-            CreateMethods = new Dictionary<Type, Expression>();
-            UpdateMethods = new Dictionary<Type, Expression>();
-        }
-
-        static Expression<Action<V>> ToExpression<V>(Action<V> method)
-        {
-            return x => method(x);
+            CreateMethods = new Dictionary<Type, MulticastDelegate>();
+            UpdateMethods = new Dictionary<Type, MulticastDelegate>();
         }
 
         public void Create<T>(T obj)
@@ -25,9 +22,9 @@ namespace FizzWare.NBuilder
             if (!CreateMethods.ContainsKey(typeof(T)))
                 throw new PersistenceMethodNotFoundException("No persistence create method set up for " + typeof(T).Name + ". Add one using BuilderSetup.SetPersistenceCreateMethod()");
 
-            var lambda = (LambdaExpression)CreateMethods[typeof(T)];
+            var creator = CreateMethods[typeof(T)];
 
-            lambda.Compile().DynamicInvoke(obj);
+            creator.DynamicInvoke(obj);
         }
 
         public void Create<T>(IList<T> list)
@@ -35,9 +32,9 @@ namespace FizzWare.NBuilder
             if (!CreateMethods.ContainsKey(typeof(IList<T>)))
                 throw new PersistenceMethodNotFoundException("No persistence create method set up for " + typeof(IList<T>).Name + ". Add one using BuilderSetup.SetPersistenceCreateMethod()");
 
-            var lambda = (LambdaExpression)CreateMethods[typeof(IList<T>)];
+            var creator = CreateMethods[typeof(IList<T>)];
 
-            lambda.Compile().DynamicInvoke(list);
+            creator.DynamicInvoke(list);
         }
 
         public void Update<T>(T obj)
@@ -45,9 +42,9 @@ namespace FizzWare.NBuilder
             if (!UpdateMethods.ContainsKey(typeof(T)))
                     throw new PersistenceMethodNotFoundException("No persistence update method set up for " + typeof(T).Name + ". Add one using BuilderSetup.SetPersistenceUpdateMethod()");
 
-            var lambda = (LambdaExpression)UpdateMethods[typeof(T)];
+            var updater = UpdateMethods[typeof(T)];
 
-            lambda.Compile().DynamicInvoke(obj);
+            updater.DynamicInvoke(obj);
         }
 
         public void Update<T>(IList<T> obj)
@@ -55,29 +52,25 @@ namespace FizzWare.NBuilder
             if (!UpdateMethods.ContainsKey(typeof(IList<T>)))
                 throw new PersistenceMethodNotFoundException("No persistence update method set up for " + typeof(IList<T>).Name + ". Add one using BuilderSetup.SetPersistenceUpdateMethod()");
 
-            var lambda = (LambdaExpression)UpdateMethods[typeof(IList<T>)];
+            var updater = UpdateMethods[typeof(IList<T>)];
 
-            lambda.Compile().DynamicInvoke(obj);
+            updater.DynamicInvoke(obj);
         }
 
         public void SetPersistenceCreateMethod<T>(Action<T> saveMethod)
         {
-            var expr = ToExpression(saveMethod);
-
             if (CreateMethods.ContainsKey(typeof(T)))
-                CreateMethods[typeof(T)] = expr;
+                CreateMethods[typeof(T)] = saveMethod;
             else
-                CreateMethods.Add(typeof(T), expr);
+                CreateMethods.Add(typeof(T), saveMethod);
         }
 
         public void SetPersistenceUpdateMethod<T>(Action<T> saveMethod)
         {
-            var expr = ToExpression(saveMethod);
-
             if (UpdateMethods.ContainsKey(typeof(T)))
-                UpdateMethods[typeof(T)] = expr;
+                UpdateMethods[typeof(T)] = saveMethod;
             else
-                UpdateMethods.Add(typeof(T), expr);
+                UpdateMethods.Add(typeof(T), saveMethod);
         }
     }
 }

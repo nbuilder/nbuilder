@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Linq.Expressions;
 
@@ -5,12 +6,12 @@ namespace FizzWare.NBuilder.Implementation
 {
     public class MultiFunction
     {
-        private readonly Expression expression;
+        private readonly MulticastDelegate del;
         private readonly object list;
 
-        public MultiFunction(Expression expression, object list)
+        public MultiFunction(MulticastDelegate del, object list)
         {
-            this.expression = expression;
+            this.del = del;
             this.list = list;
         }
 
@@ -20,7 +21,7 @@ namespace FizzWare.NBuilder.Implementation
 
             foreach (var item in enumerable)
             {
-                ((LambdaExpression) expression).Compile().DynamicInvoke(obj, item);
+                del.DynamicInvoke(obj, item);
             }
         }
     }

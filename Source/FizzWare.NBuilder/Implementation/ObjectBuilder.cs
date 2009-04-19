@@ -12,7 +12,7 @@ namespace FizzWare.NBuilder.Implementation
         private IPropertyNamer propertyNamer;
         private object[] constructorArgs;
 
-        private readonly List<Expression> functions = new List<Expression>();
+        private readonly List<MulticastDelegate> functions = new List<MulticastDelegate>();
 
         private readonly List<MultiFunction> multiFunctions = new List<MultiFunction>();
 
@@ -29,37 +29,20 @@ namespace FizzWare.NBuilder.Implementation
 
         public IObjectBuilder<T> With<TFunc>(Func<T, TFunc> func)
         {
-            functions.Add(ToExpression(func));
+            functions.Add(func);
             return this;
         }
 
         public IObjectBuilder<T> Do(Action<T> action)
         {
-            functions.Add(ToExpression(action));
+            functions.Add(action);
             return this;
         }
 
         public IObjectBuilder<T> DoMultiple<U>(Action<T, U> action, IList<U> list)
         {
-            var expression = ToExpression(action);
-            multiFunctions.Add(new MultiFunction(expression, list));
-
+            multiFunctions.Add(new MultiFunction(action, list));
             return this;
-        }
-
-        static Expression<Func<V, TResult>> ToExpression<V, TResult>(Func<V, TResult> method)
-        {
-            return x => method(x);
-        }
-
-        static Expression<Action<V>> ToExpression<V>(Action<V> method)
-        {
-            return x => method(x);
-        }
-
-        static Expression<Action<V, W>> ToExpression<V, W>(Action<V, W> method)
-        {
-            return (x, y) => method(x, y);
         }
 
         public IObjectBuilder<T> WithPropertyNamer(IPropertyNamer thePropertyNamer)
@@ -81,8 +64,8 @@ namespace FizzWare.NBuilder.Implementation
         {
             for (int i = 0; i < functions.Count; i++)
             {
-                var lambda = (LambdaExpression)functions[i];
-                lambda.Compile().DynamicInvoke(obj);
+                var del = functions[i];
+                del.DynamicInvoke(obj);
             }
 
             for (int i = 0; i < multiFunctions.Count; i++)
