@@ -35,8 +35,15 @@ namespace FizzWare.NBuilder.Implementation
             this.persistenceService = persistenceService;
 
             this.listCount = initialList.Count;
+            
+            Func<int, int, int> pwr = (x, y) => (int)Math.Pow(x, y);
 
-            int requiredSize = numberOfRoots * depth * (depth * max);
+            int requiredSize = 0;
+
+            for (int i = 0; i < depth; i++) 
+                requiredSize += pwr(max, i);
+
+            requiredSize = requiredSize * numberOfRoots;
 
             if (listCount < requiredSize)
                 throw new ArgumentException("The initial list must contain at least " + requiredSize + " items");
@@ -116,8 +123,8 @@ namespace FizzWare.NBuilder.Implementation
 
                 if (currDepth < (depth - 1))
                 {
-                    AddChildren(child, ++currDepth);
-                } 
+                    AddChildren(child, currDepth + 1);
+                }
             }
 
             path.DecreaseDepth();

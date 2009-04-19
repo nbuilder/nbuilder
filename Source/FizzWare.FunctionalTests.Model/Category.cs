@@ -19,7 +19,6 @@ namespace FizzWare.NBuilder.FunctionalTests.Model
         [Property]
         public string Description { get; set; }
 
-        //[HasMany(Table = "Category", ColumnKey = "ParentId", Inverse = true, Cascade = ManyRelationCascadeEnum.SaveUpdate)]
         [HasMany(Table = "Category", ColumnKey = "ParentId", Cascade = ManyRelationCascadeEnum.SaveUpdate)]
         public IList<Category> Children { get; set; }
 

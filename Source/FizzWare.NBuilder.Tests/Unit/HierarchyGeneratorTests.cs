@@ -106,7 +106,14 @@ namespace FizzWare.NBuilder.Tests.Unit
         [ExpectedException(typeof(ArgumentException))]
         public void ShouldComplainIfInitialListIsNotBigEnough()
         {
-            int requiredSizeOfList = numberOfRoots * depth * (depth * maxCategories);
+            // Formula is (maxCategories^0 + maxCategories^1 + maxCategories^2) * numRoots
+
+            // = (5^0 + 5^1 + 5^2) * 4
+            // = (1 + 5 + 25) * 4
+            // = 31 * 4
+            // = 124
+
+            const int requiredSizeOfList = 124;
 
             using (mocks.Record())
             {
