@@ -5,7 +5,7 @@ using System.Text;
 
 namespace FizzWare.NBuilder
 {
-    // NVResharper incorrectly advises that the typecasts are redundant
+    // Resharper incorrectly advises that the typecasts are redundant
 
     // ReSharper disable RedundantCast
     public class RandomGenerator : IRandomGenerator
@@ -14,7 +14,7 @@ namespace FizzWare.NBuilder
 
         public RandomGenerator()
         {
-            rnd = new Random(DateTime.Now.Millisecond);
+            rnd = new Random(Guid.NewGuid().GetHashCode());
         }
 
         public virtual short Next(short min, short max)

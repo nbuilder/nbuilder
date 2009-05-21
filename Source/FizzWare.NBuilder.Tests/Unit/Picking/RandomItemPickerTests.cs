@@ -44,8 +44,38 @@ namespace FizzWare.NBuilder.Tests.Unit.Picking
 
             using (mocks.Ordered())
             {
-                RandomItemPicker<MyClass> picker = new RandomItemPicker<MyClass>(list, randomGenerator);
+                var picker = new RandomItemPicker<MyClass>(list, randomGenerator);
                 picker.Pick();
+            }
+        }
+
+        [Test]
+        public void RandomItemPickerShouldHitRandomGeneratorEveryTimeAnItemIsPicked()
+        {
+            var zero = new MyClass();
+            var one = new MyClass();
+            var two = new MyClass();
+            var three = new MyClass();
+
+            var theList = new List<MyClass> {zero, one, two, three};
+
+            int endIndex = theList.Count - 1;
+
+            using (mocks.Record())
+            {
+                randomGenerator.Expect(x => x.Next(0, endIndex)).Return(0);
+                randomGenerator.Expect(x => x.Next(0, endIndex)).Return(1);
+                randomGenerator.Expect(x => x.Next(0, endIndex)).Return(2);
+                randomGenerator.Expect(x => x.Next(0, endIndex)).Return(3);
+            }
+
+            using (mocks.Ordered())
+            {
+                var picker = new RandomItemPicker<MyClass>(theList, randomGenerator);
+                Assert.That(picker.Pick(), Is.EqualTo(zero));
+                Assert.That(picker.Pick(), Is.EqualTo(one));
+                Assert.That(picker.Pick(), Is.EqualTo(two));
+                Assert.That(picker.Pick(), Is.EqualTo(three));
             }
         }
     }

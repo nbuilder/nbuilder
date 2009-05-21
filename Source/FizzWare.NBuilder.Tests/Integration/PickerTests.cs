@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
@@ -40,6 +41,47 @@ namespace FizzWare.NBuilder.Tests.Integration
                 Assert.That(products[i].SimpleClasses.Count, Is.AtLeast(1));
                 Assert.That(products[i].SimpleClasses.Count, Is.AtMost(5));
             }
+        }
+
+        [Test]
+        public void PickRandomItemShouldReturnRandomItems()
+        {
+            var itemList = new List<string>();
+
+            for (int i = 0; i < 100; i++)
+                itemList.Add("string"+i);
+
+            var results = new List<string>();
+
+            for (int i = 0; i < 100; i++)
+                results.Add(Pick<string>.RandomItemFrom(itemList));
+
+            var distinctItems = results.Distinct();
+
+            Assert.That(distinctItems.Count(), Is.GreaterThan(1));
+        }
+
+        [Test]
+        public void WhenUsedInContextRandomItemPickerShouldPickDifferentItems()
+        {
+            var stringList = new List<string>();
+
+            for (int i = 0; i < 100; i++)
+                stringList.Add("string"+i);
+
+            var strings = stringList.ToArray();
+
+            var vehicles =
+                Builder<MyClass>
+                    .CreateListOfSize(10)
+                    .WhereAll()
+                    .Have(x => x.StringOne = Pick<string>.RandomItemFrom(strings))
+                .Build();
+
+            var list = vehicles.Select(x => x.StringOne);
+
+            var distinctList = list.Distinct();
+            Assert.That(distinctList.Count(), Is.GreaterThan(1));
         }
     }
 }
