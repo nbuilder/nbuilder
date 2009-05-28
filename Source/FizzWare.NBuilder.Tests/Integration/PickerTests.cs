@@ -83,5 +83,21 @@ namespace FizzWare.NBuilder.Tests.Integration
             var distinctList = list.Distinct();
             Assert.That(distinctList.Count(), Is.GreaterThan(1));
         }
+
+		[Test]
+		public void WhenPickingFromSmallListLargeNumberOfTimesShouldPickEachItemAtLeastOnce()
+		{
+			var fruits = new List<string>() { "apple", "orange", "banana", "pear" };
+
+			var fruitBaskets =
+				Builder<MyClass>
+					.CreateListOfSize(100)
+					.WhereAll()
+					.Have(x => x.StringOne = Pick<string>.RandomItemFrom(fruits))
+				.Build();
+
+			var fruitsPicked = fruitBaskets.Select(x => x.StringOne).Distinct();
+			Assert.AreEqual(4, fruitsPicked.Count());
+		}
     }
 }

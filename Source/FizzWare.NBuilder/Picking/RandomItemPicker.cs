@@ -12,7 +12,7 @@ namespace FizzWare.NBuilder
         {
             this.from = from;
             this.randomGenerator = randomGenerator;
-            max = from.Count - 1;
+            max = from.Count;
         }
 
         public T Pick()

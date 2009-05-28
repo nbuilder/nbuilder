@@ -38,7 +38,7 @@ namespace FizzWare.NBuilder.Tests.Unit.Picking
             using (mocks.Record())
             {
                 list.Expect(x => x.Count).Return(listCount);
-                randomGenerator.Expect(x => x.Next(0, listCount - 1)).Return(2);
+                randomGenerator.Expect(x => x.Next(0, listCount)).Return(2);
                 list.Expect(x => x[2]).Return(new MyClass());
             }
 
@@ -59,7 +59,7 @@ namespace FizzWare.NBuilder.Tests.Unit.Picking
 
             var theList = new List<MyClass> {zero, one, two, three};
 
-            int endIndex = theList.Count - 1;
+            int endIndex = theList.Count;
 
             using (mocks.Record())
             {
