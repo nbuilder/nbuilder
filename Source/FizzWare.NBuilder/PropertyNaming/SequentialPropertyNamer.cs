@@ -50,7 +50,7 @@ namespace FizzWare.NBuilder.PropertyNaming
         /// Gets the new sequence number taking into account a maximum value.
         /// 
         /// If the current sequence number is above the maximum value it will 
-        /// reset it to zero, and continue the sequence from there until the maximum 
+        /// reset it to one, and continue the sequence from there until the maximum 
         /// value is reached again.
         /// </summary>
         /// <param name="sequenceNumber">The sequence number.</param>
@@ -58,16 +58,13 @@ namespace FizzWare.NBuilder.PropertyNaming
         /// <returns></returns>
         private static int GetNewSequenceNumber(int sequenceNumber, int maxValue)
         {
-            int newSequenceNumber;
-            if (sequenceNumber > maxValue)
-            {
-                int divisor = sequenceNumber / maxValue;
-                newSequenceNumber = sequenceNumber - (divisor * maxValue);
-            }
-            else
-                newSequenceNumber = sequenceNumber;
+            int newSequenceNumber = sequenceNumber % maxValue;
+			if (newSequenceNumber == 0)
+			{
+				newSequenceNumber = maxValue;
+			}
 
-            return newSequenceNumber;
+			return newSequenceNumber;
         }
 
         protected override short GetInt16(MemberInfo memberInfo)
@@ -145,6 +142,14 @@ namespace FizzWare.NBuilder.PropertyNaming
         {
             return (sequenceNumber % 2) == 0 ? true : false;
         }
+
+		protected override Enum GetEnum(MemberInfo memberInfo)
+		{
+			Type enumType = GetMemberType(memberInfo);
+			var enumValues = EnumHelper.GetArrayOf(enumType);
+			int newSequenceNumber = GetNewSequenceNumber(sequenceNumber, enumValues.Length);
+			return Enum.Parse(enumType,enumValues[newSequenceNumber - 1].ToString()) as Enum;
+		}
 
         // TODO: Implement this
         //public static void AddHandlerFor<T>(Func<MemberInfo, int, T> func)

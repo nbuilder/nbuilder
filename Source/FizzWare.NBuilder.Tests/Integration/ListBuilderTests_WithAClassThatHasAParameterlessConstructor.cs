@@ -41,6 +41,8 @@ namespace FizzWare.NBuilder.Tests.Integration
 
             Assert.That(list[0].StringOne, Is.EqualTo("StringOne1"));
             Assert.That(list[9].StringOne, Is.EqualTo("StringOne10"));
+			Assert.That(list[0].EnumProperty, Is.EqualTo(MyEnum.EnumValue1));
+			Assert.That(list[9].EnumProperty, Is.EqualTo(MyEnum.EnumValue5));
         }
 
         [Test]

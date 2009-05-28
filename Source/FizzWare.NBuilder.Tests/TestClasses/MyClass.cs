@@ -44,6 +44,8 @@ namespace FizzWare.NBuilder.Tests.TestClasses
 
         public bool Bool { get; set; }
 
+		public MyEnum EnumProperty { get; set; }
+
         internal int InternalInt { get; set; }
         private int PrivateInt { get; set; }
         protected int ProtectedInt { get; set; }

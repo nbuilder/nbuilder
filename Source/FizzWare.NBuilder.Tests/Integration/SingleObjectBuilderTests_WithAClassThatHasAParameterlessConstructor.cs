@@ -39,6 +39,7 @@ namespace FizzWare.NBuilder.Tests.Integration
             Assert.That(obj.Int, Is.EqualTo(1));
             Assert.That(obj.StringOne, Is.EqualTo("StringOne1"));
             Assert.That(obj.StringTwo, Is.EqualTo("StringTwo1"));
+			Assert.That(obj.EnumProperty, Is.EqualTo(MyEnum.EnumValue1));
         }
 
         [Test]

@@ -95,6 +95,7 @@ namespace FizzWare.NBuilder.PropertyNaming
         protected abstract string GetString(MemberInfo memberInfo);
         protected abstract bool GetBoolean(MemberInfo memberInfo);
         protected abstract char GetChar(MemberInfo memberInfo);
+		protected abstract Enum GetEnum(MemberInfo memberInfo);
 
         protected virtual bool ShouldIgnore(MemberInfo memberInfo)
         {
@@ -202,6 +203,12 @@ namespace FizzWare.NBuilder.PropertyNaming
                 value = GetBoolean(memberInfo);
                 goto set_property;
             }
+
+			if (type.BaseType == typeof(System.Enum))
+			{
+				value = GetEnum(memberInfo);
+				goto set_property;
+			}
 
             // else
             HandleUnknownType(type, memberInfo, obj);
