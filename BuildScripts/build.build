@@ -44,7 +44,7 @@
   <echo>Build label is: ${build.label}</echo>
 
   <!-- TARGETS -->
-  <target name="build" depends="clean, create.output.directory, cover.unit.tests, set.assemblyinfo, compile.release, publish.dll" />
+  <target name="build" depends="clean, create.output.directory,  set.assemblyinfo, compile.release, publish.dll" />
 
   <target name="clean">
     <delete>

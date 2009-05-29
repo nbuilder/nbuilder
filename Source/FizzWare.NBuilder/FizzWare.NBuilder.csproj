@@ -93,7 +93,7 @@
     <Compile Include="Generators\IUniqueRandomGenerator.cs" />
     <Compile Include="Picking\IConstraint.cs" />
     <Compile Include="Picking\RandomItemPicker.cs" />
-    <Compile Include="PropertyNaming\EnumHelpers.cs" />
+    <Compile Include="PropertyNaming\EnumHelper.cs" />
     <Compile Include="PropertyNaming\IPropertyNamer.cs" />
     <Compile Include="Picking\Pick.cs" />
     <Compile Include="Picking\Constraint.cs" />

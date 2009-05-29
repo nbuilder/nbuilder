@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
-using System.Text;
-using FizzWare.NBuilder.PropertyNaming;
+﻿using FizzWare.NBuilder.PropertyNaming;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
