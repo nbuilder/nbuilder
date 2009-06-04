@@ -6,6 +6,7 @@ using FizzWare.NBuilder.PropertyNaming;
 using FizzWare.NBuilder.Tests.TestClasses;
 using FizzWare.NBuilder.Tests.Unit;
 using NUnit.Framework;
+using NUnit.Framework.Extensions;
 using NUnit.Framework.SyntaxHelpers;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -181,6 +182,24 @@ namespace FizzWare.NBuilder.Tests.Integration
             Assert.That(objects[6].Int, Is.EqualTo(2));
             Assert.That(objects[7].Int, Is.EqualTo(2));
         }
+
+		[RowTest]
+		[Row(10,5)]
+		[Row(10,1)]
+		[Row(5,5)]
+		[Row(1,1)]
+		public void ShouldBeAbleToUseWhereRandom(int listSize, int randomItems)
+		{
+			var objects = Builder<MyClass>
+				.CreateListOfSize(listSize)
+				.WhereRandom(randomItems)
+					.Have(x => x.StringOne = "TestRandom")
+				.Build();
+
+			int numObjectsWithRandomValue = objects.Where(x => x.StringOne.Equals("TestRandom")).Count();
+
+			Assert.AreEqual(randomItems, numObjectsWithRandomValue);
+		}
 
         [Test]
         public void ShouldBeAbleToDisableAutoPropertyNaming()

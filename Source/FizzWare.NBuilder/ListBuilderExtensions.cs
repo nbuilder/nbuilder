@@ -37,7 +37,7 @@ namespace FizzWare.NBuilder
         public static IOperable<T> WhereRandom<T>(this IListBuilder<T> listBuilder, int amount)
         {
             var listBuilderImpl = GetListBuilderImpl<T>(listBuilder);
-            return WhereRandom(listBuilderImpl, amount, 0, listBuilderImpl.Capacity - 1);
+            return WhereRandom(listBuilderImpl, amount, 0, listBuilderImpl.Capacity);
         }
 
         public static IOperable<T> WhereRandom<T>(this IListBuilder<T> listBuilder, int amount, int start, int end)

@@ -298,7 +298,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         public void WhereRandomShouldReturnRandomDeclarationOfRangeOfWholeList()
         {
             const int amount = 5;
-            const int end = listSize - 1;
+            const int end = listSize;
 
             var randomDeclaration = new RandomDeclaration<MyClass>(listBuilderImpl, null, null, amount, 0, end);
 
