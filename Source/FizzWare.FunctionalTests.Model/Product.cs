@@ -1,3 +1,4 @@
+using System;
 using Castle.ActiveRecord;
 using System.Collections;
 using System.Collections.Generic;
@@ -39,6 +40,9 @@ namespace FizzWare.NBuilder.FunctionalTests.Model
         public IList<Category> Categories { get; set; }
 
         public WarehouseLocation Location { get; set; }
+
+        public DateTime Created { get; set; }
+        public DateTime LastEdited { get; set; }
 
         public decimal Tax
         { 

@@ -29,6 +29,11 @@ namespace FizzWare.NBuilder
             return Have(operable, func);
         }
 
+        public static IOperable<T> Has<T, TFunc>(this IOperable<T> operable, Func<T, TFunc> func)
+        {
+            return Have(operable, func);
+        }
+
         public static IOperable<T> And<T>(this IOperable<T> operable, Action<T> action)
         {
             return HaveDoneToThem(operable, action);
@@ -41,6 +46,11 @@ namespace FizzWare.NBuilder
             return (IOperable<T>)declaration;
         }
 
+        public static IOperable<T> IsConstructedWith<T>(this IOperable<T> operable, params object[] args)
+        {
+            return AreConstructedWith(operable, args);
+        }
+
         public static IOperable<T> HaveDoneToThem<T>(this IOperable<T> operable, Action<T> action)
         {
             var declaration = GetDeclaration(operable);
@@ -48,11 +58,21 @@ namespace FizzWare.NBuilder
             return (IOperable<T>)declaration;
         }
 
+        public static IOperable<T> HasDoneToIt<T>(this IOperable<T> operable, Action<T> action)
+        {
+            return HaveDoneToThem(operable, action);
+        }
+
         public static IOperable<T> HaveDoneToThemForAll<T, U>(this IOperable<T> operable, Action<T, U> action, IList<U> list)
         {
             var declaration = GetDeclaration(operable);
             declaration.ObjectBuilder.DoMultiple(action, list);
             return (IOperable<T>)declaration;
+        }
+
+        public static IOperable<T> HasDoneToItForAll<T, U>(this IOperable<T> operable, Action<T, U> action, IList<U> list)
+        {
+            return HaveDoneToThemForAll(operable, action, list);
         }
     }
 }

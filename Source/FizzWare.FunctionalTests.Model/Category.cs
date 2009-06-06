@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using Castle.ActiveRecord;
-using NHibernate.Type;
 using System.Diagnostics;
 
 namespace FizzWare.NBuilder.FunctionalTests.Model

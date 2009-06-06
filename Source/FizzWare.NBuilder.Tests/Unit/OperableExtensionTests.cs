@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using FizzWare.NBuilder.Implementation;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NUnit.Framework;
@@ -40,6 +38,18 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
 
         [Test]
+        public void ShouldBeAbleToUseHas()
+        {
+            using (mocks.Record())
+            {
+                operable.Expect(x => x.ObjectBuilder).Return(new ObjectBuilder<MyClass>(null));
+                objectBuilder.Expect(x => x.With(func));
+            }
+
+            OperableExtensions.Has((IOperable<MyClass>)operable, func);
+        }
+
+        [Test]
         public void ShouldBeAbleToUseAnd()
         {
             using (mocks.Record())
@@ -67,6 +77,21 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
 
         [Test]
+        public void ShouldBeAbleToUseHasDoneToItForAll()
+        {
+            var simpleClasses = new List<SimpleClass>();
+            Action<MyClass, SimpleClass> action = (x, y) => x.Add(y);
+
+            using (mocks.Record())
+            {
+                operable.Expect(x => x.ObjectBuilder).Return(objectBuilder);
+                objectBuilder.Expect(x => x.DoMultiple(action, simpleClasses)).Return(objectBuilder);
+            }
+
+            OperableExtensions.HasDoneToItForAll((IOperable<MyClass>)operable, action, simpleClasses);
+        }
+
+        [Test]
         public void ShouldBeAbleToUseHaveDoneToThem()
         {
             Action<MyClass> action = x => x.DoSomething();
@@ -78,6 +103,20 @@ namespace FizzWare.NBuilder.Tests.Unit
             }
 
             OperableExtensions.HaveDoneToThem((IOperable<MyClass>)operable, action);
+        }
+
+        [Test]
+        public void ShouldBeAbleToUseHasDoneToIt()
+        {
+            Action<MyClass> action = x => x.DoSomething();
+
+            using (mocks.Record())
+            {
+                operable.Expect(x => x.ObjectBuilder).Return(objectBuilder);
+                objectBuilder.Expect(x => x.Do(action)).Return(objectBuilder);
+            }
+
+            OperableExtensions.HasDoneToIt((IOperable<MyClass>)operable, action);
         }
 
         [Test]

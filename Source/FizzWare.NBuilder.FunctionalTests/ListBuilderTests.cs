@@ -96,6 +96,18 @@ namespace FizzWare.NBuilder.FunctionalTests
         }
 
         [Test]
+        public void UsingSingularSyntaxInstead()
+        {
+            var products = Builder<Product>
+                            .CreateListOfSize(10)
+                            .WhereTheFirst(1)
+                                .Has(x => x.Title = "Special title 1")
+                            .Build();
+
+            Assert.That(products[0].Title, Is.EqualTo("Special title 1"));
+        }
+
+        [Test]
         public void UsingAGenerator()
         {
             var generator = new RandomGenerator();

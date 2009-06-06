@@ -36,5 +36,19 @@ namespace FizzWare.NBuilder.Tests.Integration
             Assert.That(list[0].String, Is.EqualTo(theString));
             Assert.That(list[0].Decimal, Is.EqualTo(theDecimal));
         }
+
+        [Test]
+        public void ShouldBeAbleToUseSingularSyntax()
+        {
+            var list =
+                Builder<MyClassWithConstructor>
+                    .CreateListOfSize(1)
+                    .WhereTheFirst(1)
+                        .IsConstructedWith(theString, theDecimal)
+                    .Build();
+
+            Assert.That(list[0].String, Is.EqualTo(theString));
+            Assert.That(list[0].Decimal, Is.EqualTo(theDecimal));
+        }
     }
 }
