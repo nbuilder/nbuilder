@@ -13,4 +13,13 @@ namespace FizzWare.NBuilder.Tests.TestClasses
 		EnumValue4,
 		EnumValue5
 	}
+
+    public enum MyByteEnum : byte
+    {
+        EnumValue1,
+        EnumValue2,
+        EnumValue3,
+        EnumValue4,
+        EnumValue5
+    }
 }

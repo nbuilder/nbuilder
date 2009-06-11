@@ -182,8 +182,8 @@ namespace FizzWare.NBuilder.PropertyNaming
 		protected override Enum GetEnum(MemberInfo memberInfo)
 		{
 			Type enumType = GetMemberType(memberInfo);
-			var enumValues = EnumHelper.GetArrayOf(enumType);
-			return Enum.Parse(enumType,enumValues[generator.Next(0, enumValues.Length)].ToString()) as Enum;
+            var enumValues = GetEnumValues(enumType);
+			return Enum.Parse(enumType,enumValues.GetValue(generator.Next(0, enumValues.Length)).ToString()) as Enum;
 		}
     }
 }

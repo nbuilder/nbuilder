@@ -44,6 +44,8 @@ namespace FizzWare.NBuilder.Tests.TestClasses
 
 		public MyEnum EnumProperty { get; set; }
 
+        public MyByteEnum ByteEnumProperty { get; set; }
+
         internal int InternalInt { get; set; }
         private int PrivateInt { get; set; }
         protected int ProtectedInt { get; set; }
@@ -67,6 +69,14 @@ namespace FizzWare.NBuilder.Tests.TestClasses
         public void Add(SimpleClass simpleClass)
         {
             SimpleClasses.Add(simpleClass);
+        }
+
+        public int ThisPropertyHasAGetterWhichThrowsAnException
+        {
+            get
+            {
+                throw new Exception("ThisPropertyHasAGetterWhichThrowsAnException");
+            }
         }
     }
     #pragma warning restore 169

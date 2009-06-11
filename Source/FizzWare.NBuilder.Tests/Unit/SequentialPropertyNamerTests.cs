@@ -253,7 +253,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             Assert.That(prop0, Is.EqualTo(0));
             Assert.That(prop9, Is.EqualTo(0));
         }
-
+        
         // TODO: Add this
         //[Test]
         //public void ShouldBeAbleToAddCustomHandler()

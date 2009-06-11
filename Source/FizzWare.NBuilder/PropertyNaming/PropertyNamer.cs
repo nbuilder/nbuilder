@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reflection;
 using FizzWare.NBuilder.Implementation;
 
@@ -34,12 +35,26 @@ namespace FizzWare.NBuilder.PropertyNaming
 
             if (memberInfo is FieldInfo)
             {
-                currentValue = ((FieldInfo)memberInfo).GetValue(obj);
+                try
+                {
+                    currentValue = ((FieldInfo)memberInfo).GetValue(obj);
+                }
+                catch (TargetInvocationException)
+                {
+                    Trace.WriteLine(string.Format("{0} threw an exception when attempting to read its current value", memberInfo.Name));
+                }
             }
 
             if (memberInfo is PropertyInfo)
             {
-                currentValue = ((PropertyInfo)memberInfo).GetValue(obj, null);
+                try
+                {
+                    currentValue = ((PropertyInfo)memberInfo).GetValue(obj, null);
+                }
+                catch (TargetInvocationException)
+                {
+                    Trace.WriteLine(string.Format("{0} threw an exception when attempting to read its current value", memberInfo.Name));
+                }
             }
 
             return currentValue;
@@ -215,6 +230,12 @@ namespace FizzWare.NBuilder.PropertyNaming
 
             set_property:
             SetValue(memberInfo, obj, value);
+        }
+
+        protected static Array GetEnumValues(Type enumType)
+        {
+            var enumArray = Enum.GetValues(enumType);
+            return enumArray;
         }
     }
 }

@@ -21,6 +21,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -102,7 +104,6 @@
     <Compile Include="Generators\IUniqueRandomGenerator.cs" />
     <Compile Include="Picking\IConstraint.cs" />
     <Compile Include="Picking\RandomItemPicker.cs" />
-    <Compile Include="PropertyNaming\EnumHelper.cs" />
     <Compile Include="PropertyNaming\IPropertyNamer.cs" />
     <Compile Include="Picking\Pick.cs" />
     <Compile Include="Picking\Constraint.cs" />

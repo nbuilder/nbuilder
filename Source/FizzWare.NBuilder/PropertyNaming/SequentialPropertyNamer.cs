@@ -146,9 +146,9 @@ namespace FizzWare.NBuilder.PropertyNaming
 		protected override Enum GetEnum(MemberInfo memberInfo)
 		{
 			Type enumType = GetMemberType(memberInfo);
-			var enumValues = EnumHelper.GetArrayOf(enumType);
+			var enumValues = GetEnumValues(enumType);
 			int newSequenceNumber = GetNewSequenceNumber(sequenceNumber, enumValues.Length);
-			return Enum.Parse(enumType,enumValues[newSequenceNumber - 1].ToString()) as Enum;
+			return Enum.Parse(enumType, enumValues.GetValue(newSequenceNumber - 1).ToString()) as Enum;
 		}
 
         // TODO: Implement this
