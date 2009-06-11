@@ -8,5 +8,6 @@ namespace FizzWare.NBuilder.Implementation
         int Capacity { get; }
         IDeclarationQueue<T> Declarations { get; }
         IDeclaration<T> AddDeclaration(IDeclaration<T> declaration);
+        IUniqueRandomGenerator ScopeUniqueRandomGenerator { get; }
     }
 }

@@ -302,5 +302,26 @@ namespace FizzWare.NBuilder.Tests.Integration
                 BuilderSetup.ResetToDefaults();
             }
         }
+
+        [Test]
+        public void Where_random_test()
+        {
+            var items = Builder<MyClass>.CreateListOfSize(40)
+                .WhereRandom(10)
+                    .Have(x => x.EnumProperty = MyEnum.EnumValue1)
+                .WhereRandom(10)
+                    .Have(x => x.EnumProperty = MyEnum.EnumValue2)
+                .WhereRandom(10)
+                    .Have(x => x.EnumProperty = MyEnum.EnumValue3)
+                .WhereRandom(10)
+                    .Have(x => x.EnumProperty = MyEnum.EnumValue4)
+                .Build();
+
+            Assert.That(items.Count(), Is.EqualTo(40));
+            Assert.That(items.Count(x => x.EnumProperty == MyEnum.EnumValue1), Is.EqualTo(10));
+            Assert.That(items.Count(x => x.EnumProperty == MyEnum.EnumValue2), Is.EqualTo(10));
+            Assert.That(items.Count(x => x.EnumProperty == MyEnum.EnumValue3), Is.EqualTo(10));
+            Assert.That(items.Count(x => x.EnumProperty == MyEnum.EnumValue4), Is.EqualTo(10));
+        }
     }
 }

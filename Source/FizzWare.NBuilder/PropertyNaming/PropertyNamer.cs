@@ -39,7 +39,7 @@ namespace FizzWare.NBuilder.PropertyNaming
                 {
                     currentValue = ((FieldInfo)memberInfo).GetValue(obj);
                 }
-                catch (TargetInvocationException)
+                catch (Exception)
                 {
                     Trace.WriteLine(string.Format("{0} threw an exception when attempting to read its current value", memberInfo.Name));
                 }
@@ -51,7 +51,7 @@ namespace FizzWare.NBuilder.PropertyNaming
                 {
                     currentValue = ((PropertyInfo)memberInfo).GetValue(obj, null);
                 }
-                catch (TargetInvocationException)
+                catch (Exception)
                 {
                     Trace.WriteLine(string.Format("{0} threw an exception when attempting to read its current value", memberInfo.Name));
                 }
@@ -219,7 +219,7 @@ namespace FizzWare.NBuilder.PropertyNaming
                 goto set_property;
             }
 
-			if (type.BaseType == typeof(System.Enum))
+			if (type.BaseType == typeof(Enum))
 			{
 				value = GetEnum(memberInfo);
 				goto set_property;

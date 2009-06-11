@@ -37,6 +37,8 @@ namespace FizzWare.NBuilder.Implementation
             mainList = new T[size];
 
             declarations = new DeclarationQueue<T>(size);
+
+            ScopeUniqueRandomGenerator = new UniqueRandomGenerator();
         }
 
         public IObjectBuilder<T> CreateObjectBuilder()
@@ -96,6 +98,11 @@ namespace FizzWare.NBuilder.Implementation
         {
             this.declarations.Enqueue(declaration);
             return declarations.GetLastItem();
+        }
+
+        public IUniqueRandomGenerator ScopeUniqueRandomGenerator
+        {
+            get; private set;
         }
     }
 }

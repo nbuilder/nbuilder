@@ -1,10 +1,7 @@
 using System;
 using System.Collections.Generic;
-using FizzWare.NBuilder;
 using System.Reflection;
-using System.Diagnostics;
 using FizzWare.NBuilder.Implementation;
-using FizzWare.NBuilder.PropertyNaming;
 
 namespace FizzWare.NBuilder.PropertyNaming
 {
@@ -16,7 +13,6 @@ namespace FizzWare.NBuilder.PropertyNaming
         }
 
         private int sequenceNumber;
-        
 
         public override void SetValuesOfAllIn<T>(IList<T> objects)
         {
