@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{19C2A470-C015-46B7-84A1-B8F6895795B1}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -75,6 +75,7 @@
     <Compile Include="TestClasses\IMyOtherInterface.cs" />
     <Compile Include="Unit\Dates\DatesTests.cs" />
     <Compile Include="Unit\Dates\StaticMonthTests.cs" />
+    <Compile Include="Unit\ExtensibileRandomValuePropertyNamerTests.cs" />
     <Compile Include="Unit\RandomValuePropertyNamerTestFixture.cs" />
     <Compile Include="Unit\RandomValuePropertyNamerTests_Default.cs" />
     <Compile Include="Unit\RandomValuePropertyNamerTests_LoremIpsumStrings.cs" />

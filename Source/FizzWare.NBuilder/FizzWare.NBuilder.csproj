@@ -4,6 +4,8 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
+
+
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{2A91787B-AFB7-4A4C-A5D5-836F578F2DB6}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -59,6 +61,8 @@
     <Compile Include="Dates\The.cs" />
     <Compile Include="Dates\Today.cs" />
     <Compile Include="Dates\Year.cs" />
+    <Compile Include="Extensions\ObjectExtensions.cs" />
+    <Compile Include="Generators\GetRandom.cs" />
     <Compile Include="Implementation\MultiFunction.cs" />
     <Compile Include="PersistenceMethodNotFoundException.cs" />
     <Compile Include="PersistenceService.cs" />
@@ -66,7 +70,6 @@
     <Compile Include="Generators\IRandomGenerator.cs" />
     <Compile Include="HierarchySpec.cs" />
     <Compile Include="IPersistenceService.cs" />
-    <Compile Include="IExtendible.cs" />
     <Compile Include="IHierarchySpec.cs" />
     <Compile Include="Implementation\Guard.cs" />
     <Compile Include="Implementation\HierarchyGenerator.cs" />
@@ -104,9 +107,11 @@
     <Compile Include="Generators\IUniqueRandomGenerator.cs" />
     <Compile Include="Picking\IConstraint.cs" />
     <Compile Include="Picking\RandomItemPicker.cs" />
+    <Compile Include="PropertyNaming\ExtensibleRandomValuePropertyNamer.cs" />
     <Compile Include="PropertyNaming\IPropertyNamer.cs" />
     <Compile Include="Picking\Pick.cs" />
     <Compile Include="Picking\Constraint.cs" />
+    <Compile Include="Extensions\MemberInfoExtensions.cs" />
     <Compile Include="PropertyNaming\PropertyNamer.cs" />
     <Compile Include="PropertyNaming\RandomValuePropertyNamer.cs" />
     <Compile Include="PropertyNaming\SequentialPropertyNamer.cs" />
@@ -118,6 +123,7 @@
     <Compile Include="Picking\UniqueRandomPicker.cs" />
     <Compile Include="Picking\UpToConstraint.cs" />
     <Compile Include="Picking\With.cs" />
+    <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="SingleObjectBuilderExtensions.cs" />
     <Compile Include="TypeCreationException.cs" />
     <Compile Include="Implementation\RandomDeclaration.cs" />

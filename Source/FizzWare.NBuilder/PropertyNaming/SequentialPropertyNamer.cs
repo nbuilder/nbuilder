@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using FizzWare.NBuilder.Implementation;
+using System.Text;
 
 namespace FizzWare.NBuilder.PropertyNaming
 {
@@ -12,11 +14,11 @@ namespace FizzWare.NBuilder.PropertyNaming
         {
         }
 
-        private int sequenceNumber;
+        private int _sequenceNumber;
 
         public override void SetValuesOfAllIn<T>(IList<T> objects)
         {
-            sequenceNumber = 1;
+            _sequenceNumber = 1;
 
             var type = typeof(T);
 
@@ -32,13 +34,13 @@ namespace FizzWare.NBuilder.PropertyNaming
                     SetMemberValue(fieldInfo, objects[i]);
                 }
 
-                sequenceNumber++;
+                _sequenceNumber++;
             }
         }
 
         public override void SetValuesOf<T>(T obj)
         {
-            sequenceNumber = 1;
+            _sequenceNumber = 1;
             base.SetValuesOf(obj);
         }
 
@@ -65,53 +67,53 @@ namespace FizzWare.NBuilder.PropertyNaming
 
         protected override short GetInt16(MemberInfo memberInfo)
         {
-            int newSequenceNumber = GetNewSequenceNumber(sequenceNumber, short.MaxValue);
+            int newSequenceNumber = GetNewSequenceNumber(_sequenceNumber, short.MaxValue);
             return Convert.ToInt16(newSequenceNumber);
         }
 
         protected override int GetInt32(MemberInfo memberInfo)
         {
-            return sequenceNumber;
+            return _sequenceNumber;
         }
 
         protected override long GetInt64(MemberInfo memberInfo)
         {
-            return Convert.ToInt64(sequenceNumber);
+            return Convert.ToInt64(_sequenceNumber);
         }
 
         protected override decimal GetDecimal(MemberInfo memberInfo)
         {
-            return Convert.ToDecimal(sequenceNumber);
+            return Convert.ToDecimal(_sequenceNumber);
         }
 
         protected override float GetSingle(MemberInfo memberInfo)
         {
-            return Convert.ToSingle(sequenceNumber);
+            return Convert.ToSingle(_sequenceNumber);
         }
 
         protected override double GetDouble(MemberInfo memberInfo)
         {
-            return Convert.ToDouble(sequenceNumber);
+            return Convert.ToDouble(_sequenceNumber);
         }
 
         protected override ushort GetUInt16(MemberInfo memberInfo)
         {
-            return Convert.ToUInt16(sequenceNumber);
+            return Convert.ToUInt16(_sequenceNumber);
         }
 
         protected override uint GetUInt32(MemberInfo memberInfo)
         {
-            return Convert.ToUInt32(sequenceNumber);
+            return Convert.ToUInt32(_sequenceNumber);
         }
 
         protected override ulong GetUInt64(MemberInfo memberInfo)
         {
-            return Convert.ToUInt64(sequenceNumber);
+            return Convert.ToUInt64(_sequenceNumber);
         }
 
         protected override char GetChar(MemberInfo memberInfo)
         {
-            int newSequenceNumber = GetNewSequenceNumber(sequenceNumber, 26);
+            int newSequenceNumber = GetNewSequenceNumber(_sequenceNumber, 26);
             newSequenceNumber += 64;
 
             return Convert.ToChar(newSequenceNumber);
@@ -119,33 +121,53 @@ namespace FizzWare.NBuilder.PropertyNaming
 
         protected override byte GetByte(MemberInfo memberInfo)
         {
-            int newSequenceNumber = GetNewSequenceNumber(sequenceNumber, byte.MaxValue);
+            int newSequenceNumber = GetNewSequenceNumber(_sequenceNumber, byte.MaxValue);
 
             return Convert.ToByte(newSequenceNumber);
         }
 
+        protected override sbyte GetSByte(MemberInfo memberInfo)
+        {
+            int newSequenceNumber = GetNewSequenceNumber(_sequenceNumber, sbyte.MaxValue);
+
+            return Convert.ToSByte(newSequenceNumber);
+        }
+
         protected override DateTime GetDateTime(MemberInfo memberInfo)
         {
-            return DateTime.Now.Date.AddDays(sequenceNumber - 1);
+            return DateTime.Now.Date.AddDays(_sequenceNumber - 1);
         }
 
         protected override string GetString(MemberInfo memberInfo)
         {
-            return memberInfo.Name + sequenceNumber;
+            return memberInfo.Name + _sequenceNumber;
         }
 
         protected override bool GetBoolean(MemberInfo memberInfo)
         {
-            return (sequenceNumber % 2) == 0 ? true : false;
+            return (_sequenceNumber % 2) == 0 ? true : false;
         }
 
 		protected override Enum GetEnum(MemberInfo memberInfo)
 		{
 			Type enumType = GetMemberType(memberInfo);
 			var enumValues = GetEnumValues(enumType);
-			int newSequenceNumber = GetNewSequenceNumber(sequenceNumber, enumValues.Length);
+			int newSequenceNumber = GetNewSequenceNumber(_sequenceNumber, enumValues.Length);
 			return Enum.Parse(enumType, enumValues.GetValue(newSequenceNumber - 1).ToString()) as Enum;
 		}
+
+        protected override Guid GetGuid(MemberInfo memberInfo)
+        {
+            var bytes = new byte[16];
+            var convertedBytes = BitConverter.GetBytes(_sequenceNumber);
+
+            bytes[12] = convertedBytes[3];
+            bytes[13] = convertedBytes[2];
+            bytes[14] = convertedBytes[1];
+            bytes[15] = convertedBytes[0];
+
+            return new Guid(bytes);
+        }
 
         // TODO: Implement this
         //public static void AddHandlerFor<T>(Func<MemberInfo, int, T> func)

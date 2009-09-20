@@ -66,7 +66,7 @@ namespace FizzWare.NBuilder.FunctionalTests
         }
 
         [Test]
-        public void CreatingAClassThatHasAConstructor()
+        public void CreatingAClassThatHasAConstructorUsingLegacySyntax()
         {
             var basket = Builder<ShoppingBasket>.CreateNew().Build();
             var product = Builder<Product>.CreateNew().Build();
@@ -76,6 +76,28 @@ namespace FizzWare.NBuilder.FunctionalTests
             var basketItem = Builder<BasketItem>
                 .CreateNew()
                     .WithConstructorArgs(basket, product, quantity)
+                .Build();
+
+            // The property namer will still apply sequential names to the properties
+            // however it won't overwrite any properties that have been set through the constructor
+            Assert.That(basketItem.DiscountCode, Is.EqualTo("DiscountCode1"));
+
+            Assert.That(basketItem.Basket, Is.EqualTo(basket));
+            Assert.That(basketItem.Product, Is.EqualTo(product));
+            Assert.That(basketItem.Quantity, Is.EqualTo(quantity));
+        }
+
+        [Test]
+        public void CreatingAClassThatHasAConstructorUsingExpressionSyntax()
+        {
+            var basket = Builder<ShoppingBasket>.CreateNew().Build();
+            var product = Builder<Product>.CreateNew().Build();
+            const int quantity = 5;
+
+            // BasketItem's ctor: BasketItem(ShoppingBasket basket, Product product, int quantity)
+            var basketItem = Builder<BasketItem>
+                .CreateNew()
+                    .WithConstructor(() => new BasketItem(basket, product, quantity))
                 .Build();
 
             // The property namer will still apply sequential names to the properties

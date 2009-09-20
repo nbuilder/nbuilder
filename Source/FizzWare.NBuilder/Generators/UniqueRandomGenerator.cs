@@ -18,6 +18,11 @@ namespace FizzWare.NBuilder
             return NextUnique<byte>(min, max, Convert.ToByte(max - min), base.Next);
         }
 
+        public override sbyte Next(sbyte min, sbyte max)
+        {
+            return NextUnique<sbyte>(min, max, Convert.ToSByte(max - min), base.Next);
+        }
+
         public override char Next(char min, char max)
         {
             return NextUnique<char>(min, max, Convert.ToChar(max - min), base.Next);
@@ -114,6 +119,7 @@ namespace FizzWare.NBuilder
                                     {typeof (double), new List<object>()},
                                     {typeof (decimal), new List<object>()},
                                     {typeof (byte), new List<object>()},
+                                    {typeof (sbyte), new List<object>()},
                                     {typeof (char), new List<object>()}
                                 };
         }

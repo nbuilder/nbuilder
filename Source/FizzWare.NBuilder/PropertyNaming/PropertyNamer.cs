@@ -8,12 +8,12 @@ namespace FizzWare.NBuilder.PropertyNaming
 {
     public abstract class PropertyNamer : IPropertyNamer
     {
-        protected readonly IReflectionUtil reflectionUtil;
+        protected readonly IReflectionUtil ReflectionUtil;
         protected const BindingFlags FLAGS = (BindingFlags.Public | BindingFlags.Instance);
 
         protected PropertyNamer(IReflectionUtil reflectionUtil)
         {
-            this.reflectionUtil = reflectionUtil;
+            this.ReflectionUtil = reflectionUtil;
         }
 
         public abstract void SetValuesOfAllIn<T>(IList<T> objects);
@@ -35,14 +35,7 @@ namespace FizzWare.NBuilder.PropertyNaming
 
             if (memberInfo is FieldInfo)
             {
-                try
-                {
-                    currentValue = ((FieldInfo)memberInfo).GetValue(obj);
-                }
-                catch (Exception)
-                {
-                    Trace.WriteLine(string.Format("{0} threw an exception when attempting to read its current value", memberInfo.Name));
-                }
+                currentValue = ((FieldInfo)memberInfo).GetValue(obj);
             }
 
             if (memberInfo is PropertyInfo)
@@ -105,12 +98,14 @@ namespace FizzWare.NBuilder.PropertyNaming
         protected abstract ushort GetUInt16(MemberInfo memberInfo);
         protected abstract uint GetUInt32(MemberInfo memberInfo);
         protected abstract ulong GetUInt64(MemberInfo memberInfo);
+        protected abstract sbyte GetSByte(MemberInfo memberInfo);
         protected abstract byte GetByte(MemberInfo memberInfo);
         protected abstract DateTime GetDateTime(MemberInfo memberInfo);
         protected abstract string GetString(MemberInfo memberInfo);
         protected abstract bool GetBoolean(MemberInfo memberInfo);
         protected abstract char GetChar(MemberInfo memberInfo);
-		protected abstract Enum GetEnum(MemberInfo memberInfo);
+        protected abstract Enum GetEnum(MemberInfo memberInfo);
+        protected abstract Guid GetGuid(MemberInfo memberInfo);
 
         protected virtual bool ShouldIgnore(MemberInfo memberInfo)
         {
@@ -130,7 +125,7 @@ namespace FizzWare.NBuilder.PropertyNaming
 
             object currentValue = GetCurrentValue(memberInfo, obj);
 
-            if (!reflectionUtil.IsDefaultValue(currentValue))
+            if (!ReflectionUtil.IsDefaultValue(currentValue))
                 return;
 
             object value = null;
@@ -138,97 +133,93 @@ namespace FizzWare.NBuilder.PropertyNaming
             if (type == typeof(short))
             {
                 value = GetInt16(memberInfo);
-                goto set_property;
             }
 
-            if (type == typeof(int))
+            else if (type == typeof(int))
             {
                 value = GetInt32(memberInfo);
-                goto set_property;
             }
 
-            if (type == typeof(long))
+            else if (type == typeof(long))
             {
                 value = GetInt64(memberInfo);
-                goto set_property;
             }
 
-            if (type == typeof(decimal))
+            else if (type == typeof(decimal))
             {
                 value = GetDecimal(memberInfo);
-                goto set_property;
             }
 
-            if (type == typeof(float))
+            else if (type == typeof(float))
             {
                 value = GetSingle(memberInfo);
-                goto set_property;
             }
 
-            if (type == typeof(double))
+            else if (type == typeof(double))
             {
                 value = GetDouble(memberInfo);
-                goto set_property;
             }
 
-            if (type == typeof(ushort))
+            else if (type == typeof(ushort))
             {
                 value = GetUInt16(memberInfo);
-                goto set_property;
             }
 
-            if (type == typeof(uint))
+            else if (type == typeof(uint))
             {
                 value = GetUInt32(memberInfo);
-                goto set_property;
             }
 
-            if (type == typeof(ulong))
+            else if (type == typeof(ulong))
             {
                 value = GetUInt64(memberInfo);
-                goto set_property;
             }
 
-            if (type == typeof(char))
+            else if (type == typeof(char))
             {
                 value = GetChar(memberInfo);
-                goto set_property;
             }
 
-            if (type == typeof(byte))
+            else if (type == typeof(byte))
             {
                 value = GetByte(memberInfo);
-                goto set_property;
             }
 
-            if (type == typeof(DateTime))
+            else if (type == typeof(sbyte))
+            {
+                value = GetSByte(memberInfo);
+            }
+
+            else if (type == typeof(DateTime))
             {
                 value = GetDateTime(memberInfo);
-                goto set_property;
             }
 
-            if (type == typeof(string))
+            else if (type == typeof(string))
             {
                 value = GetString(memberInfo);
-                goto set_property;
             }
 
-            if (type == typeof(bool))
+            else if (type == typeof(bool))
             {
                 value = GetBoolean(memberInfo);
-                goto set_property;
             }
 
-			if (type.BaseType == typeof(Enum))
+			else if (type.BaseType == typeof(Enum))
 			{
 				value = GetEnum(memberInfo);
-				goto set_property;
 			}
 
-            // else
-            HandleUnknownType(type, memberInfo, obj);
+            else if (type == typeof(Guid))
+            {
+                value = GetGuid(memberInfo);
+            }
 
-            set_property:
+            else
+			{
+                HandleUnknownType(type, memberInfo, obj);    
+			}
+
             SetValue(memberInfo, obj, value);
         }
 

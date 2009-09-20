@@ -35,9 +35,7 @@ namespace FizzWare.NBuilder
 
         public virtual float Next(float min, float max)
         {
-
             return (float) Next((int) min, (int)max);
-
         }
 
         public virtual double Next(double min, double max)
@@ -72,6 +70,11 @@ namespace FizzWare.NBuilder
             return (byte)Next((int)min, (int)max);
         }
 
+        public virtual sbyte Next(sbyte min, sbyte max)
+        {
+            return (sbyte)Next((int)min, (int)max);
+        }
+
         public DateTime Next(DateTime min, DateTime max)
         {
             long minTicks = min.Ticks;
@@ -86,6 +89,11 @@ namespace FizzWare.NBuilder
         public virtual bool Next()
         {
             return rnd.Next(2) == 1;
+        }
+
+        public Guid NextGuid()
+        {
+            return Guid.NewGuid();
         }
 
         public virtual ushort Next(ushort min, ushort max)

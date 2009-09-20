@@ -53,6 +53,13 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
 
         [Test]
+        public void ShouldAssignSequenceNumberToSBytes()
+        {
+            Assert.That(theList[0].SByte, Is.EqualTo(1));
+            Assert.That(theList[9].SByte, Is.EqualTo(10));
+        }
+
+        [Test]
         [Description("The desired behaviour is byte properties should be given the values 1...255, 1...255, 1...255 repeatedly")]
         public void ShouldRestartFromZeroToBytesWhenGoesAboveMaxValue()
         {
@@ -60,6 +67,16 @@ namespace FizzWare.NBuilder.Tests.Unit
             Assert.That(theList[byte.MaxValue].Byte, Is.EqualTo(1));
             Assert.That(theList[byte.MaxValue * 2].Byte, Is.EqualTo(1));
             Assert.That(theList[byte.MaxValue * 3].Byte, Is.EqualTo(1));
+        }
+
+        [Test]
+        [Description("The desired behaviour is byte properties should be given the values 1...255, 1...255, 1...255 repeatedly")]
+        public void ShouldRestartFromZeroToSBytesWhenGoesAboveMaxValue()
+        {
+            Assert.That(theList[0].SByte, Is.EqualTo(1));
+            Assert.That(theList[sbyte.MaxValue].SByte, Is.EqualTo(1));
+            Assert.That(theList[sbyte.MaxValue * 2].SByte, Is.EqualTo(1));
+            Assert.That(theList[sbyte.MaxValue * 3].SByte, Is.EqualTo(1));
         }
 
         [Test]
@@ -132,6 +149,14 @@ namespace FizzWare.NBuilder.Tests.Unit
         {
             Assert.That(theList[0].Ulong, Is.EqualTo(1));
             Assert.That(theList[9].Ulong, Is.EqualTo(10));
+        }
+
+        [Test]
+        public void ShouldAssignSequenceNumberToGuids()
+        {
+            Assert.That(theList[0].Guid.ToString(), Is.EqualTo("00000000-0000-0000-0000-000000000001"));
+            Assert.That(theList[9].Guid.ToString(), Is.EqualTo("00000000-0000-0000-0000-00000000000a"));
+            Assert.That(theList[254].Guid.ToString(), Is.EqualTo("00000000-0000-0000-0000-0000000000ff"));
         }
 
         [Test]

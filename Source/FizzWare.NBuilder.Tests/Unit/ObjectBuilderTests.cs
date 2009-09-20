@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using FizzWare.NBuilder.Implementation;
 using FizzWare.NBuilder.PropertyNaming;
 using FizzWare.NBuilder.Tests.TestClasses;
@@ -67,6 +65,62 @@ namespace FizzWare.NBuilder.Tests.Unit
             {
                 myClassWithConstructorBuilder
                         .WithConstructorArgs(arg1, arg2)
+                        .Construct();
+            }
+        }
+
+        [Test]
+        public void ShouldBeAbleToConstructAnObjectWithNullableConstructorArgs_using_expression_syntax()
+        {
+            const string arg1 = null;
+
+            using (mocks.Record())
+            {
+                reflectionUtil.Expect(x => x.RequiresConstructorArgs(typeof(MyClassWithConstructor))).Return(true);
+                reflectionUtil.Expect(x => x.CreateInstanceOf<MyClassWithConstructor>(arg1)).Return(new MyClassWithConstructor(arg1));
+            }
+
+            using (mocks.Playback())
+            {
+                myClassWithConstructorBuilder
+                        .WithConstructor( () => new MyClassWithConstructor(arg1) )
+                        .Construct();
+            }
+        }
+
+        [Test]
+        public void Should_be_able_to_construct_an_object_using_WithConstructor()
+        {
+            const int arg1 = 1;
+            const float arg2 = 2f;
+
+            using (mocks.Record())
+            {
+                reflectionUtil.Expect(x => x.RequiresConstructorArgs(typeof(MyClassWithConstructor))).Return(true);
+                reflectionUtil.Expect(x => x.CreateInstanceOf<MyClassWithConstructor>(arg1, arg2)).Return(new MyClassWithConstructor(arg1, arg2));
+            }
+
+            using (mocks.Playback())
+            {
+                myClassWithConstructorBuilder
+                        .WithConstructor(() => new MyClassWithConstructor(arg1, arg2))
+                        .Construct();
+            }
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentException))]
+        public void WithConstructor_should_complain_if_the_expression_is_not_a_NewExpression()
+        {
+            using (mocks.Record())
+            {}
+
+            using (mocks.Playback())
+            {
+                var myClass = new MyClassWithConstructor(1, 2);
+
+                myClassWithConstructorBuilder
+                        .WithConstructor( () => myClass)
                         .Construct();
             }
         }

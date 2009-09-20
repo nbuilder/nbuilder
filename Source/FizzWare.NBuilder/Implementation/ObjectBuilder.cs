@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using FizzWare.NBuilder.PropertyNaming;
@@ -21,6 +22,22 @@ namespace FizzWare.NBuilder.Implementation
             this.reflectionUtil = reflectionUtil;
         }
 
+        public IObjectBuilder<T> WithConstructor(Expression<Func<T>> constructor)
+        {
+            if (constructor.Body.NodeType != ExpressionType.New)
+            {
+                throw new ArgumentException("WithConstructor expects a constructor expression");
+            }
+
+            var constructorArguments =
+                (from argument in ((NewExpression)constructor.Body).Arguments
+                select Expression.Lambda(argument).Compile().DynamicInvoke()).ToArray();
+
+            constructorArgs = constructorArguments;
+            return this;
+        }
+
+        [Obsolete]
         public IObjectBuilder<T> WithConstructorArgs(params object[] args)
         {
             this.constructorArgs = args;

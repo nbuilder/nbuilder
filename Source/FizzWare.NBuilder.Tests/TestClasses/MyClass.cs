@@ -25,6 +25,7 @@ namespace FizzWare.NBuilder.Tests.TestClasses
         public string StringTwo { get; set; }
         
         public byte Byte { get; set; }
+        public sbyte SByte { get; set; }
         public short Short { get; set; }
         public int Int { get; set; }
         public long Long { get; set; }
@@ -46,6 +47,8 @@ namespace FizzWare.NBuilder.Tests.TestClasses
 
         public MyByteEnum ByteEnumProperty { get; set; }
 
+        public Guid Guid { get; set; }
+
         internal int InternalInt { get; set; }
         private int PrivateInt { get; set; }
         protected int ProtectedInt { get; set; }
@@ -56,7 +59,7 @@ namespace FizzWare.NBuilder.Tests.TestClasses
         
         private int PrivateFieldInt;
         
-        private int ProtectedFieldInt;
+        protected int ProtectedFieldInt;
 
         internal int InternalFieldInt;
 
@@ -76,6 +79,11 @@ namespace FizzWare.NBuilder.Tests.TestClasses
             get
             {
                 throw new Exception("ThisPropertyHasAGetterWhichThrowsAnException");
+            }
+
+            set
+            {
+                
             }
         }
     }

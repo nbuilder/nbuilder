@@ -18,5 +18,10 @@ namespace FizzWare.NBuilder.Tests.TestClasses
             Int = anInt;
             Float = aFloat;
         }
+
+        public MyClassWithConstructor(string aString)
+        {
+            String = aString;
+        }
     }
 }

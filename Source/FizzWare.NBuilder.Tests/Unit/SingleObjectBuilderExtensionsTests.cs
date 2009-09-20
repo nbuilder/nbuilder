@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using FizzWare.NBuilder.Implementation;
 using FizzWare.NBuilder.Tests.TestClasses;
@@ -40,6 +41,18 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             using (mocks.Playback())
                 SingleObjectBuilderExtensions.With(objectBuilder, func);
+        }
+
+        [Test]
+        public void ShouldBeAbleToUseWithConstructor()
+        {
+            Expression<Func<MyClass>> constructor = () => new MyClass();
+
+            using (mocks.Record())
+                objectBuilder.Expect(x => x.WithConstructor(constructor)).Return(objectBuilder);
+
+            using (mocks.Playback())
+                SingleObjectBuilderExtensions.WithConstructor(objectBuilder, constructor);
         }
 
         [Test]

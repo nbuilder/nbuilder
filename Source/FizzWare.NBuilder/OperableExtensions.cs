@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using FizzWare.NBuilder.Implementation;
 
 namespace FizzWare.NBuilder
@@ -38,7 +39,20 @@ namespace FizzWare.NBuilder
         {
             return HaveDoneToThem(operable, action);
         }
+        
+        public static IOperable<T> AreConstructedUsing<T>(this IOperable<T> operable, Expression<Func<T>> constructor)
+        {
+            var declaration = GetDeclaration(operable);
+            declaration.ObjectBuilder.WithConstructor(constructor);
+            return (IOperable<T>)declaration;
+        }
 
+        public static IOperable<T> IsConstructedUsing<T>(this IOperable<T> operable, Expression<Func<T>> constructor)
+        {
+            return AreConstructedUsing(operable, constructor);
+        }
+
+        [Obsolete("Use AreConstructedWith(Expression<Func<T>> constructor) instead")]
         public static IOperable<T> AreConstructedWith<T>(this IOperable<T> operable, params object[] args)
         {
             var declaration = GetDeclaration(operable);
@@ -46,6 +60,7 @@ namespace FizzWare.NBuilder
             return (IOperable<T>)declaration;
         }
 
+        [Obsolete("Use IsConstructedWith(Expression<Func<T>> constructor) instead")]
         public static IOperable<T> IsConstructedWith<T>(this IOperable<T> operable, params object[] args)
         {
             return AreConstructedWith(operable, args);

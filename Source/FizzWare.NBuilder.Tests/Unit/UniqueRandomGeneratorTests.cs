@@ -152,6 +152,15 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
 
         [Test]
+        public void ShouldGenerateWithinRange_SByte()
+        {
+            var value =  generator.Next((sbyte)0, (sbyte)4);
+
+            Assert.That(value, Is.GreaterThanOrEqualTo(0));
+            Assert.That(value, Is.LessThanOrEqualTo(4));
+        }
+
+        [Test]
         [ExpectedException(typeof(InvalidOperationException), ExpectedMessage = exceptionMessage)]
         public void ShouldGenerateUniqueNumbers_Byte()
         {

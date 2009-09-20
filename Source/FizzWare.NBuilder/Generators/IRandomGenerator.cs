@@ -18,6 +18,7 @@ namespace FizzWare.NBuilder
 
         char Next(char min, char max);
         byte Next(byte min, byte max);
+        sbyte Next(sbyte min, sbyte max);
 
         DateTime Next(DateTime min, DateTime max);
 
@@ -25,5 +26,7 @@ namespace FizzWare.NBuilder
 
         // TODO: Add NextString() to this interface
         //string NextString(int minLength, int maxLength);
+
+        Guid NextGuid();
     }
 }

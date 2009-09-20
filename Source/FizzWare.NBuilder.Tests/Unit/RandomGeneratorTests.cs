@@ -79,6 +79,20 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
 
         [Test]
+        public void ShouldBeAbleToGenerateSByte()
+        {
+            randomGenerator.Next(sbyte.MinValue, sbyte.MaxValue);
+        }
+
+        [Test]
+        public void ShouldBeAbleToGenerateGuid()
+        {
+            var value = randomGenerator.NextGuid();
+
+            Assert.That(value, Is.Not.EqualTo(Guid.Empty));
+        }
+
+        [Test]
         public void ShouldBeAbleToGenerateDateTime()
         {
             randomGenerator.Next(DateTime.MinValue, DateTime.MaxValue);

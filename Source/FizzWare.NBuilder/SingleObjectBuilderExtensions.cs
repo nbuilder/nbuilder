@@ -1,14 +1,22 @@
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using FizzWare.NBuilder.Implementation;
 
 namespace FizzWare.NBuilder
 {
     public static class SingleObjectBuilderExtensions
     {
+        [Obsolete("Please use WithConstructor( () => new MyClass(arg1, arg2) )")]
         public static ISingleObjectBuilder<T> WithConstructorArgs<T>(this ISingleObjectBuilder<T> objectBuilder, params object[] args)
         {
             ((IObjectBuilder<T>)objectBuilder).WithConstructorArgs(args);
+            return objectBuilder;
+        }
+
+        public static ISingleObjectBuilder<T> WithConstructor<T>(this ISingleObjectBuilder<T> objectBuilder, Expression<Func<T>> constructor)
+        {
+            ((IObjectBuilder<T>)objectBuilder).WithConstructor(constructor);
             return objectBuilder;
         }
 

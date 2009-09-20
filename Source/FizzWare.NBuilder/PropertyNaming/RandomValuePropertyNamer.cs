@@ -131,6 +131,11 @@ namespace FizzWare.NBuilder.PropertyNaming
             return generator.Next(byte.MinValue, byte.MaxValue);
         }
 
+        protected override sbyte GetSByte(MemberInfo memberInfo)
+        {
+            return generator.Next(sbyte.MinValue, sbyte.MaxValue);
+        }
+
         protected override DateTime GetDateTime(MemberInfo memberInfo)
         {
             return generator.Next(minDate, maxDate);
@@ -185,5 +190,10 @@ namespace FizzWare.NBuilder.PropertyNaming
             var enumValues = GetEnumValues(enumType);
 			return Enum.Parse(enumType,enumValues.GetValue(generator.Next(0, enumValues.Length)).ToString()) as Enum;
 		}
+
+        protected override Guid GetGuid(MemberInfo memberInfo)
+        {
+            return generator.NextGuid();
+        }
     }
 }
