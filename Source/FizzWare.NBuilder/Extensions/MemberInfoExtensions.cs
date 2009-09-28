@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Reflection;
 
 namespace FizzWare.NBuilder.Extensions
@@ -15,14 +16,31 @@ namespace FizzWare.NBuilder.Extensions
             return ((PropertyInfo)m).PropertyType;
         }
 
-        public static object GetFieldOrPropertyValue<T>(this MemberInfo m, T instance)
+        public static object GetFieldOrPropertyValue<T>(this MemberInfo memberInfo, T instance)
         {
-            if (m is FieldInfo)
+            object currentValue = null;
+
+            if (memberInfo is FieldInfo)
             {
-                return ((FieldInfo)m).GetValue(instance);
+                currentValue = ((FieldInfo)memberInfo).GetValue(instance);
             }
 
-            return ((PropertyInfo)m).GetValue(instance, null);
+            if (memberInfo is PropertyInfo)
+            {
+                try
+                {
+                    if (((PropertyInfo)memberInfo).GetGetMethod() != null)
+                    {
+                        currentValue = ((PropertyInfo)memberInfo).GetValue(instance, null);
+                    }
+                }
+                catch (Exception)
+                {
+                    Trace.WriteLine(string.Format("NBuilder warning: {0} threw an exception when attempting to read its current value", memberInfo.Name));
+                }
+            }
+
+            return currentValue;
         }
 
         public static void SetFieldOrPropertyValue<T>(this MemberInfo m, T instance, object value)

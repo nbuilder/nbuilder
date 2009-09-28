@@ -8,16 +8,27 @@ namespace FizzWare.NBuilder.PropertyNaming
 {
     public class ExtensibleRandomValuePropertyNamer : IPropertyNamer
     {
-        protected IDictionary<Type, Delegate> handlers = new Dictionary<Type, Delegate>();
+        private readonly IRandomGenerator randomGenerator;
+        protected IDictionary<Type, Delegate> Handlers = new Dictionary<Type, Delegate>();
 
-        public ExtensibleRandomValuePropertyNamer() : this(GetDefaultHandlers()) { }
+        public ExtensibleRandomValuePropertyNamer()
+            : this (new RandomGenerator())
+        {
+        }
+
+        public ExtensibleRandomValuePropertyNamer(IRandomGenerator randomGenerator)
+        {
+            this.randomGenerator = randomGenerator;
+            var handlers = GetDefaultHandlers();
+
+            foreach (var handler in handlers)
+                NameWith(handler);
+        }
 
         public ExtensibleRandomValuePropertyNamer(IEnumerable<Delegate> handlers)
         {
             foreach (var handler in handlers)
-            {
                 NameWith(handler);
-            }
         }
 
         public ExtensibleRandomValuePropertyNamer NameWith<T>(Func<T> handler)
@@ -33,9 +44,9 @@ namespace FizzWare.NBuilder.PropertyNaming
 
         public ExtensibleRandomValuePropertyNamer DontName(Type type)
         {
-            if (handlers.ContainsKey(type))
+            if (Handlers.ContainsKey(type))
             {
-                handlers.Remove(type);
+                Handlers.Remove(type);
             }
             return this;
         }
@@ -74,6 +85,7 @@ namespace FizzWare.NBuilder.PropertyNaming
             {
                 return;
             }
+
             var handler = GetTypeHandler(memberInfo);
             if (handler == null)
             {
@@ -86,13 +98,13 @@ namespace FizzWare.NBuilder.PropertyNaming
         protected Delegate GetTypeHandler(MemberInfo memberInfo)
         {
             var type = memberInfo.GetFieldOrPropertyType();
-            if (handlers.ContainsKey(type))
+            if (Handlers.ContainsKey(type))
             {
-                return handlers[type];
+                return Handlers[type];
             }
             var typeWithoutNullability = type.GetTypeWithoutNullability();
-            return handlers.ContainsKey(typeWithoutNullability)
-                ? handlers[typeWithoutNullability]
+            return Handlers.ContainsKey(typeWithoutNullability)
+                ? Handlers[typeWithoutNullability]
                 : type.IsEnum
                     ? GetDefaultEnumHandler(typeWithoutNullability)
                     : null;
@@ -100,37 +112,37 @@ namespace FizzWare.NBuilder.PropertyNaming
 
         protected Func<Enum> GetDefaultEnumHandler(Type type)
         {
-            return () => GetRandom.Enumeration(type);
+            return () => randomGenerator.Enumeration(type);
         }
 
-        protected static IEnumerable<Delegate> GetDefaultHandlers()
+        protected IEnumerable<Delegate> GetDefaultHandlers()
         {
-            yield return (Func<bool>)GetRandom.Boolean;
-            yield return (Func<int>)GetRandom.Int;
-            yield return (Func<short>)GetRandom.Short;
-            yield return (Func<long>)GetRandom.Long;
-            yield return (Func<uint>)GetRandom.UInt;
-            yield return (Func<ulong>)GetRandom.ULong;
-            yield return (Func<ushort>)GetRandom.UShort;
-            yield return (Func<decimal>)GetRandom.Decimal;
-            yield return (Func<float>)GetRandom.Float;
-            yield return (Func<double>)GetRandom.Double;
-            yield return (Func<byte>)GetRandom.Byte;
-            yield return (Func<sbyte>)GetRandom.SByte;
-            yield return (Func<DateTime>)GetRandom.DateTime;
-            yield return (Func<string>)(() => GetRandom.Phrase(50));
-            yield return (Func<char>)GetRandom.Char;
-            yield return (Func<Guid>)GetRandom.Guid;
+            yield return (Func<bool>)randomGenerator.Boolean;
+            yield return (Func<int>)randomGenerator.Int;
+            yield return (Func<short>)randomGenerator.Short;
+            yield return (Func<long>)randomGenerator.Long;
+            yield return (Func<uint>)randomGenerator.UInt;
+            yield return (Func<ulong>)randomGenerator.ULong;
+            yield return (Func<ushort>)randomGenerator.UShort;
+            yield return (Func<decimal>)randomGenerator.Decimal;
+            yield return (Func<float>)randomGenerator.Float;
+            yield return (Func<double>)randomGenerator.Double;
+            yield return (Func<byte>)randomGenerator.Byte;
+            yield return (Func<sbyte>)randomGenerator.SByte;
+            yield return (Func<DateTime>)randomGenerator.DateTime;
+            yield return (Func<string>)(() => randomGenerator.Phrase(50));
+            yield return (Func<char>)randomGenerator.Char;
+            yield return (Func<Guid>)randomGenerator.Guid;
         }
 
         protected void NameWith(Delegate handler)
         {
             var returnType = handler.Method.ReturnType;
-            if (handlers.ContainsKey(returnType))
+            if (Handlers.ContainsKey(returnType))
             {
-                handlers.Remove(returnType);
+                Handlers.Remove(returnType);
             }
-            handlers.Add(new KeyValuePair<Type, Delegate>(returnType, handler));
+            Handlers.Add(new KeyValuePair<Type, Delegate>(returnType, handler));
         }
     }
 }

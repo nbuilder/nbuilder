@@ -27,6 +27,24 @@ namespace FizzWare.NBuilder
         // TODO: Add NextString() to this interface
         //string NextString(int minLength, int maxLength);
 
-        Guid NextGuid();
+        bool Boolean();
+        int Int();
+        short Short();
+        long Long();
+        uint UInt();
+        ulong ULong();
+        ushort UShort();
+        decimal Decimal();
+        float Float();
+        double Double();
+        byte Byte();
+        sbyte SByte();
+        DateTime DateTime();
+        string Phrase(int length);
+        char Char();
+        Guid Guid();
+
+        T Enumeration<T>() where T : struct;
+        Enum Enumeration(Type type);
     }
 }

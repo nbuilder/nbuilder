@@ -26,7 +26,6 @@ namespace FizzWare.NBuilder.PropertyNaming
             : this(generator, reflectionUtil, generatePositiveValuesOnly, DateTime.MinValue, DateTime.MaxValue, false)
         {
             this.generator = generator;
-            this.useLoremIpsumForStrings = useLoremIpsumForStrings;
         }
 
         public RandomValuePropertyNamer(IRandomGenerator generator, IReflectionUtil reflectionUtil, bool generatePositiveValuesOnly, DateTime minDate, DateTime maxDate, bool useLoremIpsumForStrings)
@@ -193,7 +192,7 @@ namespace FizzWare.NBuilder.PropertyNaming
 
         protected override Guid GetGuid(MemberInfo memberInfo)
         {
-            return generator.NextGuid();
+            return generator.Guid();
         }
     }
 }

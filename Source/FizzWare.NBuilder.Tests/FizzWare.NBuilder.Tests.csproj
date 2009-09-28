@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{19C2A470-C015-46B7-84A1-B8F6895795B1}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -66,8 +66,10 @@
     <Compile Include="Integration\SingleObjectBuilderTests_WithAClassThatHasAParameterlessConstructor.cs" />
     <Compile Include="Integration\SingleObjectBuilderTests_WithAClassThatHasANonParameterlessConstructor.cs" />
     <Compile Include="Integration\SingleObjectBuilderTests_WithAStruct.cs" />
+    <Compile Include="TestClasses\MyAbstractClass.cs" />
     <Compile Include="TestClasses\MyClassInheritor.cs" />
     <Compile Include="TestClasses\MyClassWithOptionalConstructor.cs" />
+    <Compile Include="TestClasses\MyConcreteClass.cs" />
     <Compile Include="TestClasses\MyEnum.cs" />
     <Compile Include="TestClasses\MyHierarchicalClass.cs" />
     <Compile Include="Unit\BuilderSetupTests.cs" />
@@ -94,7 +96,7 @@
     <Compile Include="Unit\Picking\UpToConstraintTests.cs" />
     <Compile Include="Unit\Picking\ExactlyConstraintTests.cs" />
     <Compile Include="Unit\Picking\PickTests.cs" />
-    <Compile Include="Unit\ShouldBeAbleToUseBuilderSetup.cs" />
+    <Compile Include="TestClasses\IMyClassRepository.cs" />
     <Compile Include="Unit\TestListBuilderExtensions.cs" />
     <Compile Include="Unit\UniqueRandomGeneratorTests.cs" />
     <Compile Include="Unit\DeclarationQueueTests.cs" />

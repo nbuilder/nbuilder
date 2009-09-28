@@ -4,8 +4,6 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
-
-
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{2A91787B-AFB7-4A4C-A5D5-836F578F2DB6}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -14,6 +12,8 @@
     <AssemblyName>FizzWare.NBuilder</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>NBuilder.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -127,6 +127,9 @@
     <Compile Include="SingleObjectBuilderExtensions.cs" />
     <Compile Include="TypeCreationException.cs" />
     <Compile Include="Implementation\RandomDeclaration.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="NBuilder.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

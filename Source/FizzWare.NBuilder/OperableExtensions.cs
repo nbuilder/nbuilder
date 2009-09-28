@@ -40,6 +40,15 @@ namespace FizzWare.NBuilder
             return HaveDoneToThem(operable, action);
         }
         
+        /// <summary>
+        /// Specify the constructor for the type like this:
+        /// 
+        /// AreConstructedUsing( () => new MyType(arg1, arg2) )
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="operable"></param>
+        /// <param name="constructor"></param>
+        /// <returns></returns>
         public static IOperable<T> AreConstructedUsing<T>(this IOperable<T> operable, Expression<Func<T>> constructor)
         {
             var declaration = GetDeclaration(operable);
@@ -52,7 +61,7 @@ namespace FizzWare.NBuilder
             return AreConstructedUsing(operable, constructor);
         }
 
-        [Obsolete("Use AreConstructedWith(Expression<Func<T>> constructor) instead")]
+        [Obsolete("Use AreConstructedUsing(Expression<Func<T>> constructor) instead")]
         public static IOperable<T> AreConstructedWith<T>(this IOperable<T> operable, params object[] args)
         {
             var declaration = GetDeclaration(operable);
@@ -60,7 +69,7 @@ namespace FizzWare.NBuilder
             return (IOperable<T>)declaration;
         }
 
-        [Obsolete("Use IsConstructedWith(Expression<Func<T>> constructor) instead")]
+        [Obsolete("Use AreConstructedUsing(Expression<Func<T>> constructor) instead")]
         public static IOperable<T> IsConstructedWith<T>(this IOperable<T> operable, params object[] args)
         {
             return AreConstructedWith(operable, args);

@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Text;
 using FizzWare.NBuilder.Implementation;
 using FizzWare.NBuilder.PropertyNaming;
 
@@ -84,25 +82,20 @@ namespace FizzWare.NBuilder
 
         public static bool ShouldIgnoreProperty(PropertyInfo info)
         {
-            if (disabledAutoNameProperties.Contains(info))
+            if (disabledAutoNameProperties.Any(x => x.DeclaringType == info.DeclaringType && x.Name== info.Name))
                 return true;
 
             return false;
         }
 
-        private static PropertyInfo GetProperty<MODEL, T>(Expression<Func<MODEL, T>> expression)
+        private static PropertyInfo GetProperty<TModel, T>(Expression<Func<TModel, T>> expression)
         {
-            MemberExpression memberExpression = getMemberExpression(expression);
+            MemberExpression memberExpression = GetMemberExpression(expression);
 
             return (PropertyInfo)memberExpression.Member;
         }
 
-        private static MemberExpression getMemberExpression<MODEL, T>(Expression<Func<MODEL, T>> expression)
-        {
-            return getMemberExpression(expression, true);
-        }
-
-        private static MemberExpression getMemberExpression<MODEL, T>(Expression<Func<MODEL, T>> expression, bool enforceCheck)
+        private static MemberExpression GetMemberExpression<TModel, T>(Expression<Func<TModel, T>> expression)
         {
             MemberExpression memberExpression = null;
             if (expression.Body.NodeType == ExpressionType.MemberAccess)

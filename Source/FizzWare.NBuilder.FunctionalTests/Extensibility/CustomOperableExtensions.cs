@@ -23,7 +23,7 @@ namespace FizzWare.NBuilder.FunctionalTests.Extensibility
 
         public static IOperable<Product> HaveLongTitles(this IOperable<Product> operable)
         {
-            ((IDeclaration<Product>) operable).ObjectBuilder.With(x => x.Title = "");
+            ((IDeclaration<Product>)operable).ObjectBuilder.With(x => x.Title = "blahblahblahblahblahblahblahblahblahblahblahblahblahblah");
             return operable;
         }
 
@@ -31,7 +31,7 @@ namespace FizzWare.NBuilder.FunctionalTests.Extensibility
         {
             var listBuilderImpl = (IListBuilderImpl<Product>) listBuilder;
             var declaration = new GlobalDeclaration<Product>(listBuilderImpl, listBuilderImpl.CreateObjectBuilder());
-            declaration.Have(x => x.Title = "");
+            declaration.Have(x => x.Title = "blahblahblahblahblahblahblahblahblahblahblahblahblahblah");
 
             return declaration;
         }

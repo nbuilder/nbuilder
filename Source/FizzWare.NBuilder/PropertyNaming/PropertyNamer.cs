@@ -42,11 +42,14 @@ namespace FizzWare.NBuilder.PropertyNaming
             {
                 try
                 {
-                    currentValue = ((PropertyInfo)memberInfo).GetValue(obj, null);
+                    if (((PropertyInfo)memberInfo).GetGetMethod() != null)
+                    {
+                        currentValue = ((PropertyInfo) memberInfo).GetValue(obj, null);
+                    }
                 }
                 catch (Exception)
                 {
-                    Trace.WriteLine(string.Format("{0} threw an exception when attempting to read its current value", memberInfo.Name));
+                    Trace.WriteLine(string.Format("NBuilder warning: {0} threw an exception when attempting to read its current value", memberInfo.Name));
                 }
             }
 

@@ -1,15 +1,9 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using FizzWare.NBuilder;
+﻿using System.Linq;
 using FizzWare.NBuilder.PropertyNaming;
 using FizzWare.NBuilder.Tests.TestClasses;
-using FizzWare.NBuilder.Tests.Unit;
 using NUnit.Framework;
 using NUnit.Framework.Extensions;
 using NUnit.Framework.SyntaxHelpers;
-using System.Linq.Expressions;
-using System.Reflection;
 using Rhino.Mocks;
 using System.Collections.Generic;
 
@@ -296,6 +290,27 @@ namespace FizzWare.NBuilder.Tests.Integration
 
                 Assert.That(list[9].Int, Is.EqualTo(0));
                 Assert.That(list[9].Long, Is.EqualTo(10));
+            }
+            finally
+            {
+                BuilderSetup.ResetToDefaults();
+            }
+        }
+
+        [Test] 
+        public void should_be_able_to_disable_property_naming_for_an_inherited_property()
+        {
+            try
+            {
+                BuilderSetup.DisablePropertyNamingFor<MyConcreteClass, int>(x => x.PropertyInAbstractClass);
+
+                var list = Builder<MyConcreteClass>.CreateListOfSize(10).Build();
+
+                Assert.That(list[0].PropertyInAbstractClass, Is.EqualTo(0));
+                Assert.That(list[0].PropertyInInheritedClass, Is.EqualTo(1));
+
+                Assert.That(list[9].PropertyInAbstractClass, Is.EqualTo(0));
+                Assert.That(list[9].PropertyInInheritedClass, Is.EqualTo(10));
             }
             finally
             {

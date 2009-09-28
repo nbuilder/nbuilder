@@ -95,6 +95,9 @@ namespace FizzWare.NBuilder.Implementation
         {
             bool requiresArgs = reflectionUtil.RequiresConstructorArgs(typeof(T));
 
+            if (typeof(T).IsAbstract)
+                throw new BuilderException("Cannot build an abstract class");
+
             T obj;
 
             if (requiresArgs && constructorArgs != null)

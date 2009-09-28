@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using FizzWare.NBuilder.Implementation;
 using FizzWare.NBuilder.PropertyNaming;
 
 namespace FizzWare.NBuilder.Implementation

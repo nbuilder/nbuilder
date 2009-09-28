@@ -12,9 +12,14 @@ namespace FizzWare.NBuilder
     {
         private readonly Random rnd;
 
+        private static DateTime minSqlServerDate = new DateTime(1753, 1, 1);
+        private static DateTime maxSqlServerDate = new DateTime(9999, 12, 31);
+
+        private static readonly string[] latinWords = { "lorem", "ipsum", "dolor", "sit", "amet", "consectetur", "adipisicing", "elit", "sed", "do", "eiusmod", "tempor", "incididunt", "ut", "labore", "et", "dolore", "magna", "aliqua" };
+
         public RandomGenerator()
         {
-            rnd = new Random(Guid.NewGuid().GetHashCode());
+            rnd = new Random(Guid().GetHashCode());
         }
 
         public virtual short Next(short min, short max)
@@ -91,9 +96,99 @@ namespace FizzWare.NBuilder
             return rnd.Next(2) == 1;
         }
 
-        public Guid NextGuid()
+        public Guid Guid()
         {
-            return Guid.NewGuid();
+            return System.Guid.NewGuid();
+        }
+
+        public virtual bool Boolean()
+        {
+            return Next(0, 2) != 0;
+        }
+
+        public virtual int Int()
+        {
+            return Next(int.MinValue, int.MaxValue);
+        }
+
+        public virtual short Short()
+        {
+            return Next(short.MinValue, short.MaxValue);
+        }
+
+        public virtual long Long()
+        {
+            return Next(long.MinValue, long.MaxValue);
+        }
+
+        public virtual uint UInt()
+        {
+            return Next(uint.MinValue, uint.MaxValue);
+        }
+
+        public virtual ulong ULong()
+        {
+            return Next(ulong.MinValue, ulong.MaxValue);
+        }
+
+        public virtual ushort UShort()
+        {
+            return Next(ushort.MinValue, ushort.MaxValue);
+        }
+
+        public virtual decimal Decimal()
+        {
+            return Next(decimal.MinValue, decimal.MaxValue);
+        }
+
+        public virtual float Float()
+        {
+            return Next(float.MinValue, float.MaxValue);
+        }
+
+        public virtual double Double()
+        {
+            return Next(double.MinValue, double.MaxValue);
+        }
+
+        public virtual byte Byte()
+        {
+            return Next(byte.MinValue, byte.MaxValue);
+        }
+
+        public virtual sbyte SByte()
+        {
+            return Next(sbyte.MinValue, sbyte.MaxValue);
+        }
+
+        public virtual DateTime DateTime()
+        {
+            return Next(minSqlServerDate, maxSqlServerDate);
+        }
+
+        public virtual string Phrase(int length)
+        {
+            var count = latinWords.Length;
+            var result = string.Empty;
+            var done = false;
+            while (!done)
+            {
+                var word = latinWords[Next(0, count - 1)];
+                if (result.Length + word.Length + 1 > length)
+                {
+                    done = true;
+                }
+                else
+                {
+                    result += word + " ";
+                }
+            }
+            return result.Trim();
+        }
+
+        public virtual char Char()
+        {
+            return Next(char.MinValue, char.MaxValue);
         }
 
         public virtual ushort Next(ushort min, ushort max)
@@ -114,6 +209,24 @@ namespace FizzWare.NBuilder
             rnd.NextBytes(buffer);
             return BitConverter.ToUInt64(buffer, 0);
         }
+
+        public T Enumeration<T>() where T : struct
+        {
+            var values = Enum.GetValues(typeof(T));
+            var index = Next(0, values.Length - 1);
+            return (T)values.GetValue(index);
+        }
+
+        public Enum Enumeration(Type type)
+        {
+            if (!type.IsEnum)
+            {
+                throw new ArgumentException(string.Format("{0} is not an enum type.", type.FullName), "type");
+            }
+            var values = Enum.GetValues(type);
+            var index = Next(0, values.Length - 1);
+            return (Enum)values.GetValue(index);
+        }   
 
         // TODO: Implement NextString()
         //public virtual string NextString(int minLength, int maxLength)

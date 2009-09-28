@@ -40,7 +40,7 @@ namespace FizzWare.NBuilder.Tests.Unit
                 generator.Expect(x => x.Next(char.MinValue, char.MaxValue)).Return('A').Repeat.Times(listSize);
                 generator.Expect(x => x.Next(DateTime.MinValue, DateTime.MaxValue)).Return(DateTime.Today.Date).Repeat.Times(listSize);
                 generator.Expect(x => x.Next()).Return(true).Repeat.Times(listSize);
-                generator.Expect(x => x.NextGuid()).Return(Guid.NewGuid()).Repeat.Times(listSize);
+                generator.Expect(x => x.Guid()).Return(Guid.NewGuid()).Repeat.Times(listSize);
             }
 
             using (mocks.Playback())

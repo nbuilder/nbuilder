@@ -5,6 +5,8 @@ using FizzWare.NBuilder.PropertyNaming;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
+using System.Collections.Generic;
+using Rhino.Mocks;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
@@ -13,38 +15,67 @@ namespace FizzWare.NBuilder.Tests.Unit
     {
         private ExtensibleRandomValuePropertyNamer target;
 
+        private MockRepository mocks;
+        private IRandomGenerator randomGenerator;
+
         [SetUp]
         public void SetUp()
         {
-            BuilderSetup.DisablePropertyNamingFor<MyClass, int>(x => x.ThisPropertyHasAGetterWhichThrowsAnException);
-            target = new ExtensibleRandomValuePropertyNamer();
+            //BuilderSetup.DisablePropertyNamingFor<MyClass, int>(x => x.ThisPropertyHasAGetterWhichThrowsAnException);
+
+            mocks = new MockRepository();
+
+            randomGenerator = mocks.DynamicMock<IRandomGenerator>();
+            target = new ExtensibleRandomValuePropertyNamer(randomGenerator);
+
+            bool @bool = true;
+            byte @byte = 1;
+            char @char = 'a';
+            var dateTime = new DateTime(2009, 01, 01);
+            decimal @decimal = 1m;
+            double @double = 1d;
+            float @float = 1f;
+            Guid guid = new Guid();
+            int @int = 2;
+            long @long = 3;
+            string phrase = "some text";
+            sbyte @sbyte = 4;
+            short @short = 5;
+            uint @uint = 6;
+            ulong @ulong = 7;
+            ushort @ushort = 8;
+            MyEnum @enum = MyEnum.EnumValue3;
+
+            using (mocks.Record())
+            {
+                randomGenerator.Expect(x => x.Boolean()).Return(@bool);
+                randomGenerator.Expect(x => x.Byte()).Return(@byte);
+                randomGenerator.Expect(x => x.Char()).Return(@char);
+                randomGenerator.Expect(x => x.DateTime()).Return(dateTime);
+                randomGenerator.Expect(x => x.Decimal()).Return(@decimal);
+                randomGenerator.Expect(x => x.Double()).Return(@double);
+                randomGenerator.Expect(x => x.Float()).Return(@float);
+                randomGenerator.Expect(x => x.Guid()).Return(guid);
+                randomGenerator.Expect(x => x.Int()).Return(@int);
+                randomGenerator.Expect(x => x.Long()).Return(@long);
+                randomGenerator.Expect(x => x.Phrase(50)).Return(@phrase);
+                randomGenerator.Expect(x => x.SByte()).Return(@sbyte);
+                randomGenerator.Expect(x => x.Short()).Return(@short);
+                randomGenerator.Expect(x => x.UInt()).Return(@uint);
+                randomGenerator.Expect(x => x.ULong()).Return(@ulong);
+                randomGenerator.Expect(x => x.UShort()).Return(@ushort);
+                randomGenerator.Expect(x => x.Enumeration(typeof(MyEnum))).Return(@enum);
+            }
         }
 
         [Test]
         public void can_set_values_of()
         {
-            var myClass = new MyClass();
-            target.SetValuesOf(myClass);
-            Assert.IsFalse(myClass.StringOne.IsDefaultValue());
-
-            //NOTE: This test should pass some of the time with these lines un-commented. It will not always pass 
-            //NOTE: because any non-nullable member could be the default value some of the time. However, in any
-            //NOTE: member is the default all of the time, there is an error.
-            //Assert.IsFalse(myClass.Char.IsDefaultValue());
-            //Assert.IsFalse(myClass.Int.IsDefaultValue());
-            //Assert.IsFalse(myClass.Long.IsDefaultValue());
-            //Assert.IsFalse(myClass.Short.IsDefaultValue());
-            //Assert.IsFalse(myClass.DateTime.IsDefaultValue());
-            //Assert.IsFalse(myClass.Uint.IsDefaultValue());
-            //Assert.IsFalse(myClass.Ulong.IsDefaultValue());
-            //Assert.IsFalse(myClass.Ushort.IsDefaultValue());
-            //Assert.IsFalse(myClass.Float.IsDefaultValue());
-            //Assert.IsFalse(myClass.Byte.IsDefaultValue());
-            //Assert.IsFalse(myClass.ByteEnumProperty.IsDefaultValue());
-            //Assert.IsFalse(myClass.EnumProperty.IsDefaultValue());
-            //Assert.IsFalse(myClass.PublicFieldInt.IsDefaultValue());
-            //Assert.IsFalse(myClass.Decimal.IsDefaultValue());
-            //Assert.IsFalse(myClass.Double.IsDefaultValue());
+            using (mocks.Playback())
+            {
+                var myClass = new MyClass();
+                target.SetValuesOf(myClass);
+            }
         }
 
         [Test]
