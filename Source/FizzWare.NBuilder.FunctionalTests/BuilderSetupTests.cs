@@ -24,8 +24,7 @@ namespace FizzWare.NBuilder.FunctionalTests
         [TearDown]
         public void TearDown()
         {
-            // Re-register the old one
-            BuilderSetup.SetPersistenceService(new PersistenceService());
+            BuilderSetup.ResetToDefaults();
         }
     }
 

@@ -169,7 +169,7 @@ namespace FizzWare.NBuilder.PropertyNaming
                 }
 
                 byte[] bytes = Encoding.UTF8.GetBytes(chars);
-                return Encoding.UTF8.GetString(bytes);
+                return Encoding.UTF8.GetString(bytes, 0, bytes.Length);
             }
         }
 
@@ -187,7 +187,7 @@ namespace FizzWare.NBuilder.PropertyNaming
 		{
 			Type enumType = GetMemberType(memberInfo);
             var enumValues = GetEnumValues(enumType);
-			return Enum.Parse(enumType,enumValues.GetValue(generator.Next(0, enumValues.Length)).ToString()) as Enum;
+			return Enum.Parse(enumType,enumValues.GetValue(generator.Next(0, enumValues.Length)).ToString(), true) as Enum;
 		}
 
         protected override Guid GetGuid(MemberInfo memberInfo)

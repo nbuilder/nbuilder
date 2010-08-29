@@ -49,7 +49,9 @@ namespace FizzWare.NBuilder.PropertyNaming
                 }
                 catch (Exception)
                 {
+                    #if !SILVERLIGHT
                     Trace.WriteLine(string.Format("NBuilder warning: {0} threw an exception when attempting to read its current value", memberInfo.Name));
+                    #endif
                 }
             }
 
@@ -228,7 +230,7 @@ namespace FizzWare.NBuilder.PropertyNaming
 
         protected static Array GetEnumValues(Type enumType)
         {
-            var enumArray = Enum.GetValues(enumType);
+            var enumArray = EnumHelper.GetValues(enumType);
             return enumArray;
         }
     }

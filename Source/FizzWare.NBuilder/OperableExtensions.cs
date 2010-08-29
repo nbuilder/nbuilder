@@ -69,7 +69,7 @@ namespace FizzWare.NBuilder
             return (IOperable<T>)declaration;
         }
 
-        [Obsolete("Use AreConstructedUsing(Expression<Func<T>> constructor) instead")]
+        [Obsolete("Use IsConstructedUsing(Expression<Func<T>> constructor) instead")]
         public static IOperable<T> IsConstructedWith<T>(this IOperable<T> operable, params object[] args)
         {
             return AreConstructedWith(operable, args);

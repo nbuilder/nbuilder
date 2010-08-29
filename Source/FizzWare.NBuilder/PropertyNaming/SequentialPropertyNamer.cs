@@ -153,7 +153,7 @@ namespace FizzWare.NBuilder.PropertyNaming
 			Type enumType = GetMemberType(memberInfo);
 			var enumValues = GetEnumValues(enumType);
 			int newSequenceNumber = GetNewSequenceNumber(_sequenceNumber, enumValues.Length);
-			return Enum.Parse(enumType, enumValues.GetValue(newSequenceNumber - 1).ToString()) as Enum;
+			return Enum.Parse(enumType, enumValues.GetValue(newSequenceNumber - 1).ToString(), true) as Enum;
 		}
 
         protected override Guid GetGuid(MemberInfo memberInfo)

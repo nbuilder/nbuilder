@@ -27,7 +27,7 @@ namespace FizzWare.NBuilder
             if (!validTypes.Contains(typeof(T)))
                 throw new InvalidOperationException("Sequential generator does not support " + typeof(T).Name);
 
-            Increment = (T)Convert.ChangeType(1, typeof(T));
+            Increment = (T)Convert.ChangeType(1, typeof(T), CultureInfo.InvariantCulture);
 
             StartingWith(default(T));
         }
@@ -42,7 +42,7 @@ namespace FizzWare.NBuilder
 
             hasBeenReset = false;
 
-            T val = (T)Convert.ChangeType(next, typeof (T));
+            T val = (T)Convert.ChangeType(next, typeof (T), CultureInfo.InvariantCulture);
             return val;
         }
 
@@ -160,13 +160,13 @@ namespace FizzWare.NBuilder
 
             if (typeof(T) == typeof(bool))
             {
-                next = (T) Convert.ChangeType(Convert.ToBoolean(next) == false ? true : false, typeof (bool));
+                next = (T) Convert.ChangeType(Convert.ToBoolean(next) == false ? true : false, typeof (bool), CultureInfo.InvariantCulture);
             }
         }
 
         private void PerformAdvance<TTo>(Func<T, TTo> convert, Func<TTo, TTo, TTo> advance)
         {
-            next = (T)Convert.ChangeType(advance(convert(next), convert(Increment)), typeof (T));
+            next = (T)Convert.ChangeType(advance(convert(next), convert(Increment)), typeof (T), CultureInfo.InvariantCulture);
         }
 
         public T Increment { get; set; }

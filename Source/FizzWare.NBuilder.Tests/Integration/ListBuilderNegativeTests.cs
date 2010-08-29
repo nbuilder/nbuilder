@@ -38,10 +38,17 @@ namespace FizzWare.NBuilder.Tests.Integration
         }
 
         [Test]
-        [ExpectedException(typeof(BuilderException))]
+        [ExpectedException(typeof(TypeCreationException))]
         public void should_complain_if_you_try_to_create_an_abstract_class()
         {
             Builder<MyAbstractClass>.CreateNew().Build();
+        }
+
+        [Test]
+        [ExpectedException(typeof(TypeCreationException))]
+        public void should_complain_if_you_try_to_create_an_interface()
+        {
+            Builder<IMyInterface>.CreateNew().Build();
         }
 
         [Test]

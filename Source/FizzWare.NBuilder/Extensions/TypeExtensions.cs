@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
+using System.Linq;
 using System.Reflection;
 
 namespace FizzWare.NBuilder.Extensions
@@ -11,7 +11,7 @@ namespace FizzWare.NBuilder.Extensions
         {
             return t.IsGenericType &&
                    t.GetGenericTypeDefinition() == typeof(Nullable<>)
-                       ? new NullableConverter(t).UnderlyingType
+                       ? t.GetGenericArguments().Single()
                        : t;
         }
 

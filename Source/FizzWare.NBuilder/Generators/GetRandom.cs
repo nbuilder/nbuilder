@@ -375,7 +375,7 @@ namespace FizzWare.NBuilder.Generators
 
         public static T Enumeration<T>() where T : struct
         {
-            var values = Enum.GetValues(typeof(T));
+            var values = EnumHelper.GetValues(typeof(T));
             var index = PositiveInt(values.Length - 1);
             return (T)values.GetValue(index);
         }
@@ -386,7 +386,7 @@ namespace FizzWare.NBuilder.Generators
             {
                 throw new ArgumentException(string.Format("{0} is not an enum type.", type.FullName), "type");
             }
-            var values = Enum.GetValues(type);
+            var values = EnumHelper.GetValues(type);
             var index = PositiveInt(values.Length - 1);
             return (Enum)values.GetValue(index);
         }   

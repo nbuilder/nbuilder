@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FizzWare.NBuilder", "FizzWare.NBuilder\FizzWare.NBuilder.csproj", "{2A91787B-AFB7-4A4C-A5D5-836F578F2DB6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FizzWare.NBuilder.Tests", "FizzWare.NBuilder.Tests\FizzWare.NBuilder.Tests.csproj", "{19C2A470-C015-46B7-84A1-B8F6895795B1}"

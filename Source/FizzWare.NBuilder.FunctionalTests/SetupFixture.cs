@@ -30,17 +30,16 @@ public class SetupFixture
         var taxTypeRepository = Dependency.Resolve<ITaxTypeRepository>();
         var categoryRepository = Dependency.Resolve<ICategoryRepository>();
 
-        BuilderSetup.SetCreatePersistenceMethod<Product> ( productRepository.Create );
-        BuilderSetup.SetCreatePersistenceMethod<IList<Product>> ( productRepository.CreateAll);
-        BuilderSetup.SetCreatePersistenceMethod<TaxType>( taxTypeRepository.Create );
-        BuilderSetup.SetCreatePersistenceMethod<IList<TaxType>> ( taxTypeRepository.CreateAll );
-        BuilderSetup.SetCreatePersistenceMethod<Category> ( categoryRepository.Create );
-        BuilderSetup.SetCreatePersistenceMethod<IList<Category>> ( categoryRepository.CreateAll );
-        BuilderSetup.SetUpdatePersistenceMethod<Category> ( categoryRepository.Save );
-        BuilderSetup.SetUpdatePersistenceMethod<IList<Category>> ( categoryRepository.SaveAll );
+        BuilderSetup.SetCreatePersistenceMethod<Product>(productRepository.Create);
+        BuilderSetup.SetCreatePersistenceMethod<IList<Product>>(productRepository.CreateAll);
+        BuilderSetup.SetCreatePersistenceMethod<TaxType>(taxTypeRepository.Create);
+        BuilderSetup.SetCreatePersistenceMethod<IList<TaxType>>(taxTypeRepository.CreateAll);
+        BuilderSetup.SetCreatePersistenceMethod<Category>(categoryRepository.Create);
+        BuilderSetup.SetCreatePersistenceMethod<IList<Category>>(categoryRepository.CreateAll);
+        BuilderSetup.SetUpdatePersistenceMethod<Category>(categoryRepository.Save);
+        BuilderSetup.SetUpdatePersistenceMethod<IList<Category>>(categoryRepository.SaveAll);
     }
 
-    [TestFixtureSetUp]
     public void EnsureActiveRecordInitialized()
     {
         if (arInitialized)

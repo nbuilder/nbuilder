@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 
 namespace FizzWare.NBuilder
@@ -94,7 +95,7 @@ namespace FizzWare.NBuilder
 
             unchecked
             {
-                count = (T)Convert.ChangeType(trackedValues[typeof (T)].Count, typeof(T));
+                count = (T)Convert.ChangeType(trackedValues[typeof (T)].Count, typeof(T), CultureInfo.InvariantCulture);
             }
 
             if (count.CompareTo(rangeSize) == 0 || count.CompareTo(rangeSize) == 1)

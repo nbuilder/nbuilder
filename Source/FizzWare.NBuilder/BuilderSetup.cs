@@ -82,7 +82,7 @@ namespace FizzWare.NBuilder
 
         public static bool ShouldIgnoreProperty(PropertyInfo info)
         {
-            if (disabledAutoNameProperties.Any(x => x.DeclaringType == info.DeclaringType && x.Name== info.Name))
+            if (disabledAutoNameProperties.Any(x => x.DeclaringType == info.DeclaringType && x.Name == info.Name))
                 return true;
 
             return false;
