@@ -13,7 +13,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FizzWare.NBuilder</RootNamespace>
-    <AssemblyName>FizzWare.NBuilder_Silverlight</AssemblyName>
+    <AssemblyName>FizzWare.NBuilder-Silverlight</AssemblyName>
     <TargetFrameworkVersion>v3.0</TargetFrameworkVersion>
     <SilverlightApplication>false</SilverlightApplication>
     <ValidateXaml>true</ValidateXaml>
