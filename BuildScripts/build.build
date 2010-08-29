@@ -8,7 +8,7 @@
 
   <!-- COMMON PROPERTIES -->
   <property name="project.name" value="${project::get-name()}" />
-  <readregistry property="devenv.path" key="SOFTWARE\Microsoft\VisualStudio\9.0\InstallDir" hive="LocalMachine" />
+  <readregistry property="devenv.path" key="SOFTWARE\Microsoft\VisualStudio\10.0\InstallDir" hive="LocalMachine" />
   <property name="devenv.com" value="${devenv.path}devenv.com" />
   <property name="tf.exe" value="${devenv.path}\TF.exe" />
   <property name="root.dir" overwrite="false" value="${path::get-full-path(project::get-base-directory() + '\..')}" />

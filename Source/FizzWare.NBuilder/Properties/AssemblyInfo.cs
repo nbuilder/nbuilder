@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyCompany("FizzWare")]
 [assembly: AssemblyProduct("FizzWare.NBuilder")]
-[assembly: AssemblyCopyright("Copyright © FizzWare 2009")]
+[assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,3 +20,5 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("1dae098c-5bb4-437c-9f77-2d702c472960")]
+
+[assembly: AssemblyVersion("2.2.0.0")]
