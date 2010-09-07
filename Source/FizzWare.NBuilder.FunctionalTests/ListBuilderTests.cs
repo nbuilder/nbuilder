@@ -185,6 +185,59 @@ namespace FizzWare.NBuilder.FunctionalTests
             Assert.That(products[2].Id, Is.EqualTo(2));
         }
 
+
+        [Test]
+        public void UsingSequentialGenerators()
+        {
+            var decimalGenerator = new SequentialGenerator<decimal>
+            {
+                Increment = 10,
+                Direction = GeneratorDirection.Descending
+            };
+
+            decimalGenerator.StartingWith(2000);
+
+            var intGenerator = new SequentialGenerator<int> { Increment = 10000 };
+
+            var list = Builder<Product>.CreateListOfSize(3)
+                .WhereAll()
+                    .Have(x => x.PriceBeforeTax = decimalGenerator.Generate())
+                    .And(x => x.Id = intGenerator.Generate())
+                .Build();
+
+            Assert.That(list[0].PriceBeforeTax, Is.EqualTo(2000));
+            Assert.That(list[1].PriceBeforeTax, Is.EqualTo(1990));
+            Assert.That(list[2].PriceBeforeTax, Is.EqualTo(1980));
+
+            Assert.That(list[0].Id, Is.EqualTo(0));
+            Assert.That(list[1].Id, Is.EqualTo(10000));
+            Assert.That(list[2].Id, Is.EqualTo(20000));
+        }
+
+        [Test]
+        public void SequentialGenerator_DateTimeGeneration()
+        {
+            const int increment = 2;
+            var dateTimeGenerator = new SequentialGenerator<DateTime>
+            {
+                IncrementDateBy = IncrementDate.Day,
+                IncrementDateValueBy = increment
+            };
+
+            var startingDate = DateTime.MinValue;
+
+            dateTimeGenerator.StartingWith(startingDate);
+
+
+            var list = Builder<Product>.CreateListOfSize(2)
+                .WhereAll()
+                    .Have(x => x.Created = dateTimeGenerator.Generate())
+                .Build();
+
+            Assert.That(list[0].Created, Is.EqualTo(startingDate));
+            Assert.That(list[1].Created, Is.EqualTo(startingDate.AddDays(increment)));
+        }
+
         [Test]
         public void UsingTheWithBetween_And_SyntaxForGreaterReadability()
         {
@@ -416,34 +469,6 @@ namespace FizzWare.NBuilder.FunctionalTests
                 Assert.That(product.Categories[3], Is.EqualTo(categories[3]));
                 Assert.That(product.Categories[4], Is.EqualTo(categories[4]));
             }
-        }
-
-        [Test]
-        public void UsingSequentialGenerators()
-        {
-            var decimalGenerator = new SequentialGenerator<decimal>
-                                       {
-                                           Increment = 10,
-                                           Direction = GeneratorDirection.Descending
-                                       };
-
-            decimalGenerator.StartingWith(2000);
-
-            var intGenerator = new SequentialGenerator<int> {Increment = 10000};
-
-            var list = Builder<Product>.CreateListOfSize(3)
-                .WhereAll()
-                    .Have(x => x.PriceBeforeTax = decimalGenerator.Generate())
-                    .And(x => x.Id = intGenerator.Generate())
-                .Build();
-
-            Assert.That(list[0].PriceBeforeTax, Is.EqualTo(2000));
-            Assert.That(list[1].PriceBeforeTax, Is.EqualTo(1990));
-            Assert.That(list[2].PriceBeforeTax, Is.EqualTo(1980));
-
-            Assert.That(list[0].Id, Is.EqualTo(0));
-            Assert.That(list[1].Id, Is.EqualTo(10000));
-            Assert.That(list[2].Id, Is.EqualTo(20000));
         }
 
         [Test]

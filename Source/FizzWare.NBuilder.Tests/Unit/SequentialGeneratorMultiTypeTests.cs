@@ -143,10 +143,106 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
-        public void DoesNotSupportDateTime()
+        public void ShouldBeAbleToUseADateTime()
         {
             var generator = new SequentialGenerator<DateTime>();
+            Assert.That(generator.Generate(), Is.EqualTo(DateTime.MinValue));
+            Assert.That(generator.Generate(), Is.EqualTo(DateTime.MinValue.AddDays(1)));
+        }
+
+        [Test]
+        public void Generate_UnsupportedStruct_ThrowsInvalidOperationException()
+        {
+            Assert.Throws<InvalidOperationException>(() => new SequentialGenerator<MyDummyStruct>());
+        }
+
+        private struct MyDummyStruct : IConvertible
+        {
+
+            public TypeCode GetTypeCode()
+            {
+                return new TypeCode();
+            }
+
+            public bool ToBoolean(IFormatProvider provider)
+            {
+                return default(bool);
+            }
+
+            public byte ToByte(IFormatProvider provider)
+            {
+                return default(byte);
+            }
+
+            public char ToChar(IFormatProvider provider)
+            {
+                return default(char);
+            }
+
+            public DateTime ToDateTime(IFormatProvider provider)
+            {
+                return default(DateTime);
+            }
+
+            public decimal ToDecimal(IFormatProvider provider)
+            {
+                return default(decimal);
+            }
+
+            public double ToDouble(IFormatProvider provider)
+            {
+                return default(double);
+            }
+
+            public short ToInt16(IFormatProvider provider)
+            {
+                return default(short);
+            }
+
+            public int ToInt32(IFormatProvider provider)
+            {
+                return default(int);
+            }
+
+            public long ToInt64(IFormatProvider provider)
+            {
+                return default(long);
+            }
+
+            public sbyte ToSByte(IFormatProvider provider)
+            {
+                return default(sbyte);
+            }
+
+            public float ToSingle(IFormatProvider provider)
+            {
+                return default(float);
+            }
+
+            public string ToString(IFormatProvider provider)
+            {
+                return default(string);
+            }
+
+            public object ToType(Type conversionType, IFormatProvider provider)
+            {
+                return default(object);
+            }
+
+            public ushort ToUInt16(IFormatProvider provider)
+            {
+                return default(ushort);
+            }
+
+            public uint ToUInt32(IFormatProvider provider)
+            {
+                return default(uint);
+            }
+
+            public ulong ToUInt64(IFormatProvider provider)
+            {
+                return default(ulong);
+            }
         }
     }
 }
