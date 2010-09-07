@@ -6,7 +6,6 @@ using FizzWare.NBuilder.FunctionalTests.Model;
 using FizzWare.NBuilder.Implementation;
 using FizzWare.NBuilder.PropertyNaming;
 using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
 
 namespace FizzWare.NBuilder.FunctionalTests.Extensibility
 {

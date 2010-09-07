@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
 
 namespace FizzWare.NBuilder.Tests.Integration
 {

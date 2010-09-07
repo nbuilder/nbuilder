@@ -6,7 +6,6 @@ using System.Text;
 using FizzWare.NBuilder.FunctionalTests.Model;
 using FizzWare.NBuilder.FunctionalTests.Support;
 using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
 
 namespace FizzWare.NBuilder.FunctionalTests
 {

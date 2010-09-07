@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
 
 namespace FizzWare.NBuilder.Tests.Integration
 {

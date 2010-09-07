@@ -1,7 +1,6 @@
 ﻿using System;
 using FizzWare.NBuilder.Dates;
 using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
 
 namespace FizzWare.NBuilder.Tests.Unit.Dates
 {

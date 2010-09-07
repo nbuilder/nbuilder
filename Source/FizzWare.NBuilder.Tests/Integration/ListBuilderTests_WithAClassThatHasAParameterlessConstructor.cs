@@ -2,8 +2,6 @@
 using FizzWare.NBuilder.PropertyNaming;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NUnit.Framework;
-using NUnit.Framework.Extensions;
-using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
 using System.Collections.Generic;
 
@@ -26,7 +24,7 @@ namespace FizzWare.NBuilder.Tests.Integration
             var list =
                 Builder<MyClass>.CreateListOfSize(10).Build();
 
-            Assert.That(list, Has.Count(10));
+            Assert.That(list.Count, Is.EqualTo(10));
         }
 
         [Test]
@@ -96,7 +94,7 @@ namespace FizzWare.NBuilder.Tests.Integration
                                     .Have(x => x.StringOne = overwrittenTitle)
                                 .Build();
 
-            Assert.That(list, Has.Count(10));
+            Assert.That(list.Count, Is.EqualTo(10));
             Assert.That(list[0].StringOne, Is.EqualTo(overwrittenTitle));
             Assert.That(list[4].StringOne, Is.EqualTo(overwrittenTitle));
         }
@@ -177,11 +175,10 @@ namespace FizzWare.NBuilder.Tests.Integration
             Assert.That(objects[7].Int, Is.EqualTo(2));
         }
 
-		[RowTest]
-		[Row(10,5)]
-		[Row(10,1)]
-		[Row(5,5)]
-		[Row(1,1)]
+		[TestCase(10,5)]
+		[TestCase(10,1)]
+        [TestCase(5, 5)]
+        [TestCase(1, 1)]
 		public void ShouldBeAbleToUseWhereRandom(int listSize, int randomItems)
 		{
 			var objects = Builder<MyClass>

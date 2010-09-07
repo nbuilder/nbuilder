@@ -5,7 +5,6 @@ using System.Text;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NUnit.Framework;
 using Rhino.Mocks;
-using NUnit.Framework.SyntaxHelpers;
 
 namespace FizzWare.NBuilder.Tests.Unit.Picking
 {

@@ -4,7 +4,6 @@ using FizzWare.NBuilder.Generators;
 using FizzWare.NBuilder.PropertyNaming;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
 using System.Collections.Generic;
 using Rhino.Mocks;
 

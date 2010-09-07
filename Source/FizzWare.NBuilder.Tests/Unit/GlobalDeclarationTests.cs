@@ -4,7 +4,6 @@ using FizzWare.NBuilder.Tests.TestClasses;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
-using NUnit.Framework.SyntaxHelpers;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
@@ -84,7 +83,7 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             declaration.AddToMaster(masterList);
 
-            Assert.That(declaration.MasterListAffectedIndexes, Has.Count(2));
+            Assert.That(declaration.MasterListAffectedIndexes.Count, Is.EqualTo(2));
             Assert.That(declaration.MasterListAffectedIndexes[0], Is.EqualTo(0));
             Assert.That(declaration.MasterListAffectedIndexes[1], Is.EqualTo(1));
         }

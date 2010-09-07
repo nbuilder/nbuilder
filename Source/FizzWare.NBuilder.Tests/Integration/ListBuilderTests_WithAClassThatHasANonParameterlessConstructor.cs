@@ -1,6 +1,5 @@
 using FizzWare.NBuilder.Tests.TestClasses;
 using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
 
 namespace FizzWare.NBuilder.Tests.Integration
 {
@@ -20,7 +19,7 @@ namespace FizzWare.NBuilder.Tests.Integration
                         .AreConstructedWith(theString, theDecimal)
                     .Build();
 
-            Assert.That(list, Has.Count(10));
+            Assert.That(list.Count, Is.EqualTo(10));
         }
 
         [Test]
@@ -33,7 +32,7 @@ namespace FizzWare.NBuilder.Tests.Integration
                         .AreConstructedUsing(() => new MyClassWithConstructor(1, 2f))
                     .Build();
 
-            Assert.That(list, Has.Count(10));
+            Assert.That(list.Count, Is.EqualTo(10));
         }
 
         [Test]
@@ -46,7 +45,7 @@ namespace FizzWare.NBuilder.Tests.Integration
                         .IsConstructedUsing(() => new MyClassWithConstructor(1, 2f))
                     .Build();
 
-            Assert.That(list, Has.Count(1));
+            Assert.That(list.Count, Is.EqualTo(1));
         }
 
         [Test]

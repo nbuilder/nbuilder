@@ -5,7 +5,6 @@ using FizzWare.NBuilder.FunctionalTests.Support;
 using FizzWare.NBuilder.Implementation;
 using FizzWare.NBuilder.PropertyNaming;
 using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
 
 namespace FizzWare.NBuilder.FunctionalTests
 {
@@ -410,7 +409,7 @@ namespace FizzWare.NBuilder.FunctionalTests
             // Assertions are intentionally verbose for clarity
             foreach (var product in products)
             {
-                Assert.That(product.Categories, Has.Count(5));
+                Assert.That(product.Categories.Count, Is.EqualTo(5));
                 Assert.That(product.Categories[0], Is.EqualTo(categories[0]));
                 Assert.That(product.Categories[1], Is.EqualTo(categories[1]));
                 Assert.That(product.Categories[2], Is.EqualTo(categories[2]));
@@ -487,7 +486,7 @@ namespace FizzWare.NBuilder.FunctionalTests
                 .CreateListOfSize(10)
                 .Build();
 
-            Assert.That(locations, Has.Count(10));
+            Assert.That(locations.Count, Is.EqualTo(10));
             Assert.That(locations[0].Location, Is.EqualTo(0));
             Assert.That(locations[1].Location, Is.EqualTo(0));
         }

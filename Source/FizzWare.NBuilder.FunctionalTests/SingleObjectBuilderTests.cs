@@ -5,7 +5,6 @@ using System.Text;
 using FizzWare.NBuilder.FunctionalTests.Model;
 using FizzWare.NBuilder.FunctionalTests.Support;
 using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
 
 namespace FizzWare.NBuilder.FunctionalTests
 {
@@ -150,7 +149,7 @@ namespace FizzWare.NBuilder.FunctionalTests
                     .Build();
 
             // Assertions are intentionally verbose for clarity
-            Assert.That(product.Categories, Has.Count(5));
+            Assert.That(product.Categories.Count, Is.EqualTo(5));
             Assert.That(product.Categories[0], Is.EqualTo(categories[0]));
             Assert.That(product.Categories[1], Is.EqualTo(categories[1]));
             Assert.That(product.Categories[2], Is.EqualTo(categories[2]));
