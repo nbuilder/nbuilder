@@ -72,10 +72,20 @@ namespace FizzWare.NBuilder.PropertyNaming
                 type = ((PropertyInfo)memberInfo).PropertyType;
             }
 
+			if (type != null && IsNullableType(type))
+			{
+				type = Nullable.GetUnderlyingType(type);
+			}
+
             return type;
         }
 
-        protected virtual void SetValue<T>(MemberInfo memberInfo, T obj, object value)
+		private static bool IsNullableType(Type type)
+		{
+			return (type.IsGenericType && type.GetGenericTypeDefinition() == typeof (Nullable<>));
+		}
+
+    	protected virtual void SetValue<T>(MemberInfo memberInfo, T obj, object value)
         {
             if (value != null)
             {

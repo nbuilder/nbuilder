@@ -29,6 +29,9 @@ namespace FizzWare.NBuilder.FunctionalTests.Model
         [Property]
         public decimal PriceBeforeTax { get; set; }
 
+		[Property]
+		public double? Weight { get; set; }
+
         [BelongsTo(Column = "TaxTypeId", Type = typeof(TaxType), Cascade = CascadeEnum.All)]
         public TaxType TaxType { get; set; }
 

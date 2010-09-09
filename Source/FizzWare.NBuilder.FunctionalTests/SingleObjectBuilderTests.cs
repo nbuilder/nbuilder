@@ -31,6 +31,7 @@ namespace FizzWare.NBuilder.FunctionalTests
             Assert.That(product.Description, Is.EqualTo("Description1"));
             Assert.That(product.PriceBeforeTax, Is.EqualTo(1m));
             Assert.That(product.QuantityInStock, Is.EqualTo(1));
+            Assert.That(product.Weight, Is.EqualTo(1.0));
         }
 
         [Test]
