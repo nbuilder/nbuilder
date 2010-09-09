@@ -12,6 +12,8 @@ namespace FizzWare.NBuilder.Tests.Unit
     {
         private const string exceptionMessage = "There are no more unique values available";
         private IUniqueRandomGenerator generator;
+        private int min = 0;
+        private int max = 4;
 
         [SetUp]
         public void SetUp()
@@ -20,166 +22,186 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
 
         [Test]
-        public void ShouldGenerateWithinRange_Int16()
+        public void Next_Int16_ShouldGenerateWithinRange()
         {
-            generator.Next((short)0, (short)4);
+            generator.Next((short)min, (short)max);
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException), ExpectedMessage = exceptionMessage)]
-        public void ShouldGenerateUniqueNumbers_Int16()
+        public void Next_Int16_ShouldGenerateUniqueNumbers()
         {
-            for (int i = 0; i < 5; i++)
-                generator.Next((short)0, (short)4);
+            for (int i = 0; i < max; i++)
+                generator.Next((short)min, (short)max);
+
+            Assert.Throws<InvalidOperationException>(() => generator.Next((short)min, (short)max), exceptionMessage);
         }
 
         [Test]
-        public void ShouldGenerateWithinRange_Int32()
+        public void Next_Int32_ShouldGenerateWithinRange()
         {
-            generator.Next(0, 4);
+            generator.Next(min, max);
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException), ExpectedMessage = exceptionMessage)]
-        public void ShouldGenerateUniqueNumbers_Int32()
+        public void Next_Int32_ShouldGenerateUniqueNumbers()
         {
-            for (int i = 0; i < 5; i++)
-                generator.Next(0, 4);
+            for (int i = 0; i < max; i++)
+                generator.Next(min, max);
+                
+            Assert.Throws<InvalidOperationException>(() => generator.Next(min, max), exceptionMessage);
         }
 
         [Test]
-        public void ShouldGenerateWithinRange_Int64()
+        public void Next_Int64_ShouldGenerateWithinRange()
         {
-            generator.Next((long)0, (long)4);
+            generator.Next((long)min, (long)max);
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException), ExpectedMessage = exceptionMessage)]
-        public void ShouldGenerateUniqueNumbers_Int64()
+        public void Next_Int64_ShouldGenerateUniqueNumbers()
         {
-            for (int i = 0; i < 5; i++)
-                generator.Next((long)0, (long)4);
+            for (int i = 0; i < max; i++)
+                generator.Next((long)min, (long)max);
+
+            Assert.Throws<InvalidOperationException>(() => generator.Next((long)min, (long)max), exceptionMessage);
         }
 
         [Test]
-        public void ShouldGenerateWithinRange_UInt16()
+        public void Next_UInt16_ShouldGenerateWithinRange()
         {
-            generator.Next((ushort)0, (ushort)4);
+            generator.Next((ushort)min, (ushort)max);
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException), ExpectedMessage = exceptionMessage)]
-        public void ShouldGenerateUniqueNumbers_UInt16()
+        public void Next_UInt16_ShouldGenerateUniqueNumbers()
         {
-            for (int i = 0; i < 5; i++)
-                generator.Next((ushort)0, (ushort)4);
+            for (int i = 0; i < max; i++)
+                generator.Next((ushort)min, (ushort)max);
+
+            Assert.Throws<InvalidOperationException>(() => generator.Next((ushort)min, (ushort)max), exceptionMessage);
         }
 
         [Test]
-        public void ShouldGenerateWithinRange_UInt32()
+        public void Next_UInt32_ShouldGenerateWithinRange()
         {
-            generator.Next((uint)0, (uint)4);
+            generator.Next((uint)min, (uint)max);
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException), ExpectedMessage = exceptionMessage)]
-        public void ShouldGenerateUniqueNumbers_UInt32()
+        public void Next_UInt32_ShouldGenerateUniqueNumbers()
         {
-            for (int i = 0; i < 5; i++)
-                generator.Next((uint)0, (uint)4);
+            for (int i = 0; i < max; i++)
+                generator.Next((uint)min, (uint)max);
+
+            Assert.Throws<InvalidOperationException>(() => generator.Next((uint)min, (uint)max), exceptionMessage);
         }
 
         [Test]
-        public void ShouldGenerateWithinRange_UInt64()
+        public void Next_UInt64_ShouldGenerateWithinRange()
         {
-            generator.Next((ulong)0, (ulong)4);
+            generator.Next((ulong)min, (ulong)max);
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException), ExpectedMessage = exceptionMessage)]
-        public void ShouldGenerateUniqueNumbers_UInt64()
+        public void Next_UInt64_ShouldGenerateUniqueNumbers()
         {
-            for (int i = 0; i < 5; i++)
-                generator.Next((ulong)0, (ulong)4);
+            for (int i = 0; i < max; i++)
+                generator.Next((ulong)min, (ulong)max);
+
+            Assert.Throws<InvalidOperationException>(() => generator.Next((ulong)min, (ulong)max), exceptionMessage);
         }
 
         [Test]
-        public void ShouldGenerateWithinRange_Single()
+        public void Next_Single_ShouldGenerateWithinRange()
         {
-            generator.Next((float)0, (float)4);
+            generator.Next((float)min, (float)max);
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException), ExpectedMessage = exceptionMessage)]
-        public void ShouldGenerateUniqueNumbers_Single()
+        public void Next_Single_ShouldGenerateUniqueNumbers()
         {
-            for (int i = 0; i < 5; i++)
-                generator.Next((float)0, (float)4);
+            for (int i = 0; i < max; i++)
+                generator.Next((float)min, (float)max);
+
+            Assert.Throws<InvalidOperationException>(() => generator.Next((float)min, (float)max), exceptionMessage);
         }
 
         [Test]
-        public void ShouldGenerateWithinRange_Double()
+        public void Next_Double_ShouldGenerateWithinRange()
         {
-            generator.Next((double)0, (double)4);
+            generator.Next((double)min, (double)max);
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException), ExpectedMessage = exceptionMessage)]
-        public void ShouldGenerateUniqueNumbers_Double()
+        public void Next_Double_ShouldGenerateUniqueNumbers()
         {
-            for (int i = 0; i < 5; i++)
-                generator.Next((double)0, (double)4);
+            for (int i = 0; i < max; i++)
+                generator.Next((double)min, (double)max);
+
+            Assert.Throws<InvalidOperationException>(() => generator.Next((double)min, (double)max), exceptionMessage);
         }
 
         [Test]
-        public void ShouldGenerateWithinRange_Decimal()
+        public void Next_Decimal_ShouldGenerateWithinRange()
         {
-            generator.Next((decimal)0, (decimal)4);
+            generator.Next((decimal)min, (decimal)max);
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException), ExpectedMessage = exceptionMessage)]
-        public void ShouldGenerateUniqueNumbers_Decimal()
+        public void Next_Decimal_ShouldGenerateUniqueNumbers()
         {
-            for (int i = 0; i < 5; i++)
-                generator.Next((decimal)0, (decimal)4);
+            for (int i = 0; i < max; i++)
+                generator.Next((decimal)min, (decimal)max);
+
+            Assert.Throws<InvalidOperationException>(() => generator.Next((decimal)min, (decimal)max), exceptionMessage);
         }
 
         [Test]
-        public void ShouldGenerateWithinRange_Byte()
+        public void Next_Byte_ShouldGenerateWithinRange()
         {
-            generator.Next((byte)0, (byte)4);
+            generator.Next((byte)min, (byte)max);
+        }
+        
+        [Test]
+        public void Next_Byte_ShouldGenerateUniqueNumbers()
+        {
+            for (int i = 0; i < max; i++)
+                generator.Next((byte)min, (byte)max);
+
+            Assert.Throws<InvalidOperationException>(() => generator.Next((byte)min, (byte)max), exceptionMessage);
         }
 
         [Test]
-        public void ShouldGenerateWithinRange_SByte()
+        public void Next_SByte_ShouldGenerateWithinRange()
         {
-            var value =  generator.Next((sbyte)0, (sbyte)4);
+            var value = generator.Next((sbyte)min, (sbyte)max);
 
-            Assert.That(value, Is.GreaterThanOrEqualTo(0));
-            Assert.That(value, Is.LessThanOrEqualTo(4));
+            Assert.That(value, Is.GreaterThanOrEqualTo(min));
+            Assert.That(value, Is.LessThanOrEqualTo(max));
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException), ExpectedMessage = exceptionMessage)]
-        public void ShouldGenerateUniqueNumbers_Byte()
+        public void Next_SByte_ShouldGenerateUniqueNumbers()
         {
-            for (int i = 0; i < 5; i++)
-                generator.Next((byte)0, (byte)4);
+            for (int i = 0; i < max; i++)
+                generator.Next((sbyte)min, (sbyte)max);
+
+            Assert.Throws<InvalidOperationException>(() => generator.Next((sbyte)min, (sbyte)max), exceptionMessage);
         }
 
         [Test]
-        public void ShouldGenerateWithinRange_Char()
+        public void Next_Char_ShouldGenerateWithinRange()
         {
-            generator.Next((char)0, (char)4);
+            generator.Next((char)min, (char)max);
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException), ExpectedMessage = exceptionMessage)]
-        public void ShouldGenerateUniqueNumbers_Char()
+        public void Next_Char_ShouldGenerateUniqueNumbers()
         {
-            for (int i = 0; i < 5; i++)
-                generator.Next((char)0, (char)4);
+            for (int i = 0; i < max; i++)
+                generator.Next((char)min, (char)max);
+
+            Assert.Throws<InvalidOperationException>(() => generator.Next((char)min, (char)max), exceptionMessage);
         }
 
         [Test]
