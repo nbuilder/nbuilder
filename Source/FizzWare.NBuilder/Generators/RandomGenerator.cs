@@ -213,7 +213,7 @@ namespace FizzWare.NBuilder
         public T Enumeration<T>() where T : struct
         {
             var values = EnumHelper.GetValues(typeof(T));
-            var index = Next(0, values.Length - 1);
+            var index = Next(0, values.Length);
             return (T)values.GetValue(index);
         }
 
@@ -224,7 +224,7 @@ namespace FizzWare.NBuilder
                 throw new ArgumentException(string.Format("{0} is not an enum type.", type.FullName), "type");
             }
             var values = EnumHelper.GetValues(type);
-            var index = Next(0, values.Length - 1);
+            var index = Next(0, values.Length);
             return (Enum)values.GetValue(index);
         }   
 

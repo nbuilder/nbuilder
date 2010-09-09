@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NUnit.Framework;
+using FizzWare.NBuilder.Tests.TestClasses;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
@@ -180,5 +181,19 @@ namespace FizzWare.NBuilder.Tests.Unit
             for (int i = 0; i < 5; i++)
                 generator.Next((char)0, (char)4);
         }
+
+        [Test]
+        public void EnumerationOfT_EnumerateAllEnumerationsInEnum_GeneratesEachEnumValueWithoutThrowingAnException()
+        {
+            foreach (var enums in EnumHelper.GetValues<MyEnum>())
+                Assert.DoesNotThrow(() => generator.Enumeration<MyEnum>());
+        }
+
+        [Test]
+        public void EnumerationOfType_EnumerateAllEnumerationsInEnum_GeneratesEachEnumValueWithoutThrowingAnException()
+        {
+            foreach (var enums in EnumHelper.GetValues<MyEnum>())
+                Assert.DoesNotThrow(() => generator.Enumeration(typeof(MyEnum)));
+        } 
     }
 }
