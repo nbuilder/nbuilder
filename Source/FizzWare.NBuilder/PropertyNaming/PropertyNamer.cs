@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 using FizzWare.NBuilder.Implementation;
+using System.Linq;
 
 namespace FizzWare.NBuilder.PropertyNaming
 {
@@ -25,7 +26,7 @@ namespace FizzWare.NBuilder.PropertyNaming
             foreach (var propertyInfo in type.GetProperties(FLAGS))
                 SetMemberValue(propertyInfo, obj);
 
-            foreach (var propertyInfo in type.GetFields())
+            foreach (var propertyInfo in type.GetFields().Where(f => !f.IsLiteral))
                 SetMemberValue(propertyInfo, obj);
         }
 

@@ -81,11 +81,13 @@
     <Compile Include="Integration\ListBuilderTests_WithAClassThatHasANonParameterlessConstructor.cs" />
     <Compile Include="Integration\ListBuilderTests_WithAStruct.cs" />
     <Compile Include="Integration\PickerTests.cs" />
+    <Compile Include="Integration\SingleObjectBuilderTests_WithAClassThatHasANullCharConstant.cs" />
     <Compile Include="Integration\SingleObjectBuilderTests_WithAClassThatHasAParameterlessConstructor.cs" />
     <Compile Include="Integration\SingleObjectBuilderTests_WithAClassThatHasANonParameterlessConstructor.cs" />
     <Compile Include="Integration\SingleObjectBuilderTests_WithAStruct.cs" />
     <Compile Include="TestClasses\MyAbstractClass.cs" />
     <Compile Include="TestClasses\MyClassInheritor.cs" />
+    <Compile Include="TestClasses\MyClassWithCharConst.cs" />
     <Compile Include="TestClasses\MyClassWithOptionalConstructor.cs" />
     <Compile Include="TestClasses\MyConcreteClass.cs" />
     <Compile Include="TestClasses\MyEnum.cs" />
