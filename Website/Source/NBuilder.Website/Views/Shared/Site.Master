@@ -1,0 +1,57 @@
+﻿<%@ Master Language="C#" Inherits="System.Web.Mvc.ViewMasterPage" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>NBuilder - Rapid generation of test objects for .NET</title>
+    <link href="../../Content/css/style.css" rel="stylesheet" type="text/css" />
+    <script src="../../Scripts/jquery-1.3.2.js" type="text/javascript"></script>
+<asp:ContentPlaceHolder ID="HeadContent" runat="server">
+</asp:ContentPlaceHolder>
+
+</head>
+
+<body class="oneColFixCtr">
+
+<div id="container">
+  <div id="mainContent">
+    <div id="header"><a href="/"><img src="/Content/images/logo.png" width="278" height="50" alt="NBuilder - Rapid generation of test objects for .NET" border="0" /></a></div>
+    
+    <div id="menu">
+    	<ul>
+        	<li class="first"><a href="/">Home</a></li>
+            <li>|</li>	
+            <li><a href="/Download">Download</a></li>
+            <li>|</li>	
+            <li><a href="/Documentation">Documentation</a></li>
+            <li>|</li>	
+            <li><a href="/Roadmap">Roadmap</a></li>
+            <li>|</li>	
+            <li><a href="/Issues">Feature requests &amp; bugs</a></li>
+            <li>|</li>
+			<li><a href="/Contact">Contact</a></li>
+        </ul>    
+    </div>
+    
+    <div id="content">
+   	    <asp:ContentPlaceHolder ID="MainContent" runat="server">
+
+        </asp:ContentPlaceHolder>
+    </div>
+    
+  </div>
+</div>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-9308190-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+</body>
+</html>
