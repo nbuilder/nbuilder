@@ -89,6 +89,19 @@ namespace FizzWare.NBuilder.FunctionalTests
         }
 
         [Test]
+        public void ItsPosibleToUseAndInAdditionToWithInOrderToImproveReadability()
+        {
+            var invoice = Builder<Invoice>
+                .CreateNew()
+                .With(x => x.Amount, 100)
+                .And(x => x.Id, 200)
+                .Build();
+
+            Assert.That(invoice.Amount, Is.EqualTo(100));
+            Assert.That(invoice.Id, Is.EqualTo(200));
+        }
+
+        [Test]
         public void ItsPossibleToUseThePrivateSetWithToSetNormalProperties()
         {
             var product = Builder<Product>

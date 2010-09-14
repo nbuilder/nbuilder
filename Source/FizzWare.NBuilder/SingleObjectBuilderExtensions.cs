@@ -85,5 +85,14 @@ namespace FizzWare.NBuilder
                 return objectBuilder.Do(load => ((PropertyInfo)member).SetValue(load, value, null));
             }
         }
+
+        /// <summary>
+        /// Sets the value of one of the type's private properties or readonly fields
+        /// Overloads With to provide a better syntax in some situations.
+        /// </summary>
+        public static ISingleObjectBuilder<T> And<T, TProperty>(this ISingleObjectBuilder<T> objectBuilder, Expression<Func<T, TProperty>> property, TProperty value)
+        {
+            return With(objectBuilder, property, value);
+        }
     }
 }
