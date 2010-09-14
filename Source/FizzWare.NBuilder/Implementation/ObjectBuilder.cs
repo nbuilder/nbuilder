@@ -95,11 +95,11 @@ namespace FizzWare.NBuilder.Implementation
         {
             bool requiresArgs = reflectionUtil.RequiresConstructorArgs(typeof(T));
 
-            if (typeof(T).IsAbstract)
-                throw new TypeCreationException("Cannot build an abstract class");
-
             if (typeof(T).IsInterface)
                 throw new TypeCreationException("Cannot build an interface");
+
+            if (typeof(T).IsAbstract)
+                throw new TypeCreationException("Cannot build an abstract class");
 
             T obj;
 

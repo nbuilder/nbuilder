@@ -12,6 +12,9 @@ namespace FizzWare.NBuilder.FunctionalTests
     [TestFixture]
     public class SingleObjectBuilderTests
     {
+        private interface IMyInterface { }
+        private abstract class MyAbstractClass { }
+
         [SetUp]
         public void SetUp()
         {
@@ -212,5 +215,20 @@ namespace FizzWare.NBuilder.FunctionalTests
             Builder<IProduct>.CreateNew().Build();
             //      ^
         }
+
+        [Test]
+        public void NBuilderCannotBeUsedToBuildInterfaces()
+        {
+            var ex = Assert.Throws<TypeCreationException>(() => Builder<IMyInterface>.CreateNew().Build());
+            Assert.That(ex.Message, Is.EqualTo("Cannot build an interface"));
+        }
+
+        [Test]
+        public void NBuilderCannotBeUsedToBuildAbstractClasses()
+        {
+            var ex = Assert.Throws<TypeCreationException>(() => Builder<MyAbstractClass>.CreateNew().Build(), "Cannot build an abstract class");
+            Assert.That(ex.Message, Is.EqualTo("Cannot build an abstract class"));
+        }
+
     }
 }
