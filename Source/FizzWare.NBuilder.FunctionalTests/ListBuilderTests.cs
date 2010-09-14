@@ -314,6 +314,47 @@ namespace FizzWare.NBuilder.FunctionalTests
         }
 
         [Test]
+        public void UsingHaveWithImmutableClassProperties()
+        {
+            var invoices = Builder<Invoice>
+                .CreateListOfSize(2)
+                .WhereTheFirst(2)
+                    .Have(p => p.Amount, 100)
+                .Build();
+
+            Assert.That(invoices[0].Amount, Is.EqualTo(100));
+            Assert.That(invoices[1].Amount, Is.EqualTo(100));
+        }
+
+        [Test]
+        public void UsingAndWithImmutableClassProperties()
+        {
+            var invoices = Builder<Invoice>
+                .CreateListOfSize(2)
+                .WhereTheFirst(2)
+                    .Have(p => p.Amount, 100)
+                    .And(p => p.Id, 200)
+                .Build();
+
+            Assert.That(invoices[0].Amount, Is.EqualTo(100));
+            Assert.That(invoices[1].Amount, Is.EqualTo(100));
+            Assert.That(invoices[0].Id, Is.EqualTo(200));
+            Assert.That(invoices[1].Id, Is.EqualTo(200));
+        }
+
+        [Test]
+        public void UsingHasWithImmutableClassProperties()
+        {
+            var invoices = Builder<Invoice>
+                .CreateListOfSize(1)
+                .WhereTheFirst(1)
+                    .Has(p => p.Amount, 100)
+                .Build();
+
+            Assert.That(invoices[0].Amount, Is.EqualTo(100));
+        }
+
+        [Test]
         [ExpectedException(typeof(TypeCreationException))]
         public void WillComplainIfYouDoNotSupplyArgsMatchingOneOfTheConstructors()
         {

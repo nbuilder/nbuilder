@@ -17,6 +17,9 @@ namespace FizzWare.NBuilder
             return declaration;
         }
 
+        /// <summary>
+        /// Sets the value of one of the type's public properties
+        /// </summary>
         public static IOperable<T> Have<T, TFunc>(this IOperable<T> operable, Func<T, TFunc> func)
         {
             var declaration = GetDeclaration(operable);
@@ -25,16 +28,52 @@ namespace FizzWare.NBuilder
             return (IOperable<T>)declaration;
         }
 
+        /// <summary>
+        /// Sets the value of one of the type's private properties or readonly fields
+        /// </summary>
+        public static IOperable<T> Have<T, TProperty>(this IOperable<T> operable, Expression<Func<T, TProperty>> property, TProperty value)
+        {
+            var declaration = GetDeclaration(operable);
+            
+            declaration.ObjectBuilder.With(property, value);
+            return (IOperable<T>)declaration;
+        }
+
+        /// <summary>
+        /// Sets the value of one of the type's public properties
+        /// </summary>
         public static IOperable<T> And<T, TFunc>(this IOperable<T> operable, Func<T, TFunc> func)
         {
             return Have(operable, func);
         }
 
+        /// <summary>
+        /// Sets the value of one of the type's private properties or readonly fields
+        /// </summary>
+        public static IOperable<T> And<T, TProperty>(this IOperable<T> operable, Expression<Func<T, TProperty>> property, TProperty value)
+        {
+            return Have(operable, property, value);
+        }
+
+        /// <summary>
+        /// Sets the value of one of the type's public properties
+        /// </summary>
         public static IOperable<T> Has<T, TFunc>(this IOperable<T> operable, Func<T, TFunc> func)
         {
             return Have(operable, func);
         }
 
+        /// <summary>
+        /// Sets the value of one of the type's private properties or readonly fields
+        /// </summary>
+        public static IOperable<T> Has<T, TProperty>(this IOperable<T> operable, Expression<Func<T, TProperty>> property, TProperty value)
+        {
+            return Have(operable, property, value);
+        }
+
+        /// <summary>
+        /// Performs an action on the type.
+        /// </summary>
         public static IOperable<T> And<T>(this IOperable<T> operable, Action<T> action)
         {
             return HaveDoneToThem(operable, action);
@@ -45,10 +84,6 @@ namespace FizzWare.NBuilder
         /// 
         /// AreConstructedUsing( () => new MyType(arg1, arg2) )
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="operable"></param>
-        /// <param name="constructor"></param>
-        /// <returns></returns>
         public static IOperable<T> AreConstructedUsing<T>(this IOperable<T> operable, Expression<Func<T>> constructor)
         {
             var declaration = GetDeclaration(operable);
@@ -56,6 +91,11 @@ namespace FizzWare.NBuilder
             return (IOperable<T>)declaration;
         }
 
+        /// <summary>
+        /// Specify the constructor for the type like this:
+        /// 
+        /// AreConstructedUsing( () => new MyType(arg1, arg2) )
+        /// </summary>
         public static IOperable<T> IsConstructedUsing<T>(this IOperable<T> operable, Expression<Func<T>> constructor)
         {
             return AreConstructedUsing(operable, constructor);
@@ -75,6 +115,9 @@ namespace FizzWare.NBuilder
             return AreConstructedWith(operable, args);
         }
 
+        /// <summary>
+        /// Performs an action on the type.
+        /// </summary>
         public static IOperable<T> HaveDoneToThem<T>(this IOperable<T> operable, Action<T> action)
         {
             var declaration = GetDeclaration(operable);
@@ -82,11 +125,17 @@ namespace FizzWare.NBuilder
             return (IOperable<T>)declaration;
         }
 
+        /// <summary>
+        /// Performs an action on the type.
+        /// </summary>
         public static IOperable<T> HasDoneToIt<T>(this IOperable<T> operable, Action<T> action)
         {
             return HaveDoneToThem(operable, action);
         }
 
+        /// <summary>
+        /// Performs an action for each item in a list.
+        /// </summary>
         public static IOperable<T> HaveDoneToThemForAll<T, U>(this IOperable<T> operable, Action<T, U> action, IList<U> list)
         {
             var declaration = GetDeclaration(operable);
@@ -94,6 +143,9 @@ namespace FizzWare.NBuilder
             return (IOperable<T>)declaration;
         }
 
+        /// <summary>
+        /// Performs an action for each item in a list.
+        /// </summary>
         public static IOperable<T> HasDoneToItForAll<T, U>(this IOperable<T> operable, Action<T, U> action, IList<U> list)
         {
             return HaveDoneToThemForAll(operable, action, list);

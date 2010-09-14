@@ -4,6 +4,7 @@ using FizzWare.NBuilder.Implementation;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NUnit.Framework;
 using Rhino.Mocks;
+using System.Linq.Expressions;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
@@ -14,6 +15,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         private MockRepository mocks;
         private IObjectBuilder<MyClass> objectBuilder;
         private Func<MyClass, float> func;
+        private Expression<Func<MyClass, int>> propertyExpression;
         private IDeclaration<MyClass> operable;
 
         [SetUp]
@@ -23,6 +25,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             objectBuilder = mocks.DynamicMock<IObjectBuilder<MyClass>>();
             operable = mocks.DynamicMultiMock<IDeclaration<MyClass>>(typeof(IOperable<MyClass>));
             func = x => x.Float = 1f;
+            propertyExpression = x => x.IntGetterOnly;
         }
 
         [Test]
@@ -59,6 +62,42 @@ namespace FizzWare.NBuilder.Tests.Unit
             }
 
             OperableExtensions.And((IOperable<MyClass>)operable, func);
+        }
+
+        [Test]
+        public void ShouldBeAbleToUseHaveToSetPrivateProperties()
+        {
+            using (mocks.Record())
+            {
+                operable.Expect(x => x.ObjectBuilder).Return(new ObjectBuilder<MyClass>(null));
+                objectBuilder.Expect(x => x.With(propertyExpression, 100));
+            }
+
+            OperableExtensions.Have((IOperable<MyClass>)operable, propertyExpression, 100);
+        }
+
+        [Test]
+        public void ShouldBeAbleToUseHasToSetPrivateProperties()
+        {
+            using (mocks.Record())
+            {
+                operable.Expect(x => x.ObjectBuilder).Return(new ObjectBuilder<MyClass>(null));
+                objectBuilder.Expect(x => x.With(propertyExpression, 100));
+            }
+
+            OperableExtensions.Has((IOperable<MyClass>)operable, propertyExpression, 100);
+        }
+
+        [Test]
+        public void ShouldBeAbleToUseAndToSetPrivateProperties()
+        {
+            using (mocks.Record())
+            {
+                operable.Expect(x => x.ObjectBuilder).Return(new ObjectBuilder<MyClass>(null));
+                objectBuilder.Expect(x => x.With(propertyExpression, 100));
+            }
+
+            OperableExtensions.And((IOperable<MyClass>)operable, propertyExpression, 100);
         }
 
         [Test]
