@@ -111,14 +111,9 @@ namespace FizzWare.NBuilder.Implementation
             {
                 obj = reflectionUtil.CreateInstanceOf<T>(constructorArgs);
             }
-            else if (!requiresArgs)
-            {
-                obj = reflectionUtil.CreateInstanceOf<T>();
-            }
             else
             {
-                throw new TypeCreationException(
-                    "Type does not have a default parameterless constructor but no constructor args were specified. Use WithConstructorArgs() method to supply some the required arguments.");
+                obj = reflectionUtil.CreateInstanceOf<T>();
             }
 
             return obj;

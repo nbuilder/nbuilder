@@ -85,6 +85,7 @@
     <Compile Include="Integration\SingleObjectBuilderTests_WithAClassThatHasAParameterlessConstructor.cs" />
     <Compile Include="Integration\SingleObjectBuilderTests_WithAClassThatHasANonParameterlessConstructor.cs" />
     <Compile Include="Integration\SingleObjectBuilderTests_WithAStruct.cs" />
+    <Compile Include="TestClasses\MyClassWithPrivateParameterlessConstructor.cs" />
     <Compile Include="TestClasses\MyAbstractClass.cs" />
     <Compile Include="TestClasses\MyClassInheritor.cs" />
     <Compile Include="TestClasses\MyClassWithCharConst.cs" />

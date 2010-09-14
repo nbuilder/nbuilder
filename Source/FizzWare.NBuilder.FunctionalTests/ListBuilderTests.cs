@@ -310,7 +310,7 @@ namespace FizzWare.NBuilder.FunctionalTests
         [ExpectedException(typeof(BuilderException))]
         public void WillComplainIfYouDoNotSupplyConstructorArgsWhenRequired()
         {
-            Builder<BasketItem>.CreateListOfSize(10).Build();
+            Builder<Invoice>.CreateListOfSize(10).Build();
         }
 
         [Test]

@@ -17,6 +17,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         private ISingleObjectBuilder<MyClass> objectBuilder;
         private MockRepository mocks;
         private Func<MyClass, string> func;
+        private Expression<Func<MyClass, int>> propertyExpression;
         private Action<MyClass> action;
         private Action<MyClass, SimpleClass> actionForAll;
         private IList<SimpleClass> actionList;
@@ -27,6 +28,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             mocks = new MockRepository();
             objectBuilder = mocks.DynamicMock<IObjectBuilder<MyClass>>();
             func = x => x.StringOne = "test";
+            propertyExpression = x => x.IntGetterOnly;
             action = x => x.DoSomething();
             actionForAll = (x,y) => x.Add(y);
             actionList = new List<SimpleClass>();
@@ -82,6 +84,16 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             using (mocks.Playback())
                 SingleObjectBuilderExtensions.DoForAll(objectBuilder, actionForAll, actionList);
+        }
+
+        [Test]
+        public void ShouldBeAbleToUseWithToSetPrivateProperties()
+        {
+            using (mocks.Record())
+                objectBuilder.Expect(x => x.Do(new Action<MyClass>(a => a.StringOne = ""))).IgnoreArguments().Return(objectBuilder);
+
+            using (mocks.Playback())
+                SingleObjectBuilderExtensions.With(objectBuilder, propertyExpression, 100);
         }
     }
     // ReSharper restore InvokeAsExtensionMethod

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using FizzWare.NBuilder.Implementation;
+using System.Runtime.Serialization;
 
 namespace FizzWare.NBuilder.Implementation
 {
@@ -12,11 +13,12 @@ namespace FizzWare.NBuilder.Implementation
         {
             try
             {
-                return Activator.CreateInstance<T>();
+                return (T)Activator.CreateInstance(typeof(T), true);
             }
-            catch (MissingMethodException e)
+            catch (MissingMethodException)
             {
-                throw new TypeCreationException(typeof(T).Name + " does not have a default parameterless constructor", e);
+                //type does not have a default parameterless constructor so create an uninitialized object
+                return (T)FormatterServices.GetUninitializedObject(typeof(T));
             }
         }
 
@@ -44,7 +46,7 @@ namespace FizzWare.NBuilder.Implementation
             if (type.IsValueType)
                 return false;
 
-            var constructors = type.GetConstructors();
+            var constructors = type.GetConstructors(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
             foreach (var constructorInfo in constructors)
             {

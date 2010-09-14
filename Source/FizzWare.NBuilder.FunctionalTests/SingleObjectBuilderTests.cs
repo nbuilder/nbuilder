@@ -65,6 +65,40 @@ namespace FizzWare.NBuilder.FunctionalTests
             //     to improve readability
         }
 
+
+        [Test]
+        public void ItsPossibleToAssignValuesToPrivateSetProperties()
+        {
+            var invoice = Builder<Invoice>
+                .CreateNew()
+                .With(x => x.Amount, 100)
+                .Build();
+
+            Assert.That(invoice.Amount, Is.EqualTo(100));
+        }
+
+        [Test]
+        public void ItsPossibleToAssignValuesToReadonlyProperties()
+        {
+            var invoice = Builder<Invoice>
+                .CreateNew()
+                .With(x => x.Id, 100)
+                .Build();
+
+            Assert.That(invoice.Id, Is.EqualTo(100));
+        }
+
+        [Test]
+        public void ItsPossibleToUseThePrivateSetWithToSetNormalProperties()
+        {
+            var product = Builder<Product>
+                .CreateNew()
+                .With(x => x.Title, "special title")
+                .Build();
+
+            Assert.That(product.Title, Is.EqualTo("special title"));
+        }
+
         [Test]
         public void CreatingAClassThatHasAConstructorUsingLegacySyntax()
         {

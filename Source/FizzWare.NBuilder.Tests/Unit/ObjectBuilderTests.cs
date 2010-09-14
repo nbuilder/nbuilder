@@ -146,17 +146,6 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
 
         [Test]
-        [ExpectedException(typeof(TypeCreationException))]
-        public void ShouldThrowIfNoConstructorArgsPassed()
-        {
-            using (mocks.Record())
-                reflectionUtil.Expect(x => x.RequiresConstructorArgs(typeof(MyClassWithConstructor))).Return(true);
-
-            using (mocks.Playback())
-                myClassWithConstructorBuilder.Construct();
-        }
-
-        [Test]
         public void ShouldBeAbleToUseWith()
         {
             using (mocks.Record())

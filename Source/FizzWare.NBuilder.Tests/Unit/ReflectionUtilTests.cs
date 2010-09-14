@@ -42,6 +42,13 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
 
         [Test]
+        public void ShouldBeAbleToCreateInstanceOfClassThatHasPrivateParameterlessConstructor()
+        {
+            var instance = reflectionUtil.CreateInstanceOf<MyClassWithPrivateParameterlessConstructor>();
+            Assert.That(instance, Is.TypeOf(typeof(MyClassWithPrivateParameterlessConstructor)));
+        }
+
+        [Test]
         public void ShouldBeAbleToCreateInstanceOfClassWithConstructorArgs()
         {
             var instance = reflectionUtil.CreateInstanceOf<MyClassWithConstructor>(stringArg, decimalArg);
@@ -53,13 +60,6 @@ namespace FizzWare.NBuilder.Tests.Unit
         {
             var instance = reflectionUtil.CreateInstanceOf<MyStruct>();
             Assert.That(instance, Is.TypeOf(typeof(MyStruct)));
-        }
-
-        [Test]
-        [ExpectedException(typeof(TypeCreationException))]
-        public void ShouldComplainIfNoArgsPassedIn()
-        {
-            var instance = reflectionUtil.CreateInstanceOf<MyClassWithConstructor>();
         }
 
         [Test]
