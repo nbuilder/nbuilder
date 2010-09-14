@@ -378,6 +378,35 @@ namespace FizzWare.NBuilder.Tests.Unit
                 ListBuilderExtensions.PersistHierarchy(listBuilderImpl, hierarchySpec);
             }
         }
+
+        [Test]
+        public void ShouldBeAbleToUseAndTheRemaining()
+        {
+            const int start = 0;
+            const int end = 9;
+            const int capacity = 10;
+
+            IDeclarationQueue<MyClass> declarationQueue = mocks.StrictMock<IDeclarationQueue<MyClass>>();
+            RangeDeclaration<MyClass> rangeDeclaration = new RangeDeclaration<MyClass>(listBuilderImpl, null, start, end);
+
+            using (mocks.Record())
+            {
+                declarationQueue.Expect(x => x.GetLastItem()).Return(rangeDeclaration);
+                listBuilderImpl.Expect(x => x.Declarations).Return(declarationQueue);
+                listBuilderImpl.Expect(x => x.Capacity).Return(capacity).Repeat.Any();
+                listBuilderImpl.Expect(x => x.AddDeclaration(Arg<RangeDeclaration<MyClass>>.Is.TypeOf)).Return(rangeDeclaration);
+            }
+
+            using (mocks.Playback())
+            {
+                var declaration = (RangeDeclaration<MyClass>)ListBuilderExtensions.AndTheRemaining(listBuilderImpl);
+
+                Assert.That(declaration.Start, Is.EqualTo(start));
+                Assert.That(declaration.End, Is.EqualTo(end));
+            }
+
+        }
+
     }
     // ReSharper restore InvokeAsExtensionMethod
 }

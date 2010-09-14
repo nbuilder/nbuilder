@@ -345,6 +345,23 @@ namespace FizzWare.NBuilder.FunctionalTests
         }
 
         [Test]
+        public void UsingAndTheRemaining()
+        { 
+            var list = Builder<Product>
+                .CreateListOfSize(4)
+                .WhereTheFirst(2)
+                    .Have(x => x.Title = "Special Title 1")
+                .AndTheRemaining()
+                    .Have(x => x.Title = "Special Title 2")
+                .Build();
+
+            Assert.That(list[0].Title, Is.EqualTo("Special Title 1"));
+            Assert.That(list[1].Title, Is.EqualTo("Special Title 1"));
+            Assert.That(list[2].Title, Is.EqualTo("Special Title 2"));
+            Assert.That(list[3].Title, Is.EqualTo("Special Title 2"));
+        }
+
+        [Test]
         public void UsingAndThePrevious()
         {
             var list = Builder<Product>

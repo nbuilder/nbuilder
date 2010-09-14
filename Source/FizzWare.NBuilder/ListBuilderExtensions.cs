@@ -34,6 +34,16 @@ namespace FizzWare.NBuilder
             return (IOperable<T>)listBuilderImpl.AddDeclaration(declaration);
         }
 
+        public static IOperable<T> AndTheRemaining<T>(this IListBuilder<T> listBuilder)
+        {
+            var listBuilderImpl = GetListBuilderImpl<T>(listBuilder);
+            var lastDeclaration = listBuilderImpl.Declarations.GetLastItem();
+            var rangeDeclaration = lastDeclaration as RangeDeclaration<T>;
+            var remainingItems = listBuilderImpl.Capacity - rangeDeclaration.End;
+
+            return WhereTheLast(listBuilder, remainingItems);
+        }
+
         public static IOperable<T> WhereRandom<T>(this IListBuilder<T> listBuilder, int amount)
         {
             var listBuilderImpl = GetListBuilderImpl<T>(listBuilder);
