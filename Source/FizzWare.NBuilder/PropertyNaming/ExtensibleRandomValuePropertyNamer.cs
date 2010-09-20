@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using FizzWare.NBuilder.Extensions;
-using FizzWare.NBuilder.Generators;
 
 namespace FizzWare.NBuilder.PropertyNaming
 {
@@ -32,6 +31,12 @@ namespace FizzWare.NBuilder.PropertyNaming
         }
 
         public ExtensibleRandomValuePropertyNamer NameWith<T>(Func<T> handler)
+        {
+            NameWith((Delegate)handler);
+            return this;
+        }
+
+        public ExtensibleRandomValuePropertyNamer NameWith<T>(Func<MemberInfo, T> handler)
         {
             NameWith((Delegate)handler);
             return this;
@@ -91,7 +96,9 @@ namespace FizzWare.NBuilder.PropertyNaming
             {
                 return;
             }
-            var value = handler.DynamicInvoke();
+            var value = handler.Method.GetParameters().Length == 1 ? 
+                handler.DynamicInvoke(memberInfo) : 
+                handler.DynamicInvoke();
             memberInfo.SetFieldOrPropertyValue(instance, value);
         }
 

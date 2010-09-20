@@ -1,10 +1,9 @@
 using System;
-using FizzWare.NBuilder.Extensions;
+using System.Reflection;
 using FizzWare.NBuilder.Generators;
 using FizzWare.NBuilder.PropertyNaming;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NUnit.Framework;
-using System.Collections.Generic;
 using Rhino.Mocks;
 
 namespace FizzWare.NBuilder.Tests.Unit
@@ -121,6 +120,33 @@ namespace FizzWare.NBuilder.Tests.Unit
             target.NameWith<DateTime?>(() => GetRandom.DateTime(DateTime.Today, DateTime.Today));
             target.SetValuesOf(foo);
             Assert.That(foo.DateTime, Is.EqualTo(DateTime.Today));
+        }
+
+        [Test]
+        public void when_naming_with_handler_that_take_memeberinfo_parameter__the_memeber_info_parameter_will_be_received()
+        {
+            var foo = new Foo();
+            MemberInfo barMemberInfo = null;
+            target.NameWith(m => 
+            { 
+                barMemberInfo = m;
+                return new Bar();
+            });
+
+            MemberInfo dateTimeMemberInfo = null;
+            target.NameWith(m =>
+            {
+                dateTimeMemberInfo = m;
+                return DateTime.UtcNow;
+            });
+            
+            target.SetValuesOf(foo);
+
+            Assert.That(barMemberInfo.Name, Is.EqualTo("Bar"));
+            Assert.That(barMemberInfo.DeclaringType, Is.EqualTo(typeof(Foo)));
+            
+            Assert.That(dateTimeMemberInfo.Name, Is.EqualTo("DateTime"));
+            Assert.That(dateTimeMemberInfo.DeclaringType, Is.EqualTo(typeof(Foo)));
         }
     }
 
