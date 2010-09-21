@@ -17,9 +17,13 @@ namespace FizzWare.NBuilder
 
         private static readonly string[] latinWords = { "lorem", "ipsum", "dolor", "sit", "amet", "consectetur", "adipisicing", "elit", "sed", "do", "eiusmod", "tempor", "incididunt", "ut", "labore", "et", "dolore", "magna", "aliqua" };
 
-        public RandomGenerator()
+        public RandomGenerator() : this(System.Guid.NewGuid().GetHashCode()) { }
+
+        public RandomGenerator(int seed) : this(new Random(seed)) { }
+
+        public RandomGenerator(Random random)
         {
-            rnd = new Random(Guid().GetHashCode());
+            rnd = random;
         }
 
         public virtual short Next(short min, short max)

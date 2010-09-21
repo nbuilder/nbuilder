@@ -216,5 +216,19 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             randomGenerator.Enumeration(type);
         }
+
+        [Test]
+        public void RandomGenerator_SeedInitialization_ShouldAllowRandomValuesToBeRepeatable()
+        {
+            const int seed = 5;
+
+            IRandomGenerator seededRandomGenerator1 = new RandomGenerator(seed);
+            IRandomGenerator seededRandomGenerator2 = new RandomGenerator(seed);
+
+            Assert.That(seededRandomGenerator1.Int(), Is.EqualTo(seededRandomGenerator2.Int()));
+            Assert.That(seededRandomGenerator1.Int(), Is.EqualTo(seededRandomGenerator2.Int()));
+            Assert.That(seededRandomGenerator1.Int(), Is.EqualTo(seededRandomGenerator2.Int()));
+            Assert.That(seededRandomGenerator1.Int(), Is.EqualTo(seededRandomGenerator2.Int()));
+        }
     }
 }
