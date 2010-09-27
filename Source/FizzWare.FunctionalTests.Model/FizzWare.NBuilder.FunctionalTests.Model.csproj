@@ -105,6 +105,7 @@
   <ItemGroup>
     <Compile Include="BasketItem.cs" />
     <Compile Include="Category.cs" />
+    <Compile Include="ChuckNorris.cs" />
     <Compile Include="Invoice.cs" />
     <Compile Include="IProduct.cs" />
     <Compile Include="Product.cs" />

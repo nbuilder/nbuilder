@@ -49,6 +49,14 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
 
         [Test]
+        [ExpectedException(typeof(TypeCreationException))]
+        public void WillComplainIfYouAttemptToCreateInstanceOfClassThatOnlyHasAPrivateParameterizedConstructor()
+        {
+            var instance = reflectionUtil.CreateInstanceOf<MyClassWithPrivateParameterizedConstructor>();
+            Assert.That(instance, Is.TypeOf(typeof(MyClassWithPrivateParameterizedConstructor)));
+        }
+
+        [Test]
         public void ShouldBeAbleToCreateInstanceOfClassWithConstructorArgs()
         {
             var instance = reflectionUtil.CreateInstanceOf<MyClassWithConstructor>(stringArg, decimalArg);

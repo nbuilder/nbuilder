@@ -230,5 +230,12 @@ namespace FizzWare.NBuilder.FunctionalTests
             Assert.That(ex.Message, Is.EqualTo("Cannot build an abstract class"));
         }
 
+        [Test]
+        [ExpectedException(typeof(TypeCreationException))]
+        public void WillComplainIfYouTryToBuildAClassThatCannotBeInstantiatedDirectly()
+        {
+            Builder<ChuckNorris>.CreateNew().Build();
+        }
+
     }
 }

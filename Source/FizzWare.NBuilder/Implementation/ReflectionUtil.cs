@@ -15,10 +15,9 @@ namespace FizzWare.NBuilder.Implementation
             {
                 return (T)Activator.CreateInstance(typeof(T), true);
             }
-            catch (MissingMethodException)
+            catch (MissingMethodException e)
             {
-                //type does not have a default parameterless constructor so create an uninitialized object
-                return (T)FormatterServices.GetUninitializedObject(typeof(T));
+                throw new TypeCreationException(typeof(T).Name + " does not have a default parameterless constructor", e);
             }
         }
 

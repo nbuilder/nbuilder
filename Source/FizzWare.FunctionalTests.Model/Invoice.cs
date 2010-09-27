@@ -11,7 +11,9 @@ namespace FizzWare.NBuilder.FunctionalTests.Model
 
         public readonly int Id;
 
-        public Invoice(decimal amount) 
+        private Invoice() { }
+
+        private Invoice(decimal amount) 
         {
             this.Amount = amount;
         }               

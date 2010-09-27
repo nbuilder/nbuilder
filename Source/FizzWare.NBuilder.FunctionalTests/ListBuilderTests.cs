@@ -308,9 +308,9 @@ namespace FizzWare.NBuilder.FunctionalTests
 
         [Test]
         [ExpectedException(typeof(BuilderException))]
-        public void WillComplainIfYouDoNotSupplyConstructorArgsWhenRequired()
+        public void WillComplainIfYouTryToBuildAClassThatCannotBeInstantiatedDirectly()
         {
-            Builder<Invoice>.CreateListOfSize(10).Build();
+            Builder<ChuckNorris>.CreateListOfSize(10).Build();
         }
 
         [Test]
