@@ -100,6 +100,7 @@
     <Compile Include="Unit\Dates\DatesTests.cs" />
     <Compile Include="Unit\Dates\StaticMonthTests.cs" />
     <Compile Include="Unit\ExtensibileRandomValuePropertyNamerTests.cs" />
+    <Compile Include="Unit\PropertyNamerTests.cs" />
     <Compile Include="Unit\RandomValuePropertyNamerTestFixture.cs" />
     <Compile Include="Unit\RandomValuePropertyNamerTests_Default.cs" />
     <Compile Include="Unit\RandomValuePropertyNamerTests_LoremIpsumStrings.cs" />
