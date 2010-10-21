@@ -13,17 +13,17 @@ namespace FizzWare.NBuilder.Tests.Integration
         [Test]
         public void ShouldBeAbleToCreateAClassThatHasANullCharConstant()
         {
-            Builder<MyClassWithCharConst>.CreateNew().Build();
+            var mc = Builder<MyClassWithCharConst>.CreateNew().Build();
 
-            Assert.That(MyClassWithCharConst.NullCharConst, Is.EqualTo('\0'));
+            Assert.That(mc.GetNullCharConst(), Is.EqualTo(MyClassWithCharConst.NullCharConst));
         }
 
         [Test]
         public void ShouldBeAbleToCreateAClassThatHasACharConstant()
         {
-            Builder<MyClassWithCharConst>.CreateNew().Build();
+            var mc = Builder<MyClassWithCharConst>.CreateNew().Build();
 
-            Assert.That(MyClassWithCharConst.NonNullCharConst, Is.EqualTo('Y'));
+            Assert.That(mc.GetNonNullCharConst(), Is.EqualTo(MyClassWithCharConst.NonNullCharConst));
         }
     }
 }

@@ -9,5 +9,15 @@ namespace FizzWare.NBuilder.Tests.TestClasses
     {
         public const char NullCharConst = '\0';
         public const char NonNullCharConst = 'Y';
+
+        public char GetNullCharConst()
+        {
+            return NullCharConst;
+        }
+
+        public char GetNonNullCharConst()
+        {
+            return NonNullCharConst;
+        }
     }
 }
