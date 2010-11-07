@@ -31,10 +31,9 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void ShouldThrowIfAmountIsGreaterThanStartAndEnd()
         {
-            sut.AddRange(0, 1, 3);
+            Assert.Throws<ArgumentException>(() => sut.AddRange(0, 1, 3));
         }
 
         [Test]

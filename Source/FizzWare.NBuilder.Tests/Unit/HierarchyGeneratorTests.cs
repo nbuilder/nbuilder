@@ -102,8 +102,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
-        public void ShouldComplainIfInitialListIsNotBigEnough()
+        public void HierarchyGeneratorConstructor_SourceListNotBigEnough_Complains()
         {
             // Formula is (maxCategories^0 + maxCategories^1 + maxCategories^2) * numRoots
 
@@ -121,7 +120,12 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             using (mocks.Playback())
             {
-                hierarchyGenerator = new HierarchyGenerator<MyHierarchicalClass>(sourceList, (x, y) => x.AddChild(y), numberOfRoots, depth, minCategories, maxCategories, randomGenerator, namingMethod, null);
+                Assert.Throws<ArgumentException>(
+                    () =>
+                        hierarchyGenerator =
+                        new HierarchyGenerator<MyHierarchicalClass>(sourceList, null, numberOfRoots, depth, minCategories,
+                                                                    maxCategories, randomGenerator, namingMethod, null)
+                    );
             }
         }
     }

@@ -209,12 +209,10 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void enum_should_throw_if_not_an_enum_type()
         {
             var type = typeof (string);
-
-            randomGenerator.Enumeration(type);
+            Assert.Throws<ArgumentException>(() => randomGenerator.Enumeration(type));
         }
 
         [Test]

@@ -91,8 +91,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
-        public void ShouldComplainIfOperableIsNotAlsoOfTypeIDeclaration()
+        public void Persist_TypeOfIOperableOnlyNotIDeclaration_ThrowsException()
         {
             var operableOnly = mocks.DynamicMock<IOperable<MyClass>>();
 
@@ -101,7 +100,7 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             using (mocks.Playback())
             {
-                PersistenceExtensions.Persist(operableOnly);
+                Assert.Throws<ArgumentException>(() => PersistenceExtensions.Persist(operableOnly));
             }
         }
     }

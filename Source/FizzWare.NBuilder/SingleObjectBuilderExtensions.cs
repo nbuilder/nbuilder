@@ -70,7 +70,7 @@ namespace FizzWare.NBuilder
         }
 
         /// <summary>
-        /// Sets the value of one of the type's private properties or readonly fields
+        /// Sets the value of one of the type's private properties
         /// </summary>
         public static ISingleObjectBuilder<T> With<T, TProperty>(this ISingleObjectBuilder<T> objectBuilder, Expression<Func<T, TProperty>> property, TProperty value)
         {

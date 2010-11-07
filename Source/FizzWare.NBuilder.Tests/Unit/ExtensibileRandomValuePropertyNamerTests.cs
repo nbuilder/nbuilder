@@ -19,8 +19,6 @@ namespace FizzWare.NBuilder.Tests.Unit
         [SetUp]
         public void SetUp()
         {
-            //BuilderSetup.DisablePropertyNamingFor<MyClass, int>(x => x.ThisPropertyHasAGetterWhichThrowsAnException);
-
             mocks = new MockRepository();
 
             randomGenerator = mocks.DynamicMock<IRandomGenerator>();
@@ -89,11 +87,16 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Test]
         public void adding_handler_for_complex_type_names_using_the_added_handler()
         {
-            var foo = new Foo();
-            target.NameWith<Bar>(BarBuilder.New.Build);
-            target.SetValuesOf(foo);
-            Assert.AreEqual(BarBuilder.String1Length, foo.Bar.String1.Length);
-            Assert.AreEqual(BarBuilder.String2Length, foo.Bar.String2.Length);
+            // Arrange
+            var myClass = new MyClass();
+            target.NameWith<SimpleClass>(SimpleClassBuilder.New.Build);
+
+            // Act
+            target.SetValuesOf(myClass);
+
+            // Assert
+            Assert.AreEqual(SimpleClassBuilder.String1Length, myClass.SimpleClassProperty.String1.Length);
+            Assert.AreEqual(SimpleClassBuilder.String2Length, myClass.SimpleClassProperty.String2.Length);
         }
 
         [Test]
@@ -108,29 +111,29 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Test]
         public void nullable_members_are_set_using_the_non_nullable_handler_when_no_nullable_handler_exists()
         {
-            var foo = new Foo();
-            target.SetValuesOf(foo);
-            Assert.That(foo.DateTime, Is.Not.Null);
+            var myClass = new MyClass();
+            target.SetValuesOf(myClass);
+            Assert.That(myClass.NullableInt, Is.Not.Null);
         }
 
         [Test]
         public void nullable_members_are_set_using_the_specifc_nullable_handler_and_not_the_non_nullable_one_for_te_same_type()
         {
-            var foo = new Foo();
-            target.NameWith<DateTime?>(() => GetRandom.DateTime(DateTime.Today, DateTime.Today));
-            target.SetValuesOf(foo);
-            Assert.That(foo.DateTime, Is.EqualTo(DateTime.Today));
+            var myClass = new MyClass();
+            target.NameWith<int?>(() => 500);
+            target.SetValuesOf(myClass);
+            Assert.That(myClass.NullableInt, Is.EqualTo(500));
         }
 
         [Test]
-        public void when_naming_with_handler_that_take_memeberinfo_parameter__the_memeber_info_parameter_will_be_received()
+        public void when_naming_with_handler_that_takes_memeberinfo_parameter__the_member_info_parameter_will_be_received()
         {
-            var foo = new Foo();
-            MemberInfo barMemberInfo = null;
+            var foo = new MyClass();
+            MemberInfo simpleClassMemberInfo = null;
             target.NameWith(m => 
             { 
-                barMemberInfo = m;
-                return new Bar();
+                simpleClassMemberInfo = m;
+                return new SimpleClass();
             });
 
             MemberInfo dateTimeMemberInfo = null;
@@ -142,39 +145,33 @@ namespace FizzWare.NBuilder.Tests.Unit
             
             target.SetValuesOf(foo);
 
-            Assert.That(barMemberInfo.Name, Is.EqualTo("Bar"));
-            Assert.That(barMemberInfo.DeclaringType, Is.EqualTo(typeof(Foo)));
+            Assert.That(simpleClassMemberInfo.Name, Is.EqualTo("SimpleClassProperty"));
+            Assert.That(simpleClassMemberInfo.DeclaringType, Is.EqualTo(typeof(MyClass)));
             
             Assert.That(dateTimeMemberInfo.Name, Is.EqualTo("DateTime"));
-            Assert.That(dateTimeMemberInfo.DeclaringType, Is.EqualTo(typeof(Foo)));
+            Assert.That(dateTimeMemberInfo.DeclaringType, Is.EqualTo(typeof(MyClass)));
         }
-    }
 
-    public class BarBuilder
-    {
-        public static int String1Length = 9;
-        public static int String2Length = 4;
-
-        public static ISingleObjectBuilder<Bar> New
+        [Test]
+        public void SetValuesOf_IgnoredProperty_HonorsIgnore()
         {
-            get
-            {
-                return Builder<Bar>.CreateNew()
-                    .With(x => x.String1 = GetRandom.String(String1Length))
-                    .With(x => x.String2 = GetRandom.String(String2Length));
-            }
+            // Arrange
+            var myClass = new MyClass();
+            BuilderSetup.DisablePropertyNamingFor<MyClass, long>(x => x.Long);
+
+            target.NameWith<long>(() => 50);
+
+            // Act
+            target.SetValuesOf(myClass);
+
+            // Assert
+            Assert.That(myClass.Long, Is.EqualTo(default(long)));
         }
-    }
 
-    public class Foo
-    {
-        public DateTime? DateTime { get; set; }
-        public Bar Bar { get; set; }
-    }
-
-    public class Bar
-    {
-        public string String1 { get; set; }
-        public string String2 { get; set; }
+        [TearDown]
+        public void TearDown()
+        {
+            BuilderSetup.ResetToDefaults();
+        }
     }
 }

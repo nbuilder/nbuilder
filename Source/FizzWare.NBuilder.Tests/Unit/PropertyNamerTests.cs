@@ -53,7 +53,6 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             public override void SetValuesOfAllIn<T>(IList<T> objects)
             {
-                throw new NotImplementedException();
             }
 
             protected override short GetInt16(System.Reflection.MemberInfo memberInfo)

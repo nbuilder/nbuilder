@@ -51,7 +51,6 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
 
         [Test]
-        [ExpectedException(typeof(BuilderException))]
         public void ConstructShouldComplainIfTypeNotParameterlessNoWhereAllAndSumOfItemsInDeclarationsDoNotEqualCapacity()
         {
             IDeclaration<MyClassWithConstructor> declaration1 = MockRepository.GenerateMock<IDeclaration<MyClassWithConstructor>>();
@@ -67,7 +66,9 @@ namespace FizzWare.NBuilder.Tests.Unit
             var builder = new ListBuilder<MyClass>(10, propertyNamer, reflectionUtil);
 
             using (mocks.Playback())
-                builder.Construct();
+            {
+                Assert.Throws<BuilderException>(() => builder.Construct());
+            }
         }
 
         [Test]

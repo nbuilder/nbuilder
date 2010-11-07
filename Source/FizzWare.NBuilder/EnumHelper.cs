@@ -7,6 +7,7 @@ namespace FizzWare.NBuilder
 {
     public static class EnumHelper
     {
+        // NB: This can't use Enum.GetValues() because it's not available in Silverlight
         public static T[] GetValues<T>()
         {
             Type enumType = typeof(T);

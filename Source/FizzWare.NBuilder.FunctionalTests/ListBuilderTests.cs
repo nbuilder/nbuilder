@@ -189,6 +189,7 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void UsingSequentialGenerators()
         {
+            // Arrange
             var decimalGenerator = new SequentialGenerator<decimal>
             {
                 Increment = 10,
@@ -199,12 +200,14 @@ namespace FizzWare.NBuilder.FunctionalTests
 
             var intGenerator = new SequentialGenerator<int> { Increment = 10000 };
 
+            // Act
             var list = Builder<Product>.CreateListOfSize(3)
                 .WhereAll()
                     .Have(x => x.PriceBeforeTax = decimalGenerator.Generate())
                     .And(x => x.Id = intGenerator.Generate())
                 .Build();
 
+            // Assert
             Assert.That(list[0].PriceBeforeTax, Is.EqualTo(2000));
             Assert.That(list[1].PriceBeforeTax, Is.EqualTo(1990));
             Assert.That(list[2].PriceBeforeTax, Is.EqualTo(1980));

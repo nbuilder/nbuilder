@@ -108,8 +108,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
-        public void WithConstructor_should_complain_if_the_expression_is_not_a_NewExpression()
+        public void WithConstructor_NotANewExpressionSupplied_Throws()
         {
             using (mocks.Record())
             {}
@@ -117,10 +116,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             using (mocks.Playback())
             {
                 var myClass = new MyClassWithConstructor(1, 2);
-
-                myClassWithConstructorBuilder
-                        .WithConstructor( () => myClass)
-                        .Construct();
+                Assert.Throws<ArgumentException>(() => myClassWithConstructorBuilder.WithConstructor(() => myClass));
             }
         }
 

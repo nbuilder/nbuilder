@@ -228,7 +228,6 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
 
         [Test]
-        [ExpectedException(typeof(BuilderException))]
         public void ShouldOnlyAddTheDeclarationIfTheRangeIsValid()
         {
             IDeclarationQueue<MyClass> declarationQueue = mocks.StrictMock<IDeclarationQueue<MyClass>>();
@@ -236,7 +235,6 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             using (mocks.Record())
             {
-                listBuilderImpl.Expect(x => x.Capacity).Return(listSize);
                 listBuilderImpl.Expect(x => x.CreateObjectBuilder()).Return(null);
                 declarationQueue.Expect(x => x.GetLastItem()).Return(rangeDeclaration);
                 listBuilderImpl.Expect(x => x.Declarations).Return(declarationQueue);
@@ -245,7 +243,9 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             using (mocks.Playback())
             {
-                ListBuilderExtensions.AndTheNext(listBuilderImpl, 30);
+                Assert.Throws<BuilderException>(
+                    () => ListBuilderExtensions.AndTheNext(listBuilderImpl, 30)
+                );
             }
         }
 

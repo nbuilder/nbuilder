@@ -84,6 +84,8 @@ namespace FizzWare.NBuilder.Tests.TestClasses
             SimpleClasses.Add(simpleClass);
         }
 
+        public SimpleClass SimpleClassProperty { get; set; }
+
         public int ThisPropertyHasAGetterWhichThrowsAnException
         {
             get
