@@ -42,7 +42,7 @@
 
   <!-- TARGETS -->
   <!--target name="build" depends="clean, create.output.directory, set.assemblyinfo, compile.release, publish.dll" /-->
-  <target name="build" depends="clean, create.output.directory, compile.release" />
+  <target name="build" depends="compile.release" />
 
   <target name="clean">
     <delete>
