@@ -53,15 +53,12 @@
   </target>
 
   <target name="compile.release">
-    <!--exec
-      program="${devenv.com}"
-      basedir="${devenv.path}"
-      commandline="${solution.filename} ${release.compile.args}"
-      append="true"
-      failonerror="true" /-->
-    <property name="build.configuration" value="Release" />
-    <property name="my.project" value="${solution.filename}" />
-    <call target="generic.msbuild" />
+  
+    <msbuild project="${source.dir}\NBuilder.sln">
+      <arg value="/property:Configuration=release" />                                  
+      <arg value="/t:Rebuild" />
+    </msbuild>
+    
   </target>
 
   <target name="generic.msbuild">
