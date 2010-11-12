@@ -44,7 +44,7 @@
   <echo>Build label is: ${build.label}</echo>
 
   <!-- TARGETS -->
-  <target name="build" depends="clean, create.output.directory,  set.assemblyinfo, compile.release, publish.dll" />
+  <target name="build" depends="clean, create.output.directory, set.assemblyinfo, compile.release, publish.dll" />
 
   <target name="clean">
     <delete>
@@ -56,12 +56,15 @@
   </target>
 
   <target name="compile.release">
-    <exec
+    <!--exec
       program="${devenv.com}"
       basedir="${devenv.path}"
       commandline="${solution.filename} ${release.compile.args}"
       append="true"
-      failonerror="true" />
+      failonerror="true" /-->
+    <property name="build.configuration" value="Release" />
+    <property name="my.project" value="${source.dir}\FizzWare.NBuilder.Tests\FizzWare.NBuilder.Tests.csproj" />
+    <call target="generic.msbuild" />
   </target>
 
   <target name="generic.msbuild">
@@ -70,10 +73,12 @@
       <arg value="/v:q" />
       <!-- The double backslash "\\" in the following line is NOT a mistake! The MSBuild project gets confused without it... -->
       <property name="SolutionDir" value="${source.dir}\\"/>
+      <property name="Configuration" value="${build.configuration}" />
     </msbuild>
   </target>
 
   <target name="compile.tests">
+    <property name="build.configuration" value="Debug" />
     <property name="my.project" value="${source.dir}\FizzWare.NBuilder.Tests\FizzWare.NBuilder.Tests.csproj" />
     <call target="generic.msbuild"/>
   </target>
