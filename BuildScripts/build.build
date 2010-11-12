@@ -6,7 +6,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://nant.sf.net/nightly/2006-03-08-0.85/nant.xsd Tools\nant-0.85\schema\nant.xsd">
   
-  <property name="teamcity_dotnet_use_msbuild_v35" value="true" />
+  <property name="teamcity_dotnet_use_msbuild_v4" value="true" />
   
   <property name="project.name" value="${project::get-name()}" />
   <property name="root.dir" overwrite="false" value="${path::get-full-path(project::get-base-directory() + '\..')}" />
