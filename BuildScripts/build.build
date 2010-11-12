@@ -14,7 +14,6 @@
   <property name="tools.dir" value="${lib.dir}\Tools" />
   <property name="build.dir" value="${root.dir}Builds" />
   <property name="artifacts.dir" value="${root.dir}..\Artifacts" />
-  <property name="release.compile.args" value="/build Release" />
 
   <property name="ncover.exe" value="${tools.dir}\NCover-1.5.8\NCover.Console.exe" />
   <property name="nunit.exe" value="${lib.dir}\Test\NUnit\nunit-console.exe" />
@@ -61,7 +60,7 @@
       append="true"
       failonerror="true" /-->
     <property name="build.configuration" value="Release" />
-    <property name="my.project" value="${source.dir}\FizzWare.NBuilder.Tests\FizzWare.NBuilder.Tests.csproj" />
+    <property name="my.project" value="${solution.filename}" />
     <call target="generic.msbuild" />
   </target>
 
