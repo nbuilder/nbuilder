@@ -8,9 +8,6 @@
 
   <!-- COMMON PROPERTIES -->
   <property name="project.name" value="${project::get-name()}" />
-  <readregistry property="devenv.path" key="SOFTWARE\Microsoft\VisualStudio\10.0\InstallDir" hive="LocalMachine" />
-  <property name="devenv.com" value="${devenv.path}devenv.com" />
-  <property name="tf.exe" value="${devenv.path}\TF.exe" />
   <property name="root.dir" overwrite="false" value="${path::get-full-path(project::get-base-directory() + '\..')}" />
   <property name="source.dir" value="${root.dir}Source" />
   <property name="lib.dir" value="${root.dir}Lib" />
@@ -44,7 +41,8 @@
   <echo>Build label is: ${build.label}</echo>
 
   <!-- TARGETS -->
-  <target name="build" depends="clean, create.output.directory, set.assemblyinfo, compile.release, publish.dll" />
+  <!--target name="build" depends="clean, create.output.directory, set.assemblyinfo, compile.release, publish.dll" /-->
+  <target name="build" depends="clean, create.output.directory, compile.release" />
 
   <target name="clean">
     <delete>
