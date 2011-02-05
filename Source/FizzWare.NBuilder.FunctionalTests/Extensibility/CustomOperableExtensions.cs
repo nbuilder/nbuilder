@@ -6,7 +6,7 @@ namespace FizzWare.NBuilder.FunctionalTests.Extensibility
 {
     public static class CustomOperableExtensions
     {
-        public static IOperable<Product> HaveWarehouseLocations(this IOperable<Product> operable)
+        public static IOperable<Product> WithWarehouseLocations(this IOperable<Product> operable)
         {
             // First the IOperable object needs to be cast to IDeclaration
             var declaration = operable as IDeclaration<Product>;
@@ -21,17 +21,17 @@ namespace FizzWare.NBuilder.FunctionalTests.Extensibility
             return operable;
         }
 
-        public static IOperable<Product> HaveLongTitles(this IOperable<Product> operable)
+        public static IOperable<Product> WithLongTitles(this IOperable<Product> operable)
         {
             ((IDeclaration<Product>)operable).ObjectBuilder.With(x => x.Title = "blahblahblahblahblahblahblahblahblahblahblahblahblahblah");
             return operable;
         }
 
-        public static IListBuilder<Product> WhereAllHaveLongTitles(this IListBuilder<Product> listBuilder)
+        public static IListBuilder<Product> AllWithLongTitles(this IListBuilder<Product> listBuilder)
         {
             var listBuilderImpl = (IListBuilderImpl<Product>) listBuilder;
             var declaration = new GlobalDeclaration<Product>(listBuilderImpl, listBuilderImpl.CreateObjectBuilder());
-            declaration.Have(x => x.Title = "blahblahblahblahblahblahblahblahblahblahblahblahblahblah");
+            declaration.With(x => x.Title = "blahblahblahblahblahblahblahblahblahblahblahblahblahblah");
 
             return declaration;
         }
@@ -43,8 +43,8 @@ namespace FizzWare.NBuilder.FunctionalTests.Extensibility
         {
             Builder<Product>
                 .CreateListOfSize(10)
-                .WhereAll()
-                    .HaveLongTitles()
+                .All()
+                    .WithLongTitles()
                 .Build();
         }
     }

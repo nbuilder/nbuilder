@@ -33,7 +33,7 @@ namespace FizzWare.NBuilder.FunctionalTests
                 .Build();
 
             var categories = Builder<Category>.CreateListOfSize(10000)
-                .WhereAll()
+                .All()
                 .PersistHierarchy(hierarchySpec);
 
             foreach (var root in categories)

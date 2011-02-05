@@ -1,9 +1,5 @@
-using System;
-using System.Linq;
-using System.Text;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace FizzWare.NBuilder.Tests.Integration
 {
@@ -15,6 +11,7 @@ namespace FizzWare.NBuilder.Tests.Integration
         private const int theInt = 5;
         private const float theFloat = 15f;
 
+        #pragma warning disable 0618 // (prevent warning for using obsolete method)
         [Test]
         public void ShouldBeAbleToCreateAnObject()
         {
@@ -32,5 +29,6 @@ namespace FizzWare.NBuilder.Tests.Integration
             Assert.That(obj.Int, Is.EqualTo(theInt));
             Assert.That(obj.Float, Is.EqualTo(theFloat));
         }
+        #pragma warning restore 0618
     }
 }

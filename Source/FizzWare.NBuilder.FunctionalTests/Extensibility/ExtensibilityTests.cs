@@ -25,12 +25,12 @@ namespace FizzWare.NBuilder.FunctionalTests.Extensibility
         }
 
         [Test]
-        public void AddingACustom_Have_ExtensionForProducts()
+        public void AddingACustom_With_ExtensionForProducts()
         {
             var products = Builder<Product>
                 .CreateListOfSize(10)
-                .WhereAll()
-                .HaveWarehouseLocations() // This will only appear when using Builder<Product>
+                .All()
+                .WithWarehouseLocations() // This will only appear when using Builder<Product>
                 .Build();
             
             Assert.That(products[0].Location.Aisle, Is.EqualTo('A'));

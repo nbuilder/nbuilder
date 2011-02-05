@@ -30,8 +30,8 @@ namespace FizzWare.NBuilder.FunctionalTests
             
             var products = Builder<Product>
                             .CreateListOfSize(100)
-                            .WhereAll()
-                                .Have(x => x.Created = generator.Next(July.The(1), November.The(10)))
+                            .All()
+                                .With(x => x.Created = generator.Next(July.The(1), November.The(10)))
                             .Build();
 
             var expectedStart = new DateTime(DateTime.Now.Year, 7, 1, 00, 00, 00);

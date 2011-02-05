@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace FizzWare.NBuilder.Implementation
@@ -58,9 +59,15 @@ namespace FizzWare.NBuilder.Implementation
         /// </summary>
         public abstract int End { get; }
 
+        public IOperable<T> All()
+        {
+            return listBuilderImpl.All();
+        }
+
+        [Obsolete(Messages.NewSyntax_UseAll)]
         public IOperable<T> WhereAll()
         {
-            return listBuilderImpl.WhereAll();
+            return listBuilderImpl.All();
         }
 
         public IList<T> Build()

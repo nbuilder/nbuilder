@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace FizzWare.NBuilder.Tests.TestClasses
 {
-#pragma warning disable 169 // Fields are not used
+    #pragma warning disable 169 // Fields are not used
     #pragma warning disable 649 // Properties never assigned to
     public class MyClass
     {

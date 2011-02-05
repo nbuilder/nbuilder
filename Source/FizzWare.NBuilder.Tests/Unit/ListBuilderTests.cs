@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using FizzWare.NBuilder.Implementation;
 using FizzWare.NBuilder.PropertyNaming;
 using FizzWare.NBuilder.Tests.TestClasses;
@@ -51,7 +49,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
 
         [Test]
-        public void ConstructShouldComplainIfTypeNotParameterlessNoWhereAllAndSumOfItemsInDeclarationsDoNotEqualCapacity()
+        public void ConstructShouldComplainIfTypeNotParameterlessNoAllAndSumOfItemsInDeclarationsDoNotEqualCapacity()
         {
             IDeclaration<MyClassWithConstructor> declaration1 = MockRepository.GenerateMock<IDeclaration<MyClassWithConstructor>>();
             IDeclaration<MyClassWithConstructor> declaration2 = MockRepository.GenerateMock<IDeclaration<MyClassWithConstructor>>();
@@ -72,7 +70,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
 
         [Test]
-        public void ShouldNameProperties()
+        public void Constructing_AssignsValuesToProperties()
         {
             using (mocks.Record())
                 propertyNamer.Expect(x => x.SetValuesOfAllIn(Arg<IList<MyClass>>.Is.TypeOf));
@@ -107,17 +105,17 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
 
         [Test]
-        public void IfNoWhereAllExistsAndSumOfAffectedItemsInDeclarationsIsLessThanCapacity_ShouldAddADefaultWhereAll()
+        public void IfNoAllExistsAndSumOfAffectedItemsInDeclarationsIsLessThanCapacity_ShouldAddADefaultAll()
         {
             var builder = new ListBuilder<MyClass>(30, propertyNamer, reflectionUtil);
-            builder.WhereTheFirst(10);
+            builder.TheFirst(10);
 
             using (mocks.Record())
             {
                 reflectionUtil.Expect(x => x.RequiresConstructorArgs(typeof (MyClass))).Return(false).Repeat.Any();
 
                 // Even though a declaration of 10 has been added, we expect the list builder to add
-                // a default GlobalDeclaration (WhereAll). Therefore we expect CreateInstanceOf to be called 40 times
+                // a default GlobalDeclaration (All). Therefore we expect CreateInstanceOf to be called 40 times
                 reflectionUtil.Expect(x => x.CreateInstanceOf<MyClass>()).Return(myClass).Repeat.Times(40);
             }
 

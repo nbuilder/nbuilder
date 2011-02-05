@@ -29,7 +29,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
 
         [Test]
-        public void ShouldBeAbleToUseHave()
+        public void ShouldBeAbleToUseWith()
         {
             using (mocks.Record())
             {
@@ -37,7 +37,7 @@ namespace FizzWare.NBuilder.Tests.Unit
                 objectBuilder.Expect(x => x.With(func));
             }
 
-            OperableExtensions.Have((IOperable<MyClass>)operable, func);
+            OperableExtensions.With((IOperable<MyClass>)operable, func);
         }
 
         [Test]
@@ -65,7 +65,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
 
         [Test]
-        public void ShouldBeAbleToUseHaveToSetPrivateProperties()
+        public void ShouldBeAbleToUseWithToSetPrivateProperties()
         {
             using (mocks.Record())
             {
@@ -73,7 +73,7 @@ namespace FizzWare.NBuilder.Tests.Unit
                 objectBuilder.Expect(x => x.With(propertyExpression, 100));
             }
 
-            OperableExtensions.Have((IOperable<MyClass>)operable, propertyExpression, 100);
+            OperableExtensions.With((IOperable<MyClass>)operable, propertyExpression, 100);
         }
 
         [Test]
@@ -101,7 +101,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
 
         [Test]
-        public void ShouldBeAbleToUseHaveDoneToThemForAll()
+        public void ShouldBeAbleToUseDoForEach()
         {
             var simpleClasses = new List<SimpleClass>();
             Action<MyClass, SimpleClass> action = (x, y) => x.Add(y);
@@ -112,7 +112,7 @@ namespace FizzWare.NBuilder.Tests.Unit
                 objectBuilder.Expect(x => x.DoMultiple(action, simpleClasses)).Return(objectBuilder);
             }
             
-            OperableExtensions.HaveDoneToThemForAll((IOperable<MyClass>)operable, action, simpleClasses);
+            OperableExtensions.DoForEach((IOperable<MyClass>)operable, action, simpleClasses);
         }
 
         [Test]
@@ -131,7 +131,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
 
         [Test]
-        public void ShouldBeAbleToUseHaveDoneToThem()
+        public void ShouldBeAbleToUseDo()
         {
             Action<MyClass> action = x => x.DoSomething();
 
@@ -141,7 +141,7 @@ namespace FizzWare.NBuilder.Tests.Unit
                 objectBuilder.Expect(x => x.Do(action)).Return(objectBuilder);
             }
 
-            OperableExtensions.HaveDoneToThem((IOperable<MyClass>)operable, action);
+            OperableExtensions.Do((IOperable<MyClass>)operable, action);
         }
 
         [Test]
@@ -178,7 +178,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         {
             var operableOnly = mocks.DynamicMock<IOperable<MyClass>>();
 
-            OperableExtensions.Have(operableOnly, x => x.StringOne = "test");
+            OperableExtensions.With(operableOnly, x => x.StringOne = "test");
         }
     }
     // ReSharper restore InvokeAsExtensionMethod

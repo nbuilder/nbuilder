@@ -129,6 +129,7 @@
     <Compile Include="IPersistenceService.cs" />
     <Compile Include="ISingleObjectBuilder.cs" />
     <Compile Include="ListBuilderExtensions.cs" />
+    <Compile Include="Messages.cs" />
     <Compile Include="OperableExtensions.cs" />
     <Compile Include="PersistenceExtensions.cs" />
     <Compile Include="PersistenceMethodNotFoundException.cs" />

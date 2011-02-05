@@ -18,8 +18,8 @@ namespace FizzWare.NBuilder.Tests.Integration
 
             var products = Builder<MyClass>
                             .CreateListOfSize(10)
-                            .WhereAll()
-                            .Have(x => x.SimpleClasses = Pick<SimpleClass>.UniqueRandomList(With.Exactly(1).Elements).From(simpleClasses)).Build();
+                            .All()
+                            .With(x => x.SimpleClasses = Pick<SimpleClass>.UniqueRandomList(With.Exactly(1).Elements).From(simpleClasses)).Build();
 
             for (int i = 0; i < products.Count; i++)
                 Assert.That(products[i].SimpleClasses.Count, Is.EqualTo(1));
@@ -32,8 +32,8 @@ namespace FizzWare.NBuilder.Tests.Integration
 
             var products = Builder<MyClass>
                             .CreateListOfSize(10)
-                            .WhereAll()
-                            .Have(x => x.SimpleClasses = Pick<SimpleClass>.UniqueRandomList(With.Between(1, 5).Elements).From(simpleClasses)).Build();
+                            .All()
+                            .With(x => x.SimpleClasses = Pick<SimpleClass>.UniqueRandomList(With.Between(1, 5).Elements).From(simpleClasses)).Build();
 
             for (int i = 0; i < products.Count; i++)
             {
@@ -73,8 +73,8 @@ namespace FizzWare.NBuilder.Tests.Integration
             var vehicles =
                 Builder<MyClass>
                     .CreateListOfSize(10)
-                    .WhereAll()
-                    .Have(x => x.StringOne = Pick<string>.RandomItemFrom(strings))
+                    .All()
+                    .With(x => x.StringOne = Pick<string>.RandomItemFrom(strings))
                 .Build();
 
             var list = vehicles.Select(x => x.StringOne);
@@ -91,8 +91,8 @@ namespace FizzWare.NBuilder.Tests.Integration
 			var fruitBaskets =
 				Builder<MyClass>
 					.CreateListOfSize(100)
-					.WhereAll()
-					.Have(x => x.StringOne = Pick<string>.RandomItemFrom(fruits))
+					.All()
+					.With(x => x.StringOne = Pick<string>.RandomItemFrom(fruits))
 				.Build();
 
 			var fruitsPicked = fruitBaskets.Select(x => x.StringOne).Distinct();

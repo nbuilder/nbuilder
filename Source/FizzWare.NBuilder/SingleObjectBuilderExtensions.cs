@@ -62,7 +62,7 @@ namespace FizzWare.NBuilder
 
         /// <summary>
         /// Performs an action on the type.
-        /// Overloads Do to provide a better syntax in some situations.
+        /// Overloads With to provide a better syntax in some situations.
         /// </summary>
         public static ISingleObjectBuilder<T> And<T>(this ISingleObjectBuilder<T> objectBuilder, Action<T> func)
         {

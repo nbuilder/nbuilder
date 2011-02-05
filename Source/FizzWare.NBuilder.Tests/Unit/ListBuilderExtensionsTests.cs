@@ -26,7 +26,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
 
         [Test]
-        public void WhereTheFirstShouldReturnARangeDeclaration()
+        public void TheFirstShouldReturnARangeDeclaration()
         {
             var rangeDeclaration = new RangeDeclaration<MyClass>(listBuilderImpl, null, 0, 0);
 
@@ -39,150 +39,142 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             using (mocks.Playback())
             {
-                var declaration = ListBuilderExtensions.WhereTheFirst(listBuilderImpl, 10);
+                var declaration = ListBuilderExtensions.TheFirst(listBuilderImpl, 10);
                 Assert.That(declaration, Is.SameAs(rangeDeclaration));
             }
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentException))]
-        public void WhereTheFirstAmountMustBeOneOrGreater()
+        public void TheFirstAmountMustBeOneOrGreater()
         {
-            ListBuilderExtensions.WhereTheFirst(listBuilderImpl, 0);
+            ListBuilderExtensions.TheFirst(listBuilderImpl, 0);
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentException))]
-        public void WhereTheFirstAmountShouldBeLessThanListCapacity()
+        public void TheFirstAmountShouldBeLessThanListCapacity()
         {
             using (mocks.Record())
                 listBuilderImpl.Expect(x => x.Capacity).Return(10);
 
-            ListBuilderExtensions.WhereTheFirst(listBuilderImpl, 11);
+            ListBuilderExtensions.TheFirst(listBuilderImpl, 11);
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentException))]
-        public void WhereTheLastAmountMustBeOneOrGreater()
+        public void TheLastAmountMustBeOneOrGreater()
         {
-            ListBuilderExtensions.WhereTheLast(listBuilderImpl, 0);
+            ListBuilderExtensions.TheLast(listBuilderImpl, 0);
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentException))]
-        public void WhereTheLastAmountShouldBeLessThanListCapacity()
+        public void TheLastAmountShouldBeLessThanListCapacity()
         {
             using (mocks.Record())
                 listBuilderImpl.Expect(x => x.Capacity).Return(10);
 
-            ListBuilderExtensions.WhereTheLast(listBuilderImpl, 11);
+            ListBuilderExtensions.TheLast(listBuilderImpl, 11);
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentException))]
-        public void WhereRandomAmountMustBeOneOrGreater()
+        public void RandomAmountMustBeOneOrGreater()
         {
-            ListBuilderExtensions.WhereRandom(listBuilderImpl, 0);
+            ListBuilderExtensions.Random(listBuilderImpl, 0);
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentException))]
-        public void WhereRandomAmountShouldBeLessThanListCapacity()
+        public void RandomAmountShouldBeLessThanListCapacity()
         {
             using (mocks.Record())
                 listBuilderImpl.Expect(x => x.Capacity).Return(10);
 
-            ListBuilderExtensions.WhereRandom(listBuilderImpl, 11);
+            ListBuilderExtensions.Random(listBuilderImpl, 11);
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentException))]
-        public void WhereSectionStartMustBeGreaterThanZero()
+        public void SectionStartMustBeGreaterThanZero()
         {
-            ListBuilderExtensions.WhereSection(listBuilderImpl, -1, 10);
+            ListBuilderExtensions.Section(listBuilderImpl, -1, 10);
+        }
+
+        [Test]
+        public void SectionEndMustBeGreaterThanOne()
+        {
+            using (mocks.Record())
+                listBuilderImpl.Expect(x => x.Capacity).Return(10);
+
+            Assert.Throws<ArgumentException>(
+                () => ListBuilderExtensions.Section(listBuilderImpl, 0, 0));
+        }
+
+        [Test]
+        public void SectionStartMustBeLessThanEnd()
+        {
+            using (mocks.Record())
+                listBuilderImpl.Expect(x => x.Capacity).Return(10);
+
+            Assert.Throws<ArgumentException>(
+                () => ListBuilderExtensions.Section(listBuilderImpl, 6, 5));
+        }
+
+        [Test]
+        public void SectionStartCannotEqualEnd()
+        {
+            using (mocks.Record())
+                listBuilderImpl.Expect(x => x.Capacity).Return(10);
+
+            Assert.Throws<ArgumentException>(
+                () => ListBuilderExtensions.Section(listBuilderImpl, 5, 5));
+        }
+
+        [Test]
+        public void SectionCanCoverWholeList()
+        {
+            using (mocks.Record())
+                listBuilderImpl.Expect(x => x.Capacity).Return(10);
+
+            ListBuilderExtensions.Section(listBuilderImpl, 0, 9);
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentException))]
-        public void WhereSectionEndMustBeGreaterThanOne()
+        public void TheNextAmountShouldBeGreaterThanOne()
         {
             using (mocks.Record())
                 listBuilderImpl.Expect(x => x.Capacity).Return(10);
 
-            ListBuilderExtensions.WhereSection(listBuilderImpl, 0, 0);
+            ListBuilderExtensions.TheNext(listBuilderImpl, 0);
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
-        public void WhereSectionStartMustBeLessThanEnd()
+        public void SectionStartMustBeLessThanCapacity()
         {
             using (mocks.Record())
                 listBuilderImpl.Expect(x => x.Capacity).Return(10);
 
-            ListBuilderExtensions.WhereSection(listBuilderImpl, 6, 5);
+            var ex = Assert.Throws<ArgumentException>(
+                () => ListBuilderExtensions.Section(listBuilderImpl, 10, 10));
+
+            Assert.That(ex.Message.Contains("start"));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
-        public void WhereSectionStartCannotEqualEnd()
+        public void SectionEndMustBeLessThanCapacity()
         {
             using (mocks.Record())
                 listBuilderImpl.Expect(x => x.Capacity).Return(10);
 
-            ListBuilderExtensions.WhereSection(listBuilderImpl, 5, 5);
+            Assert.Throws<ArgumentException>(
+                () => ListBuilderExtensions.Section(listBuilderImpl, 9, 10));
         }
 
         [Test]
-        public void WhereSectionCanCoverWholeList()
-        {
-            using (mocks.Record())
-                listBuilderImpl.Expect(x => x.Capacity).Return(10);
-
-            ListBuilderExtensions.WhereSection(listBuilderImpl, 0, 9);
-        }
-
-        [Test]
-        [ExpectedException(typeof(ArgumentException))]
-        public void AndTheNextAmountShouldBeGreaterThanOne()
-        {
-            using (mocks.Record())
-                listBuilderImpl.Expect(x => x.Capacity).Return(10);
-
-            ListBuilderExtensions.AndTheNext(listBuilderImpl, 0);
-        }
-
-        // This doesn't seem to work - must be a bug in nunit
-        //[ExpectedException(typeof(ArgumentException), ExpectedMessage = "start", MatchType = MessageMatch.Contains)]
-        [Test]
-        [ExpectedException(typeof(ArgumentException))]
-        public void WhereSectionStartMustBeLessThanCapacity()
-        {
-            using (mocks.Record())
-                listBuilderImpl.Expect(x => x.Capacity).Return(10);
-
-            try
-            {
-                ListBuilderExtensions.WhereSection(listBuilderImpl, 10, 10);
-            }
-            catch (Exception e)
-            {
-                Assert.That(e.Message.Contains("start"));
-                throw;
-            }
-        }
-
-        [Test]
-        [ExpectedException(typeof(ArgumentException))]
-        public void WhereSectionEndMustBeLessThanCapacity()
-        {
-            using (mocks.Record())
-                listBuilderImpl.Expect(x => x.Capacity).Return(10);
-
-            ListBuilderExtensions.WhereSection(listBuilderImpl, 9, 10);
-        }
-
-        [Test]
-        public void WhereTheLastRangeShouldBeTheCapacityMinusTheRangeSizeAndOneLessThanTheCapacity()
+        public void LastRangeShouldBeTheCapacityMinusTheRangeSizeAndOneLessThanTheCapacity()
         {
             const int rangeSize = 10;
             const int startIndex = listSize - rangeSize; // 20
@@ -199,13 +191,13 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             using (mocks.Playback())
             {
-                var declaration = ListBuilderExtensions.WhereTheLast(listBuilderImpl, 10);
+                var declaration = ListBuilderExtensions.TheLast(listBuilderImpl, 10);
                 Assert.That(declaration, Is.SameAs(rangeDeclaration));
             }
         }
 
         [Test]
-        public void AndTheNextShouldReturnRangeDeclaration()
+        public void TheNextShouldReturnRangeDeclaration()
         {
             IDeclarationQueue<MyClass> declarationQueue = mocks.StrictMock<IDeclarationQueue<MyClass>>();
             RangeDeclaration<MyClass> rangeDeclaration = new RangeDeclaration<MyClass>(listBuilderImpl, null, 0, 9);
@@ -220,7 +212,7 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             using (mocks.Playback())
             {
-                var andTheNextDeclaration = (RangeDeclaration<MyClass>)ListBuilderExtensions.AndTheNext(listBuilderImpl, 10);
+                var andTheNextDeclaration = (RangeDeclaration<MyClass>)ListBuilderExtensions.TheNext(listBuilderImpl, 10);
 
                 Assert.That(andTheNextDeclaration.Start, Is.EqualTo(10));
                 Assert.That(andTheNextDeclaration.End, Is.EqualTo(19));
@@ -244,13 +236,13 @@ namespace FizzWare.NBuilder.Tests.Unit
             using (mocks.Playback())
             {
                 Assert.Throws<BuilderException>(
-                    () => ListBuilderExtensions.AndTheNext(listBuilderImpl, 30)
+                    () => ListBuilderExtensions.TheNext(listBuilderImpl, 30)
                 );
             }
         }
 
         [Test]
-        public void ShouldBeAbleToUseAndThePrevious()
+        public void ShouldBeAbleToUseThePrevious()
         {
             IDeclarationQueue<MyClass> declarationQueue = mocks.StrictMock<IDeclarationQueue<MyClass>>();
             RangeDeclaration<MyClass> rangeDeclaration = new RangeDeclaration<MyClass>(listBuilderImpl, null, 10, 19);
@@ -265,10 +257,10 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             using (mocks.Playback())
             {
-                var andTheNextDeclaration = (RangeDeclaration<MyClass>)ListBuilderExtensions.AndThePrevious(listBuilderImpl, 10);
+                var thePreviousDeclaration = (RangeDeclaration<MyClass>)ListBuilderExtensions.ThePrevious(listBuilderImpl, 10);
 
-                Assert.That(andTheNextDeclaration.Start, Is.EqualTo(0));
-                Assert.That(andTheNextDeclaration.End, Is.EqualTo(9));
+                Assert.That(thePreviousDeclaration.Start, Is.EqualTo(0));
+                Assert.That(thePreviousDeclaration.End, Is.EqualTo(9));
             }
         }
 
@@ -286,7 +278,7 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             using (mocks.Playback())
             {
-                var whereSection = (RangeDeclaration<MyClass>)ListBuilderExtensions.WhereSection(listBuilderImpl, 10, 19);
+                var whereSection = (RangeDeclaration<MyClass>)ListBuilderExtensions.Section(listBuilderImpl, 10, 19);
 
                 Assert.That(whereSection.Start, Is.EqualTo(10));
                 Assert.That(whereSection.End, Is.EqualTo(19));                
@@ -294,7 +286,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
 
         [Test]
-        public void WhereRandomShouldReturnRandomDeclarationOfRangeOfWholeList()
+        public void RandomShouldReturnRandomDeclarationOfRangeOfWholeList()
         {
             const int amount = 5;
             const int end = listSize;
@@ -310,7 +302,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             IDeclaration<MyClass> declaration;
             using (mocks.Playback())
             {
-                declaration = (IDeclaration<MyClass>)ListBuilderExtensions.WhereRandom(listBuilderImpl, amount);
+                declaration = (IDeclaration<MyClass>)ListBuilderExtensions.Random(listBuilderImpl, amount);
             }
 
             Assert.That(declaration.Start, Is.EqualTo(0));
@@ -318,7 +310,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
 
         [Test]
-        public void WhereRandomCanReturnDeclarationForASectionOfTheList()
+        public void RandomCanReturnDeclarationForASectionOfTheList()
         {
             const int amount = 5;
             const int start = 10;
@@ -333,7 +325,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             }
 
             
-            var declaration = (IDeclaration<MyClass>)ListBuilderExtensions.WhereRandom(listBuilderImpl, amount, start, end);
+            var declaration = (IDeclaration<MyClass>)ListBuilderExtensions.Random(listBuilderImpl, amount, start, end);
 
             Assert.That(declaration.Start, Is.EqualTo(start));
             Assert.That(declaration.End, Is.EqualTo(end));
@@ -379,34 +371,32 @@ namespace FizzWare.NBuilder.Tests.Unit
             }
         }
 
-        [Test]
-        public void ShouldBeAbleToUseAndTheRemaining()
-        {
-            const int start = 0;
-            const int end = 9;
-            const int capacity = 10;
+        ////[Test]
+        ////public void ShouldBeAbleToUseAndTheRemaining()
+        ////{
+        ////    const int start = 0;
+        ////    const int end = 9;
+        ////    const int capacity = 10;
 
-            IDeclarationQueue<MyClass> declarationQueue = mocks.StrictMock<IDeclarationQueue<MyClass>>();
-            RangeDeclaration<MyClass> rangeDeclaration = new RangeDeclaration<MyClass>(listBuilderImpl, null, start, end);
+        ////    IDeclarationQueue<MyClass> declarationQueue = mocks.StrictMock<IDeclarationQueue<MyClass>>();
+        ////    RangeDeclaration<MyClass> rangeDeclaration = new RangeDeclaration<MyClass>(listBuilderImpl, null, start, end);
 
-            using (mocks.Record())
-            {
-                declarationQueue.Expect(x => x.GetLastItem()).Return(rangeDeclaration);
-                listBuilderImpl.Expect(x => x.Declarations).Return(declarationQueue);
-                listBuilderImpl.Expect(x => x.Capacity).Return(capacity).Repeat.Any();
-                listBuilderImpl.Expect(x => x.AddDeclaration(Arg<RangeDeclaration<MyClass>>.Is.TypeOf)).Return(rangeDeclaration);
-            }
+        ////    using (mocks.Record())
+        ////    {
+        ////        declarationQueue.Expect(x => x.GetLastItem()).Return(rangeDeclaration);
+        ////        listBuilderImpl.Expect(x => x.Declarations).Return(declarationQueue);
+        ////        listBuilderImpl.Expect(x => x.Capacity).Return(capacity).Repeat.Any();
+        ////        listBuilderImpl.Expect(x => x.AddDeclaration(Arg<RangeDeclaration<MyClass>>.Is.TypeOf)).Return(rangeDeclaration);
+        ////    }
 
-            using (mocks.Playback())
-            {
-                var declaration = (RangeDeclaration<MyClass>)ListBuilderExtensions.AndTheRemaining(listBuilderImpl);
+        ////    using (mocks.Playback())
+        ////    {
+        ////        var declaration = (RangeDeclaration<MyClass>)ListBuilderExtensions.TheRemainder(listBuilderImpl);
 
-                Assert.That(declaration.Start, Is.EqualTo(start));
-                Assert.That(declaration.End, Is.EqualTo(end));
-            }
-
-        }
-
+        ////        Assert.That(declaration.Start, Is.EqualTo(start));
+        ////        Assert.That(declaration.End, Is.EqualTo(end));
+        ////    }
+        ////}
     }
     // ReSharper restore InvokeAsExtensionMethod
 }

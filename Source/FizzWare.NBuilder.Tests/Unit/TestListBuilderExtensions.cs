@@ -5,7 +5,7 @@ namespace FizzWare.NBuilder.Tests.Unit
 {
     public static class TestListBuilderExtensions
     {
-        public static IOperable<T> WhereAllEven<T>(this IListBuilder<T> listBuilder)
+        public static IOperable<T> AllEven<T>(this IListBuilder<T> listBuilder)
         {
             var listBuilderImpl = listBuilder as Implementation.IListBuilderImpl<T>;
 

@@ -87,6 +87,7 @@
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Generators\GetRandom.cs" />
     <Compile Include="Implementation\MultiFunction.cs" />
+    <Compile Include="Messages.cs" />
     <Compile Include="PersistenceMethodNotFoundException.cs" />
     <Compile Include="PersistenceService.cs" />
     <Compile Include="BuilderSetup.cs" />

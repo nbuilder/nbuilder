@@ -43,8 +43,8 @@ namespace FizzWare.NBuilder.FunctionalTests
             var taxType = Builder<TaxType>.CreateNew().Persist();
 
             Builder<Product>.CreateListOfSize(100)
-                .WhereAll()
-                    .Have(x => x.TaxType = taxType)
+                .All()
+                    .With(x => x.TaxType = taxType)
                 .Persist(); // NB: Persistence is setup in the SetupFixture class
 
             var dbProducts = Database.GetContentsOf(Database.Tables.Product);
@@ -53,15 +53,15 @@ namespace FizzWare.NBuilder.FunctionalTests
         }
 
         [Test]
-        [Description("Instead of assigning directly to a categor")]
-        public void PersistingUsingPick_UpTo_AndHaveDoneToThemForAll()
+        [Description("Instead of assigning directly to a category")]
+        public void PersistingUsingPick_UpTo_AndDoForEach()
         {
             var categories = Builder<Category>.CreateListOfSize(10).Persist();
 
             Builder<Product>
                 .CreateListOfSize(50)
-                .WhereAll()
-                .HaveDoneToThemForAll((x, y) => x.AddToCategory(y), Pick<Category>.UniqueRandomList(With.UpTo(4).Elements).From(categories))
+                .All()
+                .DoForEach((x, y) => x.AddToCategory(y), Pick<Category>.UniqueRandomList(With.UpTo(4).Elements).From(categories))
                 .Persist();
 
             DataTable productCategoriesTable = Database.GetContentsOf(Database.Tables.ProductCategory);
@@ -80,8 +80,8 @@ namespace FizzWare.NBuilder.FunctionalTests
 
             Builder<Product>
                 .CreateListOfSize(numProducts)
-                .WhereAll()
-                    .Have(x => x.Categories = Pick<Category>.UniqueRandomList(With.Exactly(numCategoriesForEachProduct).Elements).From(categories))
+                .All()
+                    .With(x => x.Categories = Pick<Category>.UniqueRandomList(With.Exactly(numCategoriesForEachProduct).Elements).From(categories))
                 .Persist(); // NB: Persistence is setup in the SetupFixture class
 
             DataTable productsTable = Database.GetContentsOf(Database.Tables.Product);

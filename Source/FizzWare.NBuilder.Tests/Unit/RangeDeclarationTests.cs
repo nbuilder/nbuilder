@@ -93,15 +93,15 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
 
         [Test]
-        public void ShouldBeAbleToUseWhereAll()
+        public void ShouldBeAbleToUseAll()
         {
             declaration = new RangeDeclaration<SimpleClass>(listBuilderImpl, objectBuilder, 9, 10);
 
             using (mocks.Record())
-                listBuilderImpl.Expect(x => x.WhereAll()).Return(declaration);
+                listBuilderImpl.Expect(x => x.All()).Return(declaration);
 
             using (mocks.Playback())
-                declaration.WhereAll();
+                declaration.All();
         }
 
         [Test]

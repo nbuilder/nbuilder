@@ -13,9 +13,9 @@ namespace FizzWare.NBuilder.Tests.Unit
         private const string theString = "test";
 
         [Test]
-        public void ShouldBeAbleToAddCustomWhereExtension()
+        public void ShouldBeAbleToAddCustomExtension()
         {
-            var list = Builder<MyClass>.CreateListOfSize(10).WhereAllEven().Have(x => x.StringOne = theString).Build();
+            var list = Builder<MyClass>.CreateListOfSize(10).AllEven().With(x => x.StringOne = theString).Build();
             Assert.That(list.Count(x => x.StringOne == theString), Is.EqualTo(5));
         }
     }

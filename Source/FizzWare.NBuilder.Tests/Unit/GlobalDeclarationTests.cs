@@ -12,14 +12,14 @@ namespace FizzWare.NBuilder.Tests.Unit
     {
         private IGlobalDeclaration<SimpleClass> declaration;
         private IObjectBuilder<SimpleClass> objectBuilder;
-        private Implementation.IListBuilderImpl<SimpleClass> listBuilderImpl;
+        private IListBuilderImpl<SimpleClass> listBuilderImpl;
         private MockRepository mocks;
 
         [SetUp]
         public void SetUp()
         {
             mocks = new MockRepository();
-            listBuilderImpl = mocks.DynamicMock<Implementation.IListBuilderImpl<SimpleClass>>();
+            listBuilderImpl = mocks.DynamicMock<IListBuilderImpl<SimpleClass>>();
             objectBuilder = mocks.StrictMock<IObjectBuilder<SimpleClass>>();
             listBuilderImpl.Stub(x => x.Capacity).Return(2);
 
@@ -63,7 +63,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             using (mocks.Playback())
             {
                 declaration.Construct();
-                declaration.AddToMaster(masterList);    
+                declaration.AddToMaster(masterList);
             }
 
             Assert.That(masterList[0], Is.SameAs(obj1));

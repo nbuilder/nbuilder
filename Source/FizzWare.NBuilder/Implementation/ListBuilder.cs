@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using FizzWare.NBuilder.PropertyNaming;
 
@@ -43,7 +44,13 @@ namespace FizzWare.NBuilder.Implementation
             return new ObjectBuilder<T>(reflectionUtil);
         }
 
+        [Obsolete(Messages.NewSyntax_UseAll)]
         public IOperable<T> WhereAll()
+        {
+            return All();
+        }
+
+        public IOperable<T> All()
         {
             declarations.Enqueue(new GlobalDeclaration<T>(this, CreateObjectBuilder()));
             return (IOperable<T>)declarations.GetLastItem();

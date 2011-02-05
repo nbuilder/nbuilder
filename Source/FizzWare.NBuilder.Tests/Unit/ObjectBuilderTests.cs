@@ -62,9 +62,11 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             using (mocks.Playback())
             {
+                #pragma warning disable 0618
                 myClassWithConstructorBuilder
                         .WithConstructorArgs(arg1, arg2)
                         .Construct();
+                #pragma warning restore 0618
             }
         }
 
@@ -119,7 +121,7 @@ namespace FizzWare.NBuilder.Tests.Unit
                 Assert.Throws<ArgumentException>(() => myClassWithConstructorBuilder.WithConstructor(() => myClass));
             }
         }
-
+        
         [Test]
         public void ShouldBeAbleToConstructAnObjectWithOptionalConstructorArgs()
         {
@@ -135,9 +137,11 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             using (mocks.Playback())
             {
+                #pragma warning disable 0618 // (prevent warning for using obsolete method)
                 myClassWithOptionalConstructorBuilder
                         .WithConstructorArgs(arg1, arg2)
                         .Construct();
+                #pragma warning restore 0618
             }
         }
 

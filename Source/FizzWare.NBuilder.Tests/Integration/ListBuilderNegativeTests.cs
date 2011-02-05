@@ -12,21 +12,21 @@ namespace FizzWare.NBuilder.Tests.Integration
     {
         [Test]
         [ExpectedException(typeof(ArgumentException))]
-        public void ShouldComplainIfWhereTheFirstRangeTooBig()
+        public void ShouldComplainIfTheFirstRangeTooBig()
         {
-            Builder<MyClass>.CreateListOfSize(10).WhereTheFirst(11).Have(x => x.StringOne = "Description").Build();
+            Builder<MyClass>.CreateListOfSize(10).TheFirst(11).With(x => x.StringOne = "Description").Build();
         }
 
         [Test]
         [ExpectedException(typeof(BuilderException))]
-        public void ShouldComplainIfAndTheNextRangeWillBeTooBig()
+        public void ShouldComplainIfTheNextRangeWillBeTooBig()
         {
             Builder<MyClass>
                 .CreateListOfSize(10)
-                .WhereTheFirst(5)
-                    .Have(x => x.StringOne = "Description")
-                .AndTheNext(10)
-                    .Have(x => x.StringOne = "Description2")
+                .TheFirst(5)
+                    .With(x => x.StringOne = "Description")
+                .TheNext(10)
+                    .With(x => x.StringOne = "Description2")
                 .Build();
         }
 
@@ -57,43 +57,43 @@ namespace FizzWare.NBuilder.Tests.Integration
         {
             Builder<MyClass>
                 .CreateListOfSize(10)
-                .WhereTheLast(5)
-                    .Have(x => x.StringOne = "test")
-                .AndThePrevious(6)
-                    .Have(x => x.Int = 2)
+                .TheLast(5)
+                    .With(x => x.StringOne = "test")
+                .ThePrevious(6)
+                    .With(x => x.Int = 2)
                 .Build();
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentException))]
-        public void ShouldComplainIfWhereRandomAmountTooBig()
+        public void ShouldComplainIfRandomAmountTooBig()
         {
             Builder<MyClass>
                 .CreateListOfSize(10)
-                .WhereRandom(11)
-                    .Have(x => x.StringOne = "test")
+                .Random(11)
+                    .With(x => x.StringOne = "test")
                 .Build();
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentException))]
-        public void ShouldComplainIfWhereRandomAmountTooBigForRange()
+        public void ShouldComplainIfRandomAmountTooBigForRange()
         {
             Builder<MyClass>
                 .CreateListOfSize(10)
-                .WhereRandom(5, 0, 3)
-                    .Have(x => x.StringOne = "test")
+                .Random(5, 0, 3)
+                    .With(x => x.StringOne = "test")
                 .Build();
         }
 
         [Test]
         [ExpectedException(typeof(BuilderException))]
-        public void ShouldComplainIfWhereRandomRangeTooBig()
+        public void ShouldComplainIfRandomRangeTooBig()
         {
             Builder<MyClass>
                 .CreateListOfSize(10)
-                .WhereRandom(5, 0, 11)
-                    .Have(x => x.StringOne = "test")
+                .Random(5, 0, 11)
+                    .With(x => x.StringOne = "test")
                 .Build();
         }
 
@@ -110,8 +110,8 @@ namespace FizzWare.NBuilder.Tests.Integration
         {
             Builder<MyClass>
                 .CreateListOfSize(10)
-                .WhereSection(0, 10)
-                    .Have(x => x.StringOne = "test")
+                .Section(0, 10)
+                    .With(x => x.StringOne = "test")
                 .Build();
         }
 
@@ -121,8 +121,8 @@ namespace FizzWare.NBuilder.Tests.Integration
         {
             Builder<MyClass>
                 .CreateListOfSize(10)
-                .AndTheNext(5)
-                    .Have(x => x.StringOne = "test")
+                .TheNext(5)
+                    .With(x => x.StringOne = "test")
                 .Build();
         }
 
@@ -132,8 +132,8 @@ namespace FizzWare.NBuilder.Tests.Integration
         {
             Builder<MyClass>
                 .CreateListOfSize(10)
-                .AndThePrevious(5)
-                    .Have(x => x.StringOne = "test")
+                .ThePrevious(5)
+                    .With(x => x.StringOne = "test")
                 .Build();
         }
     }

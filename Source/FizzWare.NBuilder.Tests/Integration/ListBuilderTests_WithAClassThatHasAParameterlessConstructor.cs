@@ -39,12 +39,12 @@ namespace FizzWare.NBuilder.Tests.Integration
         }
 
         [Test]
-        public void ShouldBeAbleToUseWhereTheFirst()
+        public void ShouldBeAbleToUseTheFirst()
         {
             var specialTitle = "SpecialTitle";
 
             var list =
-                Builder<MyClass>.CreateListOfSize(10).WhereTheFirst(5).Have(x => x.StringOne = specialTitle).Build();
+                Builder<MyClass>.CreateListOfSize(10).TheFirst(5).With(x => x.StringOne = specialTitle).Build();
 
             // I want the asserts here to serve as documentation
             // so it's obvious how it works for anyone glancing at this test
@@ -61,12 +61,12 @@ namespace FizzWare.NBuilder.Tests.Integration
         }
 
         [Test]
-        public void ShouldBeAbleToUseWhereTheLast()
+        public void ShouldBeAbleToUseTheLast()
         {
             var specialTitle = "SpecialTitle";
 
             var list =
-                Builder<MyClass>.CreateListOfSize(10).WhereTheLast(5).Have(x => x.StringOne = specialTitle).Build();
+                Builder<MyClass>.CreateListOfSize(10).TheLast(5).With(x => x.StringOne = specialTitle).Build();
 
             Assert.That(list[0].StringOne, Is.EqualTo("StringOne1"));
             Assert.That(list[1].StringOne, Is.EqualTo("StringOne2"));
@@ -81,17 +81,17 @@ namespace FizzWare.NBuilder.Tests.Integration
         }
 
         [Test]
-        public void ShouldBeAbleToUseMultipleWhereTheFirsts()
+        public void ShouldBeAbleToUseMultipleTheFirsts()
         {
             var title = "FirstTitle";
             var overwrittenTitle = "OverwrittenTitle";
 
             var list =
                 Builder<MyClass>.CreateListOfSize(10)
-                                .WhereTheFirst(5)
-                                    .Have(x => x.StringOne = title)
-                                .WhereTheFirst(5)
-                                    .Have(x => x.StringOne = overwrittenTitle)
+                                .TheFirst(5)
+                                    .With(x => x.StringOne = title)
+                                .TheFirst(5)
+                                    .With(x => x.StringOne = overwrittenTitle)
                                 .Build();
 
             Assert.That(list.Count, Is.EqualTo(10));
@@ -108,10 +108,10 @@ namespace FizzWare.NBuilder.Tests.Integration
             var productList =
                 Builder<MyClass>
                 .CreateListOfSize(4)
-                    .WhereTheFirst(2)
-                        .Have(x => x.StringOne = titleone)
-                    .AndTheNext(2)
-                        .Have(x => x.StringOne = titletwo)
+                    .TheFirst(2)
+                        .With(x => x.StringOne = titleone)
+                    .TheNext(2)
+                        .With(x => x.StringOne = titletwo)
                     .Build();
 
             Assert.That(productList[0].StringOne, Is.EqualTo(titleone));
@@ -129,10 +129,10 @@ namespace FizzWare.NBuilder.Tests.Integration
             var productList =
                 Builder<MyClass>
                 .CreateListOfSize(4)
-                    .WhereTheLast(2)
-                        .Have(x => x.StringOne = titletwo)
-                    .AndThePrevious(2)
-                        .Have(x => x.StringOne = titleone)
+                    .TheLast(2)
+                        .With(x => x.StringOne = titletwo)
+                    .ThePrevious(2)
+                        .With(x => x.StringOne = titleone)
                     .Build();
 
             Assert.That(productList[0].StringOne, Is.EqualTo(titleone));
@@ -142,11 +142,11 @@ namespace FizzWare.NBuilder.Tests.Integration
         }
 
         [Test]
-        public void ShouldBeAbleToUseHaveDoneToThem()
+        public void ShouldBeAbleToUseDo()
         {
             var myOtherClass = Builder<SimpleClass>.CreateNew().Build();
 
-            var objects = Builder<MyClass>.CreateListOfSize(5).WhereAll().HaveDoneToThem(x => x.Add(myOtherClass)).Build();
+            var objects = Builder<MyClass>.CreateListOfSize(5).All().Do(x => x.Add(myOtherClass)).Build();
 
             for (int i = 0; i < objects.Count; i++)
             {
@@ -159,10 +159,10 @@ namespace FizzWare.NBuilder.Tests.Integration
         {
             var objects = Builder<MyClass>
                 .CreateListOfSize(10)
-                .WhereSection(0, 4)
-                    .Have(x => x.Int = 1)
-                .AndTheNext(3)
-                    .Have(x => x.Int = 2)
+                .Section(0, 4)
+                    .With(x => x.Int = 1)
+                .TheNext(3)
+                    .With(x => x.Int = 2)
                 .Build();
 
             Assert.That(objects[0].Int, Is.EqualTo(1));
@@ -179,12 +179,12 @@ namespace FizzWare.NBuilder.Tests.Integration
 		[TestCase(10,1)]
         [TestCase(5, 5)]
         [TestCase(1, 1)]
-		public void ShouldBeAbleToUseWhereRandom(int listSize, int randomItems)
+		public void ShouldBeAbleToUseRandom(int listSize, int randomItems)
 		{
 			var objects = Builder<MyClass>
 				.CreateListOfSize(listSize)
-				.WhereRandom(randomItems)
-					.Have(x => x.StringOne = "TestRandom")
+				.Random(randomItems)
+					.With(x => x.StringOne = "TestRandom")
 				.Build();
 
 			int numObjectsWithRandomValue = objects.Where(x => x.StringOne.Equals("TestRandom")).Count();
@@ -316,17 +316,17 @@ namespace FizzWare.NBuilder.Tests.Integration
         }
 
         [Test]
-        public void Where_random_test()
+        public void Random_test()
         {
             var items = Builder<MyClass>.CreateListOfSize(40)
-                .WhereRandom(10)
-                    .Have(x => x.EnumProperty = MyEnum.EnumValue1)
-                .WhereRandom(10)
-                    .Have(x => x.EnumProperty = MyEnum.EnumValue2)
-                .WhereRandom(10)
-                    .Have(x => x.EnumProperty = MyEnum.EnumValue3)
-                .WhereRandom(10)
-                    .Have(x => x.EnumProperty = MyEnum.EnumValue4)
+                .Random(10)
+                    .With(x => x.EnumProperty = MyEnum.EnumValue1)
+                .Random(10)
+                    .With(x => x.EnumProperty = MyEnum.EnumValue2)
+                .Random(10)
+                    .With(x => x.EnumProperty = MyEnum.EnumValue3)
+                .Random(10)
+                    .With(x => x.EnumProperty = MyEnum.EnumValue4)
                 .Build();
 
             Assert.That(items.Count(), Is.EqualTo(40));
