@@ -31,7 +31,7 @@ namespace FizzWare.NBuilder.Tests.Integration
                 Builder<MyClassWithConstructor>
                     .CreateListOfSize(10)
                     .All()
-                        .AreConstructedUsing(() => new MyClassWithConstructor(1, 2f))
+                        .WithConstructor(() => new MyClassWithConstructor(1, 2f))
                     .Build();
 
             Assert.That(list.Count, Is.EqualTo(10));

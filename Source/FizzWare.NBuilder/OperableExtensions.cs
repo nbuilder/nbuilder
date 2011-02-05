@@ -89,26 +89,28 @@ namespace FizzWare.NBuilder
         /// <summary>
         /// Specify the constructor for the type like this:
         /// 
-        /// AreConstructedUsing( () => new MyType(arg1, arg2) )
+        /// WithConstructor( () => new MyType(arg1, arg2) )
         /// </summary>
-        public static IOperable<T> AreConstructedUsing<T>(this IOperable<T> operable, Expression<Func<T>> constructor)
+        public static IOperable<T> WithConstructor<T>(this IOperable<T> operable, Expression<Func<T>> constructor)
         {
             var declaration = GetDeclaration(operable);
             declaration.ObjectBuilder.WithConstructor(constructor);
             return (IOperable<T>)declaration;
         }
 
-        /// <summary>
-        /// Specify the constructor for the type like this:
-        /// 
-        /// AreConstructedUsing( () => new MyType(arg1, arg2) )
-        /// </summary>
-        public static IOperable<T> IsConstructedUsing<T>(this IOperable<T> operable, Expression<Func<T>> constructor)
+        [Obsolete(Messages.NewSyntax_UseWithConstructor)]
+        public static IOperable<T> AreConstructedUsing<T>(this IOperable<T> operable, Expression<Func<T>> constructor)
         {
-            return AreConstructedUsing(operable, constructor);
+            return WithConstructor(operable, constructor);
         }
 
-        [Obsolete("Use AreConstructedUsing(Expression<Func<T>> constructor) instead")]
+        [Obsolete(Messages.NewSyntax_UseWithConstructor)]
+        public static IOperable<T> IsConstructedUsing<T>(this IOperable<T> operable, Expression<Func<T>> constructor)
+        {
+            return WithConstructor(operable, constructor);
+        }
+
+        [Obsolete("Use WithConstructor(Expression<Func<T>> constructor) instead")]
         public static IOperable<T> AreConstructedWith<T>(this IOperable<T> operable, params object[] args)
         {
             var declaration = GetDeclaration(operable);
@@ -116,7 +118,7 @@ namespace FizzWare.NBuilder
             return (IOperable<T>)declaration;
         }
 
-        [Obsolete("Use IsConstructedUsing(Expression<Func<T>> constructor) instead")]
+        [Obsolete("Use WithConstructor(Expression<Func<T>> constructor) instead")]
         public static IOperable<T> IsConstructedWith<T>(this IOperable<T> operable, params object[] args)
         {
             return AreConstructedWith(operable, args);
