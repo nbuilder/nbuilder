@@ -75,6 +75,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Integration\ListBuilderTests_WithAClassThatHasANullCharConstant.cs" />
     <Compile Include="Integration\ListBuilderNegativeTests.cs" />
     <Compile Include="Integration\MockPropertyNamerTests.cs" />
     <Compile Include="Integration\HierarchyGeneratorTests.cs" />

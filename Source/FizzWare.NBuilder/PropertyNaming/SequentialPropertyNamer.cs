@@ -29,7 +29,7 @@ namespace FizzWare.NBuilder.PropertyNaming
                     SetMemberValue(propertyInfo, objects[i]);
                 }
 
-                foreach (var fieldInfo in type.GetFields())
+                foreach (var fieldInfo in type.GetFields().Where(f => !f.IsLiteral))
                 {
                     SetMemberValue(fieldInfo, objects[i]);
                 }

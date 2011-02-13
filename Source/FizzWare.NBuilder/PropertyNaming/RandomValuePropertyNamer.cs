@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using FizzWare.NBuilder.Implementation;
+using System.Linq;
 
 namespace FizzWare.NBuilder.PropertyNaming
 {
@@ -67,7 +68,7 @@ namespace FizzWare.NBuilder.PropertyNaming
                     SetMemberValue(propertyInfo, objects[i]);
                 }
 
-                foreach (var fieldInfo in type.GetFields())
+                foreach (var fieldInfo in type.GetFields().Where(f => !f.IsLiteral))
                 {
                     SetMemberValue(fieldInfo, objects[i]);
                 }

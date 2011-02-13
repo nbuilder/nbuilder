@@ -277,6 +277,25 @@ namespace FizzWare.NBuilder.Tests.Unit
             Assert.That(prop0, Is.EqualTo(0));
             Assert.That(prop9, Is.EqualTo(0));
         }
+
+        [Test]
+        public void SetValuesOfAllIn_ClassWithNullCharConst_CharConstantIsNotSetByNamer()
+        {
+            var propertyNamer = new SequentialPropertyNamer(reflectionUtil);
+
+            List<MyClassWithCharConst> list = new List<MyClassWithCharConst>() { new MyClassWithCharConst() };
+
+            propertyNamer.SetValuesOfAllIn(list);
+
+            foreach (var item in list)
+            {
+                Assert.That(item.GetNullCharConst(), Is.EqualTo(MyClassWithCharConst.NullCharConst));
+                Assert.That(item.GetNonNullCharConst(), Is.EqualTo(MyClassWithCharConst.NonNullCharConst));
+            }
+
+            Assert.Pass("A System.FieldAccessException was not thrown because NBuilder didnt try to set the value of the constant");
+
+        }
         
         // TODO: Add this
         //[Test]
