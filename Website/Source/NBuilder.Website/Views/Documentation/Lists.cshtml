@@ -1,0 +1,193 @@
+﻿@{
+    ViewBag.Title = "Lists";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Lists</h2>
+    
+    <p>One of NBuilder's most useful features is its ability to create lists.</p>
+    
+    <p>NBuilder has two different property namers, a sequential namer and a random namer. The default namer is the sequential one. 
+    This is probably the most useful for most scenarios because you know exactly what it is going to produce.</p>
+    
+    <p>It always starts from one and gives ascending values to the properties for each object it builds.</p>
+      
+    <h3>Creating a basic list</h3>
+
+    <pre class="brush: csharp">
+    
+    var products = Builder&lt;Product&gt;.CreateListOfSize(10).Build();
+    </pre>
+    
+    <div class="code">
+        <p></p>
+        <img src="../../Content/images/doc/lists/example1.gif" />
+    </div>
+    
+    <p>NBuilder will name all public properties and fields but it won't touch private, protected or internal ones.</p>
+    
+    <p>It will create a list whose properties are named like this:</p>
+    
+    <img src="../../Content/images/example-4-output.gif" />
+    
+    <h3>Using All()</h3>
+    
+    <p>You can specify that different parts of the list have certain property values. These are called 'declarations'. The most basic declaration is All(). 
+    When you declare a set of objects, you always follow it with what you want to do to that set of objects. In this case With() is being used.</p>
+
+    <pre class="brush: csharp">
+
+    var products = BuilderBuilder&lt;Product&gt;
+        .CreateListOfSize(10)
+        .All()
+            .With(x => x.Title = "A special title")
+        .Build();
+    </pre>    
+    
+    <div class="code">
+        <p></p>
+        <img src="../../Content/images/doc/lists/example2.gif" />
+    </div>
+    
+    <p>One common use for All() is if you want to insert a load of objects into the database. Most ORMs will treat an object with an ID of 0 as a new object so 
+    to do this you would say <pre>All().With(x => x.Id = 0).</pre></p>
+    
+    <h3>TheFirst(), TheLast()</h3>
+    
+    <p>There are some methods provided to quickly declare the first or last x objects.</p>
+
+    <pre class="brush: csharp">
+
+    var products = Builder&lt;Product&gt;
+        .CreateListOfSize(10)
+        .TheFirst(2)
+            .Have(x => x.Title = "A special title")
+        .Build();
+    </pre>
+    
+    <div class="code">
+        <p></p>
+        <img src="../../Content/images/doc/lists/example3.gif" />
+    </div>
+    
+    <p>All these methods (apart from All()) are in fact extension methods. You can add your own methods to NBuilder, simply by writing
+    an extension method.</p>
+    
+    <h3>TheNext(), ThePrevious()</h3>
+    
+    <p>When you use TheFirst() you can follow it with multiple calls to TheNext()</p>
+
+    <pre class="brush: csharp">
+
+    var list = Builder&lt;Product&gt;
+        .CreateListOfSize(30)
+        .TheFirst(10)
+            .With(x => x.Title = "Special Title 1")
+        .TheNext(10)
+            .With(x => x.Title = "Special Title 2")
+        .TheNext(10)
+            .With(x => x.Title = "Special Title 3")
+        .Build();    
+    </pre>
+    
+    <div class="code">
+        <p></p>
+        <img src="../../Content/images/doc/lists/example4.gif" />
+    </div>
+    
+    <p>As you might expect there's also a TheLast() and ThePrevious() as well</p>
+
+    <pre class="brush: csharp">
+
+    var list = Builder&lt;Product&gt;
+        .CreateListOfSize(30)
+        .TheLast(10)
+            .With(x => x.Title = "Special Title 1")
+        .ThePrevious(10)
+            .With(x => x.Title = "Special Title 2")
+        .Build();
+    </pre>
+    
+    <div class="code">
+        <p></p>
+        <img src="../../Content/images/doc/lists/example5.gif" />
+    </div>
+    
+    <h3>Section(x, y)</h3>
+    
+    <p>You can use Section() to apply rules to segments of the list</p>
+
+    <pre class="brush: csharp">
+
+    var list = Builder&lt;Product&gt;
+        .CreateListOfSize(30)
+        .All()
+            .With(x => x.Title = "Special Title 1")
+        .Section(12, 14)
+            .With(x => x.Title = "Special Title 2")
+        .Section(16, 18)
+            .With(x => x.Title = "Special Title 3")
+        .Build();
+    </pre>
+    
+    <div class="code">
+        <p></p>
+        <img src="../../Content/images/doc/lists/example6.gif" />
+    </div>
+    
+    <h3>Calling a method on the objects of a declaration</h3>
+
+    <p>If you want to call a method on a set of objects, just use the With() method</p>
+   
+    <pre class="brush: csharp">
+
+    var children = Builder&lt;Category&gt;.CreateListOfSize(3).Build();
+
+    var list = Builder&lt;Category&gt;
+        .CreateListOfSize(10)
+        .TheFirst(2)
+            .With(x => x.AddChild(children[0]))
+            .And(x => x.AddChild(children[1]))
+        .TheNext(2)
+            .With(x => x.AddChild(children[2]))
+        .Build();
+    </pre>
+    
+    <div class="code">
+        <p></p>
+        <img src="../../Content/images/doc/lists/example7.gif" />
+    </div>
+    
+    <h3>Picking random items</h3>
+    
+    <p>If you want to pick an item or some items at random, and you don't care which they are, you can use the Pick class.</p>
+
+    <pre class="brush: csharp">
+
+    var children = Builder&lt;Category&gt;.CreateListOfSize(10).Build();
+
+    var categories = Builder&lt;Category&gt;
+        .CreateListOfSize(10)
+        .TheFirst(2)
+            .With(x => x.AddChild(Pick&lt;Category&gt;.RandomItemFrom(children))
+        .Build();
+    </pre>
+    
+    <div class="code">
+        <p></p>
+        <img src="../../Content/images/doc/lists/example8.gif" />
+    </div>
+    
+    <p>You can also pick a unique random list using the Pick class</p>
+
+    <pre class="brush: csharp">
+
+    Pick&lt;Product&gt;.UniqueRandomList(With.Between(5).And(10).Elements).From(products);
+    </pre>
+    
+    <div class="code">
+        <p></p>
+        <img src="../../Content/images/doc/lists/example9.gif" />
+    </div>
+            
+    <p>&nbsp;</p>

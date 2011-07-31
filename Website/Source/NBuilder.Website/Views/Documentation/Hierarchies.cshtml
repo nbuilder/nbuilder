@@ -1,0 +1,42 @@
+﻿@{
+    ViewBag.Title = "Hierarchies";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Hierarchies</h2>
+    
+<p>NBuilder has <strong>experimental</strong> support for building and persisting hierarchies.</p>
+
+<p>First you create a hierarchy spec, then you pass this specification into the PersistHierachy method.</p>
+
+<pre class="brush: csharp">
+var hierarchySpec = new HierarchySpec
+{
+    AddMethod = (parent, child) => parent.AddChild(child),
+    Depth = 3,
+    MinimumChildren = 3,
+    MaximumChildren = 8,
+    NamingMethod = (item, index) => item.Title = "Category " + index,
+    NumberOfRoots = 5
+};
+
+var categories = Builder&lt;Category&gt;.CreateListOfSize(10000)
+                                        .PersistHierarchy(hierarchySpec);
+</pre>
+    
+<div class="code">
+    <p></p>
+    <img src="../../Content/images/doc/hierarchies/example1.gif" />
+</div>
+    
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>

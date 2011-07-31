@@ -1,0 +1,141 @@
+﻿@{
+    ViewBag.Title = "SingleObjects";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+    <h2>Single Objects</h2>
+    
+    <h3>Creating a single object</h3>
+    <p>This will build an object with default values for all the properties that NBuilder is able to set.</p>
+
+    <pre class="brush: csharp">
+    
+    var product = Builder&lt;Product&gt;.CreateNew().Build();
+
+    </pre>
+    
+    <h3>Setting the value of a property</h3>
+    <p>This will assign default values to everything apart from the description to which it will assign &quot;A custom description here&quot;</p>    
+
+    <pre class="brush: csharp">
+    
+    var product = Builder&lt;Product&gt;
+        .CreateNew()
+            .With(x => x.Description = "A custom description here")
+        .Build();
+
+    </pre>
+    
+    <div class="code">
+        <p></p>
+        <img src="../../Content/images/doc/singobj-2.gif" />
+    </div>    
+    
+    <h3>Setting more than one property</h3>
+    <p>You can set any number of properties on the object. And() internally is in fact exactly the same as With(). It is provided as an option for improved readability.</p>
+
+    <pre class="brush: csharp">
+    
+    var product = Builder&lt;Product&gt;
+        .CreateNew()
+            .With(x => x.Title = "Special title")
+            .And(x => x.Description = "Special description")
+            .And(x => x.Id = 2)
+        .Build();
+
+    </pre>
+    
+    <div class="code">
+        <p></p>
+        <img src="../../Content/images/doc/singobj-3.gif" />
+    </div>    
+    
+
+    <h3>Supplying constructor parameters</h3>
+    <p>Given you have a type that has a constructor:</p>
+
+    <pre class="brush: csharp">
+    
+    public BasketItem(ShoppingBasket basket, Product product, int quantity)
+        : this (basket)
+    {
+        Product = product;
+        Quantity = quantity;
+    }
+    </pre>
+    
+    <div class="code">
+        <p></p>
+    <img src="../../Content/images/doc/singobj-4.gif" />
+    </div>
+    
+    <p>You can supply constructor args using WithConstructor() method:</p>
+
+    <pre class="brush: csharp">
+    
+    var basketItem = Builder&lt;BasketItem&gt;
+        .CreateNew()
+            .WithConstructor(() => new BasketItem(basket, product, quantity))
+        .Build();
+    </pre>
+
+    
+    <div class="code">
+        <p></p>
+        <img src="../../Content/images/doc/singobj-5.gif" />
+    </div>
+    
+    <h3>Calling a method on an object</h3>
+    
+    <p>You can use Do() to call a method on an object</p>
+
+    <pre class="brush: csharp">
+    
+    var basketItem = Builder&lt;Category&gt;
+        .CreateNew()
+            .Do(x => x.AddChild(child))
+        .Build();
+    </pre>
+    
+    <div class="code">
+        <p></p>
+        <img src="../../Content/images/doc/singobj-6.gif" />
+    </div>
+    
+    <p>Do(), And()</p>    
+
+    <pre class="brush: csharp">
+    
+    var basketItem = Builder&lt;Category&gt;
+        .CreateNew()
+            .Do(x => x.AddChild(child))
+            .And(x => x.AddChild(anotherChild))
+        .Build();
+    </pre>
+    
+    <div class="code">
+        <p></p>
+        <img src="../../Content/images/doc/singobj-7.gif" />
+    </div>
+    
+    <h3>Using &quot;multi functions&quot;</h3>
+    
+    <p>If you want to call the same method for each item of a list, you can use DoForAll()</p>
+
+    <pre class="brush: csharp">
+    
+    var categories = Builder&lt;Category&gt;.CreateListOfSize(5).Build();
+
+    var product = Builder&lt;Product&gt;
+        .CreateNew()
+            .DoForAll((prod, cat) => prod.AddToCategory(cat), categories)
+        .Build();
+    </pre>
+    
+    <div class="code">
+        <p></p>
+        <img src="../../Content/images/doc/singobj-8.gif" />
+    </div>
+    
+    <p>&nbsp;</p>

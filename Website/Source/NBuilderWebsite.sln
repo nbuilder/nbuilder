@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NBuilder.Website", "NBuilder.Website\NBuilder.Website.csproj", "{C8DBB16D-4760-44E0-8AB1-41B4F69E692D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NBuilder.Website.Tests", "NBuilder.Website.Tests\NBuilder.Website.Tests.csproj", "{D990CF13-95D4-498F-B2CD-3238A3CAA1D2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +15,10 @@ Global
 		{C8DBB16D-4760-44E0-8AB1-41B4F69E692D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C8DBB16D-4760-44E0-8AB1-41B4F69E692D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C8DBB16D-4760-44E0-8AB1-41B4F69E692D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D990CF13-95D4-498F-B2CD-3238A3CAA1D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D990CF13-95D4-498F-B2CD-3238A3CAA1D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D990CF13-95D4-498F-B2CD-3238A3CAA1D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D990CF13-95D4-498F-B2CD-3238A3CAA1D2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
