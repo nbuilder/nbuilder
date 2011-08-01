@@ -189,7 +189,6 @@
   <ItemGroup>
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Shared\_LogOnPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Contact\Index.cshtml" />

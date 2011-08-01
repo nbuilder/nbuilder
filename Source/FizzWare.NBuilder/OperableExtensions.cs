@@ -125,7 +125,7 @@ namespace FizzWare.NBuilder
         }
 
         /// <summary>
-        /// Performs an action on the type.
+        /// Performs an action on the object.
         /// </summary>
         public static IOperable<T> Do<T>(this IOperable<T> operable, Action<T> action)
         {

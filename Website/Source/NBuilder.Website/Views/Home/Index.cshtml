@@ -15,6 +15,14 @@
         
 <div class="example">        
     <h3>Example #1</h3>
+
+    <pre class="brush: csharp">
+    var products = Builder&lt;Product&gt;.CreateListOfSize(10)
+                                   .TheFirst(2)
+                                       .With(x => x.Title = "special title")
+                                   .Build();
+    </pre>
+
     <div class="code">
     <p><img src="../../Content/images/example-1-code.gif" /></p>
     </div>
@@ -24,6 +32,17 @@
         
 <div class="example">        
     <h3>Example #2</h3>
+
+    <pre class="brush: csharp">
+    var products = Builder&lt;Product&gt;.CreateListOfSize(10)
+                                   .All()
+                                       .WithConstructor(() => new Product("my title"))
+                                   .Random(5)
+                                       .WithConstructor(() => new Product("my other title"))
+                                       .And(x => x.Created = August.The17th.At(09, 00))
+                                   .Build();
+    </pre>
+
     <p><img src="../../Content/images/example-2-code.gif" width="778" height="164" /></p>
     <h3>Would give you something like this:</h3>
     <p><img src="../../Content/images/example-2-output.gif" width="569" height="241" /></p>
@@ -31,6 +50,23 @@
         
 <div class="example">        
     <h3>Example #3</h3>
+
+    <pre class="brush: csharp">
+
+    var generator = new UniqueRandomGenerator();
+
+    var products = Builder&lt;Product&gt;.CreateListOfSize(10)
+                                   .TheFirst(2)
+                                       .With(x => x.Title = "special title 1")
+                                       .And(x => x.Description = "special description 1")
+                                   .TheNext(3)
+                                       .With(x => x.Title = "special title 2")
+                                   .TheNext(5)
+                                       .With(x => x.Title = "special title 3")
+                                       .And(x => x.Price = generator.Next(0m, 10m))
+                                   .Build();
+    </pre>
+
     <p><img src="../../Content/images/example-3-code.gif" width="777" height="251" /></p>
     <h3>Would give you something like this:</h3>
     <p><img src="../../Content/images/example-3-output.gif" width="569" height="241" /></p>

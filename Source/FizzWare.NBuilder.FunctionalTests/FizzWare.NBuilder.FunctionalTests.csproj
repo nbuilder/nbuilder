@@ -122,6 +122,7 @@
     <Compile Include="SetupFixture.cs" />
     <Compile Include="SingleObjectBuilderTests.cs" />
     <Compile Include="UsingFluentDates.cs" />
+    <Compile Include="WebsiteExamples\WebsiteExamples.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FizzWare.FunctionalTests.Model\FizzWare.NBuilder.FunctionalTests.Model.csproj">

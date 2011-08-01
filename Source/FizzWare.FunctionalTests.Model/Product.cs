@@ -14,6 +14,12 @@ namespace FizzWare.NBuilder.FunctionalTests.Model
             Categories = new List<Category>();
         }
 
+        public Product(string title)
+            : this()
+        {
+            Title = title;
+        }
+
         [PrimaryKey(Generator = PrimaryKeyType.Native)]
         public int Id { get; set; }
 
