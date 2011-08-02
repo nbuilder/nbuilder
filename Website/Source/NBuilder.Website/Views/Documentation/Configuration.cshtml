@@ -36,8 +36,8 @@ BuilderSetup.SetDefaultPropertyNamer(namer);
 
 <pre class="brush: csharp">
     
-BuilderSetup.SetPropertyNamerFor&lt;Product&gt;(new CustomProductPropertyNamer(new ReflectionUtil());
-    
+BuilderSetup.SetPropertyNamerFor&lt;Product&gt;(
+                    new CustomProductPropertyNamer(new ReflectionUtil()));
 </pre>
        
 <h3>Disabling property naming for an individual property</h3>

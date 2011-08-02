@@ -37,7 +37,7 @@
 
     <pre class="brush: csharp">
 
-    var products = BuilderBuilder&lt;Product&gt;
+    var products = Builder&lt;Product&gt;
         .CreateListOfSize(10)
         .All()
             .With(x => x.Title = "A special title")
@@ -61,7 +61,7 @@
     var products = Builder&lt;Product&gt;
         .CreateListOfSize(10)
         .TheFirst(2)
-            .Have(x => x.Title = "A special title")
+            .With(x => x.Title = "A special title")
         .Build();
     </pre>
     
@@ -146,10 +146,10 @@
     var list = Builder&lt;Category&gt;
         .CreateListOfSize(10)
         .TheFirst(2)
-            .With(x => x.AddChild(children[0]))
+            .Do(x => x.AddChild(children[0]))
             .And(x => x.AddChild(children[1]))
         .TheNext(2)
-            .With(x => x.AddChild(children[2]))
+            .Do(x => x.AddChild(children[2]))
         .Build();
     </pre>
     
@@ -169,7 +169,7 @@
     var categories = Builder&lt;Category&gt;
         .CreateListOfSize(10)
         .TheFirst(2)
-            .With(x => x.AddChild(Pick&lt;Category&gt;.RandomItemFrom(children))
+            .Do(x => x.AddChild(Pick&lt;Category&gt;.RandomItemFrom(children)))
         .Build();
     </pre>
     

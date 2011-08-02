@@ -10,7 +10,7 @@
 <p>First you create a hierarchy spec, then you pass this specification into the PersistHierachy method.</p>
 
 <pre class="brush: csharp">
-var hierarchySpec = new HierarchySpec
+var hierarchySpec = new HierarchySpec&lt;Category&gt;
 {
     AddMethod = (parent, child) => parent.AddChild(child),
     Depth = 3,
@@ -23,11 +23,6 @@ var hierarchySpec = new HierarchySpec
 var categories = Builder&lt;Category&gt;.CreateListOfSize(10000)
                                         .PersistHierarchy(hierarchySpec);
 </pre>
-    
-<div class="code">
-    <p></p>
-    <img src="../../Content/images/doc/hierarchies/example1.gif" />
-</div>
     
 <p>&nbsp;</p>
 <p>&nbsp;</p>

@@ -35,26 +35,16 @@ The.Time(08, 31);
 At.Time(09, 46);
 </pre>
     
-<div class="code">
-    <p></p>
-    <img src="../../Content/images/doc/dates/example1.gif" />
-</div>
-    
 <h3>Using fluent dates and generators</h3>
     
 <p>Needless to say you can also use the dates when building objects. Here's an example of using the list builder and a generator.</p>    
 
 <pre class="brush: csharp">
+var generator = new RandomGenerator();
+
 var products = Builder&lt;Product&gt;
     .CreateListOfSize(100)
     .All()
         .With(x => x.Created = generator.Next(July.The(1), November.The(10)))
     .Build();
 </pre>
-    
-<div class="code">
-    <p></p>
-    <img src="../../Content/images/doc/dates/example2.gif" />
-</div>
-    
-@*<p>The <a href="/Generators">generators section</a> explains more about the different generators.</p>*@
