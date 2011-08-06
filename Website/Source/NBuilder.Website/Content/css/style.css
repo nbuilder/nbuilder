@@ -192,4 +192,11 @@ p
 .twitter
 {
     padding: 0;
+    margin-top: 20px;
+}
+
+.button 
+{
+    padding: 10px;
+    width: 70px;
 }
