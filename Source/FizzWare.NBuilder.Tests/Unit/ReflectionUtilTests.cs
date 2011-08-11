@@ -41,12 +41,16 @@ namespace FizzWare.NBuilder.Tests.Unit
             Assert.That(instance, Is.TypeOf(typeof(MyClass)));
         }
 
+        // nb: These tests don't run under silverlight at the moment, so this is actually unnecessary, but if I
+        //     do ever make them run under silverlight, I don't want to get caught out by this.
+        #if !SILVERLIGHT
         [Test]
         public void ShouldBeAbleToCreateInstanceOfClassThatHasPrivateParameterlessConstructor()
         {
             var instance = reflectionUtil.CreateInstanceOf<MyClassWithPrivateParameterlessConstructor>();
             Assert.That(instance, Is.TypeOf(typeof(MyClassWithPrivateParameterlessConstructor)));
         }
+        #endif
 
         [Test]
         [ExpectedException(typeof(TypeCreationException))]

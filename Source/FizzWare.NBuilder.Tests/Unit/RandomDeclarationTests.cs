@@ -1,6 +1,3 @@
-using System;
-using System.Linq;
-using System.Text;
 using FizzWare.NBuilder.Implementation;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NUnit.Framework;
@@ -11,7 +8,6 @@ namespace FizzWare.NBuilder.Tests.Unit
     [TestFixture]
     public class RandomDeclarationTests
     {
-        private MockRepository mocks;
         private RandomDeclaration<MyClass> declaration;
         private IListBuilderImpl<MyClass> listBuilderImpl;
         private IObjectBuilder<MyClass> objectBuilder;
@@ -24,57 +20,43 @@ namespace FizzWare.NBuilder.Tests.Unit
         [SetUp]
         public void SetUp()
         {
-            mocks = new MockRepository();
-            listBuilderImpl = mocks.DynamicMock<IListBuilderImpl<MyClass>>();
-            objectBuilder = mocks.DynamicMock<IObjectBuilder<MyClass>>();
-            uniqueRandomGenerator = mocks.DynamicMock<IUniqueRandomGenerator>();
+            listBuilderImpl = MockRepository.GenerateStub<IListBuilderImpl<MyClass>>();
+            objectBuilder = MockRepository.GenerateStub<IObjectBuilder<MyClass>>();
+            uniqueRandomGenerator = MockRepository.GenerateMock<IUniqueRandomGenerator>();
 
             declaration = new RandomDeclaration<MyClass>(listBuilderImpl, objectBuilder, uniqueRandomGenerator, amount, start, end);
         }
 
-        [TearDown]
-        public void TearDown()
+        [Test]
+        public void Construct_ConstructsEachItem()
         {
-            mocks.VerifyAll();
+            // Act
+            declaration.Construct();
+
+            // Assert
+            objectBuilder.AssertWasCalled(x => x.Construct(), opt => opt.Repeat.Times(amount));
         }
 
         [Test]
-        public void ShouldBeAbleToConstruct()
-        {
-            using (mocks.Record())
-                objectBuilder.Expect(x => x.Construct()).Return(new MyClass()).Repeat.Times(amount);
-
-            using (mocks.Playback())
-                declaration.Construct();
-        }
-
-        [Test]
-        public void ShouldBeAbleToAddToMaster()
+        public void AddToMaster_AddsEachItemToTheList()
         {
             var masterList = new MyClass[listSize];
 
-            using (mocks.Record())
-            {
-                objectBuilder.Expect(x => x.Construct()).Return(new MyClass()).Repeat.Times(amount);
+            objectBuilder.Stub(x => x.Construct()).Return(new MyClass()).Repeat.Times(amount);
 
-                uniqueRandomGenerator.Expect(x => x.Next(start, end)).Return(0);
-                uniqueRandomGenerator.Expect(x => x.Next(start, end)).Return(2);
-                uniqueRandomGenerator.Expect(x => x.Next(start, end)).Return(4);
-                uniqueRandomGenerator.Expect(x => x.Next(start, end)).Return(6);
-                uniqueRandomGenerator.Expect(x => x.Next(start, end)).Return(8);
-            }
+            uniqueRandomGenerator.Stub(x => x.Next(start, end)).Return(0).Repeat.Once();
+            uniqueRandomGenerator.Stub(x => x.Next(start, end)).Return(2).Repeat.Once();
+            uniqueRandomGenerator.Stub(x => x.Next(start, end)).Return(4).Repeat.Once();
+            
+            declaration.Construct();
 
-            using (mocks.Ordered())
-            {
-                declaration.Construct();
-                declaration.AddToMaster(masterList);
-            }
+            // Act
+            declaration.AddToMaster(masterList);
 
+            // Assert
             Assert.That(masterList[0], Is.Not.Null);
             Assert.That(masterList[2], Is.Not.Null);
             Assert.That(masterList[4], Is.Not.Null);
-            Assert.That(masterList[6], Is.Not.Null);
-            Assert.That(masterList[8], Is.Not.Null);
         }
     }
 }

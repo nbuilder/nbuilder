@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FizzWare.NBuilder.FunctionalTests</RootNamespace>
     <AssemblyName>FizzWare.NBuilder.FunctionalTests</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -32,6 +32,7 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -129,9 +130,9 @@
       <Project>{201FC511-5E98-4321-9595-E0653F9BB73B}</Project>
       <Name>FizzWare.NBuilder.FunctionalTests.Model</Name>
     </ProjectReference>
-    <ProjectReference Include="..\FizzWare.NBuilder\FizzWare.NBuilder.csproj">
+    <ProjectReference Include="..\FizzWare.NBuilder\FizzWare.NBuilder-NET3.5.csproj">
       <Project>{2A91787B-AFB7-4A4C-A5D5-836F578F2DB6}</Project>
-      <Name>FizzWare.NBuilder</Name>
+      <Name>FizzWare.NBuilder-NET3.5</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
