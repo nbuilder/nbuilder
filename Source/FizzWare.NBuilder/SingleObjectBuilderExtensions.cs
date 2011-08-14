@@ -8,6 +8,7 @@ namespace FizzWare.NBuilder
 {
     public static class SingleObjectBuilderExtensions
     {
+        // This has been obsolete for a while
         [Obsolete("Please use WithConstructor( () => new MyClass(arg1, arg2) )")]
         public static ISingleObjectBuilder<T> WithConstructorArgs<T>(this ISingleObjectBuilder<T> objectBuilder, params object[] args)
         {

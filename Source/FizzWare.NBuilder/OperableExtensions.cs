@@ -18,7 +18,9 @@ namespace FizzWare.NBuilder
             return (IOperable<T>)declaration;
         }
 
+        #if DO_NOT_OBSOLETE_OLD_SYNTAX
         [Obsolete(Messages.NewSyntax_UseWith)]
+        #endif
         public static IOperable<T> Have<T, TFunc>(this IOperable<T> operable, Func<T, TFunc> func)
         {
             return With(operable, func);
@@ -35,10 +37,12 @@ namespace FizzWare.NBuilder
             return (IOperable<T>)declaration;
         }
 
+        #if DO_NOT_OBSOLETE_OLD_SYNTAX
+        [Obsolete(Messages.NewSyntax_UseWith)]
+        #endif
         /// <summary>
         /// Sets the value of one of the type's private properties or readonly fields
         /// </summary>
-        [Obsolete(Messages.NewSyntax_UseWith)]
         public static IOperable<T> Have<T, TProperty>(this IOperable<T> operable, Expression<Func<T, TProperty>> property, TProperty value)
         {
             return With(operable, property, value);
@@ -59,20 +63,24 @@ namespace FizzWare.NBuilder
         {
             return With(operable, property, value);
         }
-
+        
+        #if DO_NOT_OBSOLETE_OLD_SYNTAX
+        [Obsolete(Messages.NewSyntax_UseWith)]
+        #endif
         /// <summary>
         /// Sets the value of one of the type's public properties
         /// </summary>
-        [Obsolete(Messages.NewSyntax_UseWith)]
         public static IOperable<T> Has<T, TFunc>(this IOperable<T> operable, Func<T, TFunc> func)
         {
             return With(operable, func);
         }
 
+        #if DO_NOT_OBSOLETE_OLD_SYNTAX
+        [Obsolete(Messages.NewSyntax_UseWith)]
+        #endif
         /// <summary>
         /// Sets the value of one of the type's private properties or readonly fields
         /// </summary>
-        [Obsolete(Messages.NewSyntax_UseWith)]
         public static IOperable<T> Has<T, TProperty>(this IOperable<T> operable, Expression<Func<T, TProperty>> property, TProperty value)
         {
             return With(operable, property, value);
@@ -98,18 +106,23 @@ namespace FizzWare.NBuilder
             return (IOperable<T>)declaration;
         }
 
+        #if DO_NOT_OBSOLETE_OLD_SYNTAX
         [Obsolete(Messages.NewSyntax_UseWithConstructor)]
+        #endif
         public static IOperable<T> AreConstructedUsing<T>(this IOperable<T> operable, Expression<Func<T>> constructor)
         {
             return WithConstructor(operable, constructor);
         }
 
+        #if DO_NOT_OBSOLETE_OLD_SYNTAX
         [Obsolete(Messages.NewSyntax_UseWithConstructor)]
+        #endif
         public static IOperable<T> IsConstructedUsing<T>(this IOperable<T> operable, Expression<Func<T>> constructor)
         {
             return WithConstructor(operable, constructor);
         }
 
+        // This has been obsolete for a while, don't allow this to be hidden
         [Obsolete("Use WithConstructor(Expression<Func<T>> constructor) instead")]
         public static IOperable<T> AreConstructedWith<T>(this IOperable<T> operable, params object[] args)
         {
@@ -118,6 +131,7 @@ namespace FizzWare.NBuilder
             return (IOperable<T>)declaration;
         }
 
+        // This has been obsolete for a while, don't allow this to be hidden
         [Obsolete("Use WithConstructor(Expression<Func<T>> constructor) instead")]
         public static IOperable<T> IsConstructedWith<T>(this IOperable<T> operable, params object[] args)
         {
@@ -134,16 +148,20 @@ namespace FizzWare.NBuilder
             return (IOperable<T>)declaration;
         }
 
+        #if DO_NOT_OBSOLETE_OLD_SYNTAX
         [Obsolete(Messages.NewSyntax_UseDo)]
+        #endif
         public static IOperable<T> HaveDoneToThem<T>(this IOperable<T> operable, Action<T> action)
         {
             return Do(operable, action);
         }
 
+        #if DO_NOT_OBSOLETE_OLD_SYNTAX
+        [Obsolete(Messages.NewSyntax_UseWith)]
+        #endif
         /// <summary>
         /// Performs an action on the type.
         /// </summary>
-        [Obsolete(Messages.NewSyntax_UseWith)]
         public static IOperable<T> HasDoneToIt<T>(this IOperable<T> operable, Action<T> action)
         {
             return Do(operable, action);
@@ -159,16 +177,20 @@ namespace FizzWare.NBuilder
             return (IOperable<T>)declaration;
         }
 
+        #if DO_NOT_OBSOLETE_OLD_SYNTAX
         [Obsolete(Messages.NewSyntax_UseDoForEach)]
+        #endif
         public static IOperable<T> HaveDoneToThemForAll<T, U>(this IOperable<T> operable, Action<T, U> action, IList<U> list)
         {
             return DoForEach(operable, action, list);
         }
 
+        #if DO_NOT_OBSOLETE_OLD_SYNTAX
+        [Obsolete(Messages.NewSyntax_UseDoForEach)]
+        #endif
         /// <summary>
         /// Performs an action for each item in a list.
         /// </summary>
-        [Obsolete(Messages.NewSyntax_UseDoForEach)]
         public static IOperable<T> HasDoneToItForAll<T, U>(this IOperable<T> operable, Action<T, U> action, IList<U> list)
         {
             return DoForEach(operable, action, list);

@@ -14,6 +14,7 @@ namespace FizzWare.NBuilder.Implementation
         /// <returns>An object builder</returns>
         IObjectBuilder<T> WithConstructor(Expression<Func<T>> constructor);
 
+        // This has been obsolete for a while, so don't allow this one to be hidden
         [Obsolete("Use WithConstructor() instead")]
         IObjectBuilder<T> WithConstructorArgs(params object[] args);
 

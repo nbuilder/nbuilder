@@ -7,7 +7,9 @@ namespace FizzWare.NBuilder
     {
         IOperable<T> All();
 
+        #if DO_NOT_OBSOLETE_OLD_SYNTAX
         [Obsolete(Messages.NewSyntax_UseAll)]
+        #endif
         IOperable<T> WhereAll();
     }
 }

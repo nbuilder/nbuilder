@@ -17,7 +17,9 @@ namespace FizzWare.NBuilder
             return (IOperable<T>)listBuilderImpl.AddDeclaration(declaration);
         }
 
+        #if DO_NOT_OBSOLETE_OLD_SYNTAX
         [Obsolete(Messages.NewSyntax_UseTheFirst)]
+        #endif
         public static IOperable<T> WhereTheFirst<T>(this IListBuilder<T> listBuilder, int amount)
         {
             return TheFirst(listBuilder, amount);
@@ -37,7 +39,9 @@ namespace FizzWare.NBuilder
             return (IOperable<T>)listBuilderImpl.AddDeclaration(declaration);
         }
 
+        #if DO_NOT_OBSOLETE_OLD_SYNTAX
         [Obsolete(Messages.NewSyntax_UseTheLast)]
+        #endif
         public static IOperable<T> WhereTheLast<T>(this IListBuilder<T> listBuilder, int amount)
         {
             return TheLast(listBuilder, amount);
@@ -71,13 +75,17 @@ namespace FizzWare.NBuilder
             return (IOperable<T>)listBuilderImpl.AddDeclaration(declaration);
         }
 
+        #if DO_NOT_OBSOLETE_OLD_SYNTAX
         [Obsolete(Messages.NewSyntax_UseRandom)]
+        #endif
         public static IOperable<T> WhereRandom<T>(this IListBuilder<T> listBuilder, int amount)
         {
             return Random(listBuilder, amount);
         }
 
+        #if DO_NOT_OBSOLETE_OLD_SYNTAX
         [Obsolete(Messages.NewSyntax_UseRandom)]
+        #endif
         public static IOperable<T> WhereRandom<T>(this IListBuilder<T> listBuilder, int amount, int start, int end)
         {
             return Random(listBuilder, amount, start, end);
@@ -101,7 +109,9 @@ namespace FizzWare.NBuilder
             return (IOperable<T>)listBuilderImpl.AddDeclaration(declaration);
         }
 
+        #if DO_NOT_OBSOLETE_OLD_SYNTAX
         [Obsolete(Messages.NewSyntax_UseSection)]
+        #endif
         public static IOperable<T> WhereSection<T>(this IListBuilder<T> listBuilder, int start, int end)
         {
             return Section(listBuilder, start, end);
@@ -129,7 +139,9 @@ namespace FizzWare.NBuilder
             return andTheNextDeclaration;
         }
 
+        #if DO_NOT_OBSOLETE_OLD_SYNTAX
         [Obsolete(Messages.NewSyntax_UseTheNext)]
+        #endif
         public static IOperable<T> AndTheNext<T>(this IListBuilder<T> listBuilder, int amount)
         {
             return TheNext(listBuilder, amount);
@@ -155,7 +167,9 @@ namespace FizzWare.NBuilder
             return andTheNextDeclaration;
         }
 
+        #if DO_NOT_OBSOLETE_OLD_SYNTAX
         [Obsolete(Messages.NewSyntax_UseThePrevious)]
+        #endif
         public static IOperable<T> AndThePrevious<T>(this IListBuilder<T> listBuilder, int amount)
         {
             return ThePrevious(listBuilder, amount);

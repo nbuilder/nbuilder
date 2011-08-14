@@ -37,6 +37,7 @@ namespace FizzWare.NBuilder.Implementation
             return this;
         }
 
+        // This has been obsolete for a while, so don't allow this one to be hidden
         [Obsolete]
         public IObjectBuilder<T> WithConstructorArgs(params object[] args)
         {

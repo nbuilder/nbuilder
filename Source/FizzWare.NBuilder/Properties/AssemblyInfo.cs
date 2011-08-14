@@ -5,7 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("FizzWare.NBuilder")]
+#if DO_NOT_OBSOLETE_OLD_SYNTAX
+    [assembly: AssemblyTitle("FizzWare.NBuilder (Old syntax not obsolete build)")]
+#else
+    [assembly: AssemblyTitle("FizzWare.NBuilder")]
+#endif
+
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyCompany("FizzWare")]
 [assembly: AssemblyProduct("FizzWare.NBuilder")]
