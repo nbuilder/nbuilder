@@ -1,3 +1,4 @@
+using System;
 using FizzWare.NBuilder.Implementation;
 using NUnit.Framework;
 

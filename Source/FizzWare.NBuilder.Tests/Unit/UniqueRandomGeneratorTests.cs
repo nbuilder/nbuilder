@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using System;
+using FizzWare.NBuilder.Tests.TestClasses;
+using NUnit.Framework;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
