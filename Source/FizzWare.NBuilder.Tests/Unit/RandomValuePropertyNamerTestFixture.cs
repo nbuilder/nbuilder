@@ -1,6 +1,4 @@
 using System;
-using System.Linq;
-using System.Text;
 using FizzWare.NBuilder.Implementation;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NUnit.Framework;

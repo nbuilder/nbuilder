@@ -175,22 +175,25 @@ namespace FizzWare.NBuilder.Tests.Integration
             Assert.That(objects[7].Int, Is.EqualTo(2));
         }
 
-		[TestCase(10,5)]
-		[TestCase(10,1)]
+        // Silverlight version of NUnit doesn't support TestCase
+        #if !SILVERLIGHT
+        [TestCase(10, 5)]
+        [TestCase(10, 1)]
         [TestCase(5, 5)]
         [TestCase(1, 1)]
-		public void ShouldBeAbleToUseRandom(int listSize, int randomItems)
-		{
-			var objects = Builder<MyClass>
-				.CreateListOfSize(listSize)
-				.Random(randomItems)
-					.With(x => x.StringOne = "TestRandom")
-				.Build();
+        public void ShouldBeAbleToUseRandom(int listSize, int randomItems)
+        {
+            var objects = Builder<MyClass>
+                .CreateListOfSize(listSize)
+                .Random(randomItems)
+                    .With(x => x.StringOne = "TestRandom")
+                .Build();
 
-			int numObjectsWithRandomValue = objects.Where(x => x.StringOne.Equals("TestRandom")).Count();
+            int numObjectsWithRandomValue = objects.Where(x => x.StringOne.Equals("TestRandom")).Count();
 
-			Assert.AreEqual(randomItems, numObjectsWithRandomValue);
-		}
+            Assert.AreEqual(randomItems, numObjectsWithRandomValue);
+        }
+        #endif
 
         [Test]
         public void ShouldBeAbleToDisableAutoPropertyNaming()

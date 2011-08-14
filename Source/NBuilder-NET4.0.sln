@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FizzWare.NBuilder.Functiona
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FizzWare.NBuilder-NET4.0", "FizzWare.NBuilder\FizzWare.NBuilder-NET4.0.csproj", "{2A91787B-AFB7-4A4C-A5D5-836F578F2DB6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FizzWare.NBuilder-Silverlight-SL4", "FizzWare.NBuilder\FizzWare.NBuilder-Silverlight-SL4.csproj", "{B54246F5-9D85-4510-8D8F-915AC8B64027}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,10 +31,6 @@ Global
 		{2A91787B-AFB7-4A4C-A5D5-836F578F2DB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A91787B-AFB7-4A4C-A5D5-836F578F2DB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2A91787B-AFB7-4A4C-A5D5-836F578F2DB6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B54246F5-9D85-4510-8D8F-915AC8B64027}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B54246F5-9D85-4510-8D8F-915AC8B64027}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B54246F5-9D85-4510-8D8F-915AC8B64027}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B54246F5-9D85-4510-8D8F-915AC8B64027}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -65,7 +65,10 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             using (mocks.Playback())
             {
+                // TODO FIX
+                #if !SILVERLIGHT
                 Assert.Throws<BuilderException>(() => builder.Construct());
+                #endif
             }
         }
 

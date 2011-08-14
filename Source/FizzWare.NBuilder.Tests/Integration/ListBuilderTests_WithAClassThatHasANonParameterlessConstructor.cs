@@ -25,7 +25,7 @@ namespace FizzWare.NBuilder.Tests.Integration
         #pragma warning restore 0618
 
         [Test]
-        public void should_be_able_to_use_AreConstructedUsing()
+        public void should_be_able_to_use_WithConstructor()
         {
             var list =
                 Builder<MyClassWithConstructor>
@@ -38,7 +38,7 @@ namespace FizzWare.NBuilder.Tests.Integration
         }
 
         [Test]
-        public void should_be_able_to_use_IsConstructedWith()
+        public void should_be_able_to_use_IsConstructedUsing()
         {
             var list =
                 Builder<MyClassWithConstructor>

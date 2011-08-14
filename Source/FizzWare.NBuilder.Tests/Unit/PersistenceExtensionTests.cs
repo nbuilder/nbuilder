@@ -100,7 +100,10 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             using (mocks.Playback())
             {
+                // TODO FIX
+                #if !SILVERLIGHT
                 Assert.Throws<ArgumentException>(() => PersistenceExtensions.Persist(operableOnly));
+                #endif
             }
         }
     }

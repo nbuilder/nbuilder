@@ -1,9 +1,7 @@
-using System.Collections.Generic;
 using FizzWare.NBuilder.Implementation;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NUnit.Framework;
 using Rhino.Mocks;
-using System;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {

@@ -120,12 +120,15 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             using (mocks.Playback())
             {
+                // TODO FIX
+                #if !SILVERLIGHT
                 Assert.Throws<ArgumentException>(
                     () =>
                         hierarchyGenerator =
                         new HierarchyGenerator<MyHierarchicalClass>(sourceList, null, numberOfRoots, depth, minCategories,
                                                                     maxCategories, randomGenerator, namingMethod, null)
                     );
+                #endif
             }
         }
     }
