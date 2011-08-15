@@ -44,7 +44,7 @@ namespace FizzWare.NBuilder.Implementation
             return new ObjectBuilder<T>(reflectionUtil);
         }
 
-        #if DO_NOT_OBSOLETE_OLD_SYNTAX
+        #if OBSOLETE_OLD_SYNTAX
         [Obsolete(Messages.NewSyntax_UseAll)]
         #endif
         public IOperable<T> WhereAll()

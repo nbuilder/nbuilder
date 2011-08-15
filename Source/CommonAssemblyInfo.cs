@@ -11,5 +11,5 @@ using System.Runtime.CompilerServices;
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: AssemblyVersionAttribute("3.0.0.0")]
+[assembly: AssemblyVersionAttribute("3.0.1.0")]
 [assembly: AssemblyConfigurationAttribute("Release")]
