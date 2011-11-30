@@ -16,6 +16,12 @@ namespace FizzWare.NBuilder.Tests.Integration
             mocks = new MockRepository();
         }
 
+        [TearDown]
+        public void Teardown()
+        {
+            BuilderSetup.ResetToDefaults();
+        }
+
         [Test]
         public void ShouldBeAbleToCreateAnObject()
         {
@@ -49,65 +55,44 @@ namespace FizzWare.NBuilder.Tests.Integration
         [Test]
         public void ShouldBeAbleToDisableAutoPropertyNaming()
         {
-            try
-            {
-                BuilderSetup.AutoNameProperties = false;
+            BuilderSetup.AutoNameProperties = false;
 
-                var obj = Builder<MyClass>.CreateNew().Build();
+            var obj = Builder<MyClass>.CreateNew().Build();
 
-                Assert.That(obj.Int, Is.EqualTo(0));
-                Assert.That(obj.Int, Is.EqualTo(0));
+            Assert.That(obj.Int, Is.EqualTo(0));
+            Assert.That(obj.Int, Is.EqualTo(0));
 
-                Assert.That(obj.StringOne, Is.Null);
-                Assert.That(obj.StringOne, Is.Null);
-            }
-            finally
-            {
-                BuilderSetup.AutoNameProperties = true;
-            }
+            Assert.That(obj.StringOne, Is.Null);
+            Assert.That(obj.StringOne, Is.Null);
         }
 
         [Test]
         public void ShouldBeAbleToSpecifyADefaultCustomPropertyNamer()
         {
-            try
-            {
-                BuilderSetup.SetDefaultPropertyNamer(new MockPropertyNamerTests());
-                Builder<MyClass>.CreateNew().Build();
-                Assert.That(MockPropertyNamerTests.SetValuesOf_obj_CallCount, Is.EqualTo(1));
-            }
-            finally
-            {
-                BuilderSetup.ResetToDefaults();
-            }
+            BuilderSetup.SetDefaultPropertyNamer(new MockPropertyNamerTests());
+            Builder<MyClass>.CreateNew().Build();
+            Assert.That(MockPropertyNamerTests.SetValuesOf_obj_CallCount, Is.EqualTo(1));
         }
 
         [Test]
         public void ShouldBeAbleToSpecifyACustomPropertyNamerForASpecificType()
         {
-            try
+            IPropertyNamer propertyNamer = mocks.DynamicMock<IPropertyNamer>();
+
+            BuilderSetup.SetPropertyNamerFor<MyClass>(propertyNamer);
+
+            using (mocks.Record())
             {
-                IPropertyNamer propertyNamer = mocks.DynamicMock<IPropertyNamer>();
-
-                BuilderSetup.SetPropertyNamerFor<MyClass>(propertyNamer);
-
-                using (mocks.Record())
-                {
-                    propertyNamer.Expect(x => x.SetValuesOf(Arg<MyClass>.Is.TypeOf));
-                }
-
-                using (mocks.Playback())
-                {
-                    Builder<MyClass>.CreateNew().Build();
-                    Builder<SimpleClass>.CreateNew().Build();
-                }
-
-                mocks.VerifyAll();
+                propertyNamer.Expect(x => x.SetValuesOf(Arg<MyClass>.Is.TypeOf));
             }
-            finally 
+
+            using (mocks.Playback())
             {
-                BuilderSetup.ResetToDefaults();
+                Builder<MyClass>.CreateNew().Build();
+                Builder<SimpleClass>.CreateNew().Build();
             }
+
+            mocks.VerifyAll();
         }
 
         [Test]
@@ -117,25 +102,17 @@ namespace FizzWare.NBuilder.Tests.Integration
             var obj = Builder<MyClass>.CreateNew().Build();
 
             Assert.That(obj.Int, Is.EqualTo(0));
-            BuilderSetup.AutoNameProperties = true;
         }
 
         [Test]
         public void ShouldBeAbleToDisableAutomaticPropertyNamingForASpecificFieldOfASpecificType()
         {
-            try
-            {
-                BuilderSetup.DisablePropertyNamingFor<MyClass, int>(x => x.Int);
+            BuilderSetup.DisablePropertyNamingFor<MyClass, int>(x => x.Int);
 
-                var obj = Builder<MyClass>.CreateNew().Build();
+            var obj = Builder<MyClass>.CreateNew().Build();
 
-                Assert.That(obj.Int, Is.EqualTo(0));
-                Assert.That(obj.Long, Is.EqualTo(1));
-            }
-            finally
-            {
-                BuilderSetup.ResetToDefaults();
-            }
+            Assert.That(obj.Int, Is.EqualTo(0));
+            Assert.That(obj.Long, Is.EqualTo(1));
         }
     }
 }
