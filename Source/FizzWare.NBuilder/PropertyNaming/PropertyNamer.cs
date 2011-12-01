@@ -23,7 +23,7 @@ namespace FizzWare.NBuilder.PropertyNaming
         {
             var type = typeof(T);
 
-            foreach (var propertyInfo in type.GetProperties(FLAGS))
+            foreach (var propertyInfo in type.GetProperties(FLAGS).Where(p => p.CanWrite))
                 SetMemberValue(propertyInfo, obj);
 
             foreach (var propertyInfo in type.GetFields().Where(f => !f.IsLiteral))

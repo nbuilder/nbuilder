@@ -71,6 +71,9 @@
     <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NSubstitute">
+      <HintPath>..\..\Lib\Test\NSubstitute\lib\NET40\NSubstitute.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework, Version=2.4.8.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Lib\Test\NUnit\nunit.framework.dll</HintPath>
@@ -93,6 +96,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Integration\IssueTests.cs" />
     <Compile Include="Integration\ListBuilderTests_WithAClassThatHasANullCharConstant.cs" />
     <Compile Include="Integration\ListBuilderNegativeTests.cs" />
     <Compile Include="Integration\MockPropertyNamerTests.cs" />
@@ -104,6 +108,7 @@
     <Compile Include="Integration\SingleObjectBuilderTests_WithAClassThatHasAParameterlessConstructor.cs" />
     <Compile Include="Integration\SingleObjectBuilderTests_WithAClassThatHasANonParameterlessConstructor.cs" />
     <Compile Include="Integration\SingleObjectBuilderTests_WithAStruct.cs" />
+    <Compile Include="TestClasses\MyClassWithGetOnlyPropertySpy.cs" />
     <Compile Include="TestClasses\MyClassWithPrivateParameterizedConstructor.cs" />
     <Compile Include="TestClasses\MyClassWithPrivateParameterlessConstructor.cs" />
     <Compile Include="TestClasses\MyAbstractClass.cs" />
@@ -122,12 +127,14 @@
     <Compile Include="Unit\ExtensibileRandomValuePropertyNamerTests.cs" />
     <Compile Include="Unit\PropertyNamerTests.cs" />
     <Compile Include="Unit\RandomValuePropertyNamerTestFixture.cs" />
+    <Compile Include="Unit\RandomValuePropertyNamerTests.cs" />
     <Compile Include="Unit\RandomValuePropertyNamerTests_Default.cs" />
     <Compile Include="Unit\RandomValuePropertyNamerTests_LoremIpsumStrings.cs" />
     <Compile Include="Unit\RandomValuePropertyNamerTests_PositiveOnly.cs" />
     <Compile Include="Unit\SequentialGeneratorDateTimeTests.cs" />
     <Compile Include="Unit\SequentialGeneratorMultiTypeTests.cs" />
     <Compile Include="Unit\SequentialGeneratorTests.cs" />
+    <Compile Include="Unit\SequentialPropertyNamerSequenceTests.cs" />
     <Compile Include="Unit\SimpleClassBuilder.cs" />
     <Compile Include="Unit\SingleObjectBuilderExtensionsTests.cs" />
     <Compile Include="Unit\PersistenceExtensionTests.cs" />

@@ -48,6 +48,15 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
         #endif
 
+        [Test]
+        public void SetValuesOf_GetOnlyProperty_PropertyIsNotSet()
+        {
+            var myClass = new MyClassWithGetOnlyPropertySpy();
+            propertyNamer.SetValuesOf(myClass);
+
+            Assert.That(myClass.IsSet, Is.False);
+        }
+
         private class PropertyNamerStub : PropertyNamer
         {
             public PropertyNamerStub(IReflectionUtil reflectionUtil) : base(reflectionUtil) { }

@@ -107,5 +107,11 @@ namespace FizzWare.NBuilder.Tests.Unit
         {
             Assert.That(theList[0].StringOne, Is.Not.Null);
         }
+
+        [Test]
+        public void ShouldNameEnumProperties()
+        {
+            Assert.That(theList[0].EnumProperty, Is.Not.Null);
+        }
     }
 }
