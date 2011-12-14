@@ -2,9 +2,9 @@
 
 <project name="FizzWare.NBuilder"
          default="build"
-         xmlns="http://nant.sf.net/nightly/2006-03-08-0.85/nant.xsd"
+         xmlns="http://nant.sf.net/nightly/2011-10-17-0.91/nant.xsd"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://nant.sf.net/nightly/2006-03-08-0.85/nant.xsd Tools\nant-0.85\schema\nant.xsd">
+         xsi:schemaLocation="http://nant.sf.net/nightly/2011-10-17-0.91/nant.xsd Tools\nant-0.91\schema\nant.xsd">
   
   <property name="teamcity_dotnet_use_msbuild_v4" value="true" />
   
@@ -14,52 +14,97 @@
   <property name="lib.dir" value="${root.dir}Lib" />
   <property name="tools.dir" value="${lib.dir}\Tools" />
   <property name="build.dir" value="${root.dir}Builds" />
-  <property name="artifacts.dir" value="${root.dir}..\Artifacts" />
+  <property name="build.verbosity" value="Minimal" /> <!-- valid values NotSet, Quiet, Minimal, Normal, Detailed, Diagnostic. -->
+  <property name="build.config" value="Release" /> <!-- valid values Debug, Release -->
+  <property name="assembly.dir" value="." overwrite="false"/>
 
+  <!-- External Tools -->
   <property name="ncover.exe" value="${tools.dir}\NCover-1.5.8\NCover.Console.exe" />
   <property name="nunit.exe" value="${lib.dir}\Test\NUnit\nunit-console.exe" />
   
   <property name="build.label" value="${project.name}-1.0.0.0"></property>
   <!-- Set the build label to the cruise control.net label, if it exists -->
   <property name="build.label" value="${CCNetLabel}" if="${property::exists('CCNetLabel')}" />
+  
+  <property name="prefix.NB35" value="NET35" /> <!-- NBuilder for .NET 3.5 folder prefix -->
+  <property name="prefix.NB40" value="NET40" /> 	<!-- NBuilder for .NET 4.0 folder prefix -->
+  <property name="prefix.NBSL3" value="SL3" />  	<!-- NBuilder for Silverlight 3 folder prefix -->
+  <property name="prefix.NBSL4" value="SL4" />  <!-- NBuilder for Silverlight 4 folder prefix -->  
+  
+  <property name="compile.output.NB35.dir" value="${build.dir}\output\${prefix.NB35}" />
+  <property name="compile.output.NB40.dir" value="${build.dir}\output\${prefix.NB40}" />
+  <property name="compile.output.NBSL3.dir" value="${build.dir}\output\${prefix.NBSL3}" />
+  <property name="compile.output.NBSL4.dir" value="${build.dir}\output\${prefix.NBSL4}" />
 
   <!-- Strip off the project name -->
   <property name="build.label" value="${string::replace(build.label, project.name + '-', '')}" />
   <property name="current.build.dir" value="${build.dir}\${project.name} Build ${build.label}" />
-  <!-- eg: "Builds\ProjectName - Build 1.0.0.23\ProjectName.dll" -->
-  <property name="path.to.published.dll" value="${current.build.dir}\${project.name}.dll" />
-
+  
+  <!-- eg: "Builds\ProjectName - Build 1.0.0.23\NET35\ProjectName.dll" -->
+  <property name="path.to.published.NB35.dll" value="${current.build.dir}\${prefix.NB35}\${project.name}.dll" />
+  <property name="path.to.published.NB40.dll" value="${current.build.dir}\${prefix.NB40}\${project.name}.dll" />
+  <property name="path.to.published.NBSL3.dll" value="${current.build.dir}\${prefix.NBSL3}\${project.name}-Silverlight.dll" />
+  <property name="path.to.published.NBSL4.dll" value="${current.build.dir}\${prefix.NBSL4}\${project.name}-Silverlight.dll" />
+  
   <!-- PROJECT SPECIFIC -->
-  <property name="solution.filename" value="${source.dir}\NBuilder.sln" />
-  <property name="path.to.dll" value="${source.dir}\FizzWare.NBuilder\bin\Release\FizzWare.NBuilder.dll" />
+  <property name="path.to.NB35.dll" value="${compile.output.NB35.dir}\${project.name}.dll" />
+  <property name="path.to.NB40.dll" value="${compile.output.NB40.dir}\${project.name}.dll" />
+  <property name="path.to.NBSL3.dll" value="${compile.output.NBSL3.dir}\${project.name}-Silverlight.dll" />
+  <property name="path.to.NBSL4.dll" value="${compile.output.NBSL4.dir}\${project.name}-Silverlight.dll" />
+  
   <property name="tests.dll" value="${source.dir}\FizzWare.NBuilder.Tests\bin\Debug\FizzWare.NBuilder.Tests.dll" />
-
+  
   <!-- TASKS -->
-  <loadtasks assembly="${tools.dir}/nantcontrib-0.85/bin/NAnt.Contrib.Tasks.dll" />
+  <loadtasks assembly="${tools.dir}/nantcontrib-0.91/bin/NAnt.Contrib.Tasks.dll" />
   <loadtasks assembly="${tools.dir}/NCoverExplorer/NCoverExplorer.NAntTasks.dll" />
 
   <echo>Build label is: ${build.label}</echo>
 
   <!-- TARGETS -->
-  <!--target name="build" depends="clean, create.output.directory, set.assemblyinfo, compile.release, publish.dll" /-->
-  <target name="build" depends="compile.release" />
+  <target name="build" depends="buildNet35, buildNet40, buildSL3, buildSL4" />  
+  <target name="buildNet35" depends="clean, create.output.directory, set.assemblyinfo, compile.NB35, publish.NB35.dll" />
+  <target name="buildNet40" depends="clean, create.output.directory, set.assemblyinfo, compile.NB40, publish.NB40.dll" />
+  <target name="buildSL3" depends="clean, create.output.directory, set.assemblyinfo, compile.NBSL3, publish.NBSL3.dll" />
+  <target name="buildSL4" depends="clean, create.output.directory, set.assemblyinfo, compile.NBSL4, publish.NBSL4.dll" />
 
-  <target name="clean">
-    <delete>
-      <fileset basedir="${source.dir}\">
-        <include name="/**/bin/**" />
-        <include name="/**/obj/**" />
-      </fileset>
-    </delete>
+  <target name="clean" description="Delete build artifacts">
+    <delete dir="${build.dir}" if="${directory::exists(build.dir)}"/>
   </target>
-
-  <target name="compile.release">
   
-    <msbuild project="${source.dir}\NBuilder.sln">
-      <arg value="/property:Configuration=release" />                                  
-      <arg value="/t:Build" />
+  <target name="compile.NB35" description="Compiles NBuilder for .NET 3.5 into the build directory">
+    <msbuild project="${source.dir}\NBuilder-NET3.5.sln" verbosity="${build.verbosity}">
+      <property name="Configuration" value="${build.config}" />
+      <property name="OutputPath" value="${compile.output.NB35.dir}" />
+      <property name="ReferencePath" value="${assembly.dir}" />
+      <property name="NoWarn" value="" />
     </msbuild>
-    
+  </target>
+  
+  <target name="compile.NB40" description="Compiles NBuilder for .NET 4.0 into the build directory">
+    <msbuild project="${source.dir}\NBuilder-NET4.0.sln" verbosity="${build.verbosity}">
+      <property name="Configuration" value="${build.config}" />
+      <property name="OutputPath" value="${compile.output.NB40.dir}" />
+      <property name="ReferencePath" value="${assembly.dir}" />
+      <property name="NoWarn" value="" />
+    </msbuild>
+  </target>
+  
+  <target name="compile.NBSL3" description="Compiles NBuilder for Silverlight 3 into the build directory">
+    <msbuild project="${source.dir}\NBuilder-SL3.sln" verbosity="${build.verbosity}">
+      <property name="Configuration" value="${build.config}" />
+      <property name="OutputPath" value="${compile.output.NBSL3.dir}" />
+      <property name="ReferencePath" value="${assembly.dir}" />
+      <property name="NoWarn" value="" />
+    </msbuild>
+  </target>
+  
+  <target name="compile.NBSL4" description="Compiles NBuilder for Silverlight 4 into the build directory">
+    <msbuild project="${source.dir}\NBuilder-SL4.sln" verbosity="${build.verbosity}">
+      <property name="Configuration" value="${build.config}" />
+      <property name="OutputPath" value="${compile.output.NBSL4.dir}" />
+      <property name="ReferencePath" value="${assembly.dir}" />
+      <property name="NoWarn" value="" />
+    </msbuild>
   </target>
 
   <target name="generic.msbuild">
@@ -104,13 +149,22 @@
     <mkdir dir="${current.build.dir}" if="${not directory::exists(current.build.dir)}" failonerror="true"/>
   </target>
 
-  <target name="publish.dll">
-
-    <copy file="${path.to.dll}"
-        tofile="${path.to.published.dll}"></copy>
-    
+  <target name="publish.NB35.dll">
+    <copy file="${path.to.NB35.dll}" tofile="${path.to.published.NB35.dll}"></copy>    
   </target>
-
+  
+  <target name="publish.NB40.dll">
+    <copy file="${path.to.NB40.dll}" tofile="${path.to.published.NB40.dll}"></copy>    
+  </target>
+  
+  <target name="publish.NBSL3.dll">
+    <copy file="${path.to.NBSL3.dll}" tofile="${path.to.published.NBSL3.dll}"></copy>    
+  </target>
+  
+  <target name="publish.NBSL4.dll">
+    <copy file="${path.to.NBSL4.dll}" tofile="${path.to.published.NBSL4.dll}"></copy>    
+  </target>
+  
   <target name="set.assemblyinfo">
     <attrib file="${source.dir}\CommonAssemblyInfo.cs" readonly="false" />
 
@@ -122,7 +176,7 @@
       </imports>
       <attributes>
         <attribute type="AssemblyVersionAttribute" value="${build.label}"/>
-        <attribute type="AssemblyConfigurationAttribute" value="Release" />
+        <attribute type="AssemblyConfigurationAttribute" value="${build.config}" />
       </attributes>
     </asminfo>
   </target>

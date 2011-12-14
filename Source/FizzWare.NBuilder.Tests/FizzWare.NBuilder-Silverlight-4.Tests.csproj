@@ -46,21 +46,21 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Silverlight.Testing, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\Lib\Silverlight\NUnit.Silverlight.Bin\Silverlight4-NUnit2.5.8-Apr2010\Microsoft.Silverlight.Testing.dll</HintPath>
+    <Reference Include="Microsoft.Silverlight.Testing">
+      <HintPath>..\..\Lib\Silverlight\Silverlight4-NUnit2.5.8-Apr2010\Microsoft.Silverlight.Testing.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTesting.Silverlight, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\Lib\Silverlight\NUnit.Silverlight.Bin\Silverlight4-NUnit2.5.8-Apr2010\Microsoft.VisualStudio.QualityTools.UnitTesting.Silverlight.dll</HintPath>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTesting.Silverlight">
+      <HintPath>..\..\Lib\Silverlight\Silverlight4-NUnit2.5.8-Apr2010\Microsoft.VisualStudio.QualityTools.UnitTesting.Silverlight.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib" />
-    <Reference Include="NUnit.Silverlight.Compatibility, Version=2010.11.1.0, Culture=neutral, PublicKeyToken=fe50801526d50c78, processorArchitecture=MSIL">
-      <HintPath>..\..\Lib\Silverlight\NUnit.Silverlight.Bin\Silverlight4-NUnit2.5.8-Apr2010\NUnit.Silverlight.Compatibility.dll</HintPath>
+    <Reference Include="NUnit.Silverlight.Compatibility">
+      <HintPath>..\..\Lib\Silverlight\Silverlight4-NUnit2.5.8-Apr2010\NUnit.Silverlight.Compatibility.dll</HintPath>
     </Reference>
-    <Reference Include="NUnit.Silverlight.Framework, Version=2010.11.1.0, Culture=neutral, PublicKeyToken=fe50801526d50c78, processorArchitecture=MSIL">
-      <HintPath>..\..\Lib\Silverlight\NUnit.Silverlight.Bin\Silverlight4-NUnit2.5.8-Apr2010\NUnit.Silverlight.Framework.dll</HintPath>
+    <Reference Include="NUnit.Silverlight.Framework">
+      <HintPath>..\..\Lib\Silverlight\Silverlight4-NUnit2.5.8-Apr2010\NUnit.Silverlight.Framework.dll</HintPath>
     </Reference>
-    <Reference Include="NUnit.Silverlight.Metadata, Version=2010.11.1.0, Culture=neutral, PublicKeyToken=fe50801526d50c78, processorArchitecture=MSIL">
-      <HintPath>..\..\Lib\Silverlight\NUnit.Silverlight.Bin\Silverlight4-NUnit2.5.8-Apr2010\NUnit.Silverlight.Metadata.dll</HintPath>
+    <Reference Include="NUnit.Silverlight.Metadata">
+      <HintPath>..\..\Lib\Silverlight\Silverlight4-NUnit2.5.8-Apr2010\NUnit.Silverlight.Metadata.dll</HintPath>
     </Reference>
     <Reference Include="Rhino.Mocks 3.5.Silverlight">
       <HintPath>..\..\Lib\Silverlight\Rhino.Mocks 3.5.Silverlight.dll</HintPath>
@@ -94,6 +94,7 @@
     <Compile Include="TestClasses\MyClassInheritor.cs" />
     <Compile Include="TestClasses\MyClassWithCharConst.cs" />
     <Compile Include="TestClasses\MyClassWithConstructor.cs" />
+    <Compile Include="TestClasses\MyClassWithGetOnlyPropertySpy.cs" />
     <Compile Include="TestClasses\MyClassWithOptionalConstructor.cs" />
     <Compile Include="TestClasses\MyClassWithPrivateParameterizedConstructor.cs" />
     <Compile Include="TestClasses\MyClassWithPrivateParameterlessConstructor.cs" />

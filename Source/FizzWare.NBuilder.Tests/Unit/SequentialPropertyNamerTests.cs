@@ -5,7 +5,7 @@ using FizzWare.NBuilder.Implementation;
 using FizzWare.NBuilder.PropertyNaming;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NUnit.Framework;
-using NSubstitute;
+using Rhino.Mocks;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
@@ -18,7 +18,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         [SetUp]
         public void SetUp()
         {
-            reflectionUtil = Substitute.For<IReflectionUtil>();
+            reflectionUtil = MockRepository.GenerateStub<IReflectionUtil>();
             propertyNamer = new SequentialPropertyNamer(reflectionUtil);
         }
 
