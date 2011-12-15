@@ -182,6 +182,7 @@
   </target>
   
   <!-- Team City Unit Tests -->
+  <property name="teamcity.dotnet.nant.replaceTasks" value="false" />
   <property name="teamcity.dotnet.nant.nunit2.platformVersion" value="v4.0" />
   <nunit2>
     <formatter type="Plain" />
