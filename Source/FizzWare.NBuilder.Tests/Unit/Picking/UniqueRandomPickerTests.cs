@@ -59,7 +59,7 @@ namespace FizzWare.NBuilder.Tests.Unit.Picking
                 uniqueRandomGenerator.Expect(x => x.Reset());
                 list.Expect(x => x.Count).Return(capacity);
                 constraint.Expect(x => x.GetEnd()).Return(end);
-                uniqueRandomGenerator.Expect(x => x.Next(0, capacity - 1)).Return(randomIndex).Repeat.Times(end);
+                uniqueRandomGenerator.Expect(x => x.Next(0, capacity)).Return(randomIndex).Repeat.Times(end);
                 list.Expect(x => x[randomIndex]).Return(new MyClass());
             }
 
