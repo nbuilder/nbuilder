@@ -12,6 +12,20 @@ namespace FizzWare.NBuilder.Tests.Unit.Picking
     [TestFixture]
     public class UniqueRandomPickerTests
     {
+        [Test]
+        public void UniqueRandomPickerShouldBeAbleToPickEntireList()
+        {
+            var testInput = new[] { 1, 2, 3, 4 };
+
+            var results = Pick<int>.UniqueRandomList(testInput.Length).From(testInput);
+
+            Assert.That(results.Count, Is.EqualTo(testInput.Length));
+        }
+    }
+
+    [TestFixture]
+    public class UniqueRandomPickerMockedTests
+    {
         private MockRepository mocks;
         private IConstraint constraint;
         private IUniqueRandomGenerator uniqueRandomGenerator;
@@ -36,7 +50,6 @@ namespace FizzWare.NBuilder.Tests.Unit.Picking
             var list = mocks.DynamicMock<IList<MyClass>>();
             var picker = new UniqueRandomPicker<MyClass>(constraint, uniqueRandomGenerator);
             
-
             using (mocks.Record())
             {
                 var capacity = 10;
@@ -46,21 +59,11 @@ namespace FizzWare.NBuilder.Tests.Unit.Picking
                 uniqueRandomGenerator.Expect(x => x.Reset());
                 list.Expect(x => x.Count).Return(capacity);
                 constraint.Expect(x => x.GetEnd()).Return(end);
-                uniqueRandomGenerator.Expect(x => x.Next(0, capacity - 1)).Return(randomIndex).Repeat.Times(end);
+                uniqueRandomGenerator.Expect(x => x.Next(0, capacity)).Return(randomIndex).Repeat.Times(end);
                 list.Expect(x => x[randomIndex]).Return(new MyClass());
             }
 
             picker.From(list);
-        }
-
-        [Test]
-        public void UniqueRandomPickerShouldBeAbleToPickEntireList()
-        {
-            var testInput = new[] {1, 2, 3, 4};
-
-            var results = Pick<int>.UniqueRandomList(testInput.Length).From(testInput);
-
-            Assert.That(results.Count, Is.EqualTo(testInput.Length));
         }
     }
 }
