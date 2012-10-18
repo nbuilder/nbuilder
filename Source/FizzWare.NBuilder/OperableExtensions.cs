@@ -18,6 +18,17 @@ namespace FizzWare.NBuilder
             return (IOperable<T>)declaration;
         }
 
+        /// <summary>
+        /// Sets the value of one of the type's public properties and provides the index of the object being set
+        /// </summary>
+        public static IOperable<T> With<T>(this IOperable<T> operable, Action<T, int> func)
+        {
+            var declaration = GetDeclaration(operable);
+
+            declaration.ObjectBuilder.With(func);
+            return (IOperable<T>)declaration;
+        }
+
         #if OBSOLETE_OLD_SYNTAX
         [Obsolete(Messages.NewSyntax_UseWith)]
         #endif
@@ -52,6 +63,14 @@ namespace FizzWare.NBuilder
         /// Sets the value of one of the type's public properties
         /// </summary>
         public static IOperable<T> And<T, TFunc>(this IOperable<T> operable, Func<T, TFunc> func)
+        {
+            return With(operable, func);
+        }
+
+        /// <summary>
+        /// Sets the value of one of the type's public properties and provides the index of the object being set
+        /// </summary>
+        public static IOperable<T> And<T>(this IOperable<T> operable, Action<T, int> func)
         {
             return With(operable, func);
         }

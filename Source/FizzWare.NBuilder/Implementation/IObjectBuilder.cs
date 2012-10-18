@@ -19,10 +19,12 @@ namespace FizzWare.NBuilder.Implementation
         IObjectBuilder<T> WithConstructorArgs(params object[] args);
 
         IObjectBuilder<T> With<TFunc>(Func<T, TFunc> func);
+        IObjectBuilder<T> With(Action<T, int> action);
         IObjectBuilder<T> Do(Action<T> action);
         IObjectBuilder<T> DoMultiple<TAction>(Action<T, TAction> action, IList<TAction> list);
         IObjectBuilder<T> WithPropertyNamer(IPropertyNamer propertyNamer);
         void CallFunctions(T obj);
+        void CallFunctions(T obj, int objIndex);
         T Construct();
         T Name(T obj);
     }
