@@ -75,7 +75,7 @@ namespace FizzWare.NBuilder.Tests.Unit
                 masterList.Expect(x => x[4]).Return(null);
                 masterList.Expect(x => x[5]).Return(null);
 
-                objectBuilder.Expect(x => x.CallFunctions(null)).IgnoreArguments().Repeat.Times(2);
+                objectBuilder.Expect(x => x.CallFunctions(null, 0)).IgnoreArguments().Repeat.Times(2);
             }
 
             using (mocks.Playback())

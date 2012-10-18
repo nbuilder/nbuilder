@@ -89,7 +89,7 @@ namespace FizzWare.NBuilder.Implementation
             for (int i = 0; i < MasterListAffectedIndexes.Count; i++)
             {
                 int index = MasterListAffectedIndexes[i];
-                objectBuilder.CallFunctions(masterList[index]);
+                objectBuilder.CallFunctions(masterList[index], i);
             }
         }
 

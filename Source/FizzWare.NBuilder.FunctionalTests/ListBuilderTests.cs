@@ -330,6 +330,35 @@ namespace FizzWare.NBuilder.FunctionalTests
         }
 
         [Test]
+        public void UsingWith_WithAnIndex()
+        {
+            var invoices = Builder<Product>
+                .CreateListOfSize(2)
+                .TheFirst(2)
+                    .With((p, idx) => p.Description = "Description" + (idx + 5))
+                .Build();
+
+            Assert.That(invoices[0].Description, Is.EqualTo("Description5"));
+            Assert.That(invoices[1].Description, Is.EqualTo("Description6"));
+        }
+
+        [Test]
+        public void UsingAndWithAnIndex()
+        {
+            var invoices = Builder<Product>
+                .CreateListOfSize(2)
+                .TheFirst(2)
+                    .With(p => p.Title = "Title")
+                    .And((p, idx) => p.Description = "Description" + (idx + 5))
+                .Build();
+
+            Assert.That(invoices[0].Title, Is.EqualTo("Title"));
+            Assert.That(invoices[0].Description, Is.EqualTo("Description5"));
+            Assert.That(invoices[1].Title, Is.EqualTo("Title"));
+            Assert.That(invoices[1].Description, Is.EqualTo("Description6"));
+        }
+
+        [Test]
         public void UsingAndWithImmutableClassProperties()
         {
             var invoices = Builder<Invoice>
