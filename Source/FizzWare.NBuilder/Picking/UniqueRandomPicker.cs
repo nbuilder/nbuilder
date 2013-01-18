@@ -25,7 +25,7 @@ namespace FizzWare.NBuilder
 
             for (int i = 0; i < end; i++)
             {
-                int index = uniqueRandomGenerator.Next(0, capacity - 1);
+                int index = uniqueRandomGenerator.Next(0, capacity);
 
                 listToReturn.Add(listToPickFrom[index]);
             }
