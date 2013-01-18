@@ -51,6 +51,12 @@ namespace FizzWare.NBuilder.Implementation
             return this;
         }
 
+        public IObjectBuilder<T> With(Action<T, int> func)
+        {
+            functions.Add(func);
+            return this;
+        }
+
         public IObjectBuilder<T> Do(Action<T> action)
         {
             functions.Add(action);
@@ -80,10 +86,24 @@ namespace FizzWare.NBuilder.Implementation
 
         public void CallFunctions(T obj)
         {
+            CallFunctions(obj, 0);
+        }
+
+        public void CallFunctions(T obj, int objIndex)
+        {
             for (int i = 0; i < functions.Count; i++)
             {
                 var del = functions[i];
-                del.DynamicInvoke(obj);
+                int parameterCount = del.Method.GetParameters().Count();
+                switch (parameterCount)
+                {
+                    case 1:
+                        del.DynamicInvoke(obj);
+                        break;
+                    case 2:
+                        del.DynamicInvoke(new object[] { obj, objIndex });
+                        break;
+                }
             }
 
             for (int i = 0; i < multiFunctions.Count; i++)

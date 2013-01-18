@@ -168,6 +168,25 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
 
         [Test]
+        public void ShouldBeAbleToUseWith_WithAnIndex()
+        {
+            using (mocks.Record())
+            {
+
+            }
+
+            using (mocks.Playback())
+            {
+                var myClass = new MyClass();
+
+                builder.With((x, idx) => x.StringOne = "String" + (idx + 5));
+                builder.CallFunctions(myClass, 9);
+
+                Assert.That(myClass.StringOne, Is.EqualTo("String14"));
+            }
+        }
+
+        [Test]
         public void ShouldBeAbleToUseDo()
         {
             var myClass = MockRepository.GenerateMock<MyClass>();

@@ -41,6 +41,19 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
 
         [Test]
+        public void ShouldBeAbleToUseWith_WithAnIndex()
+        {
+            Action<MyClass, int> funcWithIndex = (x, idx) => x.StringOne = "String" + (idx + 5);
+            using (mocks.Record())
+            {
+                operable.Expect(x => x.ObjectBuilder).Return(new ObjectBuilder<MyClass>(null));
+                objectBuilder.Expect(x => x.With(funcWithIndex));
+            }
+
+            OperableExtensions.With((IOperable<MyClass>)operable, funcWithIndex);
+        }
+
+        [Test]
         public void ShouldBeAbleToUseHas()
         {
             using (mocks.Record())
@@ -62,6 +75,19 @@ namespace FizzWare.NBuilder.Tests.Unit
             }
 
             OperableExtensions.And((IOperable<MyClass>)operable, func);
+        }
+
+        [Test]
+        public void ShouldBeAbleToUseAndWithAnIndex()
+        {
+            Action<MyClass, int> funcWithIndex = (x, idx) => x.StringOne = "String" + (idx + 5);
+            using (mocks.Record())
+            {
+                operable.Expect(x => x.ObjectBuilder).Return(new ObjectBuilder<MyClass>(null));
+                objectBuilder.Expect(x => x.With(funcWithIndex));
+            }
+
+            OperableExtensions.And((IOperable<MyClass>)operable, funcWithIndex);
         }
 
         [Test]
