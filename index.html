@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Nbuilder : Rapid generation of test objects in .NET" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Nbuilder</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/garethdown44/nbuilder">View on GitHub</a>
+
+          <h1 id="project_title">Nbuilder</h1>
+          <h2 id="project_tagline">Rapid generation of test objects in .NET</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/garethdown44/nbuilder/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/garethdown44/nbuilder/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h3>What is it?</h3>
+
+<p>Through a fluent, extensible interface, NBuilder allows you to rapidly create test data, automatically assigning values to properties and public fields that are of type of the built in .NET data types (e.g. ints and strings). NBuilder allows you to override for properties you are interested in using lambda expressions.</p>
+
+<h3>Some quick examples</h3>
+
+<pre><code>var products = Builder&lt;Product&gt;.CreateListOfSize(10)
+                               .TheFirst(2)
+                                   .With(x =&gt; x.Title = "special title")
+                               .Build();
+</code></pre>
+
+<h2>Would give you something like this:</h2>
+
+<p><img src="http://nbuilder.org/Content/images/example-1-output.gif" alt="Example output 1"></p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Nbuilder maintained by <a href="https://github.com/garethdown44">garethdown44</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
