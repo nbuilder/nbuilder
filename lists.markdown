@@ -1,91 +1,132 @@
 ---
+layout: normal
 title: NBuilder: Building Lists
 ---
 
-# Building Single Objects
+# Lists
 
-## Creating a single object
+One of NBuilder's most useful features is its ability to create lists.
 
-This will build an object with default values for all the properties that NBuilder is able to set.
+NBuilder has two different property namers, a sequential namer and a random namer. The default namer is the sequential one. This is probably the most useful for most scenarios because you know exactly what it is going to produce.
 
-```
-var product = Builder<Product>.CreateNew().Build();
-```
+It always starts from one and gives ascending values to the properties for each object it builds.
 
-## Setting the value of a property
-
-This will assign default values to everything apart from the description to which it will assign "A custom description here"
+## Creating a basic list
 
 ```
-var product = Builder<Product>
-    .CreateNew()
-        .With(x => x.Description = "A custom description here")
+var products = Builder<Product>.CreateListOfSize(10).Build();
+```
+
+NBuilder will name all public properties and fields but it won't touch private, protected or internal ones.
+
+It will create a list whose properties are named like this:
+
+## Using All()
+
+You can specify that different parts of the list have certain property values. These are called 'declarations'. The most basic declaration is All(). When you declare a set of objects, you always follow it with what you want to do to that set of objects. In this case With() is being used.
+
+```
+var products = Builder<Product>
+    .CreateListOfSize(10)
+    .All()
+        .With(x => x.Title = "A special title")
     .Build();
 ```
 
-## Setting more than one property
+One common use for All() is if you want to insert a load of objects into the database. Most ORMs will treat an object with an ID of 0 as a new object so to do this you would say
+`All().With(x => x.Id = 0)`
 
-You can set any number of properties on the object. And() internally is in fact exactly the same as With(). It is provided as an option for improved readability.
+## TheFirst(), TheLast()
+
+There are some methods provided to quickly declare the first or last x objects.
 
 ```
-var product = Builder<Product>
-    .CreateNew()
-        .With(x => x.Title = "Special title")
-        .And(x => x.Description = "Special description")
-        .And(x => x.Id = 2)
+var products = Builder<Product>
+    .CreateListOfSize(10)
+    .TheFirst(2)
+        .With(x => x.Title = "A special title")
     .Build();
 ```
 
-## Supplying constructor parameters
+All these methods (apart from All()) are in fact extension methods. You can add your own methods to NBuilder, simply by writing an extension method.
 
-Given you have a type that has a constructor:
+## TheNext(), ThePrevious()
 
-```
-public BasketItem(ShoppingBasket basket, Product product, int quantity)
-    : this (basket)
-{
-    Product = product;
-    Quantity = quantity;
-}
-```
-
-You can supply constructor args using WithConstructor() method:
+When you use TheFirst() you can follow it with multiple calls to TheNext()
 
 ```
-var basketItem = Builder<BasketItem>
-    .CreateNew()
-        .WithConstructor(() => new BasketItem(basket, product, quantity))
+var list = Builder<Product>
+    .CreateListOfSize(30)
+    .TheFirst(10)
+        .With(x => x.Title = "Special Title 1")
+    .TheNext(10)
+        .With(x => x.Title = "Special Title 2")
+    .TheNext(10)
+        .With(x => x.Title = "Special Title 3")
+    .Build();    
+```
+
+As you might expect there's also a TheLast() and ThePrevious() as well
+
+```
+var list = Builder<Product>
+    .CreateListOfSize(30)
+    .TheLast(10)
+        .With(x => x.Title = "Special Title 1")
+    .ThePrevious(10)
+        .With(x => x.Title = "Special Title 2")
+    .Build();
+```
+	
+## Section(x, y)
+
+You can use Section() to apply rules to segments of the list
+
+```
+var list = Builder<Product>
+    .CreateListOfSize(30)
+    .All()
+        .With(x => x.Title = "Special Title 1")
+    .Section(12, 14)
+        .With(x => x.Title = "Special Title 2")
+    .Section(16, 18)
+        .With(x => x.Title = "Special Title 3")
     .Build();
 ```
 
-## Calling a method on an object
-You can use Do() to call a method on an object
+## Calling a method on the objects of a declaration
+
+If you want to call a method on a set of objects, just use the With() method
 
 ```
-var category = Builder<Category>
-    .CreateNew()
-        .Do(x => x.AddChild(child))
-    .Build();
-```
-## Do(), And()
-
-```
-var category = Builder<Category>
-    .CreateNew()
-        .Do(x => x.AddChild(child))
-        .And(x => x.AddChild(anotherChild))
-    .Build();
-```
-
-## Using "multi functions"
-
-If you want to call the same method for each item of a list, you can use `DoForAll()`
-
-```
-var categories = Builder<Category>.CreateListOfSize(5).Build();
+var children = Builder<Category>.CreateListOfSize(3).Build();
  
-var product = Builder<Product>
-    .CreateNew()
-        .DoForAll((prod, cat) => prod.AddToCategory(cat), categories)
+var list = Builder<Category>
+    .CreateListOfSize(10)
+    .TheFirst(2)
+        .Do(x => x.AddChild(children[0]))
+        .And(x => x.AddChild(children[1]))
+    .TheNext(2)
+        .Do(x => x.AddChild(children[2]))
     .Build();
+```
+	
+## Picking random items
+
+If you want to pick an item or some items at random, and you don't care which they are, you can use the Pick class.
+
+```
+var children = Builder<Category>.CreateListOfSize(10).Build();
+ 
+var categories = Builder<Category>
+    .CreateListOfSize(10)
+    .TheFirst(2)
+        .Do(x => x.AddChild(Pick<Category>.RandomItemFrom(children)))
+    .Build();
+```
+
+You can also pick a unique random list using the Pick class
+
+```
+Pick<Product>.UniqueRandomList(With.Between(5).And(10).Elements).From(products);
 ```
