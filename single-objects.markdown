@@ -22,12 +22,12 @@ This will assign default values to everything apart from the description to whic
 
 
 <pre class="brush: csharp">
-```
+
 var product = Builder<Product>
     .CreateNew()
         .With(x => x.Description = "A custom description here")
     .Build();
-```
+
 </pre>
 
 ## Setting more than one property
@@ -35,12 +35,14 @@ var product = Builder<Product>
 You can set any number of properties on the object. And() internally is in fact exactly the same as With(). It is provided as an option for improved readability.
 
 ```
+
 var product = Builder<Product>
     .CreateNew()
         .With(x => x.Title = "Special title")
         .And(x => x.Description = "Special description")
         .And(x => x.Id = 2)
     .Build();
+	
 ```
 
 ## Supplying constructor parameters
