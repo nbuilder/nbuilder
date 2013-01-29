@@ -20,12 +20,15 @@ var product = Builder&lt;Product&gt;.CreateNew().Build();
 
 This will assign default values to everything apart from the description to which it will assign "A custom description here"
 
+
+<pre class="brush: csharp">
 ```
 var product = Builder<Product>
     .CreateNew()
         .With(x => x.Description = "A custom description here")
     .Build();
 ```
+</pre>
 
 ## Setting more than one property
 
