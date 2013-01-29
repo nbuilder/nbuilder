@@ -1,4 +1,5 @@
 ---
+layout: normal
 title: Documentation
 ---
 
