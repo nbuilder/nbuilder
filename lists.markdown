@@ -1,6 +1,6 @@
 ---
 layout: normal
-title: NBuilder: Building Lists
+title: Lists
 ---
 
 # Lists

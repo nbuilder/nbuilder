@@ -1,6 +1,6 @@
 ---
 layout: normal
-title: NBuilder: Building Single Objects
+title: NBuilder - building single objects
 ---
 
 # Building Single Objects
