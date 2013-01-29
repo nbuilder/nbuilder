@@ -9,9 +9,12 @@ title: NBuilder - building single objects
 
 This will build an object with default values for all the properties that NBuilder is able to set.
 
-```
-var product = Builder<Product>.CreateNew().Build();
-```
+<pre class="brush: csharp">
+    
+var product = Builder&lt;Product&gt;.CreateNew().Build();
+
+</pre>
+
 
 ## Setting the value of a property
 
