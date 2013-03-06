@@ -195,5 +195,10 @@ namespace FizzWare.NBuilder.PropertyNaming
         {
             return generator.Guid();
         }
+
+        protected override TimeSpan GetTimeSpan(MemberInfo memberInfo)
+        {
+            return new TimeSpan(generator.Long());
+        }
     }
 }

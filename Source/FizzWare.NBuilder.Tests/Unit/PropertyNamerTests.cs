@@ -149,6 +149,11 @@ namespace FizzWare.NBuilder.Tests.Unit
             {
                 return default(Guid);
             }
+
+            protected override TimeSpan GetTimeSpan(System.Reflection.MemberInfo memberInfo)
+            {
+                return default(TimeSpan);
+            }
         }
     }
 

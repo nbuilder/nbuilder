@@ -169,6 +169,11 @@ namespace FizzWare.NBuilder.PropertyNaming
             return new Guid(bytes);
         }
 
+        protected override TimeSpan GetTimeSpan(MemberInfo memberInfo)
+        {
+            return new TimeSpan(_sequenceNumber);
+        }
+
         // TODO: Implement this
         //public static void AddHandlerFor<T>(Func<MemberInfo, int, T> func)
         //{
