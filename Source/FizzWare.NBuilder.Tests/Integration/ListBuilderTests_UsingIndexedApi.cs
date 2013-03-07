@@ -28,6 +28,25 @@ namespace FizzWare.NBuilder.Tests.Integration
         }
 
         [Test]
+        public void And_WithIndex()
+        {
+            var list =
+                Builder<MyClassWithConstructor>
+                    .CreateListOfSize(10)
+                    .All()
+                    .Do((row, index) => row.Int = index * 2)
+                    .And((row, index) => row.Int = index * 3)
+                    .WithConstructor(() => new MyClassWithConstructor(1, 2f))
+                    .Build();
+
+            for (int i = 0; i < 10; i++)
+            {
+                var row = list[i];
+                Assert.That(row.Int, Is.EqualTo(i * 3));
+            }
+        }
+
+        [Test]
         public void WithConstructor_WithIndex()
         {
             var list =
