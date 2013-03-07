@@ -45,7 +45,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             }
 
             using (mocks.Playback())
-                builder.Construct();
+                builder.Construct(index:1);
         }
 
         [Test]
@@ -65,7 +65,7 @@ namespace FizzWare.NBuilder.Tests.Unit
                 #pragma warning disable 0618
                 myClassWithConstructorBuilder
                         .WithConstructorArgs(arg1, arg2)
-                        .Construct();
+                        .Construct(1);
                 #pragma warning restore 0618
             }
         }
@@ -85,7 +85,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             {
                 myClassWithConstructorBuilder
                         .WithConstructor( () => new MyClassWithConstructor(arg1) )
-                        .Construct();
+                        .Construct(Arg<int>.Is.Anything);
             }
         }
 
@@ -105,7 +105,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             {
                 myClassWithConstructorBuilder
                         .WithConstructor(() => new MyClassWithConstructor(arg1, arg2))
-                        .Construct();
+                        .Construct(1);
             }
         }
 
@@ -143,7 +143,7 @@ namespace FizzWare.NBuilder.Tests.Unit
                 #pragma warning disable 0618 // (prevent warning for using obsolete method)
                 myClassWithOptionalConstructorBuilder
                         .WithConstructorArgs(arg1, arg2)
-                        .Construct();
+                        .Construct(1);
                 #pragma warning restore 0618
             }
         }

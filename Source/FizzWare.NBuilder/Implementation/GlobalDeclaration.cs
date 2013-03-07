@@ -14,7 +14,7 @@ namespace FizzWare.NBuilder.Implementation
         {
             for (int i = 0; i < listBuilderImpl.Capacity; i++)
             {
-                myList.Add(objectBuilder.Construct());
+                myList.Add(objectBuilder.Construct(i));
             }
         }
 

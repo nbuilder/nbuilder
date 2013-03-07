@@ -26,7 +26,7 @@ namespace FizzWare.NBuilder.Implementation
         public override void Construct()
         {
             for (int i = Start; i < End + 1; i++)
-                myList.Add(objectBuilder.Construct());
+                myList.Add(objectBuilder.Construct(i));
         }
 
         public override void AddToMaster(T[] masterList)
