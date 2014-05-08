@@ -122,6 +122,7 @@ namespace FizzWare.NBuilder.PropertyNaming
         protected abstract char GetChar(MemberInfo memberInfo);
         protected abstract Enum GetEnum(MemberInfo memberInfo);
         protected abstract Guid GetGuid(MemberInfo memberInfo);
+        protected abstract TimeSpan GetTimeSpan(MemberInfo memberInfo);
 
         protected virtual bool ShouldIgnore(MemberInfo memberInfo)
         {
@@ -231,10 +232,15 @@ namespace FizzWare.NBuilder.PropertyNaming
                 value = GetGuid(memberInfo);
             }
 
+            else if (type == typeof(TimeSpan))
+            {
+                value = GetTimeSpan(memberInfo);
+            }
+
             else
-			{
-                HandleUnknownType(type, memberInfo, obj);    
-			}
+            {
+                HandleUnknownType(type, memberInfo, obj);
+            }
 
             SetValue(memberInfo, obj, value);
         }
