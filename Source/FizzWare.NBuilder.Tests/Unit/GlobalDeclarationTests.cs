@@ -35,7 +35,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         {
             using (mocks.Record())
             {
-                objectBuilder.Expect(x => x.Construct()).Return(new SimpleClass()).Repeat.Times(2);
+                objectBuilder.Expect(x => x.Construct(Arg<int>.Is.Anything)).Return(new SimpleClass()).Repeat.Times(2);
             }
 
             using (mocks.Playback())
@@ -54,8 +54,8 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             using (mocks.Record())
             {
-                objectBuilder.Expect(x => x.Construct()).Return(obj1);
-                objectBuilder.Expect(x => x.Construct()).Return(obj2);
+                objectBuilder.Expect(x => x.Construct(0)).Return(obj1);
+                objectBuilder.Expect(x => x.Construct(1)).Return(obj2);
             }
 
             using (mocks.Playback())
@@ -74,7 +74,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             SimpleClass[] masterList = new SimpleClass[19];
 
             using (mocks.Record())
-                objectBuilder.Expect(x => x.Construct()).Return(new SimpleClass()).Repeat.Times(2);
+                objectBuilder.Expect(x => x.Construct(Arg<int>.Is.Anything)).Return(new SimpleClass()).Repeat.Times(2);
 
             declaration = new GlobalDeclaration<SimpleClass>(listBuilderImpl, objectBuilder);
             declaration.Construct();

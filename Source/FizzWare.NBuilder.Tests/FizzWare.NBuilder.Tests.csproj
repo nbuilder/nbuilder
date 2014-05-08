@@ -97,6 +97,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Integration\IssueTests.cs" />
+    <Compile Include="Integration\ListBuilderTests_UsingIndexedApi.cs" />
     <Compile Include="Integration\ListBuilderTests_WithAClassThatHasANullCharConstant.cs" />
     <Compile Include="Integration\ListBuilderNegativeTests.cs" />
     <Compile Include="Integration\MockPropertyNamerTests.cs" />

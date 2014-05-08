@@ -34,7 +34,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             declaration.Construct();
 
             // Assert
-            objectBuilder.AssertWasCalled(x => x.Construct(), opt => opt.Repeat.Times(amount));
+            objectBuilder.AssertWasCalled(x => x.Construct(Arg<int>.Is.Anything), opt => opt.Repeat.Times(amount));
         }
 
         [Test]
@@ -42,7 +42,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         {
             var masterList = new MyClass[listSize];
 
-            objectBuilder.Stub(x => x.Construct()).Return(new MyClass()).Repeat.Times(amount);
+            objectBuilder.Stub(x => x.Construct(Arg<int>.Is.Anything)).Return(new MyClass()).Repeat.Times(amount);
 
             uniqueRandomGenerator.Stub(x => x.Next(start, end)).Return(0).Repeat.Once();
             uniqueRandomGenerator.Stub(x => x.Next(start, end)).Return(2).Repeat.Once();

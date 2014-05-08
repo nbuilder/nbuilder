@@ -26,6 +26,15 @@ namespace FizzWare.NBuilder
         }
 
         /// <summary>
+        /// Sets the value of the constructor to be used to build the type
+        /// </summary>
+        public static ISingleObjectBuilder<T> WithConstructor<T>(this ISingleObjectBuilder<T> objectBuilder, Expression<Func<T, int>> constructor)
+        {
+            ((IObjectBuilder<T>)objectBuilder).WithConstructor(constructor);
+            return objectBuilder;
+        }
+
+        /// <summary>
         /// Sets the value of one of the type's public properties
         /// </summary>
         public static ISingleObjectBuilder<T> With<T, TFunc>(this ISingleObjectBuilder<T> objectBuilder, Func<T, TFunc> func)

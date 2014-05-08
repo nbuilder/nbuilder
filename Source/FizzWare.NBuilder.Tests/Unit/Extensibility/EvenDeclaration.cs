@@ -30,7 +30,7 @@ namespace FizzWare.NBuilder.Tests.Unit.Extensibility
         public override void Construct()
         {
             for (int i = 0; i < NumberOfAffectedItems; i++)
-                myList.Add(objectBuilder.Construct());
+                myList.Add(objectBuilder.Construct(i));
         }
 
         public override void AddToMaster(T[] masterList)

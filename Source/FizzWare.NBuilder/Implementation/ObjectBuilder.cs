@@ -16,6 +16,7 @@ namespace FizzWare.NBuilder.Implementation
         private readonly List<MulticastDelegate> functions = new List<MulticastDelegate>();
 
         private readonly List<MultiFunction> multiFunctions = new List<MultiFunction>();
+        private Expression<Func<int, T>> _constructorExpression = null;
 
         public ObjectBuilder(IReflectionUtil reflectionUtil)
         {
@@ -34,6 +35,29 @@ namespace FizzWare.NBuilder.Implementation
                 select Expression.Lambda(argument).Compile().DynamicInvoke()).ToArray();
 
             constructorArgs = constructorArguments;
+            return this;
+        }
+
+        public IObjectBuilder<T> WithConstructor(Expression<Func<int, T>> constructor)
+        {
+            if (constructor.Body.NodeType != ExpressionType.New)
+            {
+                throw new ArgumentException("WithConstructor expects a constructor expression");
+            }
+
+            this._constructorExpression = constructor;
+
+            //var arguments = ((NewExpression) constructor.Body).Arguments;
+            //var indexArgument = arguments[0];
+            //var index = Expression.Lambda(indexArgument).Compile().DynamicInvoke();
+
+            //var theOtherArguments = arguments.Skip(1).ToArray();
+
+            //var constructorArguments =
+            //    (from argument in theOtherArguments
+            //     select Expression.Lambda(argument).Compile().DynamicInvoke()).ToArray();
+
+            //constructorArgs = constructorArguments;
             return this;
         }
 
@@ -63,6 +87,12 @@ namespace FizzWare.NBuilder.Implementation
             return this;
         }
 
+        public IObjectBuilder<T> Do(Action<T, int> action)
+        {
+            functions.Add(action);
+            return this;
+        }
+
         public IObjectBuilder<T> DoMultiple<U>(Action<T, U> action, IList<U> list)
         {
             multiFunctions.Add(new MultiFunction(action, list));
@@ -77,7 +107,7 @@ namespace FizzWare.NBuilder.Implementation
 
         public T Build()
         {
-            var obj = Construct();
+            var obj = Construct(1);
             Name(obj);
             CallFunctions(obj);
 
@@ -112,7 +142,7 @@ namespace FizzWare.NBuilder.Implementation
             }
         }
 
-        public T Construct()
+        public T Construct(int index)
         {
             bool requiresArgs = reflectionUtil.RequiresConstructorArgs(typeof(T));
 
@@ -124,7 +154,11 @@ namespace FizzWare.NBuilder.Implementation
 
             T obj;
 
-            if (requiresArgs && constructorArgs != null)
+            if (_constructorExpression != null)
+            {
+                obj = _constructorExpression.Compile().Invoke(index);
+            }
+            else if (requiresArgs && constructorArgs != null)
             {
                 obj = reflectionUtil.CreateInstanceOf<T>(constructorArgs);
             }

@@ -125,6 +125,18 @@ namespace FizzWare.NBuilder
             return (IOperable<T>)declaration;
         }
 
+        /// <summary>
+        /// Specify the constructor for the type like this:
+        /// 
+        /// WithConstructor( () => new MyType(arg1, arg2) )
+        /// </summary>
+        public static IOperable<T> WithConstructor<T>(this IOperable<T> operable, Expression<Func<int, T>> constructor)
+        {
+            var declaration = GetDeclaration(operable);
+            declaration.ObjectBuilder.WithConstructor(constructor);
+            return (IOperable<T>)declaration;
+        }
+
         #if OBSOLETE_OLD_SYNTAX
         [Obsolete(Messages.NewSyntax_UseWithConstructor)]
         #endif
@@ -161,6 +173,16 @@ namespace FizzWare.NBuilder
         /// Performs an action on the object.
         /// </summary>
         public static IOperable<T> Do<T>(this IOperable<T> operable, Action<T> action)
+        {
+            var declaration = GetDeclaration(operable);
+            declaration.ObjectBuilder.Do(action);
+            return (IOperable<T>)declaration;
+        }
+
+        /// <summary>
+        /// Performs an action on the object.
+        /// </summary>
+        public static IOperable<T> Do<T>(this IOperable<T> operable, Action<T, int> action)
         {
             var declaration = GetDeclaration(operable);
             declaration.ObjectBuilder.Do(action);
