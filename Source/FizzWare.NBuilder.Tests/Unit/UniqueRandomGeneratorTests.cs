@@ -147,7 +147,10 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Test]
         public void Next_Double_ShouldGenerateWithinRange()
         {
-            generator.Next((double)min, (double)max);
+            double min = 1.0;
+            var result = generator.Next(min, (double)max);
+            Assert.IsTrue(result > min);
+            Assert.IsTrue(result < max);
         }
 
         [Test]

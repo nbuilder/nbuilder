@@ -49,7 +49,7 @@ namespace FizzWare.NBuilder
 
         public virtual double Next(double min, double max)
         {
-            return rnd.NextDouble();
+            return min + rnd.NextDouble() * (max - min);
         }
 
         public virtual decimal Next(decimal min, decimal max)
