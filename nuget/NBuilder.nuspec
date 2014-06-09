@@ -13,7 +13,7 @@
   </metadata>
   <files>
 	<file src="net35\Fizzware.NBuilder.dll" target="lib\net35" />
-	<file src="net35\Fizzware.NBuilder.dll" target="lib\net35" />
+	<file src="net40\Fizzware.NBuilder.dll" target="lib\net40" />
 	<file src="sl40\Fizzware.NBuilder.dll" target="lib\sl40" />
   </files>
 </package>
