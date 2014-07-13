@@ -15,7 +15,12 @@ namespace FizzWare.NBuilder
         private static DateTime minSqlServerDate = new DateTime(1753, 1, 1);
         private static DateTime maxSqlServerDate = new DateTime(9999, 12, 31);
 
-        private static readonly string[] latinWords = { "lorem", "ipsum", "dolor", "sit", "amet", "consectetur", "adipisicing", "elit", "sed", "do", "eiusmod", "tempor", "incididunt", "ut", "labore", "et", "dolore", "magna", "aliqua" };
+        private static readonly string[] latinWords =
+            {
+                "lorem", "ipsum", "dolor", "sit", "amet", "consectetur",
+                "adipisicing", "elit", "sed", "do", "eiusmod", "tempor",
+                "incididunt", "ut", "labore", "et", "dolore", "magna", "aliqua"
+            };
 
         public RandomGenerator() : this(System.Guid.NewGuid().GetHashCode()) { }
 
@@ -44,7 +49,7 @@ namespace FizzWare.NBuilder
 
         public virtual float Next(float min, float max)
         {
-            return (float) Next((int) min, (int)max);
+            return (float)Next((int)min, (int)max);
         }
 
         public virtual double Next(double min, double max)
@@ -55,10 +60,10 @@ namespace FizzWare.NBuilder
         public virtual decimal Next(decimal min, decimal max)
         {
             if (min < int.MinValue)
-                min = (decimal) int.MinValue;
+                min = (decimal)int.MinValue;
 
             if (max > int.MaxValue)
-                max = (decimal) int.MaxValue;
+                max = (decimal)int.MaxValue;
 
             int iMin = (int)min;
             int iMax = (int)max;
@@ -230,13 +235,52 @@ namespace FizzWare.NBuilder
             var values = EnumHelper.GetValues(type);
             var index = Next(0, values.Length);
             return (Enum)values.GetValue(index);
-        }   
+        }
 
-        // TODO: Implement NextString()
-        //public virtual string NextString(int minLength, int maxLength)
-        //{
+        public virtual string NextString(int minLength, int maxLength)
+        {
+            bool takeLower = this.Boolean();
+            bool takeAverage = !takeLower && this.Boolean();
+            bool takeHigher = !takeAverage && this.Boolean();
 
-        //}
+            takeAverage = !takeLower && !takeHigher;
+            var average = (maxLength + minLength) / rnd.Next(2, 4);
+
+            var count = latinWords.Length;
+            var maxwordLength = latinWords.OrderBy(o => o.Length).First().Length;
+            var result = new StringBuilder(string.Empty);
+            var done = false;
+
+            while (!done)
+            {
+                var word = latinWords[Next(0, count - 1)];
+                var potential = result.Length + word.Length + 1;
+
+                if (takeHigher && potential + maxwordLength < maxLength - 1)
+                {
+                    result.Append(word).Append(" ");
+                }
+                else
+                {
+                    result.Append(word).Append(" ");
+                }
+
+                if (takeHigher && latinWords.Any(w => w.Length + result.Length >= maxLength))
+                {
+                    done = true;
+                }
+                else if (takeAverage && result.Length >= average)
+                {
+                    done = true;
+                }
+                else if (takeLower && result.Length > minLength)
+                {
+                    done = true;
+                }
+            }
+
+            return result.ToString().Trim();
+        }
     }
     // ReSharper restore RedundantCast
 }
