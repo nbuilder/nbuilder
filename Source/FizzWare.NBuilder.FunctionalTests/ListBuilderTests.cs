@@ -609,18 +609,18 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void StructsCanHavePropertyAssignments()
         {
-            // ctor: WarehouseLocation(char aisle, int shelf, int location)
-
             var locations = Builder<WarehouseLocation>
                 .CreateListOfSize(10)
-                .Section(5,6)
-                .AreConstructedWith('A', 1, 2)
+                .Section(5, 6)
+                .WithConstructor(() => new WarehouseLocation('A', 1, 2))
                 .Build();
 
             Assert.That(locations[5].Aisle, Is.EqualTo('A'));
             Assert.That(locations[6].Aisle, Is.EqualTo('A'));
+
             Assert.That(locations[5].Shelf, Is.EqualTo(1));
             Assert.That(locations[6].Shelf, Is.EqualTo(1));
+
             Assert.That(locations[5].Location, Is.EqualTo(2));
             Assert.That(locations[6].Location, Is.EqualTo(2));
         }

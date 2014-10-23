@@ -52,9 +52,9 @@ namespace FizzWare.NBuilder.Implementation
         {
             var distinctAffectedItemCalculator = new DistinctAffectedItemCalculator(listCapacity);
 
-            for (int i = 0; i < queuedDeclarations.Count; i++)
+            foreach (IDeclaration<T> declaration in this.queuedDeclarations)
             {
-                distinctAffectedItemCalculator.AddRange(queuedDeclarations[i].Start, queuedDeclarations[i].End, queuedDeclarations[i].NumberOfAffectedItems);
+                distinctAffectedItemCalculator.AddRange(declaration.Start, declaration.End, declaration.NumberOfAffectedItems);
             }
 
             return distinctAffectedItemCalculator.GetTotal();
@@ -63,25 +63,32 @@ namespace FizzWare.NBuilder.Implementation
         public void Construct()
         {
             Prioritise();
-            for (int i = 0; i < queuedDeclarations.Count; i++)
-                queuedDeclarations[i].Construct();
+
+            foreach (IDeclaration<T> declarion in this.queuedDeclarations)
+            {
+                declarion.Construct();
+            }
         }
 
         public bool ContainsGlobalDeclaration()
         {
-            return queuedDeclarations.OfType<IGlobalDeclaration<T>>().Count() > 0;
+            return queuedDeclarations.OfType<IGlobalDeclaration<T>>().Any();
         }
 
         public void AddToMaster(T[] mainList)
         {
-            for (int i = 0; i < queuedDeclarations.Count; i++)
-                queuedDeclarations[i].AddToMaster(mainList);
+            foreach (IDeclaration<T> declaration in this.queuedDeclarations)
+            {
+                declaration.AddToMaster(mainList);
+            }
         }
 
         public void CallFunctions(IList<T> list)
         {
-            for (int i = 0; i < queuedDeclarations.Count; i++)
-                queuedDeclarations[i].CallFunctions(list);
+            foreach (IDeclaration<T> declaration in this.queuedDeclarations)
+            {
+                declaration.CallFunctions(list);
+            }
         }
     }
 }

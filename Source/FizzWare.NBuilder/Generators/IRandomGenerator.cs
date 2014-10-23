@@ -25,7 +25,7 @@ namespace FizzWare.NBuilder
         bool Next();
 
         // TODO: Add NextString() to this interface
-        //string NextString(int minLength, int maxLength);
+        string NextString(int minLength, int maxLength);
 
         bool Boolean();
         int Int();

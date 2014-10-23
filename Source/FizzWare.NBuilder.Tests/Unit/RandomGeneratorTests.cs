@@ -205,6 +205,21 @@ namespace FizzWare.NBuilder.Tests.Unit
             Assert.That(phrase.Length, Is.LessThanOrEqualTo(50));
         }
 
+        [Test(Description = "Tests the NextString returns a string that is between the minimum and maximum values specified")]
+        public void ShouldBeBetweenMinAndMaxNextString()
+        {
+            // Arrange
+            int minValue = 100;
+            int maxValue = 200;
+
+            // Act
+            var result = randomGenerator.NextString(minValue, maxValue);
+
+            // Assert
+            Assert.That(result.Length, Is.LessThanOrEqualTo(maxValue));
+            Assert.That(result.Length, Is.GreaterThanOrEqualTo(minValue));
+        }
+
         // TODO FIX
         #if !SILVERLIGHT
         [Test]
