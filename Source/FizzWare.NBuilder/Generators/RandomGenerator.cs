@@ -49,7 +49,7 @@ namespace FizzWare.NBuilder
 
         public virtual float Next(float min, float max)
         {
-            return (float)Next((int)min, (int)max);
+            return (float)Next((double)min, (double)max);
         }
 
         public virtual double Next(double min, double max)
