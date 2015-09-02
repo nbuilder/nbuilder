@@ -199,6 +199,6 @@ Update the connection string Data Source inside the `App.config` and make sure i
 
 #####  Tests are divided into three categories:
 
-Unit - The class under test is completely isolated by use of stubs or mocks.
-Integration - Classes tested together.
+Unit - The class under test is completely isolated by use of stubs or mocks.    
+Integration - Classes tested together.    
 Functional - 'Real life' tests and documentation.
