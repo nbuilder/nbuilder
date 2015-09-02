@@ -1,5 +1,10 @@
 # Nbuilder - A rapid test object generator.
 
+NBuilder.Trunk: ![NBuilder.Trunk](http://teamcity.codebetter.com/app/rest/builds/buildType:%28id:bt292%29/statusIcon)  
+NBuilder.CI: ![NBuilder.CI](http://teamcity.codebetter.com/app/rest/builds/buildType:%28id:NBuilder_CI%29/statusIcon)    
+NBuilder.Publish ![NBuilder.Publish](http://teamcity.codebetter.com/app/rest/builds/buildType:%28id:NBuilder_NBuilderPublish%29/statusIcon)    
+   
+
 Through a fluent, extensible interface, NBuilder allows you to rapidly create test data, automatically assigning values to properties and public fields that are one of the built in .NET data types (e.g. ints and strings). NBuilder allows you to override for properties you are interested in using lambda expressions.
 
 ### How can NBuilder help?
@@ -202,3 +207,7 @@ Update the connection string Data Source inside the `App.config` and make sure i
 Unit - The class under test is completely isolated by use of stubs or mocks.    
 Integration - Classes tested together.    
 Functional - 'Real life' tests and documentation.
+
+##### Continuous Integration
+
+NBuilder uses [TeamCity](http://teamcity.codebetter.com/project.html?projectId=NBuilder) hosted by [CodeBetter](http://codebetter.com/) for continuous integration.
