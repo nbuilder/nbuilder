@@ -31,15 +31,19 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Test]
         public void DeclarationShouldUseObjectBuilderToConstructItems()
         {
-            declaration = new RangeDeclaration<SimpleClass>(listBuilderImpl, objectBuilder, 0, 9);
-
+          
             using (mocks.Record())
             {
+                listBuilderImpl.Stub(x => x.BuilderSetup).Return(new BuilderSetup());
+                objectBuilder.Stub(x => x.BuilderSetup).Return(new BuilderSetup());
+
                 objectBuilder.Expect(x => x.Construct(Arg<int>.Is.Anything)).Return(new SimpleClass()).Repeat.Times(10);
             }
 
             using (mocks.Playback())
             {
+                declaration = new RangeDeclaration<SimpleClass>(listBuilderImpl, objectBuilder, 0, 9);
+
                 declaration.Construct();                
             }
         }
@@ -53,6 +57,8 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             using (mocks.Record())
             {
+                listBuilderImpl.Stub(x => x.BuilderSetup).Return(new BuilderSetup());
+                objectBuilder.Stub(x => x.BuilderSetup).Return(new BuilderSetup());
                 objectBuilder.Expect(x => x.Construct(9)).Return(obj1);
                 objectBuilder.Expect(x => x.Construct(10)).Return(obj2);
             }
@@ -89,13 +95,21 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Test]
         public void ShouldBeAbleToUseAll()
         {
-            declaration = new RangeDeclaration<SimpleClass>(listBuilderImpl, objectBuilder, 9, 10);
-
+          
             using (mocks.Record())
+            {
+                listBuilderImpl.Stub(x => x.BuilderSetup).Return(new BuilderSetup());
+                objectBuilder.Stub(x => x.BuilderSetup).Return(new BuilderSetup());
+
                 listBuilderImpl.Expect(x => x.All()).Return(declaration);
+            }
 
             using (mocks.Playback())
+            {
+                declaration = new RangeDeclaration<SimpleClass>(listBuilderImpl, objectBuilder, 9, 10);
+
                 declaration.All();
+            }
         }
 
         [Test]

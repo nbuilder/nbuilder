@@ -194,7 +194,7 @@ namespace FizzWare.NBuilder
             // 2. Reorganise
             var hierarchy = new HierarchyGenerator<T>(list, hierarchySpec.AddMethod, hierarchySpec.NumberOfRoots, hierarchySpec.Depth,
                                       hierarchySpec.MinimumChildren, hierarchySpec.MaximumChildren,
-                                      new RandomGenerator(), hierarchySpec.NamingMethod, BuilderSetup.GetPersistenceService()).Generate();
+                                      new RandomGenerator(), hierarchySpec.NamingMethod, listBuilder.BuilderSetup.GetPersistenceService()).Generate();
 
             return hierarchy;
         }

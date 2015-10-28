@@ -5,23 +5,31 @@ namespace FizzWare.NBuilder
 {
     public class Builder<T>
     {
-        public static ISingleObjectBuilder<T> CreateNew()
+        private readonly BuilderSetup _builderSetup;
+
+        public Builder(BuilderSetup builderSetup)
         {
-            var reflectionUtil = new ReflectionUtil();
-            var propertyNamer = BuilderSetup.GetPropertyNamerFor<T>();
-            return new ObjectBuilder<T>(reflectionUtil).WithPropertyNamer(propertyNamer);
+            _builderSetup = builderSetup;
         }
 
-        public static IListBuilder<T> CreateListOfSize(int size)
+        public ISingleObjectBuilder<T> CreateNew()
+        {
+          
+            var reflectionUtil = new ReflectionUtil();
+            var propertyNamer = _builderSetup.GetPropertyNamerFor<T>();
+            return new ObjectBuilder<T>(reflectionUtil, _builderSetup).WithPropertyNamer(propertyNamer);
+        }
+
+        public IListBuilder<T> CreateListOfSize(int size)
         {
             Guard.Against(size < 1, "Size of list must be 1 or greater");
-            var propertyNamer = BuilderSetup.GetPropertyNamerFor<T>();
+            var propertyNamer = _builderSetup.GetPropertyNamerFor<T>();
             return CreateListOfSize(size, propertyNamer);
         }
 
-        public static IListBuilder<T> CreateListOfSize(int size, IPropertyNamer propertyNamer)
+        public IListBuilder<T> CreateListOfSize(int size, IPropertyNamer propertyNamer)
         {
-            return new ListBuilder<T>(size, propertyNamer, new ReflectionUtil());
+            return new ListBuilder<T>(size, propertyNamer, new ReflectionUtil(),_builderSetup);
         }
     }
 }

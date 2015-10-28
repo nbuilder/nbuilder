@@ -36,7 +36,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             // The lorem ipsum string generator does this to get a random length of the string
             generator.Expect(x => x.Next(1, 10)).Return(5).Repeat.Any();
 
-            new RandomValuePropertyNamer(generator, reflectionUtil, false, DateTime.MinValue, DateTime.MaxValue, true).SetValuesOfAllIn(theList);
+            new RandomValuePropertyNamer(generator, reflectionUtil, false, DateTime.MinValue, DateTime.MaxValue, true,new BuilderSetup()).SetValuesOfAllIn(theList);
         }
 
         [Test]

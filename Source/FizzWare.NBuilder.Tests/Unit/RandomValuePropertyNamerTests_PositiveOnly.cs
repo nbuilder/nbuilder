@@ -13,6 +13,7 @@ namespace FizzWare.NBuilder.Tests.Unit
     {
         public override void TestFixtureSetUp()
         {
+            var builderSetup = new BuilderSetup();
             mocks = new MockRepository();
 
             generator = mocks.DynamicMock<IRandomGenerator>();
@@ -45,7 +46,7 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             using (mocks.Playback())
             {
-                new RandomValuePropertyNamer(generator, reflectionUtil, true).SetValuesOfAllIn(theList);
+                new RandomValuePropertyNamer(generator, reflectionUtil, true,builderSetup).SetValuesOfAllIn(theList);
             }
         }
     }

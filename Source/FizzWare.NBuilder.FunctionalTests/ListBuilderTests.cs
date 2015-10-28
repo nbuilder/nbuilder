@@ -27,16 +27,13 @@ namespace FizzWare.NBuilder.FunctionalTests
             Database.Clear();
         }
 
-        [TearDown]
-        public void TearDown()
-        {
-            BuilderSetup.ResetToDefaults();
-        }
+        
 
         [Test]
         public void CreatingAList()
         {
-            var products = Builder<Product>.CreateListOfSize(10).Build();
+            var builderSetup = new BuilderSetup();
+            var products = new Builder<Product>(builderSetup).CreateListOfSize(10).Build();
 
             // Note: The asserts here are intentionally verbose to show how NBuilder works
 
@@ -65,7 +62,8 @@ namespace FizzWare.NBuilder.FunctionalTests
 
         public void UsingAllToSetValues()
         {
-            var products = Builder<Product>
+            var builderSetup = new BuilderSetup();
+            var products = new Builder<Product>(builderSetup)
                 .CreateListOfSize(10)
                 .All()
                     .With(x => x.Title = "A special title")
@@ -78,7 +76,8 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void SettingTheValueOfAProperty()
         {
-            var products = Builder<Product>
+            var builderSetup = new BuilderSetup();
+            var products = new Builder<Product>(builderSetup)
                 .CreateListOfSize(10)
                 .TheFirst(2)
                     .With(x => x.Title = "A special title")
@@ -97,7 +96,8 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void UsingSingularSyntaxInstead()
         {
-            var products = Builder<Product>
+            var builderSetup = new BuilderSetup();
+            var products = new Builder<Product>(builderSetup)
                             .CreateListOfSize(10)
                             .TheFirst(1)
                                 .Has(x => x.Title = "Special title 1")
@@ -109,9 +109,10 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void UsingAGenerator()
         {
+            var builderSetup = new BuilderSetup();
             var generator = new RandomGenerator();
 
-            var products = Builder<Product>
+            var products = new Builder<Product>(builderSetup)
                 .CreateListOfSize(10)
                 .All()
                     .With(x => x.PriceBeforeTax = generator.Next(50, 1000))
@@ -128,9 +129,10 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void DeclaringThatARandomNumberOfElementsShouldHaveCertainProperties()
         {
+            var builderSetup = new BuilderSetup();
             const string specialdescription = "SpecialDescription";
             const decimal specialPrice = 10m;
-            var products = Builder<Product>.CreateListOfSize(10)
+            var products = new Builder<Product>(builderSetup).CreateListOfSize(10)
                 .Random(5)
                     .With(x => x.Description = specialdescription)
                     .And(x => x.PriceBeforeTax = specialPrice)
@@ -153,9 +155,10 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void CreatingAListOfProductsAndAddingThemToCategories()
         {
-            var categories = Builder<Category>.CreateListOfSize(50).Build();
+            var builderSetup = new BuilderSetup();
+            var categories = new Builder<Category>(builderSetup).CreateListOfSize(50).Build();
 
-            var products = Builder<Product>
+            var products = new Builder<Product>(builderSetup)
                             .CreateListOfSize(500)
                             .All()
                                 .With(x => x.Categories = Pick<Category>.UniqueRandomList(With.Between(5, 10).Elements).From(categories))
@@ -171,10 +174,11 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void UsingTheSequentialGenerator()
         {
+            var builderSetup = new BuilderSetup();
             var generator = new SequentialGenerator<int> { Direction = GeneratorDirection.Descending, Increment = 2 };
             generator.StartingWith(6);
 
-            var products = Builder<Product>
+            var products = new Builder<Product>(builderSetup)
                 .CreateListOfSize(3)
                 .All()
                     .With(x => x.Id = generator.Generate())
@@ -189,6 +193,7 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void UsingSequentialGenerators()
         {
+            var builderSetup = new BuilderSetup();
             // Arrange
             var decimalGenerator = new SequentialGenerator<decimal>
             {
@@ -201,7 +206,7 @@ namespace FizzWare.NBuilder.FunctionalTests
             var intGenerator = new SequentialGenerator<int> { Increment = 10000 };
 
             // Act
-            var list = Builder<Product>.CreateListOfSize(3)
+            var list = new Builder<Product>(builderSetup).CreateListOfSize(3)
                 .All()
                     .With(x => x.PriceBeforeTax = decimalGenerator.Generate())
                     .And(x => x.Id = intGenerator.Generate())
@@ -220,6 +225,7 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void SequentialGenerator_DateTimeGeneration()
         {
+            var builderSetup = new BuilderSetup();
             const int increment = 2;
             var dateTimeGenerator = new SequentialGenerator<DateTime>
             {
@@ -232,7 +238,7 @@ namespace FizzWare.NBuilder.FunctionalTests
             dateTimeGenerator.StartingWith(startingDate);
 
 
-            var list = Builder<Product>.CreateListOfSize(2)
+            var list = new Builder<Product>(builderSetup).CreateListOfSize(2)
                 .All()
                     .With(x => x.Created = dateTimeGenerator.Generate())
                 .Build();
@@ -244,9 +250,10 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void UsingTheWithBetween_And_SyntaxForGreaterReadability()
         {
-            var categories = Builder<Category>.CreateListOfSize(50).Build();
+            var builderSetup  = new BuilderSetup();
+            var categories = new Builder<Category>(builderSetup).CreateListOfSize(50).Build();
 
-            var products = Builder<Product>
+            var products = new Builder<Product>(builderSetup)
                             .CreateListOfSize(500)
                             .All()
                                 .With(x => x.Categories = Pick<Category>.UniqueRandomList(With.Between(5).And(10).Elements).From(categories))
@@ -262,14 +269,15 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void CreatingAListOfATypeWithAConstructor()
         {
+            var builderSetup = new BuilderSetup();
             // ctor: BasketItem(ShoppingBasket basket, Product product, int quantity)
 
-            var basket = Builder<ShoppingBasket>.CreateNew().Build();
-            var product = Builder<Product>.CreateNew().Build();
+            var basket = new Builder<ShoppingBasket>(builderSetup).CreateNew().Build();
+            var product = new Builder<Product>(builderSetup).CreateNew().Build();
             const int quantity = 5;
 
             var basketItems =
-                Builder<BasketItem>.CreateListOfSize(10)
+               new Builder<BasketItem>(builderSetup).CreateListOfSize(10)
                     .All()
                         .AreConstructedWith(basket, product, quantity) // passes these arguments to the constructor
                     .Build();
@@ -285,6 +293,7 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void DifferentPartsOfTheListCanBeConstructedDifferently()
         {
+            var builderSetup = new BuilderSetup();
             var basket1 = new ShoppingBasket();
             var product1 = new Product();
             const int quantity1 = 5;
@@ -293,7 +302,7 @@ namespace FizzWare.NBuilder.FunctionalTests
             var product2 = new Product();
             const int quantity2 = 7;
 
-            var items = Builder<BasketItem>
+            var items = new Builder<BasketItem>(builderSetup)
                 .CreateListOfSize(4)
                 .TheFirst(2)
                     .AreConstructedWith(basket1, product1, quantity1)
@@ -313,13 +322,15 @@ namespace FizzWare.NBuilder.FunctionalTests
         [ExpectedException(typeof(BuilderException))]
         public void WillComplainIfYouTryToBuildAClassThatCannotBeInstantiatedDirectly()
         {
-            Builder<ChuckNorris>.CreateListOfSize(10).Build();
+            var builderSetup = new BuilderSetup();
+            new Builder<ChuckNorris>(builderSetup).CreateListOfSize(10).Build();
         }
 
         [Test]
         public void UsingWith_WithImmutableClassProperties()
         {
-            var invoices = Builder<Invoice>
+            var builderSetup = new BuilderSetup();
+            var invoices = new Builder<Invoice>(builderSetup)
                 .CreateListOfSize(2)
                 .TheFirst(2)
                     .With(p => p.Amount, 100)
@@ -332,7 +343,8 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void UsingWith_WithAnIndex()
         {
-            var invoices = Builder<Product>
+            var builderSetup = new BuilderSetup();
+            var invoices = new Builder<Product>(builderSetup)
                 .CreateListOfSize(2)
                 .TheFirst(2)
                     .With((p, idx) => p.Description = "Description" + (idx + 5))
@@ -345,7 +357,8 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void UsingAndWithAnIndex()
         {
-            var invoices = Builder<Product>
+            var builderSetup = new BuilderSetup();
+            var invoices = new Builder<Product>(builderSetup)
                 .CreateListOfSize(2)
                 .TheFirst(2)
                     .With(p => p.Title = "Title")
@@ -361,7 +374,8 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void UsingAndWithImmutableClassProperties()
         {
-            var invoices = Builder<Invoice>
+            var builderSetup = new BuilderSetup();
+            var invoices = new Builder<Invoice>(builderSetup)
                 .CreateListOfSize(2)
                 .TheFirst(2)
                     .With(p => p.Amount, 100)
@@ -377,7 +391,8 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void UsingHasWithImmutableClassProperties()
         {
-            var invoices = Builder<Invoice>
+            var builderSetup = new BuilderSetup();
+            var invoices = new Builder<Invoice>(builderSetup)
                 .CreateListOfSize(1)
                 .TheFirst(1)
                     .Has(p => p.Amount, 100)
@@ -390,7 +405,8 @@ namespace FizzWare.NBuilder.FunctionalTests
         [ExpectedException(typeof(TypeCreationException))]
         public void WillComplainIfYouDoNotSupplyArgsMatchingOneOfTheConstructors()
         {
-            Builder<BasketItem>
+            var builderSetup = new BuilderSetup();
+            new Builder<BasketItem>(builderSetup)
                  .CreateListOfSize(10)
                  .All()
                  .AreConstructedWith().Build();
@@ -399,7 +415,8 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void ChainingDeclarationsTogether()
         {
-            var list = Builder<Product>
+            var builderSetup = new BuilderSetup();
+            var list = new Builder<Product>(builderSetup)
                 .CreateListOfSize(30)
                 .TheFirst(10)
                     .With(x => x.Title = "Special Title 1")
@@ -437,7 +454,8 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void UsingAndThePrevious()
         {
-            var list = Builder<Product>
+            var builderSetup = new BuilderSetup();
+            var list = new Builder<Product>(builderSetup)
                 .CreateListOfSize(30)
                 .TheLast(10)
                     .With(x => x.Title = "Special Title 1")
@@ -454,7 +472,8 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void UsingSection()
         {
-            var list = Builder<Product>
+            var builderSetup = new BuilderSetup();
+            var list = new Builder<Product>(builderSetup)
                 .CreateListOfSize(30)
                 .All()
                     .With(x => x.Title = "Special Title 1")
@@ -484,7 +503,8 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void UsingSectionAndTheNext()
         {
-            var list = Builder<Product>
+            var builderSetup = new BuilderSetup();
+            var list = new Builder<Product>(builderSetup)
                 .CreateListOfSize(30)
                 .All()
                     .With(x => x.Title = "Special Title 1")
@@ -502,9 +522,10 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Description("You can use Do to do something to all the items in the declaration")]
         public void UsingDo()
         {
-            var children = Builder<Category>.CreateListOfSize(3).Build();
+            var builderSetup = new BuilderSetup();
+            var children = new Builder<Category>(builderSetup).CreateListOfSize(3).Build();
 
-            var categories = Builder<Category>
+            var categories = new Builder<Category>(builderSetup)
                 .CreateListOfSize(10)
                 .TheFirst(2)
                     .Do(x => x.AddChild(children[0]))
@@ -524,9 +545,10 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void UsingDoAndPickTogether()
         {
-            var children = Builder<Category>.CreateListOfSize(10).Build();
+            var builderSetup = new BuilderSetup();
+            var children = new Builder<Category>(builderSetup).CreateListOfSize(10).Build();
 
-            var categories = Builder<Category>
+            var categories = new Builder<Category>(builderSetup)
                 .CreateListOfSize(10)
                 .TheFirst(2)
                     .Do(x => x.AddChild(Pick<Category>.RandomItemFrom(children)))
@@ -540,11 +562,12 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Description("Multi functions allow you to call a method on an object on each item in a list")]
         public void UsingMultiFunctions()
         {
-            var categories = Builder<Category>.CreateListOfSize(5).Build();
+            var builderSetup = new BuilderSetup();
+            var categories = new Builder<Category>(builderSetup).CreateListOfSize(5).Build();
 
             // Here we are saying, add every product to all of the categories
 
-            var products = Builder<Product>
+            var products = new Builder<Product>(builderSetup)
                 .CreateListOfSize(10)
                 .All().DoForEach((product, category) => product.AddToCategory(category), categories)
                 .Build();
@@ -564,9 +587,10 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void UsingRandomGenerator()
         {
+            var builderSetup = new BuilderSetup();
             var generator = new RandomGenerator();
 
-            var list = Builder<Product>.CreateListOfSize(3)
+            var list = new Builder<Product>(builderSetup).CreateListOfSize(3)
                 .All()
                 .With(x => x.QuantityInStock = generator.Next(1000, 2000))
                 .Build();
@@ -585,7 +609,8 @@ namespace FizzWare.NBuilder.FunctionalTests
         [ExpectedException(typeof(BuilderException))]
         public void WillNotLetYouDoThingsThatDoNotMakeSense()
         {
-            Builder<Product>
+            var builderSetup = new BuilderSetup();
+            new Builder<Product>(builderSetup)
                 .CreateListOfSize(10)
                 .TheFirst(5)
                     .With(x => x.Title = "titleone")
@@ -597,7 +622,8 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void SupportsStructsButDoesNotSupportAutomaticallyNamingTheProperties()
         {
-            var locations = Builder<WarehouseLocation>
+            var builderSetup = new BuilderSetup();
+            var locations = new Builder<WarehouseLocation>(builderSetup)
                 .CreateListOfSize(10)
                 .Build();
 
@@ -609,7 +635,8 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void StructsCanHavePropertyAssignments()
         {
-            var locations = Builder<WarehouseLocation>
+            var builderSetup = new BuilderSetup();
+            var locations = new Builder<WarehouseLocation>(builderSetup)
                 .CreateListOfSize(10)
                 .Section(5, 6)
                 .WithConstructor(() => new WarehouseLocation('A', 1, 2))
@@ -628,9 +655,10 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void AutomaticPropertyAndPublicFieldNamingCanBeSwitchedOff()
         {
-            BuilderSetup.AutoNameProperties = false;
+            var builderSetup = new BuilderSetup();
+            builderSetup.AutoNameProperties = false;
 
-            var products = Builder<Product>.CreateListOfSize(10).Build();
+            var products = new Builder<Product>(builderSetup).CreateListOfSize(10).Build();
 
             Assert.That(products[0].Title, Is.Null);
             Assert.That(products[9].Title, Is.Null);
@@ -642,9 +670,10 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void ItIsPossibleToSwitchOffAutomaticPropertyNamingForASinglePropertyOfASpecificType()
         {
-            BuilderSetup.DisablePropertyNamingFor<Product, int>(x => x.Id);
+            var builderSetup = new BuilderSetup();
+            builderSetup.DisablePropertyNamingFor<Product, int>(x => x.Id);
 
-            var products = Builder<Product>.CreateListOfSize(10).Build();
+            var products = new Builder<Product>(builderSetup).CreateListOfSize(10).Build();
 
             // The Product.Id will always be its default value
             Assert.That(products[0].Id, Is.EqualTo(0));
@@ -658,9 +687,11 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void SpecifyingADifferentDefaultPropertyNamer()
         {
-            BuilderSetup.SetDefaultPropertyNamer(new RandomValuePropertyNamer(new RandomGenerator(), new ReflectionUtil(), true, DateTime.Now, DateTime.Now.AddDays(10), true));
 
-            var products = Builder<Product>.CreateListOfSize(10).Build();
+            var builderSetup = new BuilderSetup();
+            builderSetup.SetDefaultPropertyNamer(new RandomValuePropertyNamer(new RandomGenerator(), new ReflectionUtil(), true, DateTime.Now, DateTime.Now.AddDays(10), true,new BuilderSetup()));
+
+            var products = new Builder<Product>(builderSetup).CreateListOfSize(10).Build();
 
             Assert.That(products[0].Title, Is.Not.EqualTo("StringOne1"));
             Assert.That(products[9].Title, Is.Not.EqualTo("StringOne10"));

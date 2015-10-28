@@ -10,19 +10,24 @@ using FizzWare.NBuilder.FunctionalTests.Model.Repositories;
 using FizzWare.NBuilder.FunctionalTests.Support;
 using NUnit.Framework;
 
-[SetUpFixture]
 public class SetupFixture
 {
     private bool setup;
     private static bool arInitialized;
-
+    
     [SetUp]
-    public void SetUp()
+    public BuilderSetup SetUp()
     {
+        return DoSetup();
+    }
+
+    public BuilderSetup DoSetup()
+    {
+        BuilderSetup builderSetup = new BuilderSetup();
         EnsureActiveRecordInitialized();
 
         if (setup)
-            return;
+            return builderSetup;
 
         setup = true;
 
@@ -30,14 +35,15 @@ public class SetupFixture
         var taxTypeRepository = Dependency.Resolve<ITaxTypeRepository>();
         var categoryRepository = Dependency.Resolve<ICategoryRepository>();
 
-        BuilderSetup.SetCreatePersistenceMethod<Product>(productRepository.Create);
-        BuilderSetup.SetCreatePersistenceMethod<IList<Product>>(productRepository.CreateAll);
-        BuilderSetup.SetCreatePersistenceMethod<TaxType>(taxTypeRepository.Create);
-        BuilderSetup.SetCreatePersistenceMethod<IList<TaxType>>(taxTypeRepository.CreateAll);
-        BuilderSetup.SetCreatePersistenceMethod<Category>(categoryRepository.Create);
-        BuilderSetup.SetCreatePersistenceMethod<IList<Category>>(categoryRepository.CreateAll);
-        BuilderSetup.SetUpdatePersistenceMethod<Category>(categoryRepository.Save);
-        BuilderSetup.SetUpdatePersistenceMethod<IList<Category>>(categoryRepository.SaveAll);
+        builderSetup.SetCreatePersistenceMethod<Product>(productRepository.Create);
+        builderSetup.SetCreatePersistenceMethod<IList<Product>>(productRepository.CreateAll);
+        builderSetup.SetCreatePersistenceMethod<TaxType>(taxTypeRepository.Create);
+        builderSetup.SetCreatePersistenceMethod<IList<TaxType>>(taxTypeRepository.CreateAll);
+        builderSetup.SetCreatePersistenceMethod<Category>(categoryRepository.Create);
+        builderSetup.SetCreatePersistenceMethod<IList<Category>>(categoryRepository.CreateAll);
+        builderSetup.SetUpdatePersistenceMethod<Category>(categoryRepository.Save);
+        builderSetup.SetUpdatePersistenceMethod<IList<Category>>(categoryRepository.SaveAll);
+        return builderSetup;
     }
 
     public void EnsureActiveRecordInitialized()

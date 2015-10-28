@@ -20,9 +20,10 @@ namespace FizzWare.NBuilder.Tests.Unit
         [SetUp]
         public void SetUp()
         {
+            var builderSetup = new BuilderSetup();
             reflectionUtil = Substitute.For<IReflectionUtil>();
             generator = Substitute.For<IRandomGenerator>();
-            propertyNamer = new RandomValuePropertyNamer(generator, reflectionUtil, false);
+            propertyNamer = new RandomValuePropertyNamer(generator, reflectionUtil, false,builderSetup);
         }
 
         [Test]

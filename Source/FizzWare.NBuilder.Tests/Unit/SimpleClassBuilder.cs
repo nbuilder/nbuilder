@@ -12,7 +12,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         {
             get
             {
-                return Builder<SimpleClass>.CreateNew()
+                return new Builder<SimpleClass>(new BuilderSetup()).CreateNew()
                     .With(x => x.String1 = GetRandom.String(String1Length))
                     .With(x => x.String2 = GetRandom.String(String2Length));
             }

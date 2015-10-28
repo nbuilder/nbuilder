@@ -11,6 +11,7 @@ namespace FizzWare.NBuilder.Tests.Unit
     [TestFixture]
     public class ExtensibileRandomValuePropertyNamerTests
     {
+        BuilderSetup builderSetup ;
         private ExtensibleRandomValuePropertyNamer target;
 
         private MockRepository mocks;
@@ -19,10 +20,11 @@ namespace FizzWare.NBuilder.Tests.Unit
         [SetUp]
         public void SetUp()
         {
+            builderSetup = new BuilderSetup();
             mocks = new MockRepository();
 
             randomGenerator = mocks.DynamicMock<IRandomGenerator>();
-            target = new ExtensibleRandomValuePropertyNamer(randomGenerator);
+            target = new ExtensibleRandomValuePropertyNamer(randomGenerator, builderSetup);
 
             bool @bool = true;
             byte @byte = 1;
@@ -157,7 +159,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         {
             // Arrange
             var myClass = new MyClass();
-            BuilderSetup.DisablePropertyNamingFor<MyClass, long>(x => x.Long);
+            builderSetup.DisablePropertyNamingFor<MyClass, long>(x => x.Long);
 
             target.NameWith<long>(() => 50);
 
@@ -168,10 +170,6 @@ namespace FizzWare.NBuilder.Tests.Unit
             Assert.That(myClass.Long, Is.EqualTo(default(long)));
         }
 
-        [TearDown]
-        public void TearDown()
-        {
-            BuilderSetup.ResetToDefaults();
-        }
+        
     }
 }

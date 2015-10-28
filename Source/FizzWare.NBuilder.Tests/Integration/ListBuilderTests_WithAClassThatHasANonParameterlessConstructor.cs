@@ -13,8 +13,9 @@ namespace FizzWare.NBuilder.Tests.Integration
         [Test]
         public void should_be_able_to_create_a_list_using_legacy_syntax()
         {
+            var builderSetup = new BuilderSetup();
             var list =
-                Builder<MyClassWithConstructor>
+               new Builder<MyClassWithConstructor>(builderSetup)
                     .CreateListOfSize(10)
                     .All()
                         .AreConstructedWith(theString, theDecimal)
@@ -27,8 +28,9 @@ namespace FizzWare.NBuilder.Tests.Integration
         [Test]
         public void should_be_able_to_use_WithConstructor()
         {
+            var builderSetup = new BuilderSetup();
             var list =
-                Builder<MyClassWithConstructor>
+               new Builder<MyClassWithConstructor>(builderSetup)
                     .CreateListOfSize(10)
                     .All()
                         .WithConstructor(() => new MyClassWithConstructor(1, 2f))
@@ -40,8 +42,9 @@ namespace FizzWare.NBuilder.Tests.Integration
         [Test]
         public void should_be_able_to_use_IsConstructedUsing()
         {
+            var builderSetup = new BuilderSetup();
             var list =
-                Builder<MyClassWithConstructor>
+               new Builder<MyClassWithConstructor>(builderSetup)
                     .CreateListOfSize(1)
                     .TheFirst(1)
                         .IsConstructedUsing(() => new MyClassWithConstructor(1, 2f))
@@ -54,8 +57,9 @@ namespace FizzWare.NBuilder.Tests.Integration
         [Test]
         public void should_set_properties_through_constructor_args_using_legacy_syntax()
         {
+            var builderSetup = new BuilderSetup();
             var list =
-                Builder<MyClassWithConstructor>
+                new Builder<MyClassWithConstructor>(builderSetup)
                     .CreateListOfSize(10)
                     .All()
                         .AreConstructedWith(theString, theDecimal)
@@ -68,8 +72,9 @@ namespace FizzWare.NBuilder.Tests.Integration
         [Test]
         public void should_be_able_to_use_legacy_singular_syntax()
         {
+            var builderSetup = new BuilderSetup();
             var list =
-                Builder<MyClassWithConstructor>
+               new Builder<MyClassWithConstructor>(builderSetup)
                     .CreateListOfSize(1)
                     .TheFirst(1)
                         .IsConstructedWith(theString, theDecimal)
