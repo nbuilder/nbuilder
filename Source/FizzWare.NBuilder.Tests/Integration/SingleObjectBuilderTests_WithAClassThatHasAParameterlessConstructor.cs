@@ -16,23 +16,21 @@ namespace FizzWare.NBuilder.Tests.Integration
             mocks = new MockRepository();
         }
 
-        [TearDown]
-        public void Teardown()
-        {
-            BuilderSetup.ResetToDefaults();
-        }
+      
 
         [Test]
         public void ShouldBeAbleToCreateAnObject()
         {
-            var obj = Builder<MyClass>.CreateNew();
+            var builderSetup = new BuilderSetup();
+            var obj = new Builder<MyClass>(builderSetup).CreateNew();
             Assert.That(obj, Is.Not.Null);
         }
 
         [Test]
         public void PropertiesShouldBeGivenDefaultValues()
         {
-            var obj = Builder<MyClass>.CreateNew().Build();
+            var builderSetup = new BuilderSetup();
+            var obj = new Builder<MyClass>(builderSetup).CreateNew().Build();
 
             Assert.That(obj.Int, Is.EqualTo(1));
             Assert.That(obj.StringOne, Is.EqualTo("StringOne1"));
@@ -43,7 +41,8 @@ namespace FizzWare.NBuilder.Tests.Integration
         [Test]
         public void WithsShouldOverrideDefaultValues()
         {
-            var obj = Builder<MyClass>
+            var builderSetup = new BuilderSetup();
+            var obj = new Builder<MyClass>(builderSetup)
                         .CreateNew()
                         .With(x => x.StringTwo = "SpecialDescription")
                         .Build();
@@ -55,9 +54,10 @@ namespace FizzWare.NBuilder.Tests.Integration
         [Test]
         public void ShouldBeAbleToDisableAutoPropertyNaming()
         {
-            BuilderSetup.AutoNameProperties = false;
+            var builderSetup = new BuilderSetup();
+            builderSetup.AutoNameProperties = false;
 
-            var obj = Builder<MyClass>.CreateNew().Build();
+            var obj = new Builder<MyClass>(builderSetup).CreateNew().Build();
 
             Assert.That(obj.Int, Is.EqualTo(0));
             Assert.That(obj.Int, Is.EqualTo(0));
@@ -69,17 +69,19 @@ namespace FizzWare.NBuilder.Tests.Integration
         [Test]
         public void ShouldBeAbleToSpecifyADefaultCustomPropertyNamer()
         {
-            BuilderSetup.SetDefaultPropertyNamer(new MockPropertyNamerTests());
-            Builder<MyClass>.CreateNew().Build();
+            var builderSetup = new BuilderSetup();
+            builderSetup.SetDefaultPropertyNamer(new MockPropertyNamerTests());
+            new Builder<MyClass>(builderSetup).CreateNew().Build();
             Assert.That(MockPropertyNamerTests.SetValuesOf_obj_CallCount, Is.EqualTo(1));
         }
 
         [Test]
         public void ShouldBeAbleToSpecifyACustomPropertyNamerForASpecificType()
         {
+            var builderSetup = new BuilderSetup();
             IPropertyNamer propertyNamer = mocks.DynamicMock<IPropertyNamer>();
 
-            BuilderSetup.SetPropertyNamerFor<MyClass>(propertyNamer);
+            builderSetup.SetPropertyNamerFor<MyClass>(propertyNamer);
 
             using (mocks.Record())
             {
@@ -88,8 +90,8 @@ namespace FizzWare.NBuilder.Tests.Integration
 
             using (mocks.Playback())
             {
-                Builder<MyClass>.CreateNew().Build();
-                Builder<SimpleClass>.CreateNew().Build();
+                new Builder<MyClass>(builderSetup).CreateNew().Build();
+                new Builder<SimpleClass>(builderSetup).CreateNew().Build();
             }
 
             mocks.VerifyAll();
@@ -98,8 +100,9 @@ namespace FizzWare.NBuilder.Tests.Integration
         [Test]
         public void ShouldBeAbleToDisableAutomaticPropertyNaming()
         {
-            BuilderSetup.AutoNameProperties = false;
-            var obj = Builder<MyClass>.CreateNew().Build();
+            var builderSetup = new BuilderSetup();
+            builderSetup.AutoNameProperties = false;
+            var obj = new Builder<MyClass>(builderSetup).CreateNew().Build();
 
             Assert.That(obj.Int, Is.EqualTo(0));
         }
@@ -107,9 +110,10 @@ namespace FizzWare.NBuilder.Tests.Integration
         [Test]
         public void ShouldBeAbleToDisableAutomaticPropertyNamingForASpecificFieldOfASpecificType()
         {
-            BuilderSetup.DisablePropertyNamingFor<MyClass, int>(x => x.Int);
+            var builderSetup = new BuilderSetup();
+            builderSetup.DisablePropertyNamingFor<MyClass, int>(x => x.Int);
 
-            var obj = Builder<MyClass>.CreateNew().Build();
+            var obj = new Builder<MyClass>(builderSetup).CreateNew().Build();
 
             Assert.That(obj.Int, Is.EqualTo(0));
             Assert.That(obj.Long, Is.EqualTo(1));

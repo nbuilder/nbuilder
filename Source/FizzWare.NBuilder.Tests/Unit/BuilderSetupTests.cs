@@ -11,6 +11,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         private MockRepository mocks;
         private IPersistenceService persistenceService;
         private IMyClassRepository repository;
+        BuilderSetup builderSetup;
 
         [SetUp]
         public void SetUp()
@@ -18,14 +19,14 @@ namespace FizzWare.NBuilder.Tests.Unit
             mocks = new MockRepository();
             persistenceService = mocks.DynamicMock<IPersistenceService>();
             repository = mocks.DynamicMock<IMyClassRepository>();
-
-            BuilderSetup.SetPersistenceService(this.persistenceService);
+            builderSetup = new BuilderSetup();
+            builderSetup.SetPersistenceService(this.persistenceService);
         }
 
         [Test]
         public void ShouldBeAbleToRegisterThePersistenceService()
         {
-            Assert.That(BuilderSetup.GetPersistenceService(), Is.EqualTo(this.persistenceService));
+            Assert.That(builderSetup.GetPersistenceService(), Is.EqualTo(this.persistenceService));
         }
 
         [Test]
@@ -38,7 +39,7 @@ namespace FizzWare.NBuilder.Tests.Unit
                 persistenceService.Expect(x => x.SetPersistenceCreateMethod(func));
             }
 
-            BuilderSetup.SetCreatePersistenceMethod<MyClass>(func);
+            builderSetup.SetCreatePersistenceMethod<MyClass>(func);
         }
 
         [Test]
@@ -51,7 +52,7 @@ namespace FizzWare.NBuilder.Tests.Unit
                 persistenceService.Expect(x => x.SetPersistenceUpdateMethod(func));
             }
 
-            BuilderSetup.SetUpdatePersistenceMethod<MyClass>(func);
+            builderSetup.SetUpdatePersistenceMethod<MyClass>(func);
         }
     }
 }

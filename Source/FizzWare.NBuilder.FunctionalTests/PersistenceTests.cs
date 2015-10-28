@@ -12,19 +12,14 @@ namespace FizzWare.NBuilder.FunctionalTests
     [TestFixture]
     public class PersistenceTests
     {
-        [SetUp]
-        public void SetUp()
-        {
-            // Need to call this explicitly here to overcome a bug in resharper's test runner
-            new SetupFixture().SetUp();
-
-            Database.Clear();
-        }
+      
 
         [Test]
         public void PersistingASingleObject()
         {
-            Builder<Product>.CreateNew().Persist();
+            var builderSetup =new SetupFixture().SetUp();
+            Database.Clear();
+            new Builder<Product>(builderSetup).CreateNew().Persist();
 
             // Go directly to the database to do some asserts
             var dataTable = Database.GetContentsOf(Database.Tables.Product);
@@ -40,9 +35,11 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void PersistingASingleTaxTypeAndAListOf100Products()
         {
-            var taxType = Builder<TaxType>.CreateNew().Persist();
+            var builderSetup = new SetupFixture().SetUp();
+            Database.Clear();
+            var taxType = new Builder<TaxType>(builderSetup).CreateNew().Persist();
 
-            Builder<Product>.CreateListOfSize(100)
+            new Builder<Product>(builderSetup).CreateListOfSize(100)
                 .All()
                     .With(x => x.TaxType = taxType)
                 .Persist(); // NB: Persistence is setup in the SetupFixture class
@@ -56,9 +53,11 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Description("Instead of assigning directly to a category")]
         public void PersistingUsingPick_UpTo_AndDoForEach()
         {
-            var categories = Builder<Category>.CreateListOfSize(10).Persist();
+            var builderSetup = new SetupFixture().SetUp();
+            Database.Clear();
+            var categories = new Builder<Category>(builderSetup).CreateListOfSize(10).Persist();
 
-            Builder<Product>
+            new Builder<Product>(builderSetup)
                 .CreateListOfSize(50)
                 .All()
                 .DoForEach((x, y) => x.AddToCategory(y), Pick<Category>.UniqueRandomList(With.UpTo(4).Elements).From(categories))
@@ -72,14 +71,16 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void PersistingAListOfProductsAndCategories()
         {
+            var builderSetup = new SetupFixture().SetUp();
+            Database.Clear();
             const int numProducts = 500;
             const int numCategories = 50;
             const int numCategoriesForEachProduct = 5;
 
-            var categories = Builder<Category>.CreateListOfSize(numCategories).Persist();
+            var categories = new Builder<Category>(builderSetup).CreateListOfSize(numCategories).Persist();
 
-            Builder<Product>
-                .CreateListOfSize(numProducts)
+            new Builder<Product>(builderSetup)
+                 .CreateListOfSize(numProducts)
                 .All()
                     .With(x => x.Categories = Pick<Category>.UniqueRandomList(With.Exactly(numCategoriesForEachProduct).Elements).From(categories))
                 .Persist(); // NB: Persistence is setup in the SetupFixture class

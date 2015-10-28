@@ -17,9 +17,10 @@ namespace FizzWare.NBuilder.Implementation
 
         private readonly List<MultiFunction> multiFunctions = new List<MultiFunction>();
         private Expression<Func<int, T>> _constructorExpression = null;
-
-        public ObjectBuilder(IReflectionUtil reflectionUtil)
+        public BuilderSetup BuilderSetup { get; set; }
+        public ObjectBuilder(IReflectionUtil reflectionUtil, BuilderSetup builderSetup)
         {
+            BuilderSetup = builderSetup;
             this.reflectionUtil = reflectionUtil;
         }
 

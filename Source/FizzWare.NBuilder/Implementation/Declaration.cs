@@ -10,11 +10,13 @@ namespace FizzWare.NBuilder.Implementation
         /// </summary>
         /// <param name="listBuilderImpl">The list builder.</param>
         /// <param name="objectBuilder">The object builder.</param>
+        public BuilderSetup BuilderSetup { get; set; }
         protected Declaration(IListBuilderImpl<T> listBuilderImpl, IObjectBuilder<T> objectBuilder)
         {
             this.listBuilderImpl = listBuilderImpl;
             this.objectBuilder = objectBuilder;
             MasterListAffectedIndexes = new List<int>();
+            BuilderSetup = listBuilderImpl.BuilderSetup;
         }
 
         /// <summary>

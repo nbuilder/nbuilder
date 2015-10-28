@@ -9,7 +9,8 @@ namespace FizzWare.NBuilder.Tests.Integration
         [Test]
         public void ShouldBeAbleToCreateAClassThatHasANullCharConstant()
         {
-            var mc = Builder<MyClassWithCharConst>.CreateNew().Build();
+            var builderSetup = new BuilderSetup();
+            var mc = new Builder<MyClassWithCharConst>(builderSetup).CreateNew().Build();
 
             Assert.That(mc.GetNullCharConst(), Is.EqualTo(MyClassWithCharConst.NullCharConst));
         }
@@ -17,7 +18,8 @@ namespace FizzWare.NBuilder.Tests.Integration
         [Test]
         public void ShouldBeAbleToCreateAClassThatHasACharConstant()
         {
-            var mc = Builder<MyClassWithCharConst>.CreateNew().Build();
+            var builderSetup = new BuilderSetup();
+            var mc = new Builder<MyClassWithCharConst>(builderSetup).CreateNew().Build();
 
             Assert.That(mc.GetNonNullCharConst(), Is.EqualTo(MyClassWithCharConst.NonNullCharConst));
         }

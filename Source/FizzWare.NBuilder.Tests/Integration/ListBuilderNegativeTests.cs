@@ -14,15 +14,17 @@ namespace FizzWare.NBuilder.Tests.Integration
         [ExpectedException(typeof(ArgumentException))]
         public void ShouldComplainIfTheFirstRangeTooBig()
         {
-            Builder<MyClass>.CreateListOfSize(10).TheFirst(11).With(x => x.StringOne = "Description").Build();
+            var builderSetup = new BuilderSetup();
+            new Builder<MyClass>(builderSetup).CreateListOfSize(10).TheFirst(11).With(x => x.StringOne = "Description").Build();
         }
 
         [Test]
         [ExpectedException(typeof(BuilderException))]
         public void ShouldComplainIfTheNextRangeWillBeTooBig()
         {
-            Builder<MyClass>
-                .CreateListOfSize(10)
+            var builderSetup = new BuilderSetup();
+            new Builder<MyClass>(builderSetup)
+                 .CreateListOfSize(10)
                 .TheFirst(5)
                     .With(x => x.StringOne = "Description")
                 .TheNext(10)
@@ -34,29 +36,33 @@ namespace FizzWare.NBuilder.Tests.Integration
         [ExpectedException(typeof(BuilderException))]
         public void ShouldComplainIfYouTryToCreateAnInterface()
         {
-            Builder<IMyInterface>.CreateListOfSize(10).Build();
+            var builderSetup = new BuilderSetup();
+            new Builder<IMyInterface>(builderSetup).CreateListOfSize(10).Build();
         }
 
         [Test]
         [ExpectedException(typeof(TypeCreationException))]
         public void should_complain_if_you_try_to_create_an_abstract_class()
         {
-            Builder<MyAbstractClass>.CreateNew().Build();
+            var builderSetup = new BuilderSetup();
+            new Builder<MyAbstractClass>(builderSetup).CreateNew().Build();
         }
 
         [Test]
         [ExpectedException(typeof(TypeCreationException))]
         public void should_complain_if_you_try_to_create_an_interface()
         {
-            Builder<IMyInterface>.CreateNew().Build();
+            var builderSetup = new BuilderSetup();
+            new Builder<IMyInterface>(builderSetup).CreateNew().Build();
         }
 
         [Test]
         [ExpectedException(typeof(BuilderException))]
         public void ShouldComplainIfAndThePreviousRangeWillBeTooBig()
         {
-            Builder<MyClass>
-                .CreateListOfSize(10)
+            var builderSetup = new BuilderSetup();
+            new Builder<MyClass>(builderSetup)
+                 .CreateListOfSize(10)
                 .TheLast(5)
                     .With(x => x.StringOne = "test")
                 .ThePrevious(6)
@@ -68,7 +74,8 @@ namespace FizzWare.NBuilder.Tests.Integration
         [ExpectedException(typeof(ArgumentException))]
         public void ShouldComplainIfRandomAmountTooBig()
         {
-            Builder<MyClass>
+            var builderSetup = new BuilderSetup();
+            new Builder<MyClass>(builderSetup)
                 .CreateListOfSize(10)
                 .Random(11)
                     .With(x => x.StringOne = "test")
@@ -79,8 +86,9 @@ namespace FizzWare.NBuilder.Tests.Integration
         [ExpectedException(typeof(ArgumentException))]
         public void ShouldComplainIfRandomAmountTooBigForRange()
         {
-            Builder<MyClass>
-                .CreateListOfSize(10)
+            var builderSetup = new BuilderSetup();
+            new Builder<MyClass>(builderSetup)
+                 .CreateListOfSize(10)
                 .Random(5, 0, 3)
                     .With(x => x.StringOne = "test")
                 .Build();
@@ -90,7 +98,8 @@ namespace FizzWare.NBuilder.Tests.Integration
         [ExpectedException(typeof(BuilderException))]
         public void ShouldComplainIfRandomRangeTooBig()
         {
-            Builder<MyClass>
+            var builderSetup = new BuilderSetup();
+            new Builder<MyClass>(builderSetup)
                 .CreateListOfSize(10)
                 .Random(5, 0, 11)
                     .With(x => x.StringOne = "test")
@@ -101,14 +110,16 @@ namespace FizzWare.NBuilder.Tests.Integration
         [ExpectedException(typeof(ArgumentException))]
         public void ShouldComplainIfSizeOfListLessThanOne()
         {
-            Builder<MyClass>.CreateListOfSize(0).Build();
+            var builderSetup = new BuilderSetup();
+            new Builder<MyClass>(builderSetup).CreateListOfSize(0).Build();
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentException))]
         public void ShouldComplainIfSectionGreaterThanListSize()
         {
-            Builder<MyClass>
+            var builderSetup = new BuilderSetup();
+            new Builder<MyClass>(builderSetup)
                 .CreateListOfSize(10)
                 .Section(0, 10)
                     .With(x => x.StringOne = "test")
@@ -119,7 +130,8 @@ namespace FizzWare.NBuilder.Tests.Integration
         [ExpectedException(typeof(BuilderException))]
         public void CanOnlyUseAndTheNextAfterAnotherDeclaration()
         {
-            Builder<MyClass>
+            var builderSetup = new BuilderSetup();
+            new Builder<MyClass>(builderSetup)
                 .CreateListOfSize(10)
                 .TheNext(5)
                     .With(x => x.StringOne = "test")
@@ -130,7 +142,8 @@ namespace FizzWare.NBuilder.Tests.Integration
         [ExpectedException(typeof(BuilderException))]
         public void CanOnlyUseAndThePreviousAfterAnotherDeclaration()
         {
-            Builder<MyClass>
+            var builderSetup = new BuilderSetup();
+            new Builder<MyClass>(builderSetup)
                 .CreateListOfSize(10)
                 .ThePrevious(5)
                     .With(x => x.StringOne = "test")

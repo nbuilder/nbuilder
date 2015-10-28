@@ -16,10 +16,11 @@ namespace FizzWare.NBuilder.Tests.Unit
         [SetUp]
         public void SetUp()
         {
+            BuilderSetup builderSetup = new BuilderSetup();
             IReflectionUtil reflectionUtil = MockRepository.GenerateStub<IReflectionUtil>();
             reflectionUtil.Stub(p => p.IsDefaultValue(Arg<int>.Is.Anything)).Return(true);
 
-            propertyNamer = new PropertyNamerStub(reflectionUtil);
+            propertyNamer = new PropertyNamerStub(reflectionUtil, builderSetup);
         }
 
         [Test]
@@ -59,7 +60,7 @@ namespace FizzWare.NBuilder.Tests.Unit
 
         private class PropertyNamerStub : PropertyNamer
         {
-            public PropertyNamerStub(IReflectionUtil reflectionUtil) : base(reflectionUtil) { }
+            public PropertyNamerStub(IReflectionUtil reflectionUtil,BuilderSetup builderSetup) : base(reflectionUtil, builderSetup) { }
 
             public override void SetValuesOfAllIn<T>(IList<T> objects)
             {
