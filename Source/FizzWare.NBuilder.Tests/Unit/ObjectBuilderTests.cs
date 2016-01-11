@@ -20,13 +20,14 @@ namespace FizzWare.NBuilder.Tests.Unit
         [SetUp]
         public void SetUp()
         {
+            var builderSetup = new BuilderSetup();
             mocks = new MockRepository();
 
             reflectionUtil = mocks.DynamicMock<IReflectionUtil>();
 
-            builder = new ObjectBuilder<MyClass>(reflectionUtil);
-            myClassWithConstructorBuilder = new ObjectBuilder<MyClassWithConstructor>(reflectionUtil);
-            myClassWithOptionalConstructorBuilder = new ObjectBuilder<MyClassWithOptionalConstructor>(reflectionUtil);
+            builder = new ObjectBuilder<MyClass>(reflectionUtil, builderSetup);
+            myClassWithConstructorBuilder = new ObjectBuilder<MyClassWithConstructor>(reflectionUtil, builderSetup);
+            myClassWithOptionalConstructorBuilder = new ObjectBuilder<MyClassWithOptionalConstructor>(reflectionUtil, builderSetup);
         }
 
         [TearDown]
@@ -243,10 +244,11 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Test]
         public void ShouldBeAbleToUseDoMultiple()
         {
+            var builderSetup = new BuilderSetup();
             var myClass = mocks.DynamicMock<IMyInterface>();
             var list = new List<IMyOtherInterface> { mocks.Stub<IMyOtherInterface>(), mocks.Stub<IMyOtherInterface>(), mocks.Stub<IMyOtherInterface>() };
 
-            var builder2 = new ObjectBuilder<IMyInterface>(reflectionUtil);
+            var builder2 = new ObjectBuilder<IMyInterface>(reflectionUtil,builderSetup);
 
             using (mocks.Record())
             {

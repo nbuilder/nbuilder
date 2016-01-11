@@ -10,20 +10,17 @@ namespace FizzWare.NBuilder.FunctionalTests
     [TestFixture]
     public class HierarchyBuilderTests
     {
-        [SetUp]
-        public void SetUp()
-        {
-            new SetupFixture().SetUp();
-        }
+       
 
         [Test]
         public void CreatingAHierarchyOfCategories()
         {
+            var builderSetup = new SetupFixture().SetUp();
             const int depth = 3;
             const int minChildren = 3;
             const int maxChildren = 8;
 
-            var hierarchySpec = Builder<HierarchySpec<Category>>.CreateNew()
+            var hierarchySpec = new Builder<HierarchySpec<Category>>(builderSetup).CreateNew()
                 .With(x => x.AddMethod = (y, z) => y.AddChild(z))
                 .With(x => x.Depth = depth)
                 .With(x => x.MinimumChildren = minChildren)
@@ -32,7 +29,7 @@ namespace FizzWare.NBuilder.FunctionalTests
                 .With(x => x.NumberOfRoots = 5)
                 .Build();
 
-            var categories = Builder<Category>.CreateListOfSize(10000)
+            var categories = new Builder<Category>(builderSetup).CreateListOfSize(10000)
                 .All()
                 .PersistHierarchy(hierarchySpec);
 

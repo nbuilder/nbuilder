@@ -19,7 +19,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         public void SetUp()
         {
             reflectionUtil = MockRepository.GenerateStub<IReflectionUtil>();
-            propertyNamer = new SequentialPropertyNamer(reflectionUtil);
+            propertyNamer = new SequentialPropertyNamer(reflectionUtil, new BuilderSetup());
         }
 
         [Test]

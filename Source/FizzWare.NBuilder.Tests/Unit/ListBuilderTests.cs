@@ -37,7 +37,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         {
             IGlobalDeclaration<MyClass> declaration = MockRepository.GenerateMock<IGlobalDeclaration<MyClass>>();
 
-            var builder = new ListBuilder<MyClass>(listSize, propertyNamer, reflectionUtil);
+            var builder = new ListBuilder<MyClass>(listSize, propertyNamer, reflectionUtil, new BuilderSetup());
 
             builder.AddDeclaration(declaration);
 
@@ -61,7 +61,7 @@ namespace FizzWare.NBuilder.Tests.Unit
                 reflectionUtil.Expect(x => x.RequiresConstructorArgs(typeof (MyClass))).Return(true);
             }
 
-            var builder = new ListBuilder<MyClass>(10, propertyNamer, reflectionUtil);
+            var builder = new ListBuilder<MyClass>(10, propertyNamer, reflectionUtil,new BuilderSetup());
 
             using (mocks.Playback())
             {
@@ -80,7 +80,7 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             var list = new List<MyClass>();
             
-            var builder = new ListBuilder<MyClass>(listSize, propertyNamer, reflectionUtil);
+            var builder = new ListBuilder<MyClass>(listSize, propertyNamer, reflectionUtil, new BuilderSetup());
 
             using (mocks.Playback())
                 builder.Name(list);
@@ -91,7 +91,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         {
             IDeclaration<MyClass> declaration = MockRepository.GenerateMock<IDeclaration<MyClass>>();
            
-            var builder = new ListBuilder<MyClass>(listSize, propertyNamer, reflectionUtil);
+            var builder = new ListBuilder<MyClass>(listSize, propertyNamer, reflectionUtil, new BuilderSetup());
 
             using (mocks.Record())
             {
@@ -110,7 +110,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Test]
         public void IfNoAllExistsAndSumOfAffectedItemsInDeclarationsIsLessThanCapacity_ShouldAddADefaultAll()
         {
-            var builder = new ListBuilder<MyClass>(30, propertyNamer, reflectionUtil);
+            var builder = new ListBuilder<MyClass>(30, propertyNamer, reflectionUtil, new BuilderSetup());
             builder.TheFirst(10);
 
             using (mocks.Record())

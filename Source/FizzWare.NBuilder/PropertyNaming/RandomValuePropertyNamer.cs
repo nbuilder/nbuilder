@@ -17,24 +17,26 @@ namespace FizzWare.NBuilder.PropertyNaming
 
         private readonly IRandomGenerator generator;
         private readonly bool useLoremIpsumForStrings;
+        private readonly BuilderSetup _builderSetup;
 
-        public RandomValuePropertyNamer()
-            : this (new RandomGenerator(), new ReflectionUtil(), false)
+        public RandomValuePropertyNamer(BuilderSetup builderSetup)
+            : this (new RandomGenerator(), new ReflectionUtil(), false,builderSetup)
         {
         }
 
-        public RandomValuePropertyNamer(IRandomGenerator generator, IReflectionUtil reflectionUtil, bool generatePositiveValuesOnly)
-            : this(generator, reflectionUtil, generatePositiveValuesOnly, DateTime.MinValue, DateTime.MaxValue, false)
+        public RandomValuePropertyNamer(IRandomGenerator generator, IReflectionUtil reflectionUtil, bool generatePositiveValuesOnly,BuilderSetup builderSetup)
+            : this(generator, reflectionUtil, generatePositiveValuesOnly, DateTime.MinValue, DateTime.MaxValue, false,builderSetup)
         {
             this.generator = generator;
         }
 
-        public RandomValuePropertyNamer(IRandomGenerator generator, IReflectionUtil reflectionUtil, bool generatePositiveValuesOnly, DateTime minDate, DateTime maxDate, bool useLoremIpsumForStrings)
-            : base(reflectionUtil)
+        public RandomValuePropertyNamer(IRandomGenerator generator, IReflectionUtil reflectionUtil, bool generatePositiveValuesOnly, DateTime minDate, DateTime maxDate, bool useLoremIpsumForStrings,BuilderSetup builderSetup)
+            : base(reflectionUtil, builderSetup)
         {
             this.generator = generator;
             this.generatePositiveValuesOnly = generatePositiveValuesOnly;
             this.useLoremIpsumForStrings = useLoremIpsumForStrings;
+            _builderSetup = builderSetup;
             this.minDate = minDate;
             this.maxDate = maxDate;
         }

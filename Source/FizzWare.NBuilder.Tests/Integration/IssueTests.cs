@@ -17,10 +17,11 @@ namespace FizzWare.NBuilder.Tests.Integration
         [Test]
         public void Issue68_ReadonlyProperty_ShouldNotWriteTraceDueToAttemptingToSetAPropertyThatCannotBeSet()
         {
+            var builderSetup = new BuilderSetup();
             var traceListener = Substitute.For<TraceListener>();
             Trace.Listeners.Add(traceListener);
 
-            var product = Builder<DataModel>
+            var product = new Builder<DataModel>(builderSetup)
                            .CreateListOfSize(2)
                            .All()
                            .With(x => x.ExpirationMonth = "01")

@@ -13,7 +13,8 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void Fluent_dates_example()
         {
-            var product = Builder<Product>
+            var builderSetup = new BuilderSetup();
+            var product = new Builder<Product>(builderSetup)
                             .CreateNew()
                             .With(x => x.Created = The.Year(2006).On.May.The10th.At(09, 00))
                             .With(x => x.LastEdited = On.August.The15th.At(15, 43))
@@ -26,9 +27,10 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void Using_random_dates()
         {
+            var builderSetup = new BuilderSetup();
             var generator = new RandomGenerator();
             
-            var products = Builder<Product>
+            var products = new Builder<Product>(builderSetup)
                             .CreateListOfSize(100)
                             .All()
                                 .With(x => x.Created = generator.Next(July.The(1), November.The(10)))
@@ -52,7 +54,8 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void Using_full_syntax()
         {
-            var product = Builder<Product>.CreateNew()
+            var builderSetup = new BuilderSetup();
+            var product = new Builder<Product>(builderSetup).CreateNew()
                             .With(x => x.Created = The.Year(2008).On.January.The10th.At(05, 49, 38))
                             .Build();
 
@@ -64,7 +67,8 @@ namespace FizzWare.NBuilder.FunctionalTests
         {
             // (Defaults to current year)
 
-            var product = Builder<Product>.CreateNew()
+            var builderSetup = new BuilderSetup();
+            var product = new Builder<Product>(builderSetup).CreateNew()
                 .With(x => x.Created = On.July.The21st.At(07, 00))
                 .Build();
 
@@ -74,7 +78,8 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void Just_the_date()
         {
-            var product = Builder<Product>.CreateNew()
+            var builderSetup = new BuilderSetup();
+            var product = new Builder<Product>(builderSetup).CreateNew()
                 .With(x => x.Created = On.May.The14th)
                 .Build();
 
@@ -88,7 +93,8 @@ namespace FizzWare.NBuilder.FunctionalTests
             // which one you use is just a matter of preference or one or the other
             // might read better in different contexts.
 
-            var product = Builder<Product>.CreateNew()
+            var builderSetup = new BuilderSetup();
+            var product = new Builder<Product>(builderSetup).CreateNew()
                                 .With(x => x.Created = December.The10th.At(09, 00))
                                 .Build();
 
@@ -111,7 +117,8 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void Using_the_and_a_number()
         {
-            var product = Builder<Product>.CreateNew()
+            var builderSetup = new BuilderSetup();
+            var product = new Builder<Product>(builderSetup).CreateNew()
                 .With(x => x.Created = On.August.The(21).At(16, 38, 46))
                 .Build();
 

@@ -8,25 +8,25 @@ using FizzWare.NBuilder.PropertyNaming;
 
 namespace FizzWare.NBuilder
 {
-    public sealed class BuilderSetup
+    public class BuilderSetup
     {
-        private static IPersistenceService persistenceService;
-        public static bool AutoNameProperties;
-        private static Dictionary<Type, IPropertyNamer> propertyNamers;
-        private static IPropertyNamer defaultPropertyNamer;
+        private IPersistenceService persistenceService;
+        public bool AutoNameProperties;
+        private Dictionary<Type, IPropertyNamer> propertyNamers;
+        private IPropertyNamer defaultPropertyNamer;
 
-        private static List<PropertyInfo> disabledAutoNameProperties;
+        private List<PropertyInfo> disabledAutoNameProperties;
 
-        internal static bool HasDisabledAutoNameProperties;
+        internal  bool HasDisabledAutoNameProperties;
 
-        static BuilderSetup()
+        public BuilderSetup()
         {
             ResetToDefaults();
         }
 
-        public static void ResetToDefaults()
+        public  void ResetToDefaults()
         {
-            SetDefaultPropertyNamer(new SequentialPropertyNamer(new ReflectionUtil()));
+            SetDefaultPropertyNamer(new SequentialPropertyNamer(new ReflectionUtil(),this));
             persistenceService = new PersistenceService();
             AutoNameProperties = true;
             propertyNamers = new Dictionary<Type, IPropertyNamer>();
@@ -34,37 +34,37 @@ namespace FizzWare.NBuilder
             disabledAutoNameProperties = new List<PropertyInfo>();
         }
 
-        public static void SetDefaultPropertyNamer(IPropertyNamer propertyNamer)
+        public  void SetDefaultPropertyNamer(IPropertyNamer propertyNamer)
         {
             defaultPropertyNamer = propertyNamer;
         }
 
-        public static void SetPersistenceService(IPersistenceService service)
+        public  void SetPersistenceService(IPersistenceService service)
         {
             persistenceService = service;
         }
 
-        public static IPersistenceService GetPersistenceService()
+        public  IPersistenceService GetPersistenceService()
         {
             return persistenceService;
         }
 
-        public static void SetCreatePersistenceMethod<T>(Action<T> saveMethod)
+        public  void SetCreatePersistenceMethod<T>(Action<T> saveMethod)
         {
             persistenceService.SetPersistenceCreateMethod(saveMethod);
         }
 
-        public static void SetUpdatePersistenceMethod<T>(Action<T> saveMethod)
+        public  void SetUpdatePersistenceMethod<T>(Action<T> saveMethod)
         {
             persistenceService.SetPersistenceUpdateMethod(saveMethod);
         }
 
-        public static void SetPropertyNamerFor<T>(IPropertyNamer propertyNamer)
+        public  void SetPropertyNamerFor<T>(IPropertyNamer propertyNamer)
         {
             propertyNamers.Add(typeof(T), propertyNamer);
         }
 
-        public static IPropertyNamer GetPropertyNamerFor<T>()
+        public  IPropertyNamer GetPropertyNamerFor<T>()
         {
             if (!propertyNamers.ContainsKey(typeof(T)))
             {
@@ -74,13 +74,13 @@ namespace FizzWare.NBuilder
             return propertyNamers[typeof (T)];
         }
 
-        public static void DisablePropertyNamingFor<T, TFunc>(Expression<Func<T, TFunc>> func)
+        public  void DisablePropertyNamingFor<T, TFunc>(Expression<Func<T, TFunc>> func)
         {
             HasDisabledAutoNameProperties = true;
             disabledAutoNameProperties.Add(GetProperty(func));
         }
 
-        public static bool ShouldIgnoreProperty(PropertyInfo info)
+        public  bool ShouldIgnoreProperty(PropertyInfo info)
         {
             if (disabledAutoNameProperties.Any(x => x.DeclaringType == info.DeclaringType && x.Name == info.Name))
                 return true;
@@ -88,14 +88,14 @@ namespace FizzWare.NBuilder
             return false;
         }
 
-        private static PropertyInfo GetProperty<TModel, T>(Expression<Func<TModel, T>> expression)
+        private  PropertyInfo GetProperty<TModel, T>(Expression<Func<TModel, T>> expression)
         {
             MemberExpression memberExpression = GetMemberExpression(expression);
 
             return (PropertyInfo)memberExpression.Member;
         }
 
-        private static MemberExpression GetMemberExpression<TModel, T>(Expression<Func<TModel, T>> expression)
+        private  MemberExpression GetMemberExpression<TModel, T>(Expression<Func<TModel, T>> expression)
         {
             MemberExpression memberExpression = null;
             if (expression.Body.NodeType == ExpressionType.MemberAccess)
