@@ -34,9 +34,21 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
 
         [Test]
+        public void ShouldBeAbleToGeneratePositiveInt16UsingNext()
+        {
+            randomGenerator.Next((short)0, short.MaxValue);
+        }
+
+        [Test]
         public void ShouldBeAbleToGenerateInt32UsingNext()
         {
             randomGenerator.Next(int.MinValue, int.MaxValue);
+        }
+
+        [Test]
+        public void ShouldBeAbleToGeneratePositiveInt32UsingNext()
+        {
+            randomGenerator.Next(0, int.MaxValue);
         }
 
         [Test]
@@ -46,9 +58,21 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
 
         [Test]
+        public void ShouldBeAbleToGeneratePositiveInt64UsingNext()
+        {
+            randomGenerator.Next(0, long.MaxValue);
+        }
+
+        [Test]
         public void ShouldBeAbleToGenerateSingleUsingNext()
         {
             randomGenerator.Next(float.MinValue, float.MaxValue);
+        }
+
+        [Test]
+        public void ShouldBeAbleToGeneratePositiveSingleUsingNext()
+        {
+            randomGenerator.Next(0, Single.MaxValue);
         }
 
         [Test]
@@ -58,9 +82,27 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
 
         [Test]
+        public void ShouldBeAbleToGeneratePositiveDoubleUsingNext()
+        {
+            randomGenerator.Next(0, double.MaxValue);
+        }
+
+        [Test]
         public void ShouldBeAbleToGenerateDecimalUsingNext()
         {
             randomGenerator.Next(decimal.MinValue, decimal.MaxValue);
+        }
+
+        [Test]
+        public void ShouldBeAbleToGeneratePositiveDecimalUsingNext()
+        {
+            randomGenerator.Next(0, decimal.MaxValue);
+        }
+
+        [Test]
+        public void ShouldBeAbleToGeneratePositiveFloatUsingNext()
+        {
+            randomGenerator.Next(0, float.MaxValue);
         }
 
         [Test]
@@ -150,7 +192,13 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
 
         [Test]
-        public void ShouldBeAbleToGenerateSingle()
+        public void ShouldBeAbleToGenerateShort()
+        {
+            randomGenerator.Short();
+        }
+
+        [Test]
+        public void ShouldBeAbleToGenerateFloat()
         {
             randomGenerator.Float();
         }
