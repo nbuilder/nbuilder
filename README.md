@@ -1,5 +1,7 @@
 # Nbuilder - A rapid test object generator.
 
+[![Join the chat at https://gitter.im/garethdown44/nbuilder](https://badges.gitter.im/garethdown44/nbuilder.svg)](https://gitter.im/garethdown44/nbuilder?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 NBuilder.Trunk: ![NBuilder.Trunk](http://teamcity.codebetter.com/app/rest/builds/buildType:%28id:bt292%29/statusIcon)  
 NBuilder.CI: ![NBuilder.CI](http://teamcity.codebetter.com/app/rest/builds/buildType:%28id:NBuilder_CI%29/statusIcon)    
 NBuilder.Publish ![NBuilder.Publish](http://teamcity.codebetter.com/app/rest/builds/buildType:%28id:NBuilder_NBuilderPublish%29/statusIcon)    
