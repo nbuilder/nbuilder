@@ -46,61 +46,75 @@ namespace FizzWare.NBuilder.Tests.Unit
         #endif
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void TheFirstAmountMustBeOneOrGreater()
         {
-            ListBuilderExtensions.TheFirst(listBuilderImpl, 0);
+            Assert.Throws<ArgumentException>(() =>
+            {
+                ListBuilderExtensions.TheFirst(listBuilderImpl, 0);
+            });
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void TheFirstAmountShouldBeLessThanListCapacity()
         {
             using (mocks.Record())
                 listBuilderImpl.Expect(x => x.Capacity).Return(10);
 
-            ListBuilderExtensions.TheFirst(listBuilderImpl, 11);
+            Assert.Throws<ArgumentException>(() =>
+            {
+                ListBuilderExtensions.TheFirst(listBuilderImpl, 11);
+            });
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void TheLastAmountMustBeOneOrGreater()
         {
-            ListBuilderExtensions.TheLast(listBuilderImpl, 0);
+            Assert.Throws<ArgumentException>(() =>
+            {
+                ListBuilderExtensions.TheLast(listBuilderImpl, 0);
+            });
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void TheLastAmountShouldBeLessThanListCapacity()
         {
             using (mocks.Record())
                 listBuilderImpl.Expect(x => x.Capacity).Return(10);
 
-            ListBuilderExtensions.TheLast(listBuilderImpl, 11);
+            Assert.Throws<ArgumentException>(() =>
+            {
+                ListBuilderExtensions.TheLast(listBuilderImpl, 11);
+            });
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void RandomAmountMustBeOneOrGreater()
         {
-            ListBuilderExtensions.Random(listBuilderImpl, 0);
+            Assert.Throws<ArgumentException>(() =>
+            {
+                ListBuilderExtensions.Random(listBuilderImpl, 0);
+            });
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void RandomAmountShouldBeLessThanListCapacity()
         {
             using (mocks.Record())
                 listBuilderImpl.Expect(x => x.Capacity).Return(10);
 
-            ListBuilderExtensions.Random(listBuilderImpl, 11);
+            Assert.Throws<ArgumentException>(() =>
+            {
+                ListBuilderExtensions.Random(listBuilderImpl, 11);
+            });
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void SectionStartMustBeGreaterThanZero()
         {
-            ListBuilderExtensions.Section(listBuilderImpl, -1, 10);
+            Assert.Throws<ArgumentException>(() =>
+            {
+                ListBuilderExtensions.Section(listBuilderImpl, -1, 10);
+            });
         }
 
         [Test]
@@ -152,13 +166,15 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void TheNextAmountShouldBeGreaterThanOne()
         {
             using (mocks.Record())
                 listBuilderImpl.Expect(x => x.Capacity).Return(10);
 
-            ListBuilderExtensions.TheNext(listBuilderImpl, 0);
+            Assert.Throws<ArgumentException>(() =>
+            {
+                ListBuilderExtensions.TheNext(listBuilderImpl, 0);
+            });
         }
 
         // TODO FIX

@@ -221,12 +221,13 @@ namespace FizzWare.NBuilder.FunctionalTests
         }
 
         [Test]
-        [ExpectedException(typeof(TypeCreationException))]
         public void NBuilderIsNotAMockingFramework() // (!)
         {
             var builderSetup = new BuilderSetup();
-            new Builder<IProduct>(builderSetup).CreateNew().Build();
-            //      ^
+            Assert.Throws<TypeCreationException>(() =>
+            {
+                new Builder<IProduct>(builderSetup).CreateNew().Build();
+            });
         }
 
         [Test]
@@ -246,11 +247,13 @@ namespace FizzWare.NBuilder.FunctionalTests
         }
 
         [Test]
-        [ExpectedException(typeof(TypeCreationException))]
         public void WillComplainIfYouTryToBuildAClassThatCannotBeInstantiatedDirectly()
         {
             var builderSetup = new BuilderSetup();
-            new Builder<ChuckNorris>(builderSetup).CreateNew().Build();
+            Assert.Throws<TypeCreationException>(() =>
+            {
+                new Builder<ChuckNorris>(builderSetup).CreateNew().Build();
+            });
         }
 
     }

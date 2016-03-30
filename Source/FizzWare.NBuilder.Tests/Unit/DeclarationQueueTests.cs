@@ -57,10 +57,12 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
         public void ShouldThrowIfTryToDequeueWhenQueueEmpty()
         {
-            declarations.Dequeue();
+            Assert.Throws<InvalidOperationException>(() =>
+            {
+                declarations.Dequeue();
+            });
         }
 
         [Test]
@@ -109,7 +111,6 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
 
         [Test]
-        [ExpectedException(typeof(BuilderException))]
         public void ShouldComplainIfEndIsGreaterThanCapacity()
         {
             using (mocks.Record())
@@ -124,12 +125,15 @@ namespace FizzWare.NBuilder.Tests.Unit
             using (mocks.Record())
             {
                 declarations.Enqueue(declaration1);
-                declarations.Enqueue(declaration2);
+
+                Assert.Throws<BuilderException>(() =>
+                {
+                    declarations.Enqueue(declaration2);
+                });
             }
         }
 
         [Test]
-        [ExpectedException(typeof(BuilderException))]
         public void ShouldComplainIfStartIsLessThanZero()
         {
             using (mocks.Record())
@@ -142,7 +146,10 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             using (mocks.Record())
             {
-                declarations.Enqueue(declaration1);
+                Assert.Throws<BuilderException>(() =>
+                {
+                    declarations.Enqueue(declaration1);
+                });
             }
         }
     }

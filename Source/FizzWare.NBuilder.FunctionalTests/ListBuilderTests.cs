@@ -319,11 +319,13 @@ namespace FizzWare.NBuilder.FunctionalTests
         }
 
         [Test]
-        [ExpectedException(typeof(BuilderException))]
         public void WillComplainIfYouTryToBuildAClassThatCannotBeInstantiatedDirectly()
         {
-            var builderSetup = new BuilderSetup();
-            new Builder<ChuckNorris>(builderSetup).CreateListOfSize(10).Build();
+            Assert.Throws<BuilderException>(() =>
+            {
+                var builderSetup = new BuilderSetup();
+                new Builder<ChuckNorris>(builderSetup).CreateListOfSize(10).Build();
+            });
         }
 
         [Test]
@@ -402,14 +404,17 @@ namespace FizzWare.NBuilder.FunctionalTests
         }
 
         [Test]
-        [ExpectedException(typeof(TypeCreationException))]
         public void WillComplainIfYouDoNotSupplyArgsMatchingOneOfTheConstructors()
         {
             var builderSetup = new BuilderSetup();
-            new Builder<BasketItem>(builderSetup)
-                 .CreateListOfSize(10)
-                 .All()
-                 .AreConstructedWith().Build();
+
+            Assert.Throws<TypeCreationException>(() =>
+            {
+                new Builder<BasketItem>(builderSetup)
+                     .CreateListOfSize(10)
+                     .All()
+                     .AreConstructedWith().Build();
+            });
         }
 
         [Test]
@@ -606,17 +611,21 @@ namespace FizzWare.NBuilder.FunctionalTests
         }
 
         [Test]
-        [ExpectedException(typeof(BuilderException))]
         public void WillNotLetYouDoThingsThatDoNotMakeSense()
         {
             var builderSetup = new BuilderSetup();
-            new Builder<Product>(builderSetup)
-                .CreateListOfSize(10)
-                .TheFirst(5)
-                    .With(x => x.Title = "titleone")
-                .TheNext(10)
-                    .With(x => x.Title = "titletwo")
-                .Build();
+
+            Assert.Throws<BuilderException>(() =>
+            {
+                new Builder<Product>(builderSetup)
+                    .CreateListOfSize(10)
+                    .TheFirst(5)
+                        .With(x => x.Title = "titleone")
+                    .TheNext(10)
+                        .With(x => x.Title = "titletwo")
+                    .Build();
+
+            });
         }
 
         [Test]

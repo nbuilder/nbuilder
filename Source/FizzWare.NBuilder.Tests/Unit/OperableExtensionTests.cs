@@ -207,12 +207,14 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void ShouldComplainIfOperableIsNotAlsoOfTypeIDeclaration()
         {
             var operableOnly = mocks.DynamicMock<IOperable<MyClass>>();
 
-            OperableExtensions.With(operableOnly, x => x.StringOne = "test");
+            Assert.Throws<ArgumentException>(() =>
+            {
+                OperableExtensions.With(operableOnly, x => x.StringOne = "test");
+            });
         }
     }
     // ReSharper restore InvokeAsExtensionMethod

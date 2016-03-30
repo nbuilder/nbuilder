@@ -146,7 +146,6 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
 
         [Test]
-        [ExpectedException(typeof(PersistenceMethodNotFoundException))]
         public void ShouldComplainIfNoCreatePersistenceServiceFound()
         {
             using (mocks.Record()) { }
@@ -154,12 +153,15 @@ namespace FizzWare.NBuilder.Tests.Unit
             using (mocks.Playback())
             {
                 PersistenceService persistenceService = new PersistenceService();
-                persistenceService.Create(new MyClass());
+
+                Assert.Throws<PersistenceMethodNotFoundException>(() =>
+                {
+                    persistenceService.Create(new MyClass());
+                });
             }
         }
 
         [Test]
-        [ExpectedException(typeof(PersistenceMethodNotFoundException))]
         public void ShouldComplainIfNoUpdatePersistenceServiceFound()
         {
             using (mocks.Record()) { }
@@ -167,12 +169,14 @@ namespace FizzWare.NBuilder.Tests.Unit
             using (mocks.Playback())
             {
                 PersistenceService persistenceService = new PersistenceService();
-                persistenceService.Update(new MyClass());
+                Assert.Throws<PersistenceMethodNotFoundException>(() =>
+                {
+                    persistenceService.Update(new MyClass());
+                });
             }
         }
 
         [Test]
-        [ExpectedException(typeof(PersistenceMethodNotFoundException))]
         public void ShouldComplainIfNoCreatePersistenceServiceFoundForList()
         {
             using (mocks.Record()) { }
@@ -180,12 +184,14 @@ namespace FizzWare.NBuilder.Tests.Unit
             using (mocks.Playback())
             {
                 PersistenceService persistenceService = new PersistenceService();
-                persistenceService.Create((IList<MyClass>)new List<MyClass>());
+                Assert.Throws<PersistenceMethodNotFoundException>(() =>
+                {
+                    persistenceService.Create((IList<MyClass>)new List<MyClass>());
+                });
             }
         }
 
         [Test]
-        [ExpectedException(typeof(PersistenceMethodNotFoundException))]
         public void ShouldComplainIfNoUpdatePersistenceServiceFoundForList()
         {
             using (mocks.Record()) { }
@@ -193,7 +199,10 @@ namespace FizzWare.NBuilder.Tests.Unit
             using (mocks.Playback())
             {
                 PersistenceService persistenceService = new PersistenceService();
-                persistenceService.Update((IList<MyClass>)new List<MyClass>());
+                Assert.Throws<PersistenceMethodNotFoundException>(() =>
+                {
+                    persistenceService.Update((IList<MyClass>)new List<MyClass>());
+                });
             }
         }
     }

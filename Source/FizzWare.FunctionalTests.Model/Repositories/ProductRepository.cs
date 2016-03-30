@@ -5,7 +5,7 @@ using System.Text;
 using Castle.ActiveRecord;
 using FizzWare.NBuilder.FunctionalTests.Model;
 using FizzWare.NBuilder.FunctionalTests.Model.Repositories;
-using NHibernate.Expression;
+using NHibernate.Criterion;
 
 namespace FizzWare.NBuilder.FunctionalTests.Model.Repositories
 {
