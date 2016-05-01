@@ -20,6 +20,7 @@ services:
   - mssql2008r2sp2
 
 init:
+  - ps: pwd 
   - ps: . .\appveyor\build-info.ps1
     
 assembly_info:
