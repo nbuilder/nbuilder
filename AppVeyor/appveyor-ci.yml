@@ -18,12 +18,6 @@ environment:
 
 services:
   - mssql2008r2sp2
-
-init:
-  - ps: pwd 
-  - ps: gci
-  - ps: gci appveyor
-  - ps: . .\appveyor\build-info.ps1
     
 assembly_info:
   patch: true
