@@ -20,7 +20,7 @@ services:
   - mssql2008r2sp2
 
 init:
-  - ps: iex appveyor/build-info.ps1
+  - ps: iex ./appveyor/build-info.ps1
   - ps: |
       $version = new-object System.Version $env:APPVEYOR_BUILD_VERSION
       $env:PackageVersion = "{0}.{1}.{2}-beta-{3}" -f $version.Major, $version.Minor, $version.Build, $version.Revision
@@ -43,7 +43,7 @@ build_script:
   - cmd: msbuild Source\NBuilder-SL4.sln    /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll" /m /verbosity:minimal /p:OutputPath=%APPVEYOR_BUILD_FOLDER%\nbuilder_output\sl4
 
 before_test:
-  - ps: iex ((new-object net.webclient).DownloadString('https://gist.githubusercontent.com/FeodorFitsner/d971c5a98782d211640d/raw/9f88811591e54acfc4ed89971a30a647731a4a40/sql-server-ip-and-alias.ps1'))
+  - ps: iex ./appveyor/sql-server-ip-and-alias.ps1
   - cmd: sqlcmd -S "(local)" -U "sa" -P "Password12!" -Q "CREATE DATABASE NBuilderTests;"
 
 test:
