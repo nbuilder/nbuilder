@@ -37,6 +37,8 @@ build_script:
   - cmd: msbuild Source\NBuilder-SL4.sln    /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll" /m /verbosity:minimal /p:OutputPath=%APPVEYOR_BUILD_FOLDER%\nbuilder_output\sl4
 
 before_test:
+  - ps: pwd
+  - ps: gci
   - ps: . .\appveyor\sql-server-ip-and-alias.ps1
   - cmd: sqlcmd -S "(local)" -U "sa" -P "Password12!" -Q "CREATE DATABASE NBuilderTests;"
 
