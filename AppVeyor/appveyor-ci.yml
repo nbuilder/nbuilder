@@ -21,6 +21,8 @@ services:
 
 init:
   - ps: pwd 
+  - ps: gci
+  - ps: gci appveyor
   - ps: . .\appveyor\build-info.ps1
     
 assembly_info:
