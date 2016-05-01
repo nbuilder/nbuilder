@@ -1,0 +1,53 @@
+
+version: '4.0.0.{build}'
+configuration: Release
+
+branches:
+  except:
+    - master
+
+pull_requests:
+  do_not_increment_build_number: true
+
+environment:
+  feedSource: https://www.myget.org/F/nbuilder/api/v2
+  apiKey:
+    secure: QTtE0uoegbKLWAsCZdiYU8RD9cVevmVtirTaEqEEBedBPu7A7lSYDQyKrnd6EhYQ
+  appveyorApiToken:
+    secure: QrKLWAY5+A/JpbuT/l1HsNqSv0b8VL4KFGU3rwZ73Qc=
+
+services:
+  - mssql2008r2sp2
+
+init:
+  - ps: iex appveyor/build-info.ps1
+    
+assembly_info:
+  patch: true
+  file: AssemblyInfo.*
+  assembly_version: '{version}'
+  assembly_file_version: '{version}'
+  assembly_informational_version: '{version}'
+
+before_build:
+  - nuget restore Source\NBuilder-NET4.0.sln
+  - nuget restore Source\NBuilder-NET3.5.sln
+  - nuget restore Source\NBuilder-SL4.sln 
+
+build_script:
+  - cmd: msbuild Source\NBuilder-NET4.0.sln /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll" /m /verbosity:minimal /p:OutputPath=%APPVEYOR_BUILD_FOLDER%\nbuilder_output\net40
+  - cmd: msbuild Source\NBuilder-NET3.5.sln /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll" /m /verbosity:minimal /p:OutputPath=%APPVEYOR_BUILD_FOLDER%\nbuilder_output\net35
+  - cmd: msbuild Source\NBuilder-SL4.sln    /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll" /m /verbosity:minimal /p:OutputPath=%APPVEYOR_BUILD_FOLDER%\nbuilder_output\sl4
+
+before_test:
+  - ps: iex ((new-object net.webclient).DownloadString('https://gist.githubusercontent.com/FeodorFitsner/d971c5a98782d211640d/raw/9f88811591e54acfc4ed89971a30a647731a4a40/sql-server-ip-and-alias.ps1'))
+  - cmd: sqlcmd -S "(local)" -U "sa" -P "Password12!" -Q "CREATE DATABASE NBuilderTests;"
+
+test:
+  assemblies:
+    - 'nbuilder_output\net40\FizzWare.NBuilder.Tests.dll'
+    - 'nbuilder_output\net40\FizzWare.NBuilder.FunctionalTests*.dll'
+    - 'nbuilder_output\sl4\FizzWare.NBuilder-Silverlight-4.Tests.dll'
+
+cache:
+  - packages -> **\packages.config
