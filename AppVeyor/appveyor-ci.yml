@@ -1,5 +1,5 @@
 
-version: '0.{build}.0-dev'
+version: '4.0.0.{build}'
 configuration: Release
 
 branches:
@@ -20,8 +20,8 @@ services:
   - mssql2008r2sp2
 
 init:
-  - ps: iex ((new-object net.webclient).DownloadString('https://gist.githubusercontent.com/PureKrome/0f79e25693d574807939/raw/8cf3160c9516ef1f4effc825c0a44acc918a0b5a/appveyor-build-info.ps'))
-  
+  - ps: iex appveyor/build-info.ps1
+    
 assembly_info:
   patch: true
   file: AssemblyInfo.*
@@ -48,9 +48,6 @@ test:
     - 'nbuilder_output\net40\FizzWare.NBuilder.Tests.dll'
     - 'nbuilder_output\net40\FizzWare.NBuilder.FunctionalTests*.dll'
     - 'nbuilder_output\sl4\FizzWare.NBuilder-Silverlight-4.Tests.dll'
-
-on_success:
-  - ps:  if ($env:APPVEYOR_PULL_REQUEST_NUMBER) { Write-Host "** This is a Pull Request, so we will not do any NuGet Package/Publishing."; } else { $destinationPath = $env:appveyor_build_folder + ".\file1.ps1"; (new-object net.webclient).DownloadFile('https://raw.githubusercontent.com/PureKrome/PushIt/master/NuGet%20Package%20and%20Publish.ps1', $destinationPath); & $destinationPath  -Version $env:appveyor_build_version -NuGet "C:\Tools\NuGet\nuget.exe" -feedSource $env:feedSource -apiKey $env:apiKey -source '.\NuGet\' -destination '.\NuGet\' }
 
 cache:
   - packages -> **\packages.config
