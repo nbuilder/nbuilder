@@ -39,8 +39,8 @@ build_script:
 before_test:
   - ps: pwd
   - ps: gci
-  - ps: . .\appveyor\sql-server-ip-and-alias.ps1
-  - cmd: sqlcmd -S "(local)" -U "sa" -P "Password12!" -Q "CREATE DATABASE NBuilderTests;"
+  - ps: gci appveyor
+  - ps: . .\appveyor\before_test.ps1
 
 test:
   assemblies:

@@ -26,3 +26,5 @@ Set-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\MSSQLServer\Client\ConnectTo -Na
 Set-Service SQLBrowser -StartupType Manual
 Start-Service SQLBrowser
 Start-Service "MSSQL`$$instanceName"
+
+sqlcmd -S "(local)" -U "sa" -P "Password12!" -Q "CREATE DATABASE NBuilderTests;"
