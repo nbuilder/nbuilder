@@ -28,3 +28,5 @@ Start-Service SQLBrowser
 Start-Service "MSSQL`$$instanceName"
 
 sqlcmd -S "(local)" -U "sa" -P "Password12!" -Q "CREATE DATABASE NBuilderTests;"
+
+
