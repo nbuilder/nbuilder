@@ -4,13 +4,11 @@ configuration: Release
 
 branches:
   except:
+    - /release\/.*/
     - master
 
 pull_requests:
   do_not_increment_build_number: true
-
-services:
-  - mssql2008r2sp2
     
 assembly_info:
   patch: true

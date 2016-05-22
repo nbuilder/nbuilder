@@ -16,21 +16,11 @@ environment:
   appveyorApiToken:
     secure: TODO-TODO-TODO
 
-services:
-  - mssql2008r2sp2
-
 init:
   - ps: iex ./appveyor/build-info.ps1
   - ps: |
       $version = new-object System.Version $env:APPVEYOR_BUILD_VERSION
       $env:PackageVersion = "{0}.{1}.{2}" -f $version.Major, $version.Minor, $version.Build
-      
-assembly_info:
-  patch: true
-  file: AssemblyInfo.*
-  assembly_version: '{version}'
-  assembly_file_version: '{version}'
-  assembly_informational_version: '{version}'
 
 before_build:
   - nuget restore Source\NBuilder-NET4.0.sln
@@ -38,22 +28,26 @@ before_build:
   - nuget restore Source\NBuilder-SL4.sln 
 
 build_script:
-  - cmd: msbuild Source\NBuilder-NET4.0.sln /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll" /m /verbosity:minimal /p:OutputPath=%APPVEYOR_BUILD_FOLDER%\nbuilder_output\net40
-  - cmd: msbuild Source\NBuilder-NET3.5.sln /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll" /m /verbosity:minimal /p:OutputPath=%APPVEYOR_BUILD_FOLDER%\nbuilder_output\net35
-  - cmd: msbuild Source\NBuilder-SL4.sln    /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll" /m /verbosity:minimal /p:OutputPath=%APPVEYOR_BUILD_FOLDER%\nbuilder_output\sl4
-
+  - ps: appveyor\build_script.ps1
+  
 before_test:
-  - ps: iex ./appveyor/sql-server-ip-and-alias.ps1
-  - cmd: sqlcmd -S "(local)" -U "sa" -P "Password12!" -Q "CREATE DATABASE NBuilderTests;"
-
+  - ps: . .\appveyor\before_test.ps1
+  
+on_success:
+  - ps: . .\appveyor\on_success.ps1
+      
+assembly_info:
+  patch: true
+  file: AssemblyInfo.*
+  assembly_version: '{version}'
+  assembly_file_version: '{version}'
+  assembly_informational_version: '{version}'
+  
 test:
   assemblies:
     - 'nbuilder_output\net40\FizzWare.NBuilder.Tests.dll'
     - 'nbuilder_output\net40\FizzWare.NBuilder.FunctionalTests*.dll'
     - 'nbuilder_output\sl4\FizzWare.NBuilder-Silverlight-4.Tests.dll'
-
-on_success:
-  - ps:  if ($env:APPVEYOR_PULL_REQUEST_NUMBER) { Write-Host "** This is a Pull Request, so we will not do any NuGet Package/Publishing."; } else { $destinationPath = $env:appveyor_build_folder + ".\file1.ps1"; (new-object net.webclient).DownloadFile('https://raw.githubusercontent.com/PureKrome/PushIt/master/NuGet%20Package%20and%20Publish.ps1', $destinationPath); & $destinationPath  -Version $env:appveyor_build_version -NuGet "C:\Tools\NuGet\nuget.exe" -feedSource $env:feedSource -apiKey $env:apiKey -source '.\NuGet\' -destination '.\NuGet\' }
 
 cache:
   - packages -> **\packages.config
