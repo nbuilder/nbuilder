@@ -19,7 +19,7 @@ namespace FizzWare.NBuilder.FunctionalTests.Extensibility
         [Test]
         public void AddingACustom_With_ExtensionForProducts()
         {
-            BuilderSetup builderSetup = new SetupFixture().DoSetup();
+            BuilderSetup builderSetup = new RepositoryBuilderSetup().DoSetup();
             var products = new Builder<Product>(builderSetup)
                 .CreateListOfSize(10)
                 .All()
@@ -38,7 +38,7 @@ namespace FizzWare.NBuilder.FunctionalTests.Extensibility
         [Test]
         public void SpecifyingACustomPropertyNamerForASpecificType()
         {
-            BuilderSetup builderSetup = new SetupFixture().DoSetup();
+            BuilderSetup builderSetup = new RepositoryBuilderSetup().DoSetup();
             builderSetup.SetPropertyNamerFor<Product>(new CustomProductPropertyNamer(new ReflectionUtil(),builderSetup));
 
             var products = new Builder<Product>(builderSetup).CreateListOfSize(10).Build();

@@ -16,7 +16,7 @@ namespace FizzWare.NBuilder.FunctionalTests.Model
 
         TaxType TaxType { get; set; }
 
-        IList<Category> Categories { get; set; }
+        List<Category> Categories { get; set; }
 
         decimal Tax { get; }
         decimal PriceAfterTax { get; }

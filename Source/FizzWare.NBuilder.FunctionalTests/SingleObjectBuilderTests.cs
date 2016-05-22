@@ -19,9 +19,7 @@ namespace FizzWare.NBuilder.FunctionalTests
         public void SetUp()
         {
             // Need to call this explicitly here to overcome a bug in resharper's test runner
-            new SetupFixture().SetUp();
-
-            Database.Clear();
+            new RepositoryBuilderSetup().SetUp();
         }
 
         [Test]

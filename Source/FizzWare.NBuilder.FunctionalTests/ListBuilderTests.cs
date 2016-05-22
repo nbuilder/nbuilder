@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Linq;
 using FizzWare.NBuilder.FunctionalTests.Model;
 using FizzWare.NBuilder.FunctionalTests.Support;
 using FizzWare.NBuilder.Implementation;
@@ -21,10 +22,7 @@ namespace FizzWare.NBuilder.FunctionalTests
         public void SetUp()
         {
             // Need to call this explicitly here to overcome a bug in resharper's test runner
-            new SetupFixture().SetUp();
-
-            // Clear all the database tables
-            Database.Clear();
+            new RepositoryBuilderSetup().SetUp();
         }
 
         
@@ -161,7 +159,7 @@ namespace FizzWare.NBuilder.FunctionalTests
             var products = new Builder<Product>(builderSetup)
                             .CreateListOfSize(500)
                             .All()
-                                .With(x => x.Categories = Pick<Category>.UniqueRandomList(With.Between(5, 10).Elements).From(categories))
+                                .With(x => x.Categories = Pick<Category>.UniqueRandomList(With.Between(5, 10).Elements).From(categories).ToList())
                             .Build();
 
             foreach (var product in products)
@@ -256,7 +254,7 @@ namespace FizzWare.NBuilder.FunctionalTests
             var products = new Builder<Product>(builderSetup)
                             .CreateListOfSize(500)
                             .All()
-                                .With(x => x.Categories = Pick<Category>.UniqueRandomList(With.Between(5).And(10).Elements).From(categories))
+                                .With(x => x.Categories = Pick<Category>.UniqueRandomList(With.Between(5).And(10).Elements).From(categories).ToList())
                             .Build();
 
             foreach (var product in products)

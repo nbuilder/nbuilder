@@ -1,12 +1,13 @@
 using System;
-using Castle.ActiveRecord;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using FizzWare.NBuilder.FunctionalTests.Model;
 
 namespace FizzWare.NBuilder.FunctionalTests.Model
 {
-    [ActiveRecord]
+    
     public class Product : IProduct
     {
         public Product()
@@ -20,33 +21,27 @@ namespace FizzWare.NBuilder.FunctionalTests.Model
             Title = title;
         }
 
-        [PrimaryKey(Generator = PrimaryKeyType.Native)]
+        [Key]
         public int Id { get; set; }
 
-        [Property]
+        
         public string Title { get; set; }
 
-        [Property]
+        
         public string Description { get; set; }
 
-        [Property]
+        
         public int QuantityInStock { get; set; }
         
-        [Property]
+        
         public decimal PriceBeforeTax { get; set; }
 
-		[Property]
-		public double? Weight { get; set; }
+        
+        public double? Weight { get; set; }
 
-        [BelongsTo(Column = "TaxTypeId", Type = typeof(TaxType), Cascade = CascadeEnum.All)]
-        public TaxType TaxType { get; set; }
+        public virtual TaxType TaxType { get; set; }
 
-        [HasAndBelongsToMany(typeof(Category),
-            Table = "ProductCategory", 
-            ColumnKey = "ProductId", 
-            ColumnRef = "CategoryId", 
-            Cascade = ManyRelationCascadeEnum.AllDeleteOrphan)]
-        public IList<Category> Categories { get; set; }
+        public virtual List<Category> Categories { get; set; }
 
         public WarehouseLocation Location { get; set; }
 
