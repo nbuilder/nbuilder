@@ -1,0 +1,194 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition="'$(MSBuildToolsVersion)' == '3.5'">
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B54246F5-9D85-4510-8D8F-915AC8B64027}</ProjectGuid>
+    <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FizzWare.NBuilder</RootNamespace>
+    <AssemblyName>FizzWare.NBuilder-Silverlight</AssemblyName>
+    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
+    <SilverlightApplication>false</SilverlightApplication>
+    <ValidateXaml>true</ValidateXaml>
+    <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
+    <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
+    <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Bin\Release</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System.Windows" />
+    <Reference Include="mscorlib" />
+    <Reference Include="system" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Windows.Browser" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Builder.cs" />
+    <Compile Include="BuilderException.cs" />
+    <Compile Include="BuilderSetup.cs" />
+    <Compile Include="Dates\At.cs" />
+    <Compile Include="Dates\DateTimeExtensions.cs" />
+    <Compile Include="Dates\Month.cs" />
+    <Compile Include="Dates\Months.cs" />
+    <Compile Include="Dates\On.cs" />
+    <Compile Include="Dates\StaticMonth.cs" />
+    <Compile Include="Dates\The.cs" />
+    <Compile Include="Dates\Today.cs" />
+    <Compile Include="Dates\Year.cs" />
+    <Compile Include="EnumHelper.cs" />
+    <Compile Include="Extensions\MemberInfoExtensions.cs" />
+    <Compile Include="Extensions\ObjectExtensions.cs" />
+    <Compile Include="Extensions\TypeExtensions.cs" />
+    <Compile Include="Generators\Generate.cs" />
+    <Compile Include="Generators\GetRandom.cs" />
+    <Compile Include="Generators\IGenerator.cs" />
+    <Compile Include="Generators\IRandomGenerator.cs" />
+    <Compile Include="Generators\IUniqueRandomGenerator.cs" />
+    <Compile Include="Generators\RandomGenerator.cs" />
+    <Compile Include="Generators\SequentialGenerator.cs" />
+    <Compile Include="Generators\UniqueGenerationScope.cs" />
+    <Compile Include="Generators\UniqueRandomGenerator.cs" />
+    <Compile Include="HierarchySpec.cs" />
+    <Compile Include="IBuildable.cs" />
+    <Compile Include="IHierarchySpec.cs" />
+    <Compile Include="IListBuilder.cs" />
+    <Compile Include="Implementation\Declaration.cs" />
+    <Compile Include="Implementation\DeclarationComparer.cs" />
+    <Compile Include="Implementation\DeclarationQueue.cs" />
+    <Compile Include="Implementation\DistinctAffectedItemCalculator.cs" />
+    <Compile Include="Implementation\GlobalDeclaration.cs" />
+    <Compile Include="Implementation\Guard.cs" />
+    <Compile Include="Implementation\HierarchyGenerator.cs" />
+    <Compile Include="Implementation\IDeclaration.cs" />
+    <Compile Include="Implementation\IDeclarationQueue.cs" />
+    <Compile Include="Implementation\IGlobalDeclaration.cs" />
+    <Compile Include="Implementation\IListBuilderImpl.cs" />
+    <Compile Include="Implementation\IObjectBuilder.cs" />
+    <Compile Include="Implementation\IQueue.cs" />
+    <Compile Include="Implementation\IReflectionUtil.cs" />
+    <Compile Include="Implementation\ListBuilder.cs" />
+    <Compile Include="Implementation\MultiFunction.cs" />
+    <Compile Include="Implementation\ObjectBuilder.cs" />
+    <Compile Include="Implementation\Path.cs" />
+    <Compile Include="Implementation\RandomDeclaration.cs" />
+    <Compile Include="Implementation\RangeDeclaration.cs" />
+    <Compile Include="Implementation\ReflectionUtil.cs" />
+    <Compile Include="InvalidRangeException.cs" />
+    <Compile Include="IOperable.cs" />
+    <Compile Include="IPersistenceService.cs" />
+    <Compile Include="ISingleObjectBuilder.cs" />
+    <Compile Include="ListBuilderExtensions.cs" />
+    <Compile Include="Messages.cs" />
+    <Compile Include="OperableExtensions.cs" />
+    <Compile Include="PersistenceExtensions.cs" />
+    <Compile Include="PersistenceMethodNotFoundException.cs" />
+    <Compile Include="PersistenceService.cs" />
+    <Compile Include="Picking\BetweenConstraint.cs" />
+    <Compile Include="Picking\Constraint.cs" />
+    <Compile Include="Picking\ExactlyConstraint.cs" />
+    <Compile Include="Picking\IConstraint.cs" />
+    <Compile Include="Picking\Pick.cs" />
+    <Compile Include="Picking\RandomItemPicker.cs" />
+    <Compile Include="Picking\UniqueRandomPicker.cs" />
+    <Compile Include="Picking\UpToConstraint.cs" />
+    <Compile Include="Picking\With.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PropertyNaming\ExtensibleRandomValuePropertyNamer.cs" />
+    <Compile Include="PropertyNaming\IPropertyNamer.cs" />
+    <Compile Include="PropertyNaming\PropertyNamer.cs" />
+    <Compile Include="PropertyNaming\RandomValuePropertyNamer.cs" />
+    <Compile Include="PropertyNaming\SequentialPropertyNamer.cs" />
+    <Compile Include="SingleObjectBuilderExtensions.cs" />
+    <Compile Include="TypeCreationException.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="NBuilder.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
+        <SilverlightProjectProperties />
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

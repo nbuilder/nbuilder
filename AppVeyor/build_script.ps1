@@ -23,4 +23,4 @@ function Invoke-Build($solutionTag){
 
 Invoke-Build "NET3.5"
 invoke-build "NET4.0"
-Invoke-Build "SL4"
+Invoke-Build "SL5"
