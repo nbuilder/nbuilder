@@ -1,5 +1,6 @@
 $logger=""
-$outputPath = Join-Path (new-object System.IO.FileInfo $PSScriptRoot).Directory.FullName "artifacts"
+$solutionRoot = (new-object System.IO.FileInfo $PSScriptRoot).Directory.FullName
+$outputPath   = Join-Path $solutionRoot "artifacts"
 
 if ($env:AppVeyor) {
     $logger="/logger:C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
@@ -8,9 +9,16 @@ if ($env:AppVeyor) {
 
 function Invoke-Build($solutionTag){
     $build_dir = ($solutionTag -replace "\.", "")
-    $cmd = "msbuild Source\NBuilder-$solutionTag.sln $logger /m /verbosity:minimal /p:OutputPath=$outputPath\$build_dir"
-    write-host $cmd
-    iex $cmd
+
+    $solution = Join-Path $solutionRoot "Source\NBuilder-$solutionTag.sln"
+    $args = @($solution /t:ReBuild $logger "/m" "/verbosity:minimal" "/p:OutputPath=$outputPath\$build_dir")
+    & msbuild $args | Out-Host    
+    if ($LASTEXITCODE -ne 0){
+        write-error "Building $solutionTag failed."
+        exit $LASTEXITCODE
+    }
+    
+    return $LASTEXITCODE
 }
 
 Invoke-Build "NET3.5"
