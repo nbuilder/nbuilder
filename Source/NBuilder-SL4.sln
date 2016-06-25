@@ -5,8 +5,6 @@ VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FizzWare.NBuilder-Silverlight-SL4", "FizzWare.NBuilder\FizzWare.NBuilder-Silverlight-SL4.csproj", "{B54246F5-9D85-4510-8D8F-915AC8B64027}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FizzWare.NBuilder-Silverlight-4.Tests", "FizzWare.NBuilder.SL4.Tests\FizzWare.NBuilder-Silverlight-4.Tests.csproj", "{A41903E6-00D9-45BE-AB48-88B7FB1E48CB}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,10 +15,6 @@ Global
 		{B54246F5-9D85-4510-8D8F-915AC8B64027}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B54246F5-9D85-4510-8D8F-915AC8B64027}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B54246F5-9D85-4510-8D8F-915AC8B64027}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A41903E6-00D9-45BE-AB48-88B7FB1E48CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A41903E6-00D9-45BE-AB48-88B7FB1E48CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A41903E6-00D9-45BE-AB48-88B7FB1E48CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A41903E6-00D9-45BE-AB48-88B7FB1E48CB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

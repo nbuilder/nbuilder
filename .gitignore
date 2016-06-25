@@ -14,6 +14,7 @@ TestResults
 *.sln.docstates
 
 # Build results
+artifacts/
 Builds/
 [Dd]ebug/
 [Rr]elease/
@@ -111,3 +112,4 @@ UpgradeLog*.XML
 # SQL Server files
 App_Data/*.mdf
 App_Data/*.ldf
+
