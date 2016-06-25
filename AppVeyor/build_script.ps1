@@ -11,7 +11,7 @@ function Invoke-Build($solutionTag){
     $build_dir = ($solutionTag -replace "\.", "")
 
     $solution = Join-Path $solutionRoot "Source\NBuilder-$solutionTag.sln"
-    $args = @($solution /t:ReBuild $logger "/m" "/verbosity:minimal" "/p:OutputPath=$outputPath\$build_dir")
+    $args = @($solution, "/t:ReBuild", $logger, "/m", "/verbosity:minimal", "/p:OutputPath=$outputPath\$build_dir")
     & msbuild $args | Out-Host    
     if ($LASTEXITCODE -ne 0){
         write-error "Building $solutionTag failed."
