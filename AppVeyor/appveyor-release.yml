@@ -24,7 +24,7 @@ init:
 before_build:
   - nuget restore Source\NBuilder-NET4.0.sln
   - nuget restore Source\NBuilder-NET3.5.sln
-  - nuget restore Source\NBuilder-SL4.sln 
+  - nuget restore Source\NBuilder-SL5.sln 
 
 build_script:
   - ps: appveyor\build_script.ps1
@@ -45,7 +45,7 @@ assembly_info:
   assemblies:
     - 'nbuilder_output\net40\FizzWare.NBuilder.Tests.dll'
     - 'nbuilder_output\net40\FizzWare.NBuilder.FunctionalTests*.dll'
-    - 'nbuilder_output\sl4\FizzWare.NBuilder-Silverlight-4.Tests.dll'
+    - 'nbuilder_output\sl5\FizzWare.NBuilder-Silverlight-4.Tests.dll'
 
 cache:
   - packages -> **\packages.config

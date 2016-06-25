@@ -20,7 +20,7 @@ assembly_info:
 before_build:
   - nuget restore Source\NBuilder-NET4.0.sln
   - nuget restore Source\NBuilder-NET3.5.sln
-  - nuget restore Source\NBuilder-SL4.sln 
+  - nuget restore Source\NBuilder-SL5.sln 
 
 build_script:
   - ps: appveyor\build_script.ps1

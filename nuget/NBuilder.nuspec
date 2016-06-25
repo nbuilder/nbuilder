@@ -15,6 +15,6 @@
     <files>
         <file src="..\nbuilder_output\net40\Fizzware.NBuilder.dll" target="lib\net40" />
         <file src="..\nbuilder_output\net35\Fizzware.NBuilder.dll" target="lib\net35" />
-        <file src="..\nbuilder_output\sl4\FizzWare.NBuilder-Silverlight.dll" target="lib\sl40" />
+        <file src="..\nbuilder_output\sl5\FizzWare.NBuilder-Silverlight.dll" target="lib\sl50" />
     </files>
 </package>
