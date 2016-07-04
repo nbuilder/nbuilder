@@ -71,7 +71,9 @@ namespace FizzWare.NBuilder
             int integer = rnd.Next(iMin, iMax);
             int fraction = rnd.Next(0, 4000);
 
-            return (decimal)Convert.ToDecimal(string.Format("{0}.{1}", integer, fraction));
+            var separator = System.Threading.Thread.CurrentThread.CurrentCulture.NumberFormat.CurrencyDecimalSeparator;
+
+            return (decimal)Convert.ToDecimal(string.Format("{0}{1}{2}", integer, separator, fraction));
         }
 
         public virtual char Next(char min, char max)

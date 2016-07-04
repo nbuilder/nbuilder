@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NUnit.Framework;
 
@@ -87,10 +88,49 @@ namespace FizzWare.NBuilder.Tests.Unit
             randomGenerator.Next(0, double.MaxValue);
         }
 
+
+        [Test]
+        public void ShouldBeAbleToGenerateDoubleUsingNext_InPoland()
+        {
+            System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("pl-PL");
+            try
+            {
+                randomGenerator.Next(double.MinValue, double.MaxValue);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally
+            {
+                System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+            }
+        }
+
         [Test]
         public void ShouldBeAbleToGenerateDecimalUsingNext()
         {
             randomGenerator.Next(decimal.MinValue, decimal.MaxValue);
+        }
+
+        [Test]
+        public void ShouldBeAbleToGenerateDecimalUsingNext_InPoland()
+        {
+            System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("pl-PL");
+            try
+            {
+                randomGenerator.Next(decimal.MinValue, decimal.MaxValue);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally
+            {
+                System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+            }
         }
 
         [Test]
