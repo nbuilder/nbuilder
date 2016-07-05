@@ -7,9 +7,9 @@ namespace FizzWare.NBuilder
     {
         private readonly BuilderSetup _builderSetup;
 
-        public Builder(BuilderSetup builderSetup)
+        public Builder(BuilderSetup builderSetup = null)
         {
-            _builderSetup = builderSetup;
+            _builderSetup = builderSetup ?? new BuilderSetup();
         }
 
         public ISingleObjectBuilder<T> CreateNew()
