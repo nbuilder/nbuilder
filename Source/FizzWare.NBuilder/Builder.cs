@@ -7,7 +7,12 @@ namespace FizzWare.NBuilder
     {
         private readonly BuilderSetup _builderSetup;
 
-        public Builder(BuilderSetup builderSetup = null)
+        public Builder() : this(new BuilderSetup())
+        {
+            
+        } 
+
+        public Builder(BuilderSetup builderSetup)
         {
             _builderSetup = builderSetup ?? new BuilderSetup();
         }
