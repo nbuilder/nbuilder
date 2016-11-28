@@ -12,10 +12,6 @@
     do_not_increment_build_number: true
 
   init:
-    - ps: pwd
-    - ps: gci
-    - ps: . .\AppVeyor\Invoke-DisplayBuildInfo.ps1
-    - ps: . .\appveyor\Use-BetaPackageVersion.ps1
 
   nuget:
     project_feed: true
@@ -28,6 +24,8 @@
     assembly_informational_version: '{version}'
 
   before_build:
+    - ps: . .\AppVeyor\Invoke-DisplayBuildInfo.ps1
+    - ps: . .\appveyor\Use-BetaPackageVersion.ps1
     - nuget restore Source\NBuilder-NET4.0.sln
     - nuget restore Source\NBuilder-NET3.5.sln
 
