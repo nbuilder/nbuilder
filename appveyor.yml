@@ -37,9 +37,7 @@
     - ps: |
         Import-Module "$(pwd)\DeployNBuilder\DeployNBuilder.psd1"
         "NET3.5", "NET4.0" | Invoke-Build -WorkingDirectory $(pwd)
-        Invoke-NuGetPack -Version  (Get-NuGetPackageVersion -Beta) `
-            -NuSpec $(pwd)\nuget\NBuilder.nuspec `
-            -Destination $(pwd)
+        Invoke-NuGetPack -Version  (Get-NuGetPackageVersion -Beta) -NuSpec $(pwd)\nuget\NBuilder.nuspec -Destination $(pwd)
     
   before_test:
 
