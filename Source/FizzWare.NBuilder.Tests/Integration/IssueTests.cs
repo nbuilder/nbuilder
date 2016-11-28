@@ -6,12 +6,24 @@ using NUnit.Framework;
 using System.Diagnostics;
 using NSubstitute;
 using FizzWare.NBuilder.Tests.TestClasses;
+using Shouldly;
 
 namespace FizzWare.NBuilder.Tests.Integration
 {
     [TestFixture]
     public class IssueTests
     {
+
+        [Test]
+        public void test_guid()
+        {
+            var guid1 = Guid.Empty;
+            var guid2 = new Guid();
+            var guid3 = Builder<Guid>.CreateNew().Build();
+            var guid4 = Guid.Empty;
+
+            guid1.ShouldBe(guid4);
+        }
 
         //http://code.google.com/p/nbuilder/issues/detail?id=68
         [Test]

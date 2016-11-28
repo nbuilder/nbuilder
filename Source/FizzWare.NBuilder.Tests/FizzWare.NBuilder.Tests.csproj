@@ -83,6 +83,10 @@
       <HintPath>..\packages\RhinoMocks.3.6.1\lib\net\Rhino.Mocks.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Shouldly, Version=2.8.2.0, Culture=neutral, PublicKeyToken=6042cbcb05cbc941, processorArchitecture=MSIL">
+      <HintPath>..\packages\Shouldly.2.8.2\lib\net40\Shouldly.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
