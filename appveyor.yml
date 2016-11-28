@@ -10,7 +10,14 @@
 
   pull_requests:
     do_not_increment_build_number: true
-      
+
+  init:
+    - ps: appveyor/build-info.ps1
+    - ps: appveyor/Use-BetaPackageVersion.ps1
+
+  nuget:
+    project_feed: true
+
   assembly_info:
     patch: true
     file: AssemblyInfo.*
@@ -38,3 +45,107 @@
 
   cache:
     - packages -> **\packages.config
+
+# release branches
+# compile, test, release beta version to nuget
+-
+  version: '4.0.0.{build}'
+  configuration: Release
+
+  branches:
+    only:
+      - /release\/.*/
+
+  pull_requests:
+    do_not_increment_build_number: true
+
+  environment:
+    feedSource: https://nuget.org/api/v2/
+    apiKey:
+      secure: rEqnyErKFkhgxjUgir8i3zftWJ6AqqzYn/wXPXVSTJo1o9nQML8KU3pmG3sXOqCU
+
+
+  init:
+    - ps: appveyor/build-info.ps1
+    - ps: appveyor/Use-BetaPackageVersion.ps1
+
+  before_build:
+    - nuget restore Source\NBuilder-NET4.0.sln
+    - nuget restore Source\NBuilder-NET3.5.sln
+
+  build_script:
+    - ps: appveyor\build_script.ps1
+    
+  before_test:
+    - ps: appveyor\before_test.ps1
+    
+  on_success:
+    - ps: appveyor\on_success.ps1
+    
+  assembly_info:
+    patch: true
+    file: AssemblyInfo.*
+    assembly_version: '{version}'
+    assembly_file_version: '{version}'
+    assembly_informational_version: '{version}'
+
+    assemblies:
+      - 'nbuilder_output\net40\FizzWare.NBuilder.Tests.dll'
+      - 'nbuilder_output\net40\FizzWare.NBuilder.FunctionalTests*.dll'
+      - 'nbuilder_output\sl5\FizzWare.NBuilder-Silverlight-4.Tests.dll'
+
+  cache:
+    - packages -> **\packages.config
+
+
+# release branches
+# compile, test, release beta version to nuget
+-
+  version: '4.0.0.{build}'
+  configuration: Release
+
+  branches:
+    only:
+      - master
+
+  pull_requests:
+    do_not_increment_build_number: true
+
+  environment:
+    feedSource: https://nuget.org/api/v2/
+    apiKey:
+      secure: rEqnyErKFkhgxjUgir8i3zftWJ6AqqzYn/wXPXVSTJo1o9nQML8KU3pmG3sXOqCU
+
+
+  init:
+    - ps: iex ./appveyor/build-info.ps1
+    - ps: appveyor/Use-BetaPackageVersion.ps1
+
+  before_build:
+    - nuget restore Source\NBuilder-NET4.0.sln
+    - nuget restore Source\NBuilder-NET3.5.sln
+
+  build_script:
+    - ps: appveyor\build_script.ps1
+    
+  before_test:
+    - ps: appveyor\before_test.ps1
+    
+  on_success:
+    - ps: appveyor\on_success.ps1
+    
+  assembly_info:
+    patch: true
+    file: AssemblyInfo.*
+    assembly_version: '{version}'
+    assembly_file_version: '{version}'
+    assembly_informational_version: '{version}'
+
+    assemblies:
+      - 'nbuilder_output\net40\FizzWare.NBuilder.Tests.dll'
+      - 'nbuilder_output\net40\FizzWare.NBuilder.FunctionalTests*.dll'
+      - 'nbuilder_output\sl5\FizzWare.NBuilder-Silverlight-4.Tests.dll'
+
+  cache:
+    - packages -> **\packages.config
+
