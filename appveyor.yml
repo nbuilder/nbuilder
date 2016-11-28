@@ -37,6 +37,9 @@
     - ps: |
         Import-Module "$(pwd)\DeployNBuilder\DeployNBuilder.psd1"
         "NET3.5", "NET4.0" | Invoke-Build -WorkingDirectory $(pwd)
+        Invoke-NuGetPack -Version  (Get-NuGetPackageVersion -Beta) `
+            -NuSpec $(pwd)\nuget\NBuilder.nuspec `
+            -Destination $(pwd)
     
   before_test:
 
@@ -47,6 +50,10 @@
 
       - 'nuget\net35\FizzWare.NBuilder.FunctionalTests*.dll'
       - 'nuget\net40\FizzWare.NBuilder.FunctionalTests*.dll'
+
+  artifacts:
+  - path: NBuilder*.nupkg
+    name: nuget-package
 
   cache:
     - packages -> **\packages.config
