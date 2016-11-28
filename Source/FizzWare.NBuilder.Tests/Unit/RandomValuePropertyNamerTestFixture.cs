@@ -15,7 +15,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         protected const int listSize = 10;
         protected IReflectionUtil reflectionUtil;
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public abstract void TestFixtureSetUp();
 
         [TearDown]

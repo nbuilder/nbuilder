@@ -65,7 +65,7 @@ namespace FizzWare.NBuilder.Tests.Unit
                 objectBuilder.Expect(x => x.With(func));
             }
 
-            OperableExtensions.Has((IOperable<MyClass>)operable, func);
+            OperableExtensions.With((IOperable<MyClass>)operable, func);
         }
 
         [Test]
@@ -118,7 +118,7 @@ namespace FizzWare.NBuilder.Tests.Unit
                 objectBuilder.Expect(x => x.With(propertyExpression, 100));
             }
 
-            OperableExtensions.Has((IOperable<MyClass>)operable, propertyExpression, 100);
+            OperableExtensions.With((IOperable<MyClass>)operable, propertyExpression, 100);
         }
 
         [Test]
@@ -161,7 +161,7 @@ namespace FizzWare.NBuilder.Tests.Unit
                 objectBuilder.Expect(x => x.DoMultiple(action, simpleClasses)).Return(objectBuilder);
             }
 
-            OperableExtensions.HasDoneToItForAll((IOperable<MyClass>)operable, action, simpleClasses);
+            OperableExtensions.DoForEach((IOperable<MyClass>)operable, action, simpleClasses);
         }
 
         [Test]
@@ -181,7 +181,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Test]
         public void ShouldBeAbleToUseHasDoneToIt()
         {
-            Action<MyClass> action = x => x.DoSomething();
+            Action<MyClass, int> action = (x, y) => x.DoSomething();
 
             using (mocks.Record())
             {
@@ -189,7 +189,7 @@ namespace FizzWare.NBuilder.Tests.Unit
                 objectBuilder.Expect(x => x.Do(action)).Return(objectBuilder);
             }
 
-            OperableExtensions.HasDoneToIt((IOperable<MyClass>)operable, action);
+            OperableExtensions.With((IOperable<MyClass>)operable, action);
         }
 
         [Test]

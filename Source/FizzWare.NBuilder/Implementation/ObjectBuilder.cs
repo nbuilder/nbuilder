@@ -48,28 +48,10 @@ namespace FizzWare.NBuilder.Implementation
 
             this._constructorExpression = constructor;
 
-            //var arguments = ((NewExpression) constructor.Body).Arguments;
-            //var indexArgument = arguments[0];
-            //var index = Expression.Lambda(indexArgument).Compile().DynamicInvoke();
-
-            //var theOtherArguments = arguments.Skip(1).ToArray();
-
-            //var constructorArguments =
-            //    (from argument in theOtherArguments
-            //     select Expression.Lambda(argument).Compile().DynamicInvoke()).ToArray();
-
-            //constructorArgs = constructorArguments;
             return this;
         }
 
-        // This has been obsolete for a while, so don't allow this one to be hidden
-        [Obsolete]
-        public IObjectBuilder<T> WithConstructorArgs(params object[] args)
-        {
-            this.constructorArgs = args;
-            return this;
-        }
-
+      
         public IObjectBuilder<T> With<TFunc>(Func<T, TFunc> func)
         {
             functions.Add(func);

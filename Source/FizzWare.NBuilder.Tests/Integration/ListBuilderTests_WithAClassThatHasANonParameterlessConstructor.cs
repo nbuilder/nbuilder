@@ -18,7 +18,7 @@ namespace FizzWare.NBuilder.Tests.Integration
                new Builder(builderSetup)
                     .CreateListOfSize< MyClassWithConstructor>(10)
                     .All()
-                        .AreConstructedWith(theString, theDecimal)
+                        .WithConstructor(() => new MyClassWithConstructor(theString, theDecimal))
                     .Build();
 
             Assert.That(list.Count, Is.EqualTo(10));
@@ -47,7 +47,7 @@ namespace FizzWare.NBuilder.Tests.Integration
                new Builder(builderSetup)
                     .CreateListOfSize< MyClassWithConstructor>(1)
                     .TheFirst(1)
-                        .IsConstructedUsing(() => new MyClassWithConstructor(1, 2f))
+                        .WithConstructor(() => new MyClassWithConstructor(1, 2f))
                     .Build();
 
             Assert.That(list.Count, Is.EqualTo(1));
@@ -62,7 +62,7 @@ namespace FizzWare.NBuilder.Tests.Integration
                 new Builder(builderSetup)
                     .CreateListOfSize< MyClassWithConstructor>(10)
                     .All()
-                        .AreConstructedWith(theString, theDecimal)
+                        .WithConstructor(() => new MyClassWithConstructor(theString, theDecimal))
                     .Build();
 
             Assert.That(list[0].String, Is.EqualTo(theString));
@@ -77,7 +77,7 @@ namespace FizzWare.NBuilder.Tests.Integration
                new Builder(builderSetup)
                     .CreateListOfSize< MyClassWithConstructor>(1)
                     .TheFirst(1)
-                        .IsConstructedWith(theString, theDecimal)
+                        .WithConstructor(() => new MyClassWithConstructor(theString, theDecimal))
                     .Build();
 
             Assert.That(list[0].String, Is.EqualTo(theString));

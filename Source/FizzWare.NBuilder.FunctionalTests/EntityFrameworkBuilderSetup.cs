@@ -8,9 +8,8 @@ using NUnit.Framework;
 
 public class EntityFrameworkBuilderSetup
 {
-    private bool setup;
-    private static bool arInitialized;
-    
+    private bool _setup;
+
     public BuilderSettings SetUp()
     {
         return DoSetup();
@@ -26,10 +25,10 @@ public class EntityFrameworkBuilderSetup
 
         BuilderSettings builderSettings = new BuilderSettings();
 
-        if (setup)
+        if (_setup)
             return builderSettings;
 
-        setup = true;
+        _setup = true;
 
         SetPersistenceMethod<Product>(builderSettings);
         SetPersistenceMethod<TaxType>(builderSettings);

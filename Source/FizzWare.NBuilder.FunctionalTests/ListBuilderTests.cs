@@ -98,7 +98,7 @@ namespace FizzWare.NBuilder.FunctionalTests
             var products = new Builder(builderSetup)
                             .CreateListOfSize<Product>(10)
                             .TheFirst(1)
-                                .Has(x => x.Title = "Special title 1")
+                                .With(x => x.Title = "Special title 1")
                             .Build();
 
             Assert.That(products[0].Title, Is.EqualTo("Special title 1"));
@@ -280,7 +280,7 @@ namespace FizzWare.NBuilder.FunctionalTests
             var basketItems =
                builder.CreateListOfSize<BasketItem>(10)
                     .All()
-                        .AreConstructedWith(basket, product, quantity) // passes these arguments to the constructor
+                        .WithConstructor(() => new BasketItem(basket, product, quantity)) // passes these arguments to the constructor
                     .Build();
 
             foreach (var basketItem in basketItems)
@@ -306,9 +306,9 @@ namespace FizzWare.NBuilder.FunctionalTests
             var items = new Builder(builderSetup)
                 .CreateListOfSize<BasketItem>(4)
                 .TheFirst(2)
-                    .AreConstructedWith(basket1, product1, quantity1)
+                    .WithConstructor(() => new BasketItem(basket1, product1, quantity1))
                 .TheNext(2)
-                    .AreConstructedWith(basket2, product2, quantity2)
+                    .WithConstructor(() => new BasketItem(basket2, product2, quantity2))
                 .Build();
 
             Assert.That(items[0].Basket, Is.EqualTo(basket1));
@@ -398,26 +398,13 @@ namespace FizzWare.NBuilder.FunctionalTests
             var invoices = new Builder(builderSetup)
                 .CreateListOfSize< Invoice>(1)
                 .TheFirst(1)
-                    .Has(p => p.Amount, 100)
+                    .With(p => p.Amount, 100)
                 .Build();
 
             Assert.That(invoices[0].Amount, Is.EqualTo(100));
         }
 
-        [Test]
-        public void WillComplainIfYouDoNotSupplyArgsMatchingOneOfTheConstructors()
-        {
-            var builderSetup = new BuilderSettings();
-
-            Assert.Throws<TypeCreationException>(() =>
-            {
-                new Builder(builderSetup)
-                     .CreateListOfSize< BasketItem>(10)
-                     .All()
-                     .AreConstructedWith().Build();
-            });
-        }
-
+        
         [Test]
         public void ChainingDeclarationsTogether()
         {

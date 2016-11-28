@@ -8,9 +8,8 @@ using NUnit.Framework;
 
 public class RepositoryBuilderSetup
 {
-    private bool setup;
-    private static bool arInitialized;
-    
+    private bool _setup;
+
     [SetUp]
     public BuilderSettings SetUp()
     {
@@ -27,13 +26,13 @@ public class RepositoryBuilderSetup
 
         BuilderSettings builderSettings = new BuilderSettings();
 
-        if (setup)
+        if (_setup)
             return builderSettings;
 
         
 
 
-        setup = true;
+        _setup = true;
 
         var productRepository = Dependency.Resolve<IProductRepository>();
         var taxTypeRepository = Dependency.Resolve<ITaxTypeRepository>();

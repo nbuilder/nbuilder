@@ -66,13 +66,6 @@ namespace FizzWare.NBuilder.Implementation
             return listBuilderImpl.All();
         }
 
-        #if OBSOLETE_OLD_SYNTAX
-        [Obsolete(Messages.NewSyntax_UseAll)]
-        #endif
-        public IOperable<T> WhereAll()
-        {
-            return listBuilderImpl.All();
-        }
 
         public IList<T> Build()
         {

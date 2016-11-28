@@ -131,7 +131,7 @@ namespace FizzWare.NBuilder.FunctionalTests
             // BasketItem's ctor: BasketItem(ShoppingBasket basket, Product product, int quantity)
             var basketItem = new Builder()
                 .CreateNew< BasketItem>()
-                    .WithConstructorArgs(basket, product, quantity)
+                    .WithConstructor(() => new BasketItem(basket, product, quantity))
                 .Build();
 
             // The property namer will still apply sequential names to the properties
