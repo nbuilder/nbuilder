@@ -20,7 +20,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         [SetUp]
         public void SetUp()
         {
-            var builderSetup = new BuilderSetup();
+            var builderSetup = new BuilderSettings();
             mocks = new MockRepository();
 
             reflectionUtil = mocks.DynamicMock<IReflectionUtil>();
@@ -244,7 +244,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Test]
         public void ShouldBeAbleToUseDoMultiple()
         {
-            var builderSetup = new BuilderSetup();
+            var builderSetup = new BuilderSettings();
             var myClass = mocks.DynamicMock<IMyInterface>();
             var list = new List<IMyOtherInterface> { mocks.Stub<IMyOtherInterface>(), mocks.Stub<IMyOtherInterface>(), mocks.Stub<IMyOtherInterface>() };
 

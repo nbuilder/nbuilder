@@ -21,9 +21,7 @@ namespace FizzWare.NBuilder.Tests.Integration
         [Test]
         public void ShouldBeAbleToCreateAList()
         {
-            BuilderSetup builderSetup = new BuilderSetup();
-            var list =
-               new Builder<MyClass>(builderSetup).CreateListOfSize(10).Build();
+            var list = Builder<MyClass>.CreateListOfSize(10).Build();
 
             Assert.That(list.Count, Is.EqualTo(10));
         }
@@ -31,23 +29,22 @@ namespace FizzWare.NBuilder.Tests.Integration
         [Test]
         public void PropertiesShouldBeSetSequentially()
         {
-            BuilderSetup builderSetup = new BuilderSetup();
-            var list = new Builder<MyClass>(builderSetup).CreateListOfSize(10).Build();
+            var list = Builder<MyClass>.CreateListOfSize(10).Build();
 
             Assert.That(list[0].StringOne, Is.EqualTo("StringOne1"));
             Assert.That(list[9].StringOne, Is.EqualTo("StringOne10"));
-			Assert.That(list[0].EnumProperty, Is.EqualTo(MyEnum.EnumValue1));
-			Assert.That(list[9].EnumProperty, Is.EqualTo(MyEnum.EnumValue5));
+            Assert.That(list[0].EnumProperty, Is.EqualTo(MyEnum.EnumValue1));
+            Assert.That(list[9].EnumProperty, Is.EqualTo(MyEnum.EnumValue5));
         }
 
         [Test]
         public void ShouldBeAbleToUseTheFirst()
         {
-            BuilderSetup builderSetup = new BuilderSetup();
+            BuilderSettings builderSettings = new BuilderSettings();
             var specialTitle = "SpecialTitle";
 
             var list =
-               new Builder<MyClass>(builderSetup).CreateListOfSize(10).TheFirst(5).With(x => x.StringOne = specialTitle).Build();
+               Builder<MyClass>.CreateListOfSize(10).TheFirst(5).With(x => x.StringOne = specialTitle).Build();
 
             // I want the asserts here to serve as documentation
             // so it's obvious how it works for anyone glancing at this test
@@ -66,11 +63,10 @@ namespace FizzWare.NBuilder.Tests.Integration
         [Test]
         public void ShouldBeAbleToUseTheLast()
         {
-            BuilderSetup builderSetup = new BuilderSetup();
             var specialTitle = "SpecialTitle";
 
             var list =
-                new Builder<MyClass>(builderSetup).CreateListOfSize(10).TheLast(5).With(x => x.StringOne = specialTitle).Build();
+                Builder<MyClass>.CreateListOfSize(10).TheLast(5).With(x => x.StringOne = specialTitle).Build();
 
             Assert.That(list[0].StringOne, Is.EqualTo("StringOne1"));
             Assert.That(list[1].StringOne, Is.EqualTo("StringOne2"));
@@ -87,12 +83,12 @@ namespace FizzWare.NBuilder.Tests.Integration
         [Test]
         public void ShouldBeAbleToUseMultipleTheFirsts()
         {
-            BuilderSetup builderSetup = new BuilderSetup();
+            BuilderSettings builderSettings = new BuilderSettings();
             var title = "FirstTitle";
             var overwrittenTitle = "OverwrittenTitle";
 
             var list =
-                new Builder<MyClass>(builderSetup).CreateListOfSize(10)
+                Builder<MyClass>.CreateListOfSize(10)
                                 .TheFirst(5)
                                     .With(x => x.StringOne = title)
                                 .TheFirst(5)
@@ -107,12 +103,12 @@ namespace FizzWare.NBuilder.Tests.Integration
         [Test]
         public void ShouldBeAbleToUseAndTheNext()
         {
-            BuilderSetup builderSetup = new BuilderSetup();
+            BuilderSettings builderSettings = new BuilderSettings();
             var titleone = "TitleOne";
             var titletwo = "TitleTwo";
 
             var productList =
-                new Builder<MyClass>(builderSetup)
+                Builder<MyClass>
                 .CreateListOfSize(4)
                     .TheFirst(2)
                         .With(x => x.StringOne = titleone)
@@ -129,12 +125,12 @@ namespace FizzWare.NBuilder.Tests.Integration
         [Test]
         public void ShouldBeAbleToUseAndThePrevious()
         {
-            BuilderSetup builderSetup = new BuilderSetup();
+            BuilderSettings builderSettings = new BuilderSettings();
             var titleone = "TitleOne";
             var titletwo = "TitleTwo";
 
             var productList =
-                new Builder<MyClass>(builderSetup)
+                Builder<MyClass>
                 .CreateListOfSize(4)
                     .TheLast(2)
                         .With(x => x.StringOne = titletwo)
@@ -151,10 +147,10 @@ namespace FizzWare.NBuilder.Tests.Integration
         [Test]
         public void ShouldBeAbleToUseDo()
         {
-            BuilderSetup builderSetup = new BuilderSetup();
-            var myOtherClass = new Builder<SimpleClass>(builderSetup).CreateNew().Build();
+            BuilderSettings builderSettings = new BuilderSettings();
+            var myOtherClass = Builder<SimpleClass>.CreateNew().Build();
 
-            var objects = new Builder<MyClass>(builderSetup).CreateListOfSize(5).All().Do(x => x.Add(myOtherClass)).Build();
+            var objects = Builder<MyClass>.CreateListOfSize(5).All().Do(x => x.Add(myOtherClass)).Build();
 
             for (int i = 0; i < objects.Count; i++)
             {
@@ -165,8 +161,8 @@ namespace FizzWare.NBuilder.Tests.Integration
         [Test]
         public void ShouldBeAbleToUseAndTheNextAfterASectionDeclaration()
         {
-            BuilderSetup builderSetup = new BuilderSetup();
-            var objects = new Builder<MyClass>(builderSetup)
+            BuilderSettings builderSettings = new BuilderSettings();
+            var objects = Builder<MyClass>
                 .CreateListOfSize(10)
                 .Section(0, 4)
                     .With(x => x.Int = 1)
@@ -192,8 +188,8 @@ namespace FizzWare.NBuilder.Tests.Integration
         [TestCase(1, 1)]
         public void ShouldBeAbleToUseRandom(int listSize, int randomItems)
         {
-            BuilderSetup builderSetup = new BuilderSetup();
-            var objects =new Builder<MyClass>(builderSetup)
+            BuilderSettings builderSettings = new BuilderSettings();
+            var objects =Builder<MyClass>
                 .CreateListOfSize(listSize)
                 .Random(randomItems)
                     .With(x => x.StringOne = "TestRandom")
@@ -208,12 +204,12 @@ namespace FizzWare.NBuilder.Tests.Integration
         [Test]
         public void ShouldBeAbleToDisableAutoPropertyNaming()
         {
-                BuilderSetup builderSetup = new BuilderSetup();
+                BuilderSettings builderSettings = new BuilderSettings();
             try
             {
-                builderSetup.AutoNameProperties = false;
+                builderSettings.AutoNameProperties = false;
 
-                var list =new Builder<MyClass>(builderSetup).CreateListOfSize(10).Build();
+                var list =new Builder(builderSettings).CreateListOfSize<MyClass>(10).Build();
 
                 Assert.That(list[0].Int, Is.EqualTo(0));
                 Assert.That(list[9].Int, Is.EqualTo(0));
@@ -223,35 +219,35 @@ namespace FizzWare.NBuilder.Tests.Integration
             }
             finally
             {
-                builderSetup.AutoNameProperties = true;
+                builderSettings.AutoNameProperties = true;
             }
         }
 
         [Test]
         public void ShouldBeAbleToSpecifyADefaultCustomPropertyNamer()
         {
-            BuilderSetup builderSetup = new BuilderSetup();
+            BuilderSettings builderSettings = new BuilderSettings();
             try
             {
-                builderSetup.SetDefaultPropertyNamer(new MockPropertyNamerTests());
-                new Builder<MyClass>(builderSetup).CreateListOfSize(10).Build();
+                builderSettings.SetDefaultPropertyNamer(new MockPropertyNamerTests());
+                new Builder(builderSettings).CreateListOfSize<MyClass>(10).Build();
                 Assert.That(MockPropertyNamerTests.SetValuesOfAllInCallCount, Is.EqualTo(1));
             }
             finally
             {
-                builderSetup.ResetToDefaults();
+                builderSettings.ResetToDefaults();
             }
         }
 
         [Test]
         public void ShouldBeAbleToSpecifyACustomPropertyNamerForASpecificType()
         {
-                BuilderSetup builderSetup = new BuilderSetup();
+                BuilderSettings builderSettings = new BuilderSettings();
             try
             {
                    IPropertyNamer propertyNamer = mocks.DynamicMock<IPropertyNamer>();
 
-                builderSetup.SetPropertyNamerFor<MyClass>(propertyNamer);
+                builderSettings.SetPropertyNamerFor<MyClass>(propertyNamer);
 
                 using (mocks.Record())
                 {
@@ -260,15 +256,15 @@ namespace FizzWare.NBuilder.Tests.Integration
 
                 using (mocks.Playback())
                 {
-                   new Builder<MyClass>(builderSetup).CreateListOfSize(10).Build();
-                   new Builder<SimpleClass>(builderSetup).CreateListOfSize(10).Build();
+                  new Builder(builderSettings).CreateListOfSize<MyClass>(10).Build();
+                  new Builder(builderSettings).CreateListOfSize<SimpleClass>(10).Build();
                 }
 
                 mocks.VerifyAll();
             }
             finally
             {
-                builderSetup.ResetToDefaults();
+                builderSettings.ResetToDefaults();
             }
         }
 
@@ -276,30 +272,30 @@ namespace FizzWare.NBuilder.Tests.Integration
         public void ShouldBeAbleToDisableAutomaticPropertyNaming()
         {
 
-            BuilderSetup builderSetup = new BuilderSetup();
+            BuilderSettings builderSettings = new BuilderSettings();
             try
             {
-                builderSetup.AutoNameProperties = false;
-                var list = new Builder<MyClass>(builderSetup).CreateListOfSize(10).Build();
+                builderSettings.AutoNameProperties = false;
+                var list = new Builder(builderSettings).CreateListOfSize<MyClass>(10).Build();
 
                 Assert.That(list[0].Int, Is.EqualTo(0));
                 Assert.That(list[9].Int, Is.EqualTo(0));
             }
             finally
             {
-                builderSetup.ResetToDefaults();
+                builderSettings.ResetToDefaults();
             }
         }
 
         [Test]
         public void ShouldBeAbleToDisableAutomaticPropertyNamingForASpecificFieldOfASpecificType()
         {
-            BuilderSetup builderSetup = new BuilderSetup();
+            BuilderSettings builderSettings = new BuilderSettings();
             try
             {
-                builderSetup.DisablePropertyNamingFor<MyClass, int>(x => x.Int);
+                builderSettings.DisablePropertyNamingFor<MyClass, int>(x => x.Int);
 
-                var list = new Builder<MyClass>(builderSetup).CreateListOfSize(10).Build();
+                var list = new Builder(builderSettings).CreateListOfSize<MyClass>(10).Build();
 
                 Assert.That(list[0].Int, Is.EqualTo(0));
                 Assert.That(list[0].Long, Is.EqualTo(1));
@@ -309,19 +305,19 @@ namespace FizzWare.NBuilder.Tests.Integration
             }
             finally
             {
-                builderSetup.ResetToDefaults();
+                builderSettings.ResetToDefaults();
             }
         }
 
         [Test] 
         public void should_be_able_to_disable_property_naming_for_an_inherited_property()
         {
-            BuilderSetup builderSetup = new BuilderSetup();
+            BuilderSettings builderSettings = new BuilderSettings();
             try
             {
-                builderSetup.DisablePropertyNamingFor<MyConcreteClass, int>(x => x.PropertyInAbstractClass);
+                builderSettings.DisablePropertyNamingFor<MyConcreteClass, int>(x => x.PropertyInAbstractClass);
 
-                var list = new Builder<MyConcreteClass>(builderSetup).CreateListOfSize(10).Build();
+                var list = new Builder(builderSettings).CreateListOfSize<MyConcreteClass>(10).Build();
 
                 Assert.That(list[0].PropertyInAbstractClass, Is.EqualTo(0));
                 Assert.That(list[0].PropertyInInheritedClass, Is.EqualTo(1));
@@ -331,15 +327,15 @@ namespace FizzWare.NBuilder.Tests.Integration
             }
             finally
             {
-                builderSetup.ResetToDefaults();
+                builderSettings.ResetToDefaults();
             }
         }
 
         [Test]
         public void Random_test()
         {
-            BuilderSetup builderSetup = new BuilderSetup();
-            var items =new  Builder<MyClass>(builderSetup).CreateListOfSize(40)
+            BuilderSettings builderSettings = new BuilderSettings();
+            var items = new Builder().CreateListOfSize<MyClass>(40)
                 .Random(10)
                     .With(x => x.EnumProperty = MyEnum.EnumValue1)
                 .Random(10)

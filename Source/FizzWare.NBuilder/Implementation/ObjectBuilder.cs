@@ -17,10 +17,10 @@ namespace FizzWare.NBuilder.Implementation
 
         private readonly List<MultiFunction> multiFunctions = new List<MultiFunction>();
         private Expression<Func<int, T>> _constructorExpression = null;
-        public BuilderSetup BuilderSetup { get; set; }
-        public ObjectBuilder(IReflectionUtil reflectionUtil, BuilderSetup builderSetup)
+        public BuilderSettings BuilderSettings { get; set; }
+        public ObjectBuilder(IReflectionUtil reflectionUtil, BuilderSettings builderSettings)
         {
-            BuilderSetup = builderSetup;
+            BuilderSettings = builderSettings;
             this.reflectionUtil = reflectionUtil;
         }
 
@@ -177,7 +177,7 @@ namespace FizzWare.NBuilder.Implementation
 
         public T Name(T obj)
         {
-            if (!BuilderSetup.AutoNameProperties)
+            if (!BuilderSettings.AutoNameProperties)
                 return obj;
 
             propertyNamer.SetValuesOf(obj);

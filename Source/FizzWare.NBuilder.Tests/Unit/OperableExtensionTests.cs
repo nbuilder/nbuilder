@@ -31,7 +31,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Test]
         public void ShouldBeAbleToUseWith()
         {
-            var builderSetup = new BuilderSetup();
+            var builderSetup = new BuilderSettings();
             using (mocks.Record())
             {
                 operable.Expect(x => x.ObjectBuilder).Return(new ObjectBuilder<MyClass>(null, builderSetup));
@@ -44,7 +44,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Test]
         public void ShouldBeAbleToUseWith_WithAnIndex()
         {
-            var builderSetup = new BuilderSetup();
+            var builderSetup = new BuilderSettings();
             Action<MyClass, int> funcWithIndex = (x, idx) => x.StringOne = "String" + (idx + 5);
             using (mocks.Record())
             {
@@ -58,7 +58,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Test]
         public void ShouldBeAbleToUseHas()
         {
-            var builderSetup = new BuilderSetup();
+            var builderSetup = new BuilderSettings();
             using (mocks.Record())
             {
                 operable.Expect(x => x.ObjectBuilder).Return(new ObjectBuilder<MyClass>(null, builderSetup));
@@ -71,7 +71,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Test]
         public void ShouldBeAbleToUseAnd()
         {
-            var builderSetup = new BuilderSetup();
+            var builderSetup = new BuilderSettings();
             using (mocks.Record())
             {
                 operable.Expect(x => x.ObjectBuilder).Return(new ObjectBuilder<MyClass>(null, builderSetup));
@@ -84,7 +84,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Test]
         public void ShouldBeAbleToUseAndWithAnIndex()
         {
-            var builderSetup = new BuilderSetup();
+            var builderSetup = new BuilderSettings();
             Action<MyClass, int> funcWithIndex = (x, idx) => x.StringOne = "String" + (idx + 5);
             using (mocks.Record())
             {
@@ -98,7 +98,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Test]
         public void ShouldBeAbleToUseWithToSetPrivateProperties()
         {
-            var builderSetup = new BuilderSetup();
+            var builderSetup = new BuilderSettings();
             using (mocks.Record())
             {
                 operable.Expect(x => x.ObjectBuilder).Return(new ObjectBuilder<MyClass>(null, builderSetup));
@@ -111,7 +111,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Test]
         public void ShouldBeAbleToUseHasToSetPrivateProperties()
         {
-            var builderSetup = new BuilderSetup();
+            var builderSetup = new BuilderSettings();
             using (mocks.Record())
             {
                 operable.Expect(x => x.ObjectBuilder).Return(new ObjectBuilder<MyClass>(null, builderSetup));
@@ -124,7 +124,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Test]
         public void ShouldBeAbleToUseAndToSetPrivateProperties()
         {
-            var builderSetup = new BuilderSetup();
+            var builderSetup = new BuilderSettings();
             using (mocks.Record())
             {
                 operable.Expect(x => x.ObjectBuilder).Return(new ObjectBuilder<MyClass>(null, builderSetup));

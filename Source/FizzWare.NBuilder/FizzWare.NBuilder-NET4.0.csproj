@@ -75,6 +75,7 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="BuilderSetup.cs" />
     <Compile Include="Dates\At.cs" />
     <Compile Include="Dates\DateTimeExtensions.cs" />
     <Compile Include="Dates\Month.cs" />
@@ -91,7 +92,7 @@
     <Compile Include="Messages.cs" />
     <Compile Include="PersistenceMethodNotFoundException.cs" />
     <Compile Include="PersistenceService.cs" />
-    <Compile Include="BuilderSetup.cs" />
+    <Compile Include="BuilderSettings.cs" />
     <Compile Include="Generators\IRandomGenerator.cs" />
     <Compile Include="HierarchySpec.cs" />
     <Compile Include="IPersistenceService.cs" />

@@ -19,9 +19,9 @@ namespace FizzWare.NBuilder.FunctionalTests.Extensibility
         [Test]
         public void AddingACustom_With_ExtensionForProducts()
         {
-            BuilderSetup builderSetup = new RepositoryBuilderSetup().DoSetup();
-            var products = new Builder<Product>(builderSetup)
-                .CreateListOfSize(10)
+            BuilderSettings builderSettings = new RepositoryBuilderSetup().DoSetup();
+            var products = new Builder(builderSettings)
+                .CreateListOfSize<Product>(10)
                 .All()
                 .WithWarehouseLocations() // This will only appear when using Builder<Product>
                 .Build();
@@ -38,10 +38,10 @@ namespace FizzWare.NBuilder.FunctionalTests.Extensibility
         [Test]
         public void SpecifyingACustomPropertyNamerForASpecificType()
         {
-            BuilderSetup builderSetup = new RepositoryBuilderSetup().DoSetup();
-            builderSetup.SetPropertyNamerFor<Product>(new CustomProductPropertyNamer(new ReflectionUtil(),builderSetup));
+            BuilderSettings builderSettings = new RepositoryBuilderSetup().DoSetup();
+            builderSettings.SetPropertyNamerFor<Product>(new CustomProductPropertyNamer(new ReflectionUtil(),builderSettings));
 
-            var products = new Builder<Product>(builderSetup).CreateListOfSize(10).Build();
+            var products = new Builder(builderSettings).CreateListOfSize<Product>(10).Build();
 
             Assert.That(products[0].Location.Aisle, Is.EqualTo('A'));
             Assert.That(products[0].Location.Shelf, Is.EqualTo(2));
@@ -52,7 +52,7 @@ namespace FizzWare.NBuilder.FunctionalTests.Extensibility
             Assert.That(products[9].Location.Location, Is.EqualTo(10000));
 
             // Reset it afterwards so the other tests work as expected
-            builderSetup.ResetToDefaults();
+            builderSettings.ResetToDefaults();
         }
     }    
 }

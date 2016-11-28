@@ -1,109 +1,78 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using FizzWare.NBuilder.Implementation;
 using FizzWare.NBuilder.PropertyNaming;
 
 namespace FizzWare.NBuilder
 {
-    public class BuilderSetup
+    public static class BuilderSetup
     {
-        private IPersistenceService persistenceService;
-        public bool AutoNameProperties;
-        private Dictionary<Type, IPropertyNamer> propertyNamers;
-        private IPropertyNamer defaultPropertyNamer;
-
-        private List<PropertyInfo> disabledAutoNameProperties;
-
-        internal  bool HasDisabledAutoNameProperties;
-
-        public BuilderSetup()
+        internal static readonly BuilderSettings Instance =new BuilderSettings();
+        public static bool AutoNameProperties
         {
-            ResetToDefaults();
+            get { return Instance.AutoNameProperties; }
+            set { Instance.AutoNameProperties = value; }
         }
 
-        public  void ResetToDefaults()
+        public static bool HasDisabledAutoNameProperties
         {
-            SetDefaultPropertyNamer(new SequentialPropertyNamer(new ReflectionUtil(),this));
-            persistenceService = new PersistenceService();
-            AutoNameProperties = true;
-            propertyNamers = new Dictionary<Type, IPropertyNamer>();
-            HasDisabledAutoNameProperties = false;
-            disabledAutoNameProperties = new List<PropertyInfo>();
+            get { return Instance.HasDisabledAutoNameProperties;  }
+            set { Instance.HasDisabledAutoNameProperties = value; }
         }
 
-        public  void SetDefaultPropertyNamer(IPropertyNamer propertyNamer)
+        public static bool ShouldIgnoreProperty(PropertyInfo info)
         {
-            defaultPropertyNamer = propertyNamer;
+            return Instance.ShouldIgnoreProperty(info);
         }
 
-        public  void SetPersistenceService(IPersistenceService service)
+        public static void ResetToDefaults()
         {
-            persistenceService = service;
+            Instance.ResetToDefaults();
         }
 
-        public  IPersistenceService GetPersistenceService()
+        public static IPropertyNamer GetPropertyNamerFor<T>()
         {
-            return persistenceService;
+            return Instance.GetPropertyNamerFor<T>();
         }
 
-        public  void SetCreatePersistenceMethod<T>(Action<T> saveMethod)
+        public static void SetPropertyNamerFor<T>(IPropertyNamer propertyNamer)
         {
-            persistenceService.SetPersistenceCreateMethod(saveMethod);
+            Instance.SetPropertyNamerFor<T>(propertyNamer);
         }
 
-        public  void SetUpdatePersistenceMethod<T>(Action<T> saveMethod)
+        public static void SetDefaultPropertyName(IPropertyNamer propertyNamer)
         {
-            persistenceService.SetPersistenceUpdateMethod(saveMethod);
+            Instance.SetDefaultPropertyNamer(propertyNamer);
         }
 
-        public  void SetPropertyNamerFor<T>(IPropertyNamer propertyNamer)
+        public static void SetPersistenceService(IPersistenceService service)
         {
-            propertyNamers.Add(typeof(T), propertyNamer);
+            Instance.SetPersistenceService(service);
         }
 
-        public  IPropertyNamer GetPropertyNamerFor<T>()
+        public static IPersistenceService GetPersistenceService()
         {
-            if (!propertyNamers.ContainsKey(typeof(T)))
-            {
-                return defaultPropertyNamer;
-            }
-
-            return propertyNamers[typeof (T)];
+            return Instance.GetPersistenceService();
         }
 
-        public  void DisablePropertyNamingFor<T, TFunc>(Expression<Func<T, TFunc>> func)
+        public static void SetCreatePersistenceMethod<T>(Action<T> saveMethod)
         {
-            HasDisabledAutoNameProperties = true;
-            disabledAutoNameProperties.Add(GetProperty(func));
+            Instance.SetCreatePersistenceMethod(saveMethod);
         }
 
-        public  bool ShouldIgnoreProperty(PropertyInfo info)
+        public static void SetUpdatePersistenceMethod<T>(Action<T> saveMethod)
         {
-            if (disabledAutoNameProperties.Any(x => x.DeclaringType == info.DeclaringType && x.Name == info.Name))
-                return true;
-
-            return false;
+            Instance.SetUpdatePersistenceMethod(saveMethod);
         }
 
-        private  PropertyInfo GetProperty<TModel, T>(Expression<Func<TModel, T>> expression)
+        public static void DisablePropertyNamingFor<T, TFunc>(Expression<Func<T,TFunc >> func)
         {
-            MemberExpression memberExpression = GetMemberExpression(expression);
-
-            return (PropertyInfo)memberExpression.Member;
+            Instance.DisablePropertyNamingFor(func);   
         }
 
-        private  MemberExpression GetMemberExpression<TModel, T>(Expression<Func<TModel, T>> expression)
+        static BuilderSetup()
         {
-            MemberExpression memberExpression = null;
-            if (expression.Body.NodeType == ExpressionType.MemberAccess)
-            {
-                memberExpression = expression.Body as MemberExpression;
-            }
 
-            return memberExpression;
         }
     }
 }

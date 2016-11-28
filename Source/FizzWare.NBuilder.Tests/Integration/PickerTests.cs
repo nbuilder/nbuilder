@@ -11,10 +11,10 @@ namespace FizzWare.NBuilder.Tests.Integration
         [Test]
         public void ShouldBeAbleToPickUsingExactlyConstraint()
         {
-            var builderSetup = new BuilderSetup();
-            var simpleClasses =new Builder<SimpleClass>(builderSetup).CreateListOfSize(10).Build();
+            var builderSetup = new BuilderSettings();
+            var simpleClasses =Builder<SimpleClass>.CreateListOfSize(10).Build();
 
-            var products = new Builder<MyClass>(builderSetup)
+            var products = Builder<MyClass>
                             .CreateListOfSize(10)
                             .All()
                             .With(x => x.SimpleClasses = Pick<SimpleClass>.UniqueRandomList(With.Exactly(1).Elements).From(simpleClasses)).Build();
@@ -26,10 +26,10 @@ namespace FizzWare.NBuilder.Tests.Integration
         [Test]
         public void ShouldBeAbleToPickUsingBetweenPickerConstraint()
         {
-            var builderSetup = new BuilderSetup();
-            var simpleClasses =new Builder<SimpleClass>(builderSetup).CreateListOfSize(10).Build();
+            var builderSetup = new BuilderSettings();
+            var simpleClasses =Builder<SimpleClass>.CreateListOfSize(10).Build();
 
-            var products = new Builder<MyClass>(builderSetup)
+            var products = Builder<MyClass>
                             .CreateListOfSize(10)
                             .All()
                             .With(x => x.SimpleClasses = Pick<SimpleClass>.UniqueRandomList(With.Between(1, 5).Elements).From(simpleClasses)).Build();
@@ -62,7 +62,7 @@ namespace FizzWare.NBuilder.Tests.Integration
         [Test]
         public void WhenUsedInContextRandomItemPickerShouldPickDifferentItems()
         {
-            var builderSetup = new BuilderSetup();
+            var builderSetup = new BuilderSettings();
             var stringList = new List<string>();
 
             for (int i = 0; i < 100; i++)
@@ -71,7 +71,7 @@ namespace FizzWare.NBuilder.Tests.Integration
             var strings = stringList.ToArray();
 
             var vehicles =
-               new Builder<MyClass>(builderSetup)
+               Builder<MyClass>
                     .CreateListOfSize(10)
                     .All()
                     .With(x => x.StringOne = Pick<string>.RandomItemFrom(strings))
@@ -86,11 +86,11 @@ namespace FizzWare.NBuilder.Tests.Integration
 		[Test]
 		public void WhenPickingFromSmallListLargeNumberOfTimesShouldPickEachItemAtLeastOnce()
         {
-            var builderSetup = new BuilderSetup();
+            var builderSetup = new BuilderSettings();
             var fruits = new List<string>() { "apple", "orange", "banana", "pear" };
 
 			var fruitBaskets =
-                new Builder<MyClass>(builderSetup)
+                Builder<MyClass>
                     .CreateListOfSize(100)
 					.All()
 					.With(x => x.StringOne = Pick<string>.RandomItemFrom(fruits))

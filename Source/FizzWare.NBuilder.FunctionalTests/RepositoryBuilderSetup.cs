@@ -12,12 +12,12 @@ public class RepositoryBuilderSetup
     private static bool arInitialized;
     
     [SetUp]
-    public BuilderSetup SetUp()
+    public BuilderSettings SetUp()
     {
         return DoSetup();
     }
 
-    public BuilderSetup DoSetup()
+    public BuilderSettings DoSetup()
     {
         DbConfiguration.SetConfiguration(new IntegrationTestConfiguration());
         using (var db = new ProductsDbContext())
@@ -25,10 +25,10 @@ public class RepositoryBuilderSetup
             db.Database.Delete();
         }
 
-        BuilderSetup builderSetup = new BuilderSetup();
+        BuilderSettings builderSettings = new BuilderSettings();
 
         if (setup)
-            return builderSetup;
+            return builderSettings;
 
         
 
@@ -39,17 +39,17 @@ public class RepositoryBuilderSetup
         var taxTypeRepository = Dependency.Resolve<ITaxTypeRepository>();
         var categoryRepository = Dependency.Resolve<ICategoryRepository>();
 
-        builderSetup.SetCreatePersistenceMethod<Product>(productRepository.Create);
-        builderSetup.SetCreatePersistenceMethod<IList<Product>>(productRepository.CreateAll);
+        builderSettings.SetCreatePersistenceMethod<Product>(productRepository.Create);
+        builderSettings.SetCreatePersistenceMethod<IList<Product>>(productRepository.CreateAll);
 
-        builderSetup.SetCreatePersistenceMethod<TaxType>(taxTypeRepository.Create);
-        builderSetup.SetCreatePersistenceMethod<IList<TaxType>>(taxTypeRepository.CreateAll);
+        builderSettings.SetCreatePersistenceMethod<TaxType>(taxTypeRepository.Create);
+        builderSettings.SetCreatePersistenceMethod<IList<TaxType>>(taxTypeRepository.CreateAll);
 
-        builderSetup.SetCreatePersistenceMethod<Category>(categoryRepository.Create);
-        builderSetup.SetCreatePersistenceMethod<IList<Category>>(categoryRepository.CreateAll);
+        builderSettings.SetCreatePersistenceMethod<Category>(categoryRepository.Create);
+        builderSettings.SetCreatePersistenceMethod<IList<Category>>(categoryRepository.CreateAll);
 
-        builderSetup.SetUpdatePersistenceMethod<Category>(categoryRepository.Save);
-        builderSetup.SetUpdatePersistenceMethod<IList<Category>>(categoryRepository.SaveAll);
-        return builderSetup;
+        builderSettings.SetUpdatePersistenceMethod<Category>(categoryRepository.Save);
+        builderSettings.SetUpdatePersistenceMethod<IList<Category>>(categoryRepository.SaveAll);
+        return builderSettings;
     }
 }

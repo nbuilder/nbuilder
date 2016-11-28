@@ -20,7 +20,7 @@ namespace FizzWare.NBuilder
         public void Create<T>(T obj)
         {
             if (!CreateMethods.ContainsKey(typeof(T)))
-                throw new PersistenceMethodNotFoundException("No persistence create method set up for " + typeof(T).Name + ". Add one using BuilderSetup.SetPersistenceCreateMethod()");
+                throw new PersistenceMethodNotFoundException("No persistence create method set up for " + typeof(T).Name + ". Add one using BuilderSettings.SetPersistenceCreateMethod()");
 
             var creator = CreateMethods[typeof(T)];
 
@@ -30,7 +30,7 @@ namespace FizzWare.NBuilder
         public void Create<T>(IList<T> list)
         {
             if (!CreateMethods.ContainsKey(typeof(IList<T>)))
-                throw new PersistenceMethodNotFoundException("No persistence create method set up for " + typeof(IList<T>).Name + ". Add one using BuilderSetup.SetPersistenceCreateMethod()");
+                throw new PersistenceMethodNotFoundException("No persistence create method set up for " + typeof(IList<T>).Name + ". Add one using BuilderSettings.SetPersistenceCreateMethod()");
 
             var creator = CreateMethods[typeof(IList<T>)];
 
@@ -40,7 +40,7 @@ namespace FizzWare.NBuilder
         public void Update<T>(T obj)
         {
             if (!UpdateMethods.ContainsKey(typeof(T)))
-                    throw new PersistenceMethodNotFoundException("No persistence update method set up for " + typeof(T).Name + ". Add one using BuilderSetup.SetPersistenceUpdateMethod()");
+                    throw new PersistenceMethodNotFoundException("No persistence update method set up for " + typeof(T).Name + ". Add one using BuilderSettings.SetPersistenceUpdateMethod()");
 
             var updater = UpdateMethods[typeof(T)];
 
@@ -50,7 +50,7 @@ namespace FizzWare.NBuilder
         public void Update<T>(IList<T> obj)
         {
             if (!UpdateMethods.ContainsKey(typeof(IList<T>)))
-                throw new PersistenceMethodNotFoundException("No persistence update method set up for " + typeof(IList<T>).Name + ". Add one using BuilderSetup.SetPersistenceUpdateMethod()");
+                throw new PersistenceMethodNotFoundException("No persistence update method set up for " + typeof(IList<T>).Name + ". Add one using BuilderSettings.SetPersistenceUpdateMethod()");
 
             var updater = UpdateMethods[typeof(IList<T>)];
 

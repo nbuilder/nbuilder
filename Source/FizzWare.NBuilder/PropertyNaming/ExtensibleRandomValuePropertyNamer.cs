@@ -9,15 +9,15 @@ namespace FizzWare.NBuilder.PropertyNaming
     {
         private readonly IRandomGenerator randomGenerator;
         protected IDictionary<Type, Delegate> Handlers = new Dictionary<Type, Delegate>();
-        private BuilderSetup _builderSetup;
-        public ExtensibleRandomValuePropertyNamer(BuilderSetup builderSetup)
-            : this (new RandomGenerator(),builderSetup)
+        private BuilderSettings BuilderSettings;
+        public ExtensibleRandomValuePropertyNamer(BuilderSettings builderSettings)
+            : this (new RandomGenerator(),builderSettings)
         {
         }
 
-        public ExtensibleRandomValuePropertyNamer(IRandomGenerator randomGenerator, BuilderSetup builderSetup)
+        public ExtensibleRandomValuePropertyNamer(IRandomGenerator randomGenerator, BuilderSettings builderSettings)
         {
-            _builderSetup = builderSetup;
+            BuilderSettings = builderSettings;
             this.randomGenerator = randomGenerator;
             var handlers = GetDefaultHandlers();
 
@@ -82,7 +82,7 @@ namespace FizzWare.NBuilder.PropertyNaming
 
         protected void SetMemberValue<T>(MemberInfo memberInfo, T instance)
         {
-            if (memberInfo is PropertyInfo && _builderSetup.ShouldIgnoreProperty((PropertyInfo)memberInfo))
+            if (memberInfo is PropertyInfo && BuilderSettings.ShouldIgnoreProperty((PropertyInfo)memberInfo))
             {
                 return;
             }

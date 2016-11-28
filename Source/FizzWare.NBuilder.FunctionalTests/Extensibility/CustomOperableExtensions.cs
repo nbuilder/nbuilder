@@ -41,9 +41,9 @@ namespace FizzWare.NBuilder.FunctionalTests.Extensibility
     {
         public void Do()
         {
-            var builderSetup = new BuilderSetup();
-           new Builder<Product>(builderSetup)
-                .CreateListOfSize(10)
+            var builderSetup = new BuilderSettings();
+           new Builder(builderSetup)
+                .CreateListOfSize<Product>(10)
                 .All()
                     .WithLongTitles()
                 .Build();

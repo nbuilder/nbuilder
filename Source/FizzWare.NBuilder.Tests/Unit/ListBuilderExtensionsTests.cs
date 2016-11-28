@@ -212,7 +212,7 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             using (mocks.Record())
             {
-                listBuilderImpl.Stub(x => x.BuilderSetup).Return(new BuilderSetup());
+                listBuilderImpl.Stub(x => x.BuilderSettings).Return(new BuilderSettings());
                 listBuilderImpl.Expect(x => x.Capacity).Return(listSize).Repeat.Times(3);
                 listBuilderImpl.Expect(x => x.CreateObjectBuilder()).Return(null);
                 listBuilderImpl.Expect(x => x.AddDeclaration(Arg<RangeDeclaration<MyClass>>.Matches(y => y.Start == startIndex && y.End == endIndex))).Return(rangeDeclaration);
@@ -234,7 +234,7 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             using (mocks.Record())
             {
-                listBuilderImpl.Stub(x => x.BuilderSetup).Return(new BuilderSetup());
+                listBuilderImpl.Stub(x => x.BuilderSettings).Return(new BuilderSettings());
                 listBuilderImpl.Expect(x => x.CreateObjectBuilder()).Return(null);
                 declarationQueue.Expect(x => x.GetLastItem()).Return(rangeDeclaration);
                 listBuilderImpl.Expect(x => x.Declarations).Return(declarationQueue);
@@ -243,7 +243,7 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             using (mocks.Playback())
             {
-                listBuilderImpl.Stub(x => x.BuilderSetup).Return(new BuilderSetup());
+                listBuilderImpl.Stub(x => x.BuilderSettings).Return(new BuilderSettings());
                 var andTheNextDeclaration = (RangeDeclaration<MyClass>)ListBuilderExtensions.TheNext(listBuilderImpl, 10);
 
                 Assert.That(andTheNextDeclaration.Start, Is.EqualTo(10));
@@ -261,7 +261,7 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             using (mocks.Record())
             {
-                listBuilderImpl.Stub(x => x.BuilderSetup).Return(new BuilderSetup());
+                listBuilderImpl.Stub(x => x.BuilderSettings).Return(new BuilderSettings());
                 listBuilderImpl.Expect(x => x.CreateObjectBuilder()).Return(null);
                 declarationQueue.Expect(x => x.GetLastItem()).Return(rangeDeclaration);
                 listBuilderImpl.Expect(x => x.Declarations).Return(declarationQueue);
@@ -285,7 +285,7 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             using (mocks.Record())
             {
-                listBuilderImpl.Stub(x => x.BuilderSetup).Return(new BuilderSetup());
+                listBuilderImpl.Stub(x => x.BuilderSettings).Return(new BuilderSettings());
                 listBuilderImpl.Expect(x => x.CreateObjectBuilder()).Return(null);
                 declarationQueue.Expect(x => x.GetLastItem()).Return(rangeDeclaration);
                 listBuilderImpl.Expect(x => x.Declarations).Return(declarationQueue);
@@ -294,7 +294,7 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             using (mocks.Playback())
             {
-                listBuilderImpl.Stub(x => x.BuilderSetup).Return(new BuilderSetup());
+                listBuilderImpl.Stub(x => x.BuilderSettings).Return(new BuilderSettings());
                 var thePreviousDeclaration = (RangeDeclaration<MyClass>)ListBuilderExtensions.ThePrevious(listBuilderImpl, 10);
 
                 Assert.That(thePreviousDeclaration.Start, Is.EqualTo(0));
@@ -311,7 +311,7 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             using (mocks.Record())
             {
-                listBuilderImpl.Stub(x => x.BuilderSetup).Return(new BuilderSetup());
+                listBuilderImpl.Stub(x => x.BuilderSettings).Return(new BuilderSettings());
                 listBuilderImpl.Expect(x => x.Capacity).Return(20);
                 listBuilderImpl.Expect(x => x.CreateObjectBuilder()).Return(null);
                 listBuilderImpl.Expect(x => x.AddDeclaration(Arg<RangeDeclaration<MyClass>>.Matches(y => y.Start == 10 && y.End == 19))).Return(rangeDeclaration);
@@ -336,7 +336,7 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             using (mocks.Record())
             {
-                listBuilderImpl.Stub(x => x.BuilderSetup).Return(new BuilderSetup());
+                listBuilderImpl.Stub(x => x.BuilderSettings).Return(new BuilderSettings());
                 listBuilderImpl.Expect(x => x.Capacity).Return(listSize).Repeat.Any();
                 listBuilderImpl.Expect(x => x.AddDeclaration(Arg<RandomDeclaration<MyClass>>.Matches(y => y.Start == 0 && y.End == end))).Return(randomDeclaration);
             }
@@ -396,14 +396,14 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Test]
         public void ShouldBeAbleToUsePersistHierarchy()
         {
-            var buildersetup = new BuilderSetup();
+            var buildersetup = new BuilderSettings();
             var hierarchySpec = mocks.Stub<IHierarchySpec<MyClass>>();
             var persistenceService = mocks.DynamicMock<IPersistenceService>();
 
 
             using (mocks.Record())
             {
-                listBuilderImpl.Stub(x => x.BuilderSetup).Return(buildersetup);
+                listBuilderImpl.Stub(x => x.BuilderSettings).Return(buildersetup);
                 listBuilderImpl.Expect(x => x.Build()).Return(new List<MyClass>()).Repeat.Any();
                 persistenceService.Expect(x => x.Create(Arg<MyClass>.Is.TypeOf)).Repeat.Any();
                 persistenceService.Expect(x => x.Update(Arg<IList<MyClass>>.Is.TypeOf)).Repeat.Once();

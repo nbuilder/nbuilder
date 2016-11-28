@@ -54,7 +54,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         public void RangeDeclarationsShouldExecuteInOrderOfStartingPosition()
         {
             var generator = new SequentialGenerator<int>();
-            var build = new Builder<TestClass>(new BuilderSetup())
+            var build = Builder<TestClass>
                 .CreateListOfSize(10)
                 .All()
                     .Do(x => x.Property = "item")

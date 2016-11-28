@@ -11,11 +11,11 @@ namespace FizzWare.NBuilder.PropertyNaming
     {
         protected readonly IReflectionUtil ReflectionUtil;
         protected const BindingFlags FLAGS = (BindingFlags.Public | BindingFlags.Instance);
-        private BuilderSetup _builderSetup;
-        protected PropertyNamer(IReflectionUtil reflectionUtil, BuilderSetup builderSetup)
+        private BuilderSettings BuilderSettings;
+        protected PropertyNamer(IReflectionUtil reflectionUtil, BuilderSettings builderSettings)
         {
             this.ReflectionUtil = reflectionUtil;
-            _builderSetup = builderSetup;
+            BuilderSettings = builderSettings;
         }
 
         public abstract void SetValuesOfAllIn<T>(IList<T> objects);
@@ -128,7 +128,7 @@ namespace FizzWare.NBuilder.PropertyNaming
         protected virtual bool ShouldIgnore(MemberInfo memberInfo)
         {
             if (memberInfo is PropertyInfo)
-                if (_builderSetup.ShouldIgnoreProperty(((PropertyInfo) memberInfo)))
+                if (BuilderSettings.ShouldIgnoreProperty(((PropertyInfo) memberInfo)))
                     return true;
 
             return false;
@@ -138,7 +138,7 @@ namespace FizzWare.NBuilder.PropertyNaming
         {
             Type type = GetMemberType(memberInfo);
 
-            if (_builderSetup.HasDisabledAutoNameProperties && ShouldIgnore(memberInfo))
+            if (BuilderSettings.HasDisabledAutoNameProperties && ShouldIgnore(memberInfo))
                 return;
 
             object currentValue = GetCurrentValue(memberInfo, obj);

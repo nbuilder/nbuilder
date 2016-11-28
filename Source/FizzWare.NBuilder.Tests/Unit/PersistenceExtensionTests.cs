@@ -39,12 +39,12 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Test]
         public void ShouldBeAbleToPersistUsingSingleObjectBuilder()
         {
-            var builderSetup = new BuilderSetup();
+            var builderSetup = new BuilderSettings();
             var obj = new MyClass();
 
             using (mocks.Record())
             {
-                singleObjectBuilder.Stub(x => x.BuilderSetup).Return(builderSetup);
+                singleObjectBuilder.Stub(x => x.BuilderSettings).Return(builderSetup);
 
                 singleObjectBuilder.Expect(x => x.Build()).Return(obj);
                 persistenceService.Expect(x => x.Create(obj));
@@ -62,10 +62,10 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Test]
         public void ShouldBeAbleToPersistUsingListBuilder()
         {
-            var builderSetup = new BuilderSetup();
+            var builderSetup = new BuilderSettings();
             using (mocks.Record())
             {
-                listBuilderImpl.Stub(x => x.BuilderSetup).Return(builderSetup);
+                listBuilderImpl.Stub(x => x.BuilderSettings).Return(builderSetup);
 
                 listBuilderImpl.Expect(x => x.Build()).Return(theList);
                 persistenceService.Expect(x => x.Create(theList));
@@ -81,13 +81,13 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Test]
         public void ShouldBeAbleToPersistFromADeclaration()
         {
-            var builderSetup = new BuilderSetup();
+            var builderSetup = new BuilderSettings();
             using (mocks.Record())
             {
-                listBuilderImpl.Stub(x => x.BuilderSetup).Return(builderSetup);
+                listBuilderImpl.Stub(x => x.BuilderSettings).Return(builderSetup);
                
                 listBuilderImpl.Expect(x => x.Build()).Return(theList);
-                listBuilderImpl.Stub(x => x.BuilderSetup).Return(builderSetup);
+                listBuilderImpl.Stub(x => x.BuilderSettings).Return(builderSetup);
                 persistenceService.Expect(x => x.Create(theList));
                 ((IDeclaration<MyClass>) operable).Expect(x => x.ListBuilderImpl).Return(listBuilderImpl);
             }
@@ -103,7 +103,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Test]
         public void Persist_TypeOfIOperableOnlyNotIDeclaration_ThrowsException()
         {
-            var builderSetup = new BuilderSetup();
+            var builderSetup = new BuilderSettings();
             var operableOnly = mocks.DynamicMock<IOperable<MyClass>>();
 
             using (mocks.Record())

@@ -9,18 +9,18 @@ namespace FizzWare.NBuilder.FunctionalTests
     [TestFixture]
     public class EntityFrameworkPersistenceTests
     {
-        private BuilderSetup builderSetup;
+        private BuilderSettings builderSettings;
 
         [SetUp]
         public void BeforeEach()
         {
-            this.builderSetup = new EntityFrameworkBuilderSetup().SetUp();
+            this.builderSettings = new EntityFrameworkBuilderSetup().SetUp();
         }
 
         [Test]
         public void PersistingASingleObject()
         {
-            new Builder<Product>(builderSetup).CreateNew().Persist();
+            new Builder(builderSettings).CreateNew<Product>().Persist();
 
             // Go directly to the database to do some asserts
             var dataTable = Database.GetContentsOf(Database.Tables.Product);
@@ -36,9 +36,10 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void PersistingASingleTaxTypeAndAListOf100Products()
         {
-            var taxType = new Builder<TaxType>(builderSetup).CreateNew().Persist();
+            var builder = new Builder(builderSettings);
+            var taxType = builder.CreateNew<TaxType>().Persist();
 
-            new Builder<Product>(builderSetup).CreateListOfSize(100)
+            builder.CreateListOfSize<Product>(100)
                 .All()
                 .With(x => x.TaxType = taxType)
                 .Persist(); // NB: Persistence is setup in the RepositoryBuilderSetup class
@@ -52,10 +53,11 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Description("Instead of assigning directly to a category")]
         public void PersistingUsingPick_UpTo_AndDoForEach()
         {
-            var categories = new Builder<Category>(builderSetup).CreateListOfSize(10).Persist();
+            var builder = new Builder(builderSettings);
+            var categories = builder.CreateListOfSize<Category>(10).Persist();
 
-            new Builder<Product>(builderSetup)
-                .CreateListOfSize(50)
+            builder
+                .CreateListOfSize<Product>(50)
                 .All()
                 .DoForEach((x, y) => x.AddToCategory(y), Pick<Category>.UniqueRandomList(With.UpTo(4).Elements).From(categories))
                 .Persist();
@@ -72,12 +74,13 @@ namespace FizzWare.NBuilder.FunctionalTests
             const int numCategories = 50;
             const int numCategoriesForEachProduct = 5;
 
-            var categories = new Builder<Category>(builderSetup)
-                .CreateListOfSize(numCategories)
+            var builder = new Builder(builderSettings);
+            var categories = builder
+                .CreateListOfSize<Category>(numCategories)
                 .Persist();
 
-            new Builder<Product>(builderSetup)
-                .CreateListOfSize(numProducts)
+            builder
+                .CreateListOfSize<Product>(numProducts)
                 .All()
                 .With(x => x.Categories = Pick<Category>.
                     UniqueRandomList(With.Exactly(numCategoriesForEachProduct).Elements)

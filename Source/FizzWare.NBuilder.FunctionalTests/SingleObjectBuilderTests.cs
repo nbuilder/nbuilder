@@ -25,8 +25,8 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void CreatingAnObject()
         {
-            var builderSetup = new BuilderSetup();
-            var product = new Builder<Product>(builderSetup).CreateNew().Build();
+            var builderSetup = new BuilderSettings();
+            var product = new Builder(builderSetup).CreateNew< Product>().Build();
 
             Assert.That(product.Id, Is.EqualTo(1));
             Assert.That(product.Title, Is.EqualTo("Title1"));
@@ -39,9 +39,9 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void SettingTheValueOfAProperty()
         {
-            var builderSetup = new BuilderSetup();
-            var product = new Builder<Product>(builderSetup)
-                .CreateNew()
+            var builderSetup = new BuilderSettings();
+            var product = new Builder(builderSetup)
+                .CreateNew< Product>()
                     .With(x => x.Description = "A custom description here")
                 .Build();
 
@@ -53,9 +53,9 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void SettingMultipleProperties()
         {
-            var builderSetup = new BuilderSetup();
-            var product = new Builder<Product>(builderSetup)
-                .CreateNew()
+            var builderSetup = new BuilderSettings();
+            var product = new Builder(builderSetup)
+                .CreateNew< Product>()
                 .With(x => x.Title = "Special title")
                 .And(x => x.Description = "Special description") 
                 .And(x => x.Id = 2)
@@ -73,9 +73,9 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void ItsPossibleToAssignValuesToPrivateSetProperties()
         {
-            var builderSetup = new BuilderSetup();
-            var invoice = new Builder<Invoice>(builderSetup)
-                .CreateNew()
+            var builderSetup = new BuilderSettings();
+            var invoice = new Builder(builderSetup)
+                .CreateNew< Invoice>()
                 .With(x => x.Amount, 100)
                 .Build();
 
@@ -85,9 +85,9 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void ItsPossibleToAssignValuesToReadonlyProperties()
         {
-            var builderSetup = new BuilderSetup();
-            var invoice = new Builder<Invoice>(builderSetup)
-                .CreateNew()
+            var builderSetup = new BuilderSettings();
+            var invoice = new Builder(builderSetup)
+                .CreateNew< Invoice>()
                 .With(x => x.Id, 100)
                 .Build();
 
@@ -97,9 +97,9 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void ItsPosibleToUseAndInAdditionToWithInOrderToImproveReadability()
         {
-            var builderSetup = new BuilderSetup();
-            var invoice = new Builder<Invoice>(builderSetup)
-                .CreateNew()
+            var builderSetup = new BuilderSettings();
+            var invoice = new Builder(builderSetup)
+                .CreateNew< Invoice>()
                 .With(x => x.Amount, 100)
                 .And(x => x.Id, 200)
                 .Build();
@@ -111,9 +111,9 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void ItsPossibleToUseThePrivateSetWithToSetNormalProperties()
         {
-            var builderSetup = new BuilderSetup();
-            var product = new Builder<Product>(builderSetup)
-                .CreateNew()
+            var builderSetup = new BuilderSettings();
+            var product = new Builder(builderSetup)
+                .CreateNew< Product>()
                 .With(x => x.Title, "special title")
                 .Build();
 
@@ -123,14 +123,14 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void CreatingAClassThatHasAConstructorUsingLegacySyntax()
         {
-            var builderSetup = new BuilderSetup();
-            var basket = new Builder<ShoppingBasket>(builderSetup).CreateNew().Build();
-            var product = new Builder<Product>(builderSetup).CreateNew().Build();
+            var builder = new Builder();
+            var basket = builder.CreateNew< ShoppingBasket>().Build();
+            var product = builder.CreateNew< Product>().Build();
             const int quantity = 5;
 
             // BasketItem's ctor: BasketItem(ShoppingBasket basket, Product product, int quantity)
-            var basketItem = new Builder<BasketItem>(builderSetup)
-                .CreateNew()
+            var basketItem = new Builder()
+                .CreateNew< BasketItem>()
                     .WithConstructorArgs(basket, product, quantity)
                 .Build();
 
@@ -146,14 +146,14 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void CreatingAClassThatHasAConstructorUsingExpressionSyntax()
         {
-            var builderSetup = new BuilderSetup();
-            var basket = new Builder<ShoppingBasket>(builderSetup).CreateNew().Build();
-            var product = new Builder<Product>(builderSetup).CreateNew().Build();
+            var builder = new Builder();
+            var basket = builder.CreateNew< ShoppingBasket>().Build();
+            var product = builder.CreateNew< Product>().Build();
             const int quantity = 5;
 
             // BasketItem's ctor: BasketItem(ShoppingBasket basket, Product product, int quantity)
-            var basketItem = new Builder<BasketItem>(builderSetup)
-                .CreateNew()
+            var basketItem = builder
+                .CreateNew< BasketItem>()
                     .WithConstructor(() => new BasketItem(basket, product, quantity))
                 .Build();
 
@@ -169,11 +169,11 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void UsingDo()
         {
-            var builderSetup = new BuilderSetup();
-            var child = new Builder<Category>(builderSetup).CreateNew().Build();
+            var builder = new Builder();
+            var child = builder.CreateNew< Category>().Build();
 
-            var category = new Builder<Category>(builderSetup)
-                .CreateNew()
+            var category = builder
+                .CreateNew< Category>()
                     .Do(x => x.AddChild(child))
                 .Build();
 
@@ -183,12 +183,13 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void CallingMultipleMethods()
         {
-            var builderSetup = new BuilderSetup();
-            var child = new Builder<Category>(builderSetup).CreateNew().Build();
-            var anotherChild = new Builder<Category>(builderSetup).CreateNew().Build();
+            var builderSetup = new BuilderSettings();
+            var builder = new Builder(builderSetup);
+            var child = builder.CreateNew< Category>().Build();
+            var anotherChild = builder.CreateNew< Category>().Build();
 
-            var category = new Builder<Category>(builderSetup)
-                .CreateNew()
+            var category = builder
+                .CreateNew< Category>()
                     .Do(x => x.AddChild(child))
                     .And(x => x.AddChild(anotherChild))
                 .Build();
@@ -201,11 +202,12 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Description("Multi functions allow you to call a method on an object on each item in a list")]
         public void UsingMultiFunctions()
         {
-            var builderSetup = new BuilderSetup();
-            var categories = new Builder<Category>(builderSetup).CreateListOfSize(5).Build();
+            var builderSetup = new BuilderSettings();
+            var builder = new Builder(builderSetup);
+            var categories = builder.CreateListOfSize< Category>(5).Build();
 
-            var product = new Builder<Product>(builderSetup)
-                    .CreateNew()
+            var product = builder
+                    .CreateNew< Product>()
                         .DoForAll( (prod, cat) => prod.AddToCategory(cat), categories)
                     .Build();
 
@@ -221,36 +223,36 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void NBuilderIsNotAMockingFramework() // (!)
         {
-            var builderSetup = new BuilderSetup();
+            var builderSetup = new BuilderSettings();
             Assert.Throws<TypeCreationException>(() =>
             {
-                new Builder<IProduct>(builderSetup).CreateNew().Build();
+                new Builder(builderSetup).CreateNew< IProduct>().Build();
             });
         }
 
         [Test]
         public void NBuilderCannotBeUsedToBuildInterfaces()
         {
-            var builderSetup = new BuilderSetup();
-            var ex = Assert.Throws<TypeCreationException>(() => new Builder<IMyInterface>(builderSetup).CreateNew().Build());
+            var builderSetup = new BuilderSettings();
+            var ex = Assert.Throws<TypeCreationException>(() => new Builder(builderSetup).CreateNew< IMyInterface>().Build());
             Assert.That(ex.Message, Is.EqualTo("Cannot build an interface"));
         }
 
         [Test]
         public void NBuilderCannotBeUsedToBuildAbstractClasses()
         {
-            var builderSetup = new BuilderSetup();
-            var ex = Assert.Throws<TypeCreationException>(() => new Builder<MyAbstractClass>(builderSetup).CreateNew().Build(), "Cannot build an abstract class");
+            var builderSetup = new BuilderSettings();
+            var ex = Assert.Throws<TypeCreationException>(() => new Builder(builderSetup).CreateNew< MyAbstractClass>().Build(), "Cannot build an abstract class");
             Assert.That(ex.Message, Is.EqualTo("Cannot build an abstract class"));
         }
 
         [Test]
         public void WillComplainIfYouTryToBuildAClassThatCannotBeInstantiatedDirectly()
         {
-            var builderSetup = new BuilderSetup();
+            var builderSetup = new BuilderSettings();
             Assert.Throws<TypeCreationException>(() =>
             {
-                new Builder<ChuckNorris>(builderSetup).CreateNew().Build();
+                new Builder(builderSetup).CreateNew< ChuckNorris>().Build();
             });
         }
 

@@ -11,12 +11,12 @@ public class EntityFrameworkBuilderSetup
     private bool setup;
     private static bool arInitialized;
     
-    public BuilderSetup SetUp()
+    public BuilderSettings SetUp()
     {
         return DoSetup();
     }
 
-    public BuilderSetup DoSetup()
+    public BuilderSettings DoSetup()
     {
         DbConfiguration.SetConfiguration(new IntegrationTestConfiguration());
         using (var db = new ProductsDbContext())
@@ -24,22 +24,22 @@ public class EntityFrameworkBuilderSetup
             db.Database.Delete();
         }
 
-        BuilderSetup builderSetup = new BuilderSetup();
+        BuilderSettings builderSettings = new BuilderSettings();
 
         if (setup)
-            return builderSetup;
+            return builderSettings;
 
         setup = true;
 
-        SetPersistenceMethod<Product>(builderSetup);
-        SetPersistenceMethod<TaxType>(builderSetup);
-        SetPersistenceMethod<Category>(builderSetup);
-        return builderSetup;
+        SetPersistenceMethod<Product>(builderSettings);
+        SetPersistenceMethod<TaxType>(builderSettings);
+        SetPersistenceMethod<Category>(builderSettings);
+        return builderSettings;
     }
 
-    private static void SetPersistenceMethod<T>(BuilderSetup builderSetup) where T: class
+    private static void SetPersistenceMethod<T>(BuilderSettings builderSettings) where T: class
     {
-        builderSetup.SetCreatePersistenceMethod<T>((item) =>
+        builderSettings.SetCreatePersistenceMethod<T>((item) =>
         {
             using (var db = new ProductsDbContext())
             {
@@ -49,7 +49,7 @@ public class EntityFrameworkBuilderSetup
             }
         });
 
-        builderSetup.SetCreatePersistenceMethod<IList<T>>((items) =>
+        builderSettings.SetCreatePersistenceMethod<IList<T>>((items) =>
         {
             using (var db = new ProductsDbContext())
             {
@@ -62,7 +62,7 @@ public class EntityFrameworkBuilderSetup
             }
         });
 
-        builderSetup.SetUpdatePersistenceMethod<T>(item =>
+        builderSettings.SetUpdatePersistenceMethod<T>(item =>
         {
             using (var db = new ProductsDbContext())
             {
@@ -72,7 +72,7 @@ public class EntityFrameworkBuilderSetup
             }
         });
 
-        builderSetup.SetUpdatePersistenceMethod<IList<T>>((items) =>
+        builderSettings.SetUpdatePersistenceMethod<IList<T>>((items) =>
         {
             using (var db = new ProductsDbContext())
             {

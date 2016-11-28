@@ -29,7 +29,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             for (int i = 0; i < listSize; i++)
                 theList.Add(new MyClass());
 
-            new SequentialPropertyNamer(reflectionUtil,new BuilderSetup()).SetValuesOfAllIn(theList);
+            new SequentialPropertyNamer(reflectionUtil,new BuilderSettings()).SetValuesOfAllIn(theList);
         }
 
         [Test]
@@ -192,7 +192,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             for (int i = 0; i < listSize; i++)
                 theList.Add(new MyClass());
 
-            new SequentialPropertyNamer(reflectionUtil,new BuilderSetup()).SetValuesOfAllIn(theList);
+            new SequentialPropertyNamer(reflectionUtil,new BuilderSettings()).SetValuesOfAllIn(theList);
 
             Assert.That(theList[0].HasADefaultValue, Is.EqualTo(myClass.HasADefaultValue));
             Assert.That(theList[9].HasADefaultValue, Is.EqualTo(myClass.HasADefaultValue));
@@ -231,7 +231,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         public void SupportsInheritedClasses()
         {
             var myClassInheritor = new MyClassInheritor();
-            new SequentialPropertyNamer(reflectionUtil,new BuilderSetup()).SetValuesOf(myClassInheritor);
+            new SequentialPropertyNamer(reflectionUtil,new BuilderSettings()).SetValuesOf(myClassInheritor);
 
             Assert.That(myClassInheritor.Int, Is.EqualTo(1));
             Assert.That(myClassInheritor.AnotherProperty, Is.EqualTo(1));
@@ -285,7 +285,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Test]
         public void SetValuesOfAllIn_ClassWithNullCharConst_CharConstantIsNotSetByNamer()
         {
-            var propertyNamer = new SequentialPropertyNamer(reflectionUtil,new BuilderSetup());
+            var propertyNamer = new SequentialPropertyNamer(reflectionUtil,new BuilderSettings());
 
             List<MyClassWithCharConst> list = new List<MyClassWithCharConst>() { new MyClassWithCharConst() };
 

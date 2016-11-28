@@ -12,8 +12,8 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Test]
         public void ShouldBeAbleToAddCustomExtension()
         {
-            var builderSetup = new BuilderSetup();
-            var list =new Builder<MyClass>(builderSetup).CreateListOfSize(10).AllEven().With(x => x.StringOne = theString).Build();
+            var builderSetup = new BuilderSettings();
+            var list =Builder<MyClass>.CreateListOfSize(10).AllEven().With(x => x.StringOne = theString).Build();
             Assert.That(list.Count(x => x.StringOne == theString), Is.EqualTo(5));
         }
     }

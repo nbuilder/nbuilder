@@ -12,10 +12,10 @@ namespace FizzWare.NBuilder.Tests.Integration
         [Test]
         public void Do_WithIndex()
         {
-            var builderSetup = new BuilderSetup();
+            var builderSetup = new BuilderSettings();
             var list =
-             new Builder<MyClassWithConstructor> (builderSetup)
-                    .CreateListOfSize(10)
+             new Builder (builderSetup)
+                    .CreateListOfSize< MyClassWithConstructor>(10)
                     .All()
                     .Do((row, index) => row.Int = index*2)
                     .WithConstructor(() => new MyClassWithConstructor(1, 2f))
@@ -31,10 +31,10 @@ namespace FizzWare.NBuilder.Tests.Integration
         [Test]
         public void And_WithIndex()
         {
-            var builderSetup = new BuilderSetup();
+            var builderSetup = new BuilderSettings();
             var list =
-               new Builder<MyClassWithConstructor>(builderSetup)
-                    .CreateListOfSize(10)
+               new Builder(builderSetup)
+                    .CreateListOfSize< MyClassWithConstructor>(10)
                     .All()
                     .Do((row, index) => row.Int = index * 2)
                     .And((row, index) => row.Int = index * 3)
@@ -51,10 +51,10 @@ namespace FizzWare.NBuilder.Tests.Integration
         [Test]
         public void WithConstructor_WithIndex()
         {
-            var builderSetup = new BuilderSetup();
+            var builderSetup = new BuilderSettings();
             var list =
-          new Builder<MyClassWithConstructor>(builderSetup)
-                .CreateListOfSize(10)
+          new Builder(builderSetup)
+                .CreateListOfSize< MyClassWithConstructor>(10)
                 .All()
                 .Do((row, index) => row.Int = index * 2)
                 .WithConstructor(index => new MyClassWithConstructor(index, 2f))

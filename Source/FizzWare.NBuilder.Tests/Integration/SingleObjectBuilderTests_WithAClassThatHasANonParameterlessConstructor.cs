@@ -15,8 +15,8 @@ namespace FizzWare.NBuilder.Tests.Integration
         [Test]
         public void ShouldBeAbleToCreateAnObject()
         {
-            var builderSetup = new BuilderSetup();
-            var obj = new Builder<MyClassWithConstructor>(builderSetup).CreateNew().WithConstructorArgs(theString, theDecimal).Build();
+            var builderSetup = new BuilderSettings();
+            var obj = Builder<MyClassWithConstructor>.CreateNew().WithConstructorArgs(theString, theDecimal).Build();
 
             Assert.That(obj.String, Is.EqualTo(theString));
             Assert.That(obj.Decimal, Is.EqualTo(theDecimal));
@@ -25,8 +25,8 @@ namespace FizzWare.NBuilder.Tests.Integration
         [Test]
         public void ShouldChooseCorrectConstructor()
         {
-            var builderSetup = new BuilderSetup();
-            var obj = new Builder<MyClassWithConstructor>(builderSetup).CreateNew().WithConstructorArgs(theInt, theFloat).Build();
+            var builderSetup = new BuilderSettings();
+            var obj = Builder<MyClassWithConstructor>.CreateNew().WithConstructorArgs(theInt, theFloat).Build();
 
             Assert.That(obj.Int, Is.EqualTo(theInt));
             Assert.That(obj.Float, Is.EqualTo(theFloat));

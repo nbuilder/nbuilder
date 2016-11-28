@@ -13,10 +13,10 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void RegisteringACustomPersistenceService()
         {
-            var buildersetup = new BuilderSetup();
+            var buildersetup = new BuilderSettings();
             buildersetup.SetPersistenceService(new MockCustomPersistenceService());
 
-           new Builder<Product>(buildersetup).CreateNew().Persist();
+           new Builder(buildersetup).CreateNew<Product>().Persist();
 
             Assert.That(MockCustomPersistenceService.ProductPersisted, Is.True);
         }

@@ -13,17 +13,17 @@ namespace FizzWare.NBuilder.Tests.Unit
         private IListBuilderImpl<SimpleClass> listBuilderImpl;
         private MockRepository mocks;
 
-        BuilderSetup builderSetup;
+        BuilderSettings builderSettings;
         [SetUp]
         public void SetUp()
         {
-            builderSetup = new BuilderSetup();
+            builderSettings = new BuilderSettings();
             mocks = new MockRepository();
             listBuilderImpl = mocks.DynamicMock<IListBuilderImpl<SimpleClass>>();
             objectBuilder = mocks.StrictMock<IObjectBuilder<SimpleClass>>();
             listBuilderImpl.Stub(x => x.Capacity).Return(2);
-            listBuilderImpl.Stub(x => x.BuilderSetup).Return(builderSetup);
-            objectBuilder.Stub(x => x.BuilderSetup).Return(builderSetup).Repeat.Any(); ;
+            listBuilderImpl.Stub(x => x.BuilderSettings).Return(builderSettings);
+            objectBuilder.Stub(x => x.BuilderSettings).Return(builderSettings).Repeat.Any(); ;
          }
             
         [TearDown]
@@ -37,7 +37,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         {
             using (mocks.Record())
             {
-                objectBuilder.Stub(x => x.BuilderSetup).Return(builderSetup);
+                objectBuilder.Stub(x => x.BuilderSettings).Return(builderSettings);
                 objectBuilder.Expect(x => x.Construct(Arg<int>.Is.Anything)).Return(new SimpleClass()).Repeat.Times(2);
             }
 
@@ -60,7 +60,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             using (mocks.Record())
             {
 
-                objectBuilder.Stub(x => x.BuilderSetup).Return(builderSetup);
+                objectBuilder.Stub(x => x.BuilderSettings).Return(builderSettings);
                 objectBuilder.Expect(x => x.Construct(0)).Return(obj1);
                 objectBuilder.Expect(x => x.Construct(1)).Return(obj2);
             }
@@ -86,7 +86,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             using (mocks.Record())
             {
 
-                objectBuilder.Stub(x => x.BuilderSetup).Return(builderSetup);
+                objectBuilder.Stub(x => x.BuilderSettings).Return(builderSettings);
                 objectBuilder.Expect(x => x.Construct(Arg<int>.Is.Anything)).Return(new SimpleClass()).Repeat.Times(2);
             }
             using (mocks.Playback())

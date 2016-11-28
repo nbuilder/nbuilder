@@ -20,7 +20,8 @@ namespace FizzWare.NBuilder.FunctionalTests
             const int minChildren = 3;
             const int maxChildren = 8;
 
-            var hierarchySpec = new Builder<HierarchySpec<Category>>(builderSetup).CreateNew()
+            var builder = new Builder(builderSetup);
+            var hierarchySpec = builder.CreateNew<HierarchySpec<Category>>()
                 .With(x => x.AddMethod = (parent, child) => parent.AddChild(child))
                 .With(x => x.Depth = depth)
                 .With(x => x.MinimumChildren = minChildren)
@@ -29,8 +30,8 @@ namespace FizzWare.NBuilder.FunctionalTests
                 .With(x => x.NumberOfRoots = 5)
                 .Build();
 
-            var categories = new Builder<Category>(builderSetup)
-                .CreateListOfSize(10000)
+            var categories = builder
+                .CreateListOfSize<Category>(10000)
                 .All()
                 .PersistHierarchy(hierarchySpec);
 
@@ -61,7 +62,8 @@ namespace FizzWare.NBuilder.FunctionalTests
             const int minChildren = 3;
             const int maxChildren = 8;
 
-            var hierarchySpec = new Builder<HierarchySpec<Category>>(builderSetup).CreateNew()
+            var builder = new Builder(builderSetup);
+            var hierarchySpec = builder.CreateNew< HierarchySpec<Category>>()
                 .With(x => x.AddMethod = (parent, child) => parent.AddChild(child))
                 .With(x => x.Depth = depth)
                 .With(x => x.MinimumChildren = minChildren)
@@ -70,8 +72,8 @@ namespace FizzWare.NBuilder.FunctionalTests
                 .With(x => x.NumberOfRoots = 5)
                 .Build();
 
-            var categories = new Builder<Category>(builderSetup)
-                .CreateListOfSize(10000)
+            var categories = builder
+                .CreateListOfSize<Category>(10000)
                 .All()
                 .PersistHierarchy(hierarchySpec);
 
