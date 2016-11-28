@@ -89,6 +89,7 @@
     assembly_file_version: '{version}'
     assembly_informational_version: '{version}'
 
+  test:
     assemblies:
       - 'nbuilder_output\net40\FizzWare.NBuilder.Tests.dll'
       - 'nbuilder_output\net40\FizzWare.NBuilder.FunctionalTests*.dll'
