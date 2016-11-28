@@ -56,6 +56,13 @@ ipch/
 
 # ReSharper is a .NET coding add-in
 Source/*/bin/
+nuget/**/*.xml
+nuget/**/*.config
+nuget/**/*.txt
+nuget/**/*.manifest
+*.nupkg
+tools
+
 # Mindbench SASS cache
 .sass-cache/
 Source/*/obj/

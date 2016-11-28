@@ -2,7 +2,7 @@
 <package >
     <metadata>
         <id>NBuilder</id>
-        <version>0.0.0.0</version>
+        <version>$version$</version>
         <authors>Gareth Down and awesome contributors!</authors>
         <owners>Gareth Down</owners>
         <licenseUrl>http://www.gnu.org/licenses/lgpl.html</licenseUrl>
@@ -13,8 +13,7 @@
         <tags>TDD unit-testing unittesting unitesting testing fluent</tags>
     </metadata>
     <files>
-        <file src="..\nbuilder_output\net40\Fizzware.NBuilder.dll" target="lib\net40" />
-        <file src="..\nbuilder_output\net35\Fizzware.NBuilder.dll" target="lib\net35" />
-        <file src="..\nbuilder_output\sl5\FizzWare.NBuilder-Silverlight.dll" target="lib\sl50" />
+        <file src="net40\Fizzware.NBuilder.dll" target="lib\net40" />
+        <file src="net35\Fizzware.NBuilder.dll" target="lib\net35" />
     </files>
 </package>
