@@ -12,8 +12,8 @@
     do_not_increment_build_number: true
 
   init:
-    - ps: appveyor/build-info.ps1
-    - ps: appveyor/Use-BetaPackageVersion.ps1
+    - ps: . .\appveyor\Invoke-DisplayBuildInfo.ps1
+    - ps: . .\appveyor\Use-BetaPackageVersion.ps1
 
   nuget:
     project_feed: true
@@ -30,7 +30,7 @@
     - nuget restore Source\NBuilder-NET3.5.sln
 
   build_script:
-    - ps: appveyor\build_script.ps1
+    - ps: . .\appveyor\build_script.ps1
     
   before_test:
     - ps: . .\appveyor\before_test.ps1
@@ -66,21 +66,21 @@
 
 
   init:
-    - ps: appveyor/build-info.ps1
-    - ps: appveyor/Use-BetaPackageVersion.ps1
+    - ps: . .\appveyor\Invoke-DisplayBuildInfo.ps1
+    - ps: . .\appveyor\Use-BetaPackageVersion.ps1
 
   before_build:
     - nuget restore Source\NBuilder-NET4.0.sln
     - nuget restore Source\NBuilder-NET3.5.sln
 
   build_script:
-    - ps: appveyor\build_script.ps1
+    - ps: . .\appveyor\build_script.ps1
     
   before_test:
-    - ps: appveyor\before_test.ps1
+    - ps: . .\appveyor\before_test.ps1
     
   on_success:
-    - ps: appveyor\on_success.ps1
+    - ps: . .\appveyor\on_success.ps1
     
   assembly_info:
     patch: true
@@ -119,21 +119,21 @@
 
 
   init:
-    - ps: iex ./appveyor/build-info.ps1
-    - ps: appveyor/Use-BetaPackageVersion.ps1
+    - ps: . .\appveyor/Invoke-DisplayBuildInfo.ps1
+    - ps: . .\appveyor/Use-BetaPackageVersion.ps1
 
   before_build:
     - nuget restore Source\NBuilder-NET4.0.sln
     - nuget restore Source\NBuilder-NET3.5.sln
 
   build_script:
-    - ps: appveyor\build_script.ps1
+    - ps: . .\appveyor\build_script.ps1
     
   before_test:
-    - ps: appveyor\before_test.ps1
+    - ps: . .\appveyor\before_test.ps1
     
   on_success:
-    - ps: appveyor\on_success.ps1
+    - ps: . .\appveyor\on_success.ps1
     
   assembly_info:
     patch: true
