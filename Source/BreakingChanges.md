@@ -15,3 +15,5 @@
 
 
 ## Obsolete methods have been removed. 
+
+## Silverlight No Longer Supported
