@@ -12,7 +12,7 @@
     do_not_increment_build_number: true
 
   init:
-    - ps: . .\appveyor\Invoke-DisplayBuildInfo.ps1
+    - ps: . .\AppVeyor\Invoke-DisplayBuildInfo.ps1
     - ps: . .\appveyor\Use-BetaPackageVersion.ps1
 
   nuget:
