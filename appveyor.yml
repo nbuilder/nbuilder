@@ -72,10 +72,18 @@
   pull_requests:
     do_not_increment_build_number: true
 
-  environment:
-    feedSource: https://nuget.org/api/v2/
-    apiKey:
+  nuget:
+    project_feed: true
+
+  artifacts:
+  - path: NBuilder*.nupkg
+    name: nuget-package
+
+  deploy:
+    provider: NuGet
+    api_key:
       secure: rEqnyErKFkhgxjUgir8i3zftWJ6AqqzYn/wXPXVSTJo1o9nQML8KU3pmG3sXOqCU
+    artifact: nuget-package
 
   before_build:
     - ps: |  
@@ -122,10 +130,19 @@
   pull_requests:
     do_not_increment_build_number: true
 
-  environment:
-    feedSource: https://nuget.org/api/v2/
-    apiKey:
+  nuget:
+    project_feed: true
+
+  artifacts:
+  - path: NBuilder*.nupkg
+    name: nuget-package
+
+  deploy:
+    provider: NuGet
+    api_key:
       secure: rEqnyErKFkhgxjUgir8i3zftWJ6AqqzYn/wXPXVSTJo1o9nQML8KU3pmG3sXOqCU
+    artifact: nuget-package
+
 
 
   before_build:
