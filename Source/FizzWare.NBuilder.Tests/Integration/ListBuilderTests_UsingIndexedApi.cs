@@ -12,9 +12,8 @@ namespace FizzWare.NBuilder.Tests.Integration
         [Test]
         public void Do_WithIndex()
         {
-            var builderSetup = new BuilderSettings();
-            var list =
-             new Builder (builderSetup)
+            var builderSettings = new BuilderSettings();
+            var list = new Builder (builderSettings)
                     .CreateListOfSize< MyClassWithConstructor>(10)
                     .All()
                     .Do((row, index) => row.Int = index*2)

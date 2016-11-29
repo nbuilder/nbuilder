@@ -1,13 +1,15 @@
 # Nbuilder - A rapid test object generator.
 
+Through a fluent, extensible interface, NBuilder allows you to rapidly create test data, automatically assigning values to properties and public fields that are one of the built in .NET data types (e.g. ints and strings). NBuilder allows you to override for properties you are interested in using lambda expressions.
+
+| Metric      | Status      |
+| ----- | ----- |
+| Production Build  | [![Build status](https://ci.appveyor.com/api/projects/status/av4lwhtejk94wgiy/branch/master?svg=true)](https://ci.appveyor.com/project/NBuilder/nbuilder-1m5q4) |
+| Development Build | [![Build status](https://ci.appveyor.com/api/projects/status/av4lwhtejk94wgiy/branch/develop?svg=true)](https://ci.appveyor.com/project/NBuilder/nbuilder-1m5q4/branch/develop) |
+| Nuget             | [![NuGet Badge](https://buildstats.info/nuget/nbuilder)](https://www.nuget.org/packages/nbuilder/) |
+   
 [![Join the chat at https://gitter.im/garethdown44/nbuilder](https://badges.gitter.im/garethdown44/nbuilder.svg)](https://gitter.im/garethdown44/nbuilder?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-|            | Production | Dev |
-| ----------:| ---------- | --- |
-| AppVeyor   | [![Build status](https://ci.appveyor.com/api/projects/status/xs8gtgibti4q8hl3/?svg=true)](https://ci.appveyor.com/project/NBuilder/nbuilder) | [![Build status](https://ci.appveyor.com/api/projects/status/fnaybp7xhcqapin0?svg=true)](https://ci.appveyor.com/project/NBuilder/nbuilder-11r78)
-| NuGet      | [![NuGet Badge](https://buildstats.info/nuget/nbuilder)](https://www.nuget.org/packages/nbuilder/) | [![MyGet Badge](https://buildstats.info/myget/nbuilder/nbuilder)](https://www.myget.org/feed/nbuilder/package/nuget/nbuilder) |
-   
-Through a fluent, extensible interface, NBuilder allows you to rapidly create test data, automatically assigning values to properties and public fields that are one of the built in .NET data types (e.g. ints and strings). NBuilder allows you to override for properties you are interested in using lambda expressions.
 
 ### How can NBuilder help?
 

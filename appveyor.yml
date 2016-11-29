@@ -77,23 +77,20 @@
     apiKey:
       secure: rEqnyErKFkhgxjUgir8i3zftWJ6AqqzYn/wXPXVSTJo1o9nQML8KU3pmG3sXOqCU
 
-
-  init:
-    - ps: . .\appveyor\Invoke-DisplayBuildInfo.ps1
-    - ps: . .\appveyor\Use-BetaPackageVersion.ps1
-
   before_build:
-    - nuget restore Source\NBuilder-NET4.0.sln
-    - nuget restore Source\NBuilder-NET3.5.sln
+    - ps: |  
+        Import-Module "$(pwd)\DeployNBuilder\DeployNBuilder.psd1"
+
+        $env:PackageVersion = Get-NuGetPackageVersion -beta
+        Invoke-DisplayBuildInfo
+        nuget restore Source\NBuilder-NET4.0.sln
+        nuget restore Source\NBuilder-NET3.5.sln
 
   build_script:
-    - ps: . .\appveyor\build_script.ps1
-    
-  before_test:
-    - ps: . .\appveyor\before_test.ps1
-    
-  on_success:
-    - ps: . .\appveyor\on_success.ps1
+    - ps: |
+        Import-Module "$(pwd)\DeployNBuilder\DeployNBuilder.psd1"
+        "NET3.5", "NET4.0" | Invoke-Build -WorkingDirectory $(pwd)
+        Invoke-NuGetPack -Version  (Get-NuGetPackageVersion -Beta) -NuSpec "$(pwd)\nuget\NBuilder.nuspec" -Destination "$(pwd)"
     
   assembly_info:
     patch: true
@@ -131,22 +128,20 @@
       secure: rEqnyErKFkhgxjUgir8i3zftWJ6AqqzYn/wXPXVSTJo1o9nQML8KU3pmG3sXOqCU
 
 
-  init:
-    - ps: . .\appveyor/Invoke-DisplayBuildInfo.ps1
-    - ps: . .\appveyor/Use-BetaPackageVersion.ps1
-
   before_build:
-    - nuget restore Source\NBuilder-NET4.0.sln
-    - nuget restore Source\NBuilder-NET3.5.sln
+    - ps: |  
+        Import-Module "$(pwd)\DeployNBuilder\DeployNBuilder.psd1"
+
+        $env:PackageVersion = Get-NuGetPackageVersion
+        Invoke-DisplayBuildInfo
+        nuget restore Source\NBuilder-NET4.0.sln
+        nuget restore Source\NBuilder-NET3.5.sln
 
   build_script:
-    - ps: . .\appveyor\build_script.ps1
-    
-  before_test:
-    - ps: . .\appveyor\before_test.ps1
-    
-  on_success:
-    - ps: . .\appveyor\on_success.ps1
+    - ps: |
+        Import-Module "$(pwd)\DeployNBuilder\DeployNBuilder.psd1"
+        "NET3.5", "NET4.0" | Invoke-Build -WorkingDirectory $(pwd)
+        Invoke-NuGetPack -Version  (Get-NuGetPackageVersion) -NuSpec "$(pwd)\nuget\NBuilder.nuspec" -Destination "$(pwd)"
     
   assembly_info:
     patch: true
