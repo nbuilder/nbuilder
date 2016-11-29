@@ -87,6 +87,7 @@
     <Compile Include="Dates\Year.cs" />
     <Compile Include="EnumHelper.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Generators\GetRandom.cs" />
     <Compile Include="Implementation\MultiFunction.cs" />
     <Compile Include="Messages.cs" />

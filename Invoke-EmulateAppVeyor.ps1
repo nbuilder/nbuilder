@@ -1,3 +1,11 @@
+param(
+    [switch] $SkipBuild,
+    [switch] $SkipTests,
+    [switch] $SkipNuget
+)
+
+write-host "Emulating AppVeyor: Build: $(-not $SkipBuild), Test: $(-not $SkipTests), NuGet: $(-not $SkipNuget)" -ForegroundColor Green
+
 # init 
 Import-Module "$PsScriptRoot\DeployNBuilder\DeployNBuilder.psd1" -Force
 
@@ -10,17 +18,23 @@ nuget restore Source\NBuilder-NET3.5.sln
 
 # build_script
 $workingDirectory = $(pwd)
-"NET3.5", "NET4.0" | Invoke-Build -WorkingDirectory $workingDirectory
+if (-not $SkipBuild) {
+    "NET3.5", "NET4.0" | Invoke-Build -WorkingDirectory $workingDirectory
+}
 
 # before_test
 
 # test
-"nuget\NET35\FizzWare.NBuilder.FunctionalTests.dll", `
-"nuget\NET35\FizzWare.NBuilder.Tests.dll", `
-"nuget\NET40\FizzWare.NBuilder.FunctionalTests.dll", `
-"nuget\NET40\FizzWare.NBuilder.Tests.dll" | Invoke-RunTests
+if (-not $SkipTests) {
+    "nuget\NET35\FizzWare.NBuilder.FunctionalTests.dll", `
+    "nuget\NET35\FizzWare.NBuilder.Tests.dll", `
+    "nuget\NET40\FizzWare.NBuilder.FunctionalTests.dll", `
+    "nuget\NET40\FizzWare.NBuilder.Tests.dll" | Invoke-RunTests
+}
 
 
 # package
 
-Invoke-NugetPack -Version $env:PackageVersion -NuSpec "nuget\NBuilder.nuspec" -Destination "."
+if(-not $SkipNuGet) {
+    Invoke-NugetPack -Version $env:PackageVersion -NuSpec "nuget\NBuilder.nuspec" -Destination "."
+}

@@ -14,12 +14,13 @@ namespace FizzWare.NBuilder.Tests.Integration
     public class IssueTests
     {
 
+
         [Test]
-        public void test_guid()
+        public void Guid_ShouldNotChangeValueOfStaticMember()
         {
             var guid1 = Guid.Empty;
-            var guid2 = new Guid();
-            var guid3 = Builder<Guid>.CreateNew().Build();
+            new Guid();
+            Builder<Guid>.CreateNew().Build();
             var guid4 = Guid.Empty;
 
             guid1.ShouldBe(guid4);

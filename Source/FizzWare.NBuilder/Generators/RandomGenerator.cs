@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
+using FizzWare.NBuilder.Extensions;
 
 namespace FizzWare.NBuilder
 {
@@ -241,47 +243,56 @@ namespace FizzWare.NBuilder
 
         public virtual string NextString(int minLength, int maxLength)
         {
-            bool takeLower = this.Boolean();
-            bool takeAverage = !takeLower && this.Boolean();
-            bool takeHigher = !takeAverage && this.Boolean();
+            var lexicon = latinWords.OrderBy(row => Next(0, latinWords.Length)).ToArray();
 
-            takeAverage = !takeLower && !takeHigher;
-            var average = (maxLength + minLength) / rnd.Next(2, 4);
-
-            var count = latinWords.Length;
-            var maxwordLength = latinWords.OrderBy(o => o.Length).First().Length;
-            var result = new StringBuilder(string.Empty);
-            var done = false;
-
-            while (!done)
+            var wordIndex = 0;
+            Func<string> nextWord = () =>
             {
-                var word = latinWords[Next(0, count - 1)];
-                var potential = result.Length + word.Length + 1;
-
-                if (takeHigher && potential + maxwordLength < maxLength - 1)
+                var word = lexicon[wordIndex++];
+                if (wordIndex == lexicon.Length)
                 {
-                    result.Append(word).Append(" ");
+                    wordIndex = 0;
+                }
+
+                return word;
+            };
+
+            var builder = new StringBuilder();
+
+            var targetLength = Next(minLength, maxLength);
+
+
+            while (builder.Length < targetLength)
+            {
+                var word = nextWord();
+
+                var potential = builder + " " + word;
+                if (potential.Length < targetLength)
+                {
+                    builder.Append(" " + word);
+                    continue;
+                }
+
+                var remaining = targetLength - builder.Length;
+                if (remaining == 1)
+                {
+                    builder.Append("!");
+                    break;
+                }
+
+                var suitableWord = lexicon.FirstOrDefault(row => row.Length < remaining);
+                if (!suitableWord.IsNullOrWhiteSpace())
+                {
+                    builder.Append(" " + suitableWord);
                 }
                 else
                 {
-                    result.Append(word).Append(" ");
+                    var filler = new string('!', remaining);
+                    builder.Append(filler);
                 }
 
-                if (takeHigher && latinWords.Any(w => w.Length + result.Length >= maxLength))
-                {
-                    done = true;
-                }
-                else if (takeAverage && result.Length >= average)
-                {
-                    done = true;
-                }
-                else if (takeLower && result.Length > minLength)
-                {
-                    done = true;
-                }
             }
-
-            return result.ToString().Trim();
+            return builder.ToString();
         }
     }
     // ReSharper restore RedundantCast

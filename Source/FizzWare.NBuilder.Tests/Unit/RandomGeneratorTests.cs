@@ -10,6 +10,7 @@ namespace FizzWare.NBuilder.Tests.Unit
     {
         readonly IRandomGenerator randomGenerator = new RandomGenerator();
 
+
         [Test]
         public void ShouldBeAbleToGenerateUInt16UsingNext()
         {
@@ -293,23 +294,32 @@ namespace FizzWare.NBuilder.Tests.Unit
             Assert.That(phrase.Length, Is.LessThanOrEqualTo(50));
         }
 
+
         [Test(Description = "Tests the NextString returns a string that is between the minimum and maximum values specified")]
-        public void ShouldBeBetweenMinAndMaxNextString()
+        [TestCase(1,10)]
+        [TestCase(4, 5)]
+        [TestCase(16, 20)]
+        [TestCase(100, 200)]
+        public void ShouldBeBetweenMinAndMaxNextString(int minLength, int maxLength)
         {
             // Arrange
-            int minValue = 100;
-            int maxValue = 200;
+            var randomGenerator = new RandomGenerator();
 
-            // Act
-            var result = randomGenerator.NextString(minValue, maxValue);
+            for (int i = 0; i < 100; i++)
+            {
+                // Act
+                var result = randomGenerator.NextString(minLength, maxLength);
 
-            // Assert
-            Assert.That(result.Length, Is.LessThanOrEqualTo(maxValue));
-            Assert.That(result.Length, Is.GreaterThanOrEqualTo(minValue));
+                // Assert
+                Assert.That(result.Length, Is.LessThanOrEqualTo(maxLength), result);
+                Assert.That(result.Length, Is.GreaterThanOrEqualTo(minLength), result);
+            }
+
         }
 
+
         // TODO FIX
-        #if !SILVERLIGHT
+#if !SILVERLIGHT
         [Test]
         public void enum_should_throw_if_not_an_enum_type()
         {
