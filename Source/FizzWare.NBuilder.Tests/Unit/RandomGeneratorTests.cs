@@ -303,8 +303,6 @@ namespace FizzWare.NBuilder.Tests.Unit
         public void ShouldBeBetweenMinAndMaxNextString(int minLength, int maxLength)
         {
             // Arrange
-            var randomGenerator = new RandomGenerator();
-
             for (int i = 0; i < 100; i++)
             {
                 // Act
