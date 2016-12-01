@@ -27,9 +27,8 @@
   before_build:
     - ps: |  
         Import-Module "$(pwd)\DeployNBuilder\DeployNBuilder.psd1"
-
-        $env:PackageVersion = Get-NuGetPackageVersion -beta
         Invoke-DisplayBuildInfo
+        
         nuget restore Source\NBuilder-NET4.0.sln
         nuget restore Source\NBuilder-NET3.5.sln
 
@@ -88,9 +87,8 @@
   before_build:
     - ps: |  
         Import-Module "$(pwd)\DeployNBuilder\DeployNBuilder.psd1"
-
-        $env:PackageVersion = Get-NuGetPackageVersion -beta
         Invoke-DisplayBuildInfo
+
         nuget restore Source\NBuilder-NET4.0.sln
         nuget restore Source\NBuilder-NET3.5.sln
 
@@ -148,9 +146,8 @@
   before_build:
     - ps: |  
         Import-Module "$(pwd)\DeployNBuilder\DeployNBuilder.psd1"
-
-        $env:PackageVersion = Get-NuGetPackageVersion
         Invoke-DisplayBuildInfo
+
         nuget restore Source\NBuilder-NET4.0.sln
         nuget restore Source\NBuilder-NET3.5.sln
 

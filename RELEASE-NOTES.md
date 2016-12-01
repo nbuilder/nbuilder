@@ -51,6 +51,7 @@ This will allow you to create customized `BuilderSettings` for different testing
 
 ## Bug Fixes
 
-* Fixed an issue in which the decimal separator was wrong for some cultures.
-* Fixed an issue with random number generation of decimals.
-* Fixed an issue in which sequences were not created in the correct order.
+* The decimal separator was wrong for some cultures.
+* Random number generation of decimals was sometimes incorrect.
+* Sequences were not created in the correct order.
+* Random strings were not always generated between the expected lengths.
