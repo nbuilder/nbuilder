@@ -27,9 +27,8 @@
   before_build:
     - ps: |  
         Import-Module "$(pwd)\DeployNBuilder\DeployNBuilder.psd1"
-
-        $env:PackageVersion = Get-NuGetPackageVersion -beta
         Invoke-DisplayBuildInfo
+        
         nuget restore Source\NBuilder-NET4.0.sln
         nuget restore Source\NBuilder-NET3.5.sln
 
@@ -72,17 +71,24 @@
   pull_requests:
     do_not_increment_build_number: true
 
-  environment:
-    feedSource: https://nuget.org/api/v2/
-    apiKey:
+  nuget:
+    project_feed: true
+
+  artifacts:
+  - path: NBuilder*.nupkg
+    name: nuget-package
+
+  deploy:
+    provider: NuGet
+    api_key:
       secure: rEqnyErKFkhgxjUgir8i3zftWJ6AqqzYn/wXPXVSTJo1o9nQML8KU3pmG3sXOqCU
+    artifact: nuget-package
 
   before_build:
     - ps: |  
         Import-Module "$(pwd)\DeployNBuilder\DeployNBuilder.psd1"
-
-        $env:PackageVersion = Get-NuGetPackageVersion -beta
         Invoke-DisplayBuildInfo
+
         nuget restore Source\NBuilder-NET4.0.sln
         nuget restore Source\NBuilder-NET3.5.sln
 
@@ -122,18 +128,26 @@
   pull_requests:
     do_not_increment_build_number: true
 
-  environment:
-    feedSource: https://nuget.org/api/v2/
-    apiKey:
+  nuget:
+    project_feed: true
+
+  artifacts:
+  - path: NBuilder*.nupkg
+    name: nuget-package
+
+  deploy:
+    provider: NuGet
+    api_key:
       secure: rEqnyErKFkhgxjUgir8i3zftWJ6AqqzYn/wXPXVSTJo1o9nQML8KU3pmG3sXOqCU
+    artifact: nuget-package
+
 
 
   before_build:
     - ps: |  
         Import-Module "$(pwd)\DeployNBuilder\DeployNBuilder.psd1"
-
-        $env:PackageVersion = Get-NuGetPackageVersion
         Invoke-DisplayBuildInfo
+
         nuget restore Source\NBuilder-NET4.0.sln
         nuget restore Source\NBuilder-NET3.5.sln
 

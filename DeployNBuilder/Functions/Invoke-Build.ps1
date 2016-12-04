@@ -22,6 +22,10 @@ function Invoke-Build(
         if ($LASTEXITCODE -ne 0){
             write-error "Building $solutionTag failed: exit code $LASTEXITCODE"
         }
+
+        # Give the system time to let go of file locks
+        Start-Sleep -Seconds 2
+
     }
 
     End {
