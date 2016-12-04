@@ -20,7 +20,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         [SetUp]
         public void SetUp()
         {
-            var builderSetup = new BuilderSetup();
+            var builderSetup = new BuilderSettings();
             mocks = new MockRepository();
 
             reflectionUtil = mocks.DynamicMock<IReflectionUtil>();
@@ -65,7 +65,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             {
                 #pragma warning disable 0618
                 myClassWithConstructorBuilder
-                        .WithConstructorArgs(arg1, arg2)
+                        .WithConstructor(() => new MyClassWithConstructor(arg1, arg2))
                         .Construct(1);
                 #pragma warning restore 0618
             }
@@ -143,7 +143,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             {
                 #pragma warning disable 0618 // (prevent warning for using obsolete method)
                 myClassWithOptionalConstructorBuilder
-                        .WithConstructorArgs(arg1, arg2)
+                        .WithConstructor(() => new MyClassWithOptionalConstructor(arg1, arg2))
                         .Construct(1);
                 #pragma warning restore 0618
             }
@@ -244,7 +244,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Test]
         public void ShouldBeAbleToUseDoMultiple()
         {
-            var builderSetup = new BuilderSetup();
+            var builderSetup = new BuilderSettings();
             var myClass = mocks.DynamicMock<IMyInterface>();
             var list = new List<IMyOtherInterface> { mocks.Stub<IMyOtherInterface>(), mocks.Stub<IMyOtherInterface>(), mocks.Stub<IMyOtherInterface>() };
 

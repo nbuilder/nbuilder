@@ -31,7 +31,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Test]
         public void ShouldBeAbleToUseWith()
         {
-            var builderSetup = new BuilderSetup();
+            var builderSetup = new BuilderSettings();
             using (mocks.Record())
             {
                 operable.Expect(x => x.ObjectBuilder).Return(new ObjectBuilder<MyClass>(null, builderSetup));
@@ -44,7 +44,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Test]
         public void ShouldBeAbleToUseWith_WithAnIndex()
         {
-            var builderSetup = new BuilderSetup();
+            var builderSetup = new BuilderSettings();
             Action<MyClass, int> funcWithIndex = (x, idx) => x.StringOne = "String" + (idx + 5);
             using (mocks.Record())
             {
@@ -58,20 +58,20 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Test]
         public void ShouldBeAbleToUseHas()
         {
-            var builderSetup = new BuilderSetup();
+            var builderSetup = new BuilderSettings();
             using (mocks.Record())
             {
                 operable.Expect(x => x.ObjectBuilder).Return(new ObjectBuilder<MyClass>(null, builderSetup));
                 objectBuilder.Expect(x => x.With(func));
             }
 
-            OperableExtensions.Has((IOperable<MyClass>)operable, func);
+            OperableExtensions.With((IOperable<MyClass>)operable, func);
         }
 
         [Test]
         public void ShouldBeAbleToUseAnd()
         {
-            var builderSetup = new BuilderSetup();
+            var builderSetup = new BuilderSettings();
             using (mocks.Record())
             {
                 operable.Expect(x => x.ObjectBuilder).Return(new ObjectBuilder<MyClass>(null, builderSetup));
@@ -84,7 +84,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Test]
         public void ShouldBeAbleToUseAndWithAnIndex()
         {
-            var builderSetup = new BuilderSetup();
+            var builderSetup = new BuilderSettings();
             Action<MyClass, int> funcWithIndex = (x, idx) => x.StringOne = "String" + (idx + 5);
             using (mocks.Record())
             {
@@ -98,7 +98,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Test]
         public void ShouldBeAbleToUseWithToSetPrivateProperties()
         {
-            var builderSetup = new BuilderSetup();
+            var builderSetup = new BuilderSettings();
             using (mocks.Record())
             {
                 operable.Expect(x => x.ObjectBuilder).Return(new ObjectBuilder<MyClass>(null, builderSetup));
@@ -111,20 +111,20 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Test]
         public void ShouldBeAbleToUseHasToSetPrivateProperties()
         {
-            var builderSetup = new BuilderSetup();
+            var builderSetup = new BuilderSettings();
             using (mocks.Record())
             {
                 operable.Expect(x => x.ObjectBuilder).Return(new ObjectBuilder<MyClass>(null, builderSetup));
                 objectBuilder.Expect(x => x.With(propertyExpression, 100));
             }
 
-            OperableExtensions.Has((IOperable<MyClass>)operable, propertyExpression, 100);
+            OperableExtensions.With((IOperable<MyClass>)operable, propertyExpression, 100);
         }
 
         [Test]
         public void ShouldBeAbleToUseAndToSetPrivateProperties()
         {
-            var builderSetup = new BuilderSetup();
+            var builderSetup = new BuilderSettings();
             using (mocks.Record())
             {
                 operable.Expect(x => x.ObjectBuilder).Return(new ObjectBuilder<MyClass>(null, builderSetup));
@@ -161,7 +161,7 @@ namespace FizzWare.NBuilder.Tests.Unit
                 objectBuilder.Expect(x => x.DoMultiple(action, simpleClasses)).Return(objectBuilder);
             }
 
-            OperableExtensions.HasDoneToItForAll((IOperable<MyClass>)operable, action, simpleClasses);
+            OperableExtensions.DoForEach((IOperable<MyClass>)operable, action, simpleClasses);
         }
 
         [Test]
@@ -181,7 +181,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Test]
         public void ShouldBeAbleToUseHasDoneToIt()
         {
-            Action<MyClass> action = x => x.DoSomething();
+            Action<MyClass, int> action = (x, y) => x.DoSomething();
 
             using (mocks.Record())
             {
@@ -189,7 +189,7 @@ namespace FizzWare.NBuilder.Tests.Unit
                 objectBuilder.Expect(x => x.Do(action)).Return(objectBuilder);
             }
 
-            OperableExtensions.HasDoneToIt((IOperable<MyClass>)operable, action);
+            OperableExtensions.With((IOperable<MyClass>)operable, action);
         }
 
         [Test]
@@ -207,12 +207,14 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void ShouldComplainIfOperableIsNotAlsoOfTypeIDeclaration()
         {
             var operableOnly = mocks.DynamicMock<IOperable<MyClass>>();
 
-            OperableExtensions.With(operableOnly, x => x.StringOne = "test");
+            Assert.Throws<ArgumentException>(() =>
+            {
+                OperableExtensions.With(operableOnly, x => x.StringOne = "test");
+            });
         }
     }
     // ReSharper restore InvokeAsExtensionMethod

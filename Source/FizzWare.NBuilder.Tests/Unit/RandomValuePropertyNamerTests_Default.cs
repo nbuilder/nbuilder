@@ -13,7 +13,7 @@ namespace FizzWare.NBuilder.Tests.Unit
     {
         public override void TestFixtureSetUp()
         {
-            var builderSetup = new BuilderSetup();
+            var builderSetup = new BuilderSettings();
             mocks = new MockRepository();
 
             generator = mocks.DynamicMock<IRandomGenerator>();
@@ -54,7 +54,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Test]
         public void ShouldBeAbleToCreateUsingDefaultConstructor()
         {
-            var builderSetup = new BuilderSetup();
+            var builderSetup = new BuilderSettings();
             new RandomValuePropertyNamer(builderSetup);
         }
 
@@ -63,7 +63,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Test]
         public void SetValuesOfAllIn_ClassWithNullCharConst_CharConstantIsNotSetByNamer()
         {
-            var builderSetup = new BuilderSetup();
+            var builderSetup = new BuilderSettings();
             var propertyNamer = new RandomValuePropertyNamer(builderSetup);
 
             List<MyClassWithCharConst> list = new List<MyClassWithCharConst>() { new MyClassWithCharConst() };

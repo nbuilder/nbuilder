@@ -1,27 +1,19 @@
-using Castle.ActiveRecord;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace FizzWare.NBuilder.FunctionalTests.Model
 {
-    [ActiveRecord]
+    
     public class BasketItem
     {
-        [PrimaryKey]
+        [Key]
         int Id { get; set; }
 
-        [BelongsTo(Type = typeof(ShoppingBasket), Column = "ShoppingBasketId")]
-        public ShoppingBasket Basket { get; set; }
+        public virtual ShoppingBasket Basket { get; set; }
 
-        [BelongsTo(Type = typeof(Product), Column = "ProductId")]
-        public Product Product { get; set; }
+        public virtual Product Product { get; set; }
 
-        [Property]
         public int Quantity { get; set; }
-
-        [Obsolete("For NHibernate")]
-        private BasketItem()
-        {
-        }
 
         public BasketItem(ShoppingBasket basket)
         {

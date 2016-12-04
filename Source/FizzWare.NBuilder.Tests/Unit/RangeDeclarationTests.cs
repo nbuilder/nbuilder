@@ -34,8 +34,8 @@ namespace FizzWare.NBuilder.Tests.Unit
           
             using (mocks.Record())
             {
-                listBuilderImpl.Stub(x => x.BuilderSetup).Return(new BuilderSetup());
-                objectBuilder.Stub(x => x.BuilderSetup).Return(new BuilderSetup());
+                listBuilderImpl.Stub(x => x.BuilderSettings).Return(new BuilderSettings());
+                objectBuilder.Stub(x => x.BuilderSettings).Return(new BuilderSettings());
 
                 objectBuilder.Expect(x => x.Construct(Arg<int>.Is.Anything)).Return(new SimpleClass()).Repeat.Times(10);
             }
@@ -57,8 +57,8 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             using (mocks.Record())
             {
-                listBuilderImpl.Stub(x => x.BuilderSetup).Return(new BuilderSetup());
-                objectBuilder.Stub(x => x.BuilderSetup).Return(new BuilderSetup());
+                listBuilderImpl.Stub(x => x.BuilderSettings).Return(new BuilderSettings());
+                objectBuilder.Stub(x => x.BuilderSettings).Return(new BuilderSettings());
                 objectBuilder.Expect(x => x.Construct(9)).Return(obj1);
                 objectBuilder.Expect(x => x.Construct(10)).Return(obj2);
             }
@@ -98,8 +98,8 @@ namespace FizzWare.NBuilder.Tests.Unit
           
             using (mocks.Record())
             {
-                listBuilderImpl.Stub(x => x.BuilderSetup).Return(new BuilderSetup());
-                objectBuilder.Stub(x => x.BuilderSetup).Return(new BuilderSetup());
+                listBuilderImpl.Stub(x => x.BuilderSettings).Return(new BuilderSettings());
+                objectBuilder.Stub(x => x.BuilderSettings).Return(new BuilderSettings());
 
                 listBuilderImpl.Expect(x => x.All()).Return(declaration);
             }

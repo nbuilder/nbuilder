@@ -8,7 +8,7 @@ using FizzWare.NBuilder.FunctionalTests.Model.Repositories;
 
 namespace FizzWare.NBuilder.FunctionalTests.Model.Repositories
 {
-    public class BasketRepository : BaseActiveRecordRepository<ShoppingBasket>, IBasketRepository
+    public class BasketRepository : BaseRepository<ShoppingBasket>, IBasketRepository
     {
         
     }

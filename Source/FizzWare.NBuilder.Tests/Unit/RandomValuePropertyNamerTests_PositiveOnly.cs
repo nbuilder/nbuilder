@@ -13,7 +13,7 @@ namespace FizzWare.NBuilder.Tests.Unit
     {
         public override void TestFixtureSetUp()
         {
-            var builderSetup = new BuilderSetup();
+            var builderSetup = new BuilderSettings();
             mocks = new MockRepository();
 
             generator = mocks.DynamicMock<IRandomGenerator>();

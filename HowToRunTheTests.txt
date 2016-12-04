@@ -1,5 +1,0 @@
-== How to run the functional tests ==
-
-Create a database on localhost named 'NBuilderTests'.
-
-The tests will create the tables they need.

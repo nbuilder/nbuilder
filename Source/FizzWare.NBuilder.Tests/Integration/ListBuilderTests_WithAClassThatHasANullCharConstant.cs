@@ -13,8 +13,8 @@ namespace FizzWare.NBuilder.Tests.Integration
         [Test]
         public void ShouldBeAbleToCreateAListOfAClassThatHasANullCharConstant()
         {
-            var builderSetup = new BuilderSetup();
-            var list = new Builder<MyClassWithCharConst>(builderSetup).CreateListOfSize(2).Build();
+            var builderSetup = new BuilderSettings();
+            var list = new Builder(builderSetup).CreateListOfSize< MyClassWithCharConst>(2).Build();
 
             foreach (var item in list)
             {
@@ -25,8 +25,8 @@ namespace FizzWare.NBuilder.Tests.Integration
         [Test]
         public void ShouldBeAbleToCreateAListOfAClassThatHasACharConstant()
         {
-            var builderSetup = new BuilderSetup();
-            var list = new Builder<MyClassWithCharConst>(builderSetup).CreateListOfSize(2).Build();
+            var builderSetup = new BuilderSettings();
+            var list = new Builder(builderSetup).CreateListOfSize< MyClassWithCharConst>(2).Build();
 
             foreach (var item in list)
             {

@@ -1,7 +1,7 @@
 # Build Folders (you can keep bin if you'd like, to store dlls and pdbs)
 [Bb]in/
 [Oo]bj/
-
+/tests/
 # mstest test results
 TestResults
 
@@ -14,6 +14,7 @@ TestResults
 *.sln.docstates
 
 # Build results
+artifacts/
 Builds/
 [Dd]ebug/
 [Rr]elease/
@@ -55,12 +56,20 @@ ipch/
 
 # ReSharper is a .NET coding add-in
 Source/*/bin/
+nuget/**/*.xml
+nuget/**/*.config
+nuget/**/*.txt
+nuget/**/*.manifest
+*.nupkg
+tools
+
 # Mindbench SASS cache
 .sass-cache/
 Source/*/obj/
 # NCrunch
 *.ncrunch*
 .*crunch*.local.xml
+_NCrunch*
 
 # Installshield output folder 
 [Ee]xpress
@@ -111,3 +120,4 @@ UpgradeLog*.XML
 # SQL Server files
 App_Data/*.mdf
 App_Data/*.ldf
+

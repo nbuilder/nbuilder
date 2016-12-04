@@ -12,6 +12,11 @@ namespace FizzWare.NBuilder.Implementation
             if (x is IGlobalDeclaration<T>)
                 return -1;
 
+            if (x is RangeDeclaration<T> && y is RangeDeclaration<T>)
+            {
+                return x.Start - y.Start;
+            }
+
             return 0; // (both are global declarations)
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NUnit.Framework;
 
@@ -8,6 +9,7 @@ namespace FizzWare.NBuilder.Tests.Unit
     public class RandomGeneratorTests
     {
         readonly IRandomGenerator randomGenerator = new RandomGenerator();
+
 
         [Test]
         public void ShouldBeAbleToGenerateUInt16UsingNext()
@@ -87,10 +89,49 @@ namespace FizzWare.NBuilder.Tests.Unit
             randomGenerator.Next(0, double.MaxValue);
         }
 
+
+        [Test]
+        public void ShouldBeAbleToGenerateDoubleUsingNext_InPoland()
+        {
+            System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("pl-PL");
+            try
+            {
+                randomGenerator.Next(double.MinValue, double.MaxValue);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally
+            {
+                System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+            }
+        }
+
         [Test]
         public void ShouldBeAbleToGenerateDecimalUsingNext()
         {
             randomGenerator.Next(decimal.MinValue, decimal.MaxValue);
+        }
+
+        [Test]
+        public void ShouldBeAbleToGenerateDecimalUsingNext_InPoland()
+        {
+            System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("pl-PL");
+            try
+            {
+                randomGenerator.Next(decimal.MinValue, decimal.MaxValue);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally
+            {
+                System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+            }
         }
 
         [Test]
@@ -253,23 +294,30 @@ namespace FizzWare.NBuilder.Tests.Unit
             Assert.That(phrase.Length, Is.LessThanOrEqualTo(50));
         }
 
+
         [Test(Description = "Tests the NextString returns a string that is between the minimum and maximum values specified")]
-        public void ShouldBeBetweenMinAndMaxNextString()
+        [TestCase(1,10)]
+        [TestCase(4, 5)]
+        [TestCase(16, 20)]
+        [TestCase(100, 200)]
+        public void ShouldBeBetweenMinAndMaxNextString(int minLength, int maxLength)
         {
             // Arrange
-            int minValue = 100;
-            int maxValue = 200;
+            for (int i = 0; i < 100; i++)
+            {
+                // Act
+                var result = randomGenerator.NextString(minLength, maxLength);
 
-            // Act
-            var result = randomGenerator.NextString(minValue, maxValue);
+                // Assert
+                Assert.That(result.Length, Is.LessThanOrEqualTo(maxLength), result);
+                Assert.That(result.Length, Is.GreaterThanOrEqualTo(minLength), result);
+            }
 
-            // Assert
-            Assert.That(result.Length, Is.LessThanOrEqualTo(maxValue));
-            Assert.That(result.Length, Is.GreaterThanOrEqualTo(minValue));
         }
 
+
         // TODO FIX
-        #if !SILVERLIGHT
+#if !SILVERLIGHT
         [Test]
         public void enum_should_throw_if_not_an_enum_type()
         {

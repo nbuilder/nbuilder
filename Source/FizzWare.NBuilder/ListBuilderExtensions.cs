@@ -17,13 +17,6 @@ namespace FizzWare.NBuilder
             return (IOperable<T>)listBuilderImpl.AddDeclaration(declaration);
         }
 
-        #if OBSOLETE_OLD_SYNTAX
-        [Obsolete(Messages.NewSyntax_UseTheFirst)]
-        #endif
-        public static IOperable<T> WhereTheFirst<T>(this IListBuilder<T> listBuilder, int amount)
-        {
-            return TheFirst(listBuilder, amount);
-        }
 
         public static IOperable<T> TheLast<T>(this IListBuilder<T> listBuilder, int amount)
         {
@@ -38,24 +31,6 @@ namespace FizzWare.NBuilder
             var declaration = new RangeDeclaration<T>(listBuilderImpl, listBuilderImpl.CreateObjectBuilder(), start, listBuilderImpl.Capacity - 1);
             return (IOperable<T>)listBuilderImpl.AddDeclaration(declaration);
         }
-
-        #if OBSOLETE_OLD_SYNTAX
-        [Obsolete(Messages.NewSyntax_UseTheLast)]
-        #endif
-        public static IOperable<T> WhereTheLast<T>(this IListBuilder<T> listBuilder, int amount)
-        {
-            return TheLast(listBuilder, amount);
-        }
-
-        ////public static IOperable<T> TheRemaining<T>(this IListBuilder<T> listBuilder)
-        ////{
-        ////    var listBuilderImpl = GetListBuilderImpl<T>(listBuilder);
-        ////    var lastDeclaration = listBuilderImpl.Declarations.GetLastItem();
-        ////    var rangeDeclaration = lastDeclaration as RangeDeclaration<T>;
-        ////    var remainingItems = listBuilderImpl.Capacity - rangeDeclaration.End;
-
-        ////    return TheLast(listBuilder, remainingItems);
-        ////}
 
         public static IOperable<T> Random<T>(this IListBuilder<T> listBuilder, int amount)
         {
@@ -75,21 +50,6 @@ namespace FizzWare.NBuilder
             return (IOperable<T>)listBuilderImpl.AddDeclaration(declaration);
         }
 
-        #if OBSOLETE_OLD_SYNTAX
-        [Obsolete(Messages.NewSyntax_UseRandom)]
-        #endif
-        public static IOperable<T> WhereRandom<T>(this IListBuilder<T> listBuilder, int amount)
-        {
-            return Random(listBuilder, amount);
-        }
-
-        #if OBSOLETE_OLD_SYNTAX
-        [Obsolete(Messages.NewSyntax_UseRandom)]
-        #endif
-        public static IOperable<T> WhereRandom<T>(this IListBuilder<T> listBuilder, int amount, int start, int end)
-        {
-            return Random(listBuilder, amount, start, end);
-        }
 
         public static IOperable<T> Section<T>(this IListBuilder<T> listBuilder, int start, int end)
         {
@@ -109,13 +69,6 @@ namespace FizzWare.NBuilder
             return (IOperable<T>)listBuilderImpl.AddDeclaration(declaration);
         }
 
-        #if OBSOLETE_OLD_SYNTAX
-        [Obsolete(Messages.NewSyntax_UseSection)]
-        #endif
-        public static IOperable<T> WhereSection<T>(this IListBuilder<T> listBuilder, int start, int end)
-        {
-            return Section(listBuilder, start, end);
-        }
 
         public static IOperable<T> TheNext<T>(this IListBuilder<T> listBuilder, int amount)
         {
@@ -139,14 +92,6 @@ namespace FizzWare.NBuilder
             return andTheNextDeclaration;
         }
 
-        #if OBSOLETE_OLD_SYNTAX
-        [Obsolete(Messages.NewSyntax_UseTheNext)]
-        #endif
-        public static IOperable<T> AndTheNext<T>(this IListBuilder<T> listBuilder, int amount)
-        {
-            return TheNext(listBuilder, amount);
-        }
-
         public static IOperable<T> ThePrevious<T>(this IListBuilder<T> listBuilder, int amount)
         {
             var listBuilderImpl = GetListBuilderImpl<T>(listBuilder);
@@ -167,13 +112,6 @@ namespace FizzWare.NBuilder
             return andTheNextDeclaration;
         }
 
-        #if OBSOLETE_OLD_SYNTAX
-        [Obsolete(Messages.NewSyntax_UseThePrevious)]
-        #endif
-        public static IOperable<T> AndThePrevious<T>(this IListBuilder<T> listBuilder, int amount)
-        {
-            return ThePrevious(listBuilder, amount);
-        }
 
         public static IList<T> BuildHierarchy<T>(this IListBuilder<T> listBuilder, IHierarchySpec<T> hierarchySpec)
         {
@@ -194,7 +132,7 @@ namespace FizzWare.NBuilder
             // 2. Reorganise
             var hierarchy = new HierarchyGenerator<T>(list, hierarchySpec.AddMethod, hierarchySpec.NumberOfRoots, hierarchySpec.Depth,
                                       hierarchySpec.MinimumChildren, hierarchySpec.MaximumChildren,
-                                      new RandomGenerator(), hierarchySpec.NamingMethod, listBuilder.BuilderSetup.GetPersistenceService()).Generate();
+                                      new RandomGenerator(), hierarchySpec.NamingMethod, listBuilder.BuilderSettings.GetPersistenceService()).Generate();
 
             return hierarchy;
         }

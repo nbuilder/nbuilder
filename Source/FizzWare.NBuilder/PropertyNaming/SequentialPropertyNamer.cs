@@ -9,8 +9,8 @@ namespace FizzWare.NBuilder.PropertyNaming
 {
     public class SequentialPropertyNamer : PropertyNamer
     {
-        public SequentialPropertyNamer(IReflectionUtil reflectionUtil, BuilderSetup builderSetup) 
-            : base(reflectionUtil,builderSetup)
+        public SequentialPropertyNamer(IReflectionUtil reflectionUtil, BuilderSettings builderSettings) 
+            : base(reflectionUtil,builderSettings)
         {
         }
 

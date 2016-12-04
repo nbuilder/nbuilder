@@ -1,13 +1,15 @@
 # Nbuilder - A rapid test object generator.
 
+Through a fluent, extensible interface, NBuilder allows you to rapidly create test data, automatically assigning values to properties and public fields that are one of the built in .NET data types (e.g. ints and strings). NBuilder allows you to override for properties you are interested in using lambda expressions.
+
+| Metric      | Status      |
+| ----- | ----- |
+| Production Build  | [![Build status](https://ci.appveyor.com/api/projects/status/av4lwhtejk94wgiy/branch/master?svg=true)](https://ci.appveyor.com/project/NBuilder/nbuilder-1m5q4) |
+| Development Build | [![Build status](https://ci.appveyor.com/api/projects/status/av4lwhtejk94wgiy/branch/develop?svg=true)](https://ci.appveyor.com/project/NBuilder/nbuilder-1m5q4/branch/develop) |
+| Nuget             | [![NuGet Badge](https://buildstats.info/nuget/nbuilder)](https://www.nuget.org/packages/nbuilder/) |
+   
 [![Join the chat at https://gitter.im/garethdown44/nbuilder](https://badges.gitter.im/garethdown44/nbuilder.svg)](https://gitter.im/garethdown44/nbuilder?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-NBuilder.Trunk: ![NBuilder.Trunk](http://teamcity.codebetter.com/app/rest/builds/buildType:%28id:bt292%29/statusIcon)  
-NBuilder.CI: ![NBuilder.CI](http://teamcity.codebetter.com/app/rest/builds/buildType:%28id:NBuilder_CI%29/statusIcon)    
-NBuilder.Publish ![NBuilder.Publish](http://teamcity.codebetter.com/app/rest/builds/buildType:%28id:NBuilder_NBuilderPublish%29/statusIcon)    
-   
-
-Through a fluent, extensible interface, NBuilder allows you to rapidly create test data, automatically assigning values to properties and public fields that are one of the built in .NET data types (e.g. ints and strings). NBuilder allows you to override for properties you are interested in using lambda expressions.
 
 ### How can NBuilder help?
 

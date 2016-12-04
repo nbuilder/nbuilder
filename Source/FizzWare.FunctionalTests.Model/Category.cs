@@ -1,24 +1,23 @@
 using System.Collections.Generic;
-using Castle.ActiveRecord;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 
 namespace FizzWare.NBuilder.FunctionalTests.Model
 {
-    [ActiveRecord]
+    
     [DebuggerDisplay("Id: {Id}, Title: {Title}, HasChildren: {HasChildren()}")]
     public class Category
     {
-        [PrimaryKey(UnsavedValue = "0")]
+        [Key]
         public int Id { get; set; }
 
-        [Property]
         public string Title { get; set; }
 
-        [Property]
         public string Description { get; set; }
 
-        [HasMany(Table = "Category", ColumnKey = "ParentId", Cascade = ManyRelationCascadeEnum.SaveUpdate)]
-        public IList<Category> Children { get; set; }
+        public virtual List<Category> Children { get; set; }
+
+        public virtual List<Product> Products { get; set; } 
 
         public Category()
         {

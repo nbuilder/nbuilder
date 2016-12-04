@@ -17,10 +17,10 @@ namespace FizzWare.NBuilder.Implementation
 
         private readonly List<MultiFunction> multiFunctions = new List<MultiFunction>();
         private Expression<Func<int, T>> _constructorExpression = null;
-        public BuilderSetup BuilderSetup { get; set; }
-        public ObjectBuilder(IReflectionUtil reflectionUtil, BuilderSetup builderSetup)
+        public BuilderSettings BuilderSettings { get; set; }
+        public ObjectBuilder(IReflectionUtil reflectionUtil, BuilderSettings builderSettings)
         {
-            BuilderSetup = builderSetup;
+            BuilderSettings = builderSettings;
             this.reflectionUtil = reflectionUtil;
         }
 
@@ -48,28 +48,10 @@ namespace FizzWare.NBuilder.Implementation
 
             this._constructorExpression = constructor;
 
-            //var arguments = ((NewExpression) constructor.Body).Arguments;
-            //var indexArgument = arguments[0];
-            //var index = Expression.Lambda(indexArgument).Compile().DynamicInvoke();
-
-            //var theOtherArguments = arguments.Skip(1).ToArray();
-
-            //var constructorArguments =
-            //    (from argument in theOtherArguments
-            //     select Expression.Lambda(argument).Compile().DynamicInvoke()).ToArray();
-
-            //constructorArgs = constructorArguments;
             return this;
         }
 
-        // This has been obsolete for a while, so don't allow this one to be hidden
-        [Obsolete]
-        public IObjectBuilder<T> WithConstructorArgs(params object[] args)
-        {
-            this.constructorArgs = args;
-            return this;
-        }
-
+      
         public IObjectBuilder<T> With<TFunc>(Func<T, TFunc> func)
         {
             functions.Add(func);
@@ -177,7 +159,7 @@ namespace FizzWare.NBuilder.Implementation
 
         public T Name(T obj)
         {
-            if (!BuilderSetup.AutoNameProperties)
+            if (!BuilderSettings.AutoNameProperties)
                 return obj;
 
             propertyNamer.SetValuesOf(obj);

@@ -15,10 +15,6 @@ namespace FizzWare.NBuilder.Implementation
         IObjectBuilder<T> WithConstructor(Expression<Func<T>> constructor);
         IObjectBuilder<T> WithConstructor(Expression<Func<int, T>> constructor);
 
-        // This has been obsolete for a while, so don't allow this one to be hidden
-        [Obsolete("Use WithConstructor() instead")]
-        IObjectBuilder<T> WithConstructorArgs(params object[] args);
-
         IObjectBuilder<T> With<TFunc>(Func<T, TFunc> func);
         IObjectBuilder<T> With(Action<T, int> action);
         

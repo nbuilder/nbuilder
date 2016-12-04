@@ -6,6 +6,7 @@ using NUnit.Framework;
 using System.Diagnostics;
 using NSubstitute;
 using FizzWare.NBuilder.Tests.TestClasses;
+using Shouldly;
 
 namespace FizzWare.NBuilder.Tests.Integration
 {
@@ -13,16 +14,28 @@ namespace FizzWare.NBuilder.Tests.Integration
     public class IssueTests
     {
 
+
+        [Test]
+        public void Guid_ShouldNotChangeValueOfStaticMember()
+        {
+            var guid1 = Guid.Empty;
+            new Guid();
+            Builder<Guid>.CreateNew().Build();
+            var guid4 = Guid.Empty;
+
+            guid1.ShouldBe(guid4);
+        }
+
         //http://code.google.com/p/nbuilder/issues/detail?id=68
         [Test]
         public void Issue68_ReadonlyProperty_ShouldNotWriteTraceDueToAttemptingToSetAPropertyThatCannotBeSet()
         {
-            var builderSetup = new BuilderSetup();
+            var builderSetup = new BuilderSettings();
             var traceListener = Substitute.For<TraceListener>();
             Trace.Listeners.Add(traceListener);
 
-            var product = new Builder<DataModel>(builderSetup)
-                           .CreateListOfSize(2)
+            var product = new Builder(builderSetup)
+                           .CreateListOfSize< DataModel>(2)
                            .All()
                            .With(x => x.ExpirationMonth = "01")
                            .With(x => x.ExpirationYear = "2010")

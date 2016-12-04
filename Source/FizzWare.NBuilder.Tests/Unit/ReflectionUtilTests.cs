@@ -49,11 +49,13 @@ namespace FizzWare.NBuilder.Tests.Unit
         #endif
 
         [Test]
-        [ExpectedException(typeof(TypeCreationException))]
         public void WillComplainIfYouAttemptToCreateInstanceOfClassThatOnlyHasAPrivateParameterizedConstructor()
         {
-            var instance = reflectionUtil.CreateInstanceOf<MyClassWithPrivateParameterizedConstructor>();
-            Assert.That(instance, Is.TypeOf(typeof(MyClassWithPrivateParameterizedConstructor)));
+            Assert.Throws<TypeCreationException>(() =>
+            {
+                var instance = reflectionUtil.CreateInstanceOf<MyClassWithPrivateParameterizedConstructor>();
+            });
+            //Assert.That(instance, Is.TypeOf(typeof(MyClassWithPrivateParameterizedConstructor)));
         }
 
         [Test]
@@ -80,10 +82,12 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
 
         [Test]
-        [ExpectedException(typeof(TypeCreationException))]
         public void ShouldComplainIfConstructorArgsDoNotMatchSignatureOfAnyConstructor()
         {
-            reflectionUtil.CreateInstanceOf<MyClassWithConstructor>(1m);
+            Assert.Throws<TypeCreationException>(() =>
+            {
+                reflectionUtil.CreateInstanceOf<MyClassWithConstructor>(1m);
+            });
         }
 
         [Test]

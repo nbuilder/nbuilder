@@ -13,8 +13,8 @@ namespace FizzWare.NBuilder.FunctionalTests.Extensibility
         private readonly SequentialGenerator<int> shelfGenerator;
         private readonly SequentialGenerator<int> locGenerator;
 
-        public CustomProductPropertyNamer(IReflectionUtil reflectionUtil, BuilderSetup builderSetup) 
-            : base(reflectionUtil,builderSetup)
+        public CustomProductPropertyNamer(IReflectionUtil reflectionUtil, BuilderSettings builderSettings) 
+            : base(reflectionUtil,builderSettings)
         {
             aisleGenerator = new SequentialGenerator<char>();
             shelfGenerator = new SequentialGenerator<int> { Increment = 2 };

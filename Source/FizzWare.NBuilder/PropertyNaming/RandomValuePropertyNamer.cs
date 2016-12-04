@@ -17,26 +17,26 @@ namespace FizzWare.NBuilder.PropertyNaming
 
         private readonly IRandomGenerator generator;
         private readonly bool useLoremIpsumForStrings;
-        private readonly BuilderSetup _builderSetup;
+        private readonly BuilderSettings BuilderSettings;
 
-        public RandomValuePropertyNamer(BuilderSetup builderSetup)
-            : this (new RandomGenerator(), new ReflectionUtil(), false,builderSetup)
+        public RandomValuePropertyNamer(BuilderSettings builderSettings)
+            : this (new RandomGenerator(), new ReflectionUtil(), false,builderSettings)
         {
         }
 
-        public RandomValuePropertyNamer(IRandomGenerator generator, IReflectionUtil reflectionUtil, bool generatePositiveValuesOnly,BuilderSetup builderSetup)
-            : this(generator, reflectionUtil, generatePositiveValuesOnly, DateTime.MinValue, DateTime.MaxValue, false,builderSetup)
+        public RandomValuePropertyNamer(IRandomGenerator generator, IReflectionUtil reflectionUtil, bool generatePositiveValuesOnly,BuilderSettings builderSettings)
+            : this(generator, reflectionUtil, generatePositiveValuesOnly, DateTime.MinValue, DateTime.MaxValue, false,builderSettings)
         {
             this.generator = generator;
         }
 
-        public RandomValuePropertyNamer(IRandomGenerator generator, IReflectionUtil reflectionUtil, bool generatePositiveValuesOnly, DateTime minDate, DateTime maxDate, bool useLoremIpsumForStrings,BuilderSetup builderSetup)
-            : base(reflectionUtil, builderSetup)
+        public RandomValuePropertyNamer(IRandomGenerator generator, IReflectionUtil reflectionUtil, bool generatePositiveValuesOnly, DateTime minDate, DateTime maxDate, bool useLoremIpsumForStrings,BuilderSettings builderSettings)
+            : base(reflectionUtil, builderSettings)
         {
             this.generator = generator;
             this.generatePositiveValuesOnly = generatePositiveValuesOnly;
             this.useLoremIpsumForStrings = useLoremIpsumForStrings;
-            _builderSetup = builderSetup;
+            BuilderSettings = builderSettings;
             this.minDate = minDate;
             this.maxDate = maxDate;
         }

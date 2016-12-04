@@ -11,11 +11,11 @@ namespace FizzWare.NBuilder.PropertyNaming
     {
         protected readonly IReflectionUtil ReflectionUtil;
         protected const BindingFlags FLAGS = (BindingFlags.Public | BindingFlags.Instance);
-        private BuilderSetup _builderSetup;
-        protected PropertyNamer(IReflectionUtil reflectionUtil, BuilderSetup builderSetup)
+        private BuilderSettings BuilderSettings;
+        protected PropertyNamer(IReflectionUtil reflectionUtil, BuilderSettings builderSettings)
         {
             this.ReflectionUtil = reflectionUtil;
-            _builderSetup = builderSetup;
+            BuilderSettings = builderSettings;
         }
 
         public abstract void SetValuesOfAllIn<T>(IList<T> objects);
@@ -27,7 +27,7 @@ namespace FizzWare.NBuilder.PropertyNaming
             foreach (var propertyInfo in type.GetProperties(FLAGS).Where(p => p.CanWrite))
                 SetMemberValue(propertyInfo, obj);
 
-            foreach (var propertyInfo in type.GetFields().Where(f => !f.IsLiteral))
+            foreach (var propertyInfo in type.GetFields(FLAGS).Where(f => !f.IsLiteral))
                 SetMemberValue(propertyInfo, obj);
         }
 
@@ -74,20 +74,20 @@ namespace FizzWare.NBuilder.PropertyNaming
                 type = ((PropertyInfo)memberInfo).PropertyType;
             }
 
-			if (type != null && IsNullableType(type))
-			{
-				type = Nullable.GetUnderlyingType(type);
-			}
+            if (type != null && IsNullableType(type))
+            {
+                type = Nullable.GetUnderlyingType(type);
+            }
 
             return type;
         }
 
-		private static bool IsNullableType(Type type)
-		{
-			return (type.IsGenericType && type.GetGenericTypeDefinition() == typeof (Nullable<>));
-		}
+        private static bool IsNullableType(Type type)
+        {
+            return (type.IsGenericType && type.GetGenericTypeDefinition() == typeof (Nullable<>));
+        }
 
-    	protected virtual void SetValue<T>(MemberInfo memberInfo, T obj, object value)
+        protected virtual void SetValue<T>(MemberInfo memberInfo, T obj, object value)
         {
             if (value != null)
             {
@@ -128,7 +128,7 @@ namespace FizzWare.NBuilder.PropertyNaming
         protected virtual bool ShouldIgnore(MemberInfo memberInfo)
         {
             if (memberInfo is PropertyInfo)
-                if (_builderSetup.ShouldIgnoreProperty(((PropertyInfo) memberInfo)))
+                if (BuilderSettings.ShouldIgnoreProperty(((PropertyInfo) memberInfo)))
                     return true;
 
             return false;
@@ -138,7 +138,7 @@ namespace FizzWare.NBuilder.PropertyNaming
         {
             Type type = GetMemberType(memberInfo);
 
-            if (_builderSetup.HasDisabledAutoNameProperties && ShouldIgnore(memberInfo))
+            if (BuilderSettings.HasDisabledAutoNameProperties && ShouldIgnore(memberInfo))
                 return;
 
             object currentValue = GetCurrentValue(memberInfo, obj);
@@ -223,10 +223,10 @@ namespace FizzWare.NBuilder.PropertyNaming
                 value = GetBoolean(memberInfo);
             }
 
-			else if (type.BaseType == typeof(Enum))
-			{
-				value = GetEnum(memberInfo);
-			}
+            else if (type.BaseType == typeof(Enum))
+            {
+                value = GetEnum(memberInfo);
+            }
 
             else if (type == typeof(Guid))
             {

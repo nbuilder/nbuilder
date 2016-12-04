@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
-using Castle.ActiveRecord;
 using FizzWare.NBuilder.FunctionalTests.Model;
 
 namespace FizzWare.NBuilder.FunctionalTests.Model
 {
-    [ActiveRecord]
+    
     public class ShoppingBasket
     {
-        [PrimaryKey]
+        [Key]
         public int Id { get; set; }
 
-        [HasMany(typeof(BasketItem), Table = "BasketItem", ColumnKey = "ShoppingBasketId", Cascade = ManyRelationCascadeEnum.SaveUpdate)]
-        public IList<BasketItem> Items { get; set; }
+        public virtual List<BasketItem> Items { get; set; }
         
         public ShoppingBasket()
         {
