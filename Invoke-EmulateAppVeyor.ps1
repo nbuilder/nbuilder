@@ -13,13 +13,14 @@ Import-Module "$PsScriptRoot\DeployNBuilder\DeployNBuilder.psd1" -Force
 gci -Exclude *.nuspec -Path "nuget" -recurse | Remove-Item -recurse
 $env:PackageVersion = Get-NuGetPackageVersion -beta
 Invoke-DisplayBuildInfo
+nuget restore Source\NBuilder-NET4.6.sln
 nuget restore Source\NBuilder-NET4.0.sln
 nuget restore Source\NBuilder-NET3.5.sln
 
 # build_script
 $workingDirectory = $(pwd)
 if (-not $SkipBuild) {
-    "NET3.5", "NET4.0" | Invoke-Build -WorkingDirectory $workingDirectory
+    "NET3.5", "NET4.0", "NET4.6" | Invoke-Build -WorkingDirectory $workingDirectory
 }
 
 # before_test

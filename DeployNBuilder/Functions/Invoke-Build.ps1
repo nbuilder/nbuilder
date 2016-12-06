@@ -16,7 +16,7 @@ function Invoke-Build(
         write-host "Invoke-Build -SolutionTag $SolutionTag -WorkingDirectory $WorkingDirectory -OutputDirectory $OutputDirectory -SourceDirectory $SourceDirectory" -ForegroundColor Blue
 
         $solution = Join-Path $SourceDirectory "NBuilder-$solutionTag.sln"
-        $args = @($solution, "/t:ReBuild", $logger, "/m", "/verbosity:minimal", "/p:OutputPath=$OutputPath")
+        $args = @($solution, "/t:ReBuild", $logger, "/verbosity:minimal", "/p:OutputPath=$OutputPath")
         write-host "Executing: msbuild $args" -ForegroundColor Yellow
         msbuild $args | Out-Host    
         if ($LASTEXITCODE -ne 0){
@@ -24,7 +24,7 @@ function Invoke-Build(
         }
 
         # Give the system time to let go of file locks
-        Start-Sleep -Seconds 2
+        Start-Sleep -Seconds 5
 
     }
 

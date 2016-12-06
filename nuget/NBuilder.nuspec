@@ -13,6 +13,7 @@
         <tags>TDD unit-testing unittesting unitesting testing fluent</tags>
     </metadata>
     <files>
+        <file src="net46\Fizzware.NBuilder.dll" target="lib\net46" />
         <file src="net40\Fizzware.NBuilder.dll" target="lib\net40" />
         <file src="net35\Fizzware.NBuilder.dll" target="lib\net35" />
     </files>
