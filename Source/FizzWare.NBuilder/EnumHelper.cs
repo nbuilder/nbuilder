@@ -12,14 +12,14 @@ namespace FizzWare.NBuilder
         {
             Type enumType = typeof(T);
 
-            if (!enumType.IsEnum)
+            if (!ReflectionHelper.GetTypeInfo(enumType).IsEnum)
             {
                 throw new ArgumentException("Type '" + enumType.Name + "' is not an enum");
             }
 
             List<T> values = new List<T>();
 
-            var fields = from field in enumType.GetFields()
+            var fields = from field in ReflectionHelper.GetTypeInfo(enumType).GetFields()
                          where field.IsLiteral
                          select field;
 
@@ -34,14 +34,14 @@ namespace FizzWare.NBuilder
 
         public static object[] GetValues(Type enumType)
         {
-            if (!enumType.IsEnum)
+            if (!ReflectionHelper.GetTypeInfo(enumType).IsEnum)
             {
                 throw new ArgumentException("Type '" + enumType.Name + "' is not an enum");
             }
 
             List<object> values = new List<object>();
 
-            var fields = from field in enumType.GetFields()
+            var fields = from field in ReflectionHelper.GetTypeInfo(enumType).GetFields()
                          where field.IsLiteral
                          select field;
 

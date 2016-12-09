@@ -9,17 +9,17 @@ namespace FizzWare.NBuilder.Extensions
     {
         public static Type GetTypeWithoutNullability(this Type t)
         {
-            return t.IsGenericType &&
-                   t.GetGenericTypeDefinition() == typeof(Nullable<>)
-                       ? t.GetGenericArguments().Single()
+            return ReflectionHelper.GetTypeInfo(t).IsGenericType &&
+                   ReflectionHelper.GetTypeInfo(t).GetGenericTypeDefinition() == typeof(Nullable<>)
+                       ? ReflectionHelper.GetTypeInfo(t).GetGenericArguments().Single()
                        : t;
         }
 
         public static IList<MemberInfo> GetPublicInstancePropertiesAndFields(this Type t)
         {
             var memberInfos = new List<MemberInfo>();
-            memberInfos.AddRange(t.GetProperties(BindingFlags.Public | BindingFlags.Instance));
-            memberInfos.AddRange(t.GetFields());
+            memberInfos.AddRange(ReflectionHelper.GetTypeInfo(t).GetProperties(BindingFlags.Public | BindingFlags.Instance));
+            memberInfos.AddRange(ReflectionHelper.GetTypeInfo(t).GetFields());
             return memberInfos;
         }
     }
