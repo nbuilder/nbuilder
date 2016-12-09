@@ -56,10 +56,10 @@ namespace FizzWare.NBuilder.Implementation
 
         public bool RequiresConstructorArgs(Type type)
         {
-            if (type.IsValueType)
+            if (ReflectionHelper.GetTypeInfo(type).IsValueType)
                 return false;
 
-            var constructors = type.GetConstructors(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            var constructors = ReflectionHelper.GetTypeInfo(type).GetConstructors(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
             foreach (var constructorInfo in constructors)
             {
