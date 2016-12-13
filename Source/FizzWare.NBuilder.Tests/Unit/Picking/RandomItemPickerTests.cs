@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using FizzWare.NBuilder.Tests.TestClasses;
+using NSubstitute;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace FizzWare.NBuilder.Tests.Unit.Picking
 {
@@ -14,24 +14,25 @@ namespace FizzWare.NBuilder.Tests.Unit.Picking
         [SetUp]
         public void SetUp()
         {
-            randomGenerator = MockRepository.GenerateStub<IRandomGenerator>();
-            list = MockRepository.GenerateMock<IList<MyClass>>();
+            randomGenerator = Substitute.For<IRandomGenerator>();
+            list = Substitute.For<IList<MyClass>>();
         }
 
         [Test]
         public void ShouldBeAbleToUseRandomItemPicker()
         {
             const int listCount = 5;
-            list.Stub(x => x.Count).Return(listCount);
-            randomGenerator.Stub(x => x.Next(0, listCount)).Return(2);
-            
+            list.Count.Returns(listCount);
+            randomGenerator.Next(0, listCount).Returns(2);
+
             var picker = new RandomItemPicker<MyClass>(list, randomGenerator);
 
             // Act
             picker.Pick();
 
             // Assert
-            list.AssertWasCalled(x => x[2]);
+            //http://stackoverflow.com/questions/39610125/how-to-check-received-calls-to-indexer-with-nsubstitute
+            var ignored = list.Received()[2];
         }
 
         [Test]
@@ -44,8 +45,8 @@ namespace FizzWare.NBuilder.Tests.Unit.Picking
 
             int endIndex = theList.Count;
 
-            randomGenerator.Stub(x => x.Next(0, endIndex)).Return(0).Repeat.Once();
-            randomGenerator.Stub(x => x.Next(0, endIndex)).Return(1).Repeat.Once();
+
+            randomGenerator.Next(0, endIndex).Returns(0, 1);
 
             var picker = new RandomItemPicker<MyClass>(theList, randomGenerator);
 

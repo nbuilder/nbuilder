@@ -1,14 +1,13 @@
 ﻿using System;
 using FizzWare.NBuilder.Tests.TestClasses;
+using NSubstitute;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
     [TestFixture]
     public class BuilderSetupTests
     {
-        private MockRepository mocks;
         private IPersistenceService persistenceService;
         private IMyClassRepository repository;
         BuilderSettings builderSettings;
@@ -16,9 +15,8 @@ namespace FizzWare.NBuilder.Tests.Unit
         [SetUp]
         public void SetUp()
         {
-            mocks = new MockRepository();
-            persistenceService = mocks.DynamicMock<IPersistenceService>();
-            repository = mocks.DynamicMock<IMyClassRepository>();
+            persistenceService = Substitute.For<IPersistenceService>();
+            repository = Substitute.For<IMyClassRepository>();
             builderSettings = new BuilderSettings();
             builderSettings.SetPersistenceService(this.persistenceService);
         }
@@ -34,12 +32,9 @@ namespace FizzWare.NBuilder.Tests.Unit
         {
             Action<MyClass> func = x => repository.Save(x);
 
-            using (mocks.Record())
-            {
-                persistenceService.Expect(x => x.SetPersistenceCreateMethod(func));
-            }
-
             builderSettings.SetCreatePersistenceMethod<MyClass>(func);
+
+            persistenceService.Received().SetPersistenceCreateMethod(func);
         }
 
         [Test]
@@ -47,12 +42,9 @@ namespace FizzWare.NBuilder.Tests.Unit
         {
             Action<MyClass> func = x => repository.Save(x);
 
-            using (mocks.Record())
-            {
-                persistenceService.Expect(x => x.SetPersistenceUpdateMethod(func));
-            }
-
             builderSettings.SetUpdatePersistenceMethod<MyClass>(func);
+
+            persistenceService.Received().SetPersistenceUpdateMethod(func);
         }
     }
 }

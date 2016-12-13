@@ -2,23 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using NSubstitute;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace FizzWare.NBuilder.Tests.Unit.Picking
 {
     [TestFixture]
     public class UpToConstraintTests
     {
-        private MockRepository mocks;
         private IUniqueRandomGenerator uniqueRandomGenerator;
         private const int count = 5;
 
         [SetUp]
         public void SetUp()
         {
-            mocks = new MockRepository();
-            uniqueRandomGenerator = mocks.StrictMock<IUniqueRandomGenerator>();
+            uniqueRandomGenerator = Substitute.For<IUniqueRandomGenerator>();
         }
 
         [Test]
@@ -26,17 +24,10 @@ namespace FizzWare.NBuilder.Tests.Unit.Picking
         {
             var constraint = new UpToConstraint(uniqueRandomGenerator, count);
 
-            using (mocks.Record())
-            {
-                uniqueRandomGenerator.Expect(x => x.Next(0, count)).Return(1);
-            }
+            uniqueRandomGenerator.Next(0, count).Returns(1);
+            int end = constraint.GetEnd();
 
-            using (mocks.Ordered())
-            {
-                int end = constraint.GetEnd();
-
-                Assert.That(end, Is.EqualTo(1));
-            }
+            Assert.That(end, Is.EqualTo(1));
         }
     }
 }

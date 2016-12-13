@@ -4,7 +4,7 @@ using FizzWare.NBuilder.Implementation;
 using FizzWare.NBuilder.PropertyNaming;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NUnit.Framework;
-using Rhino.Mocks;
+using NSubstitute;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
@@ -12,7 +12,6 @@ namespace FizzWare.NBuilder.Tests.Unit
     [TestFixture]
     public class HierarchyGeneratorTests
     {
-        private MockRepository mocks;
         private IRandomGenerator randomGenerator;
         private int numberOfRoots;
         private int depth;
@@ -26,9 +25,8 @@ namespace FizzWare.NBuilder.Tests.Unit
         [SetUp]
         public void SetUp()
         {
-            mocks = new MockRepository();
-            randomGenerator = mocks.DynamicMock<IRandomGenerator>();
-            sourceList = mocks.DynamicMock<IList<MyHierarchicalClass>>();
+            randomGenerator = Substitute.For<IRandomGenerator>();
+            sourceList = Substitute.For<IList<MyHierarchicalClass>>();
 
             categoryCount = 1000;
             numberOfRoots = 4;
@@ -39,20 +37,11 @@ namespace FizzWare.NBuilder.Tests.Unit
             namingMethod = (x, y) => x.Title = y;
         }
 
-        [TearDown]
-        public void TearDown()
-        {
-            mocks.VerifyAll();
-        }
-
         [Test]
         public void ShouldGenerateTheCorrectNumberOfRoots()
         {
-            using (mocks.Record())
-            {
-                sourceList.Expect(x => x.Count).Return(categoryCount).Repeat.Any();
-                sourceList.Expect(x => x[0]).Return(new MyHierarchicalClass()).Repeat.Times(numberOfRoots);
-            }
+            sourceList.Count.Returns(categoryCount);
+            sourceList[0].Returns(new MyHierarchicalClass());
 
             hierarchyGenerator = new HierarchyGenerator<MyHierarchicalClass>(sourceList, (x, y) => x.AddChild(y), numberOfRoots, depth, minCategories, maxCategories, randomGenerator, namingMethod, null);
             IList<MyHierarchicalClass> hierarchy = hierarchyGenerator.Generate();
@@ -63,42 +52,33 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Test]
         public void ShouldAddChildren()
         {
-            using (mocks.Record())
-            {
-                sourceList.Expect(x => x.Count).Return(categoryCount).Repeat.Any();
-                randomGenerator.Expect(x => x.Next(minCategories, maxCategories)).Return(1).Repeat.Times(12);
-                sourceList.Expect(x => x[0]).Return(new MyHierarchicalClass()).Repeat.Any();
-                sourceList.Expect(x => x.RemoveAt(0)).Repeat.Any();
-            }
+            sourceList.Count.Returns(categoryCount);
+            randomGenerator.Next(minCategories, maxCategories).Returns(1);
+            sourceList[0].Returns(new MyHierarchicalClass());
+            sourceList.RemoveAt(0);
 
-            using (mocks.Playback())
-            {
-                hierarchyGenerator = new HierarchyGenerator<MyHierarchicalClass>(sourceList, (x, y) => x.AddChild(y), numberOfRoots, depth, minCategories, maxCategories, randomGenerator, namingMethod, null);
-                hierarchyGenerator.Generate();
-            }
+            hierarchyGenerator = new HierarchyGenerator<MyHierarchicalClass>(sourceList, (x, y) => x.AddChild(y), numberOfRoots, depth, minCategories, maxCategories, randomGenerator, namingMethod, null);
+            hierarchyGenerator.Generate();
+
         }
 
         [Test]
         public void ShouldTryToPersistIfPersistenceServiceSupplied()
         {
-            IPersistenceService persistenceService = mocks.DynamicMock<IPersistenceService>();
+            IPersistenceService persistenceService = Substitute.For<IPersistenceService>();
 
-            using (mocks.Record())
-            {
-                sourceList.Expect(x => x.Count).Return(categoryCount).Repeat.Any();
-                randomGenerator.Expect(x => x.Next(minCategories, maxCategories)).Return(1).Repeat.Times(12);
-                sourceList.Expect(x => x[0]).Return(new MyHierarchicalClass()).Repeat.Any();
-                sourceList.Expect(x => x.RemoveAt(0)).Repeat.Any();
+            sourceList.Count.Returns(categoryCount);
+            randomGenerator.Next(minCategories, maxCategories).Returns(1);
+            sourceList[0].Returns(new MyHierarchicalClass());
 
-                persistenceService.Expect(x => x.Create(Arg<MyHierarchicalClass>.Is.TypeOf)).Repeat.Times(12);
-                persistenceService.Expect(x => x.Update(Arg<IList<MyHierarchicalClass>>.Is.TypeOf)).Repeat.Times(1);
-            }
+            sourceList.RemoveAt(0);
 
-            using (mocks.Playback())
-            {
-                hierarchyGenerator = new HierarchyGenerator<MyHierarchicalClass>(sourceList, (x, y) => x.AddChild(y), numberOfRoots, depth, minCategories, maxCategories, randomGenerator, namingMethod, persistenceService);
-                hierarchyGenerator.Generate();
-            }
+            persistenceService.Create(Arg.Any<MyHierarchicalClass>());
+            persistenceService.Update(Arg.Any<IList<MyHierarchicalClass>>());
+
+            hierarchyGenerator = new HierarchyGenerator<MyHierarchicalClass>(sourceList, (x, y) => x.AddChild(y), numberOfRoots, depth, minCategories, maxCategories, randomGenerator, namingMethod, persistenceService);
+            hierarchyGenerator.Generate();
+
         }
 
         [Test]
@@ -113,23 +93,14 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             const int requiredSizeOfList = 124;
 
-            using (mocks.Record())
-            {
-                sourceList.Expect(x => x.Count).Return(requiredSizeOfList - 1);
-            }
+            sourceList.Count.Returns(requiredSizeOfList - 1);
 
-            using (mocks.Playback())
-            {
-                // TODO FIX
-                #if !SILVERLIGHT
-                Assert.Throws<ArgumentException>(
-                    () =>
-                        hierarchyGenerator =
-                        new HierarchyGenerator<MyHierarchicalClass>(sourceList, null, numberOfRoots, depth, minCategories,
-                                                                    maxCategories, randomGenerator, namingMethod, null)
-                    );
-                #endif
-            }
+            Assert.Throws<ArgumentException>(
+                () =>
+                    hierarchyGenerator =
+                    new HierarchyGenerator<MyHierarchicalClass>(sourceList, null, numberOfRoots, depth, minCategories,
+                                                                maxCategories, randomGenerator, namingMethod, null)
+                );
         }
     }
 }

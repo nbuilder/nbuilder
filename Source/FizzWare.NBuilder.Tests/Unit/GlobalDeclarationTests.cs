@@ -1,7 +1,7 @@
 using FizzWare.NBuilder.Implementation;
 using FizzWare.NBuilder.Tests.TestClasses;
+using NSubstitute;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
@@ -11,42 +11,27 @@ namespace FizzWare.NBuilder.Tests.Unit
         private IGlobalDeclaration<SimpleClass> declaration;
         private IObjectBuilder<SimpleClass> objectBuilder;
         private IListBuilderImpl<SimpleClass> listBuilderImpl;
-        private MockRepository mocks;
 
         BuilderSettings builderSettings;
         [SetUp]
         public void SetUp()
         {
             builderSettings = new BuilderSettings();
-            mocks = new MockRepository();
-            listBuilderImpl = mocks.DynamicMock<IListBuilderImpl<SimpleClass>>();
-            objectBuilder = mocks.StrictMock<IObjectBuilder<SimpleClass>>();
-            listBuilderImpl.Stub(x => x.Capacity).Return(2);
-            listBuilderImpl.Stub(x => x.BuilderSettings).Return(builderSettings);
-            objectBuilder.Stub(x => x.BuilderSettings).Return(builderSettings).Repeat.Any(); ;
-         }
-            
-        [TearDown]
-        public void TearDown()
-        {
-            mocks.VerifyAll();
+            listBuilderImpl = Substitute.For<IListBuilderImpl<SimpleClass>>();
+            objectBuilder = Substitute.For<IObjectBuilder<SimpleClass>>();
+            listBuilderImpl.Capacity.Returns(2);
+            listBuilderImpl.BuilderSettings.Returns(builderSettings);
+            objectBuilder.BuilderSettings.Returns(builderSettings);
         }
 
         [Test]
         public void ShouldBeAbleToConstructItems()
         {
-            using (mocks.Record())
-            {
-                objectBuilder.Stub(x => x.BuilderSettings).Return(builderSettings);
-                objectBuilder.Expect(x => x.Construct(Arg<int>.Is.Anything)).Return(new SimpleClass()).Repeat.Times(2);
-            }
+            objectBuilder.BuilderSettings.Returns(builderSettings);
+            objectBuilder.Construct(Arg.Any<int>()).Returns(new SimpleClass());
+            declaration = new GlobalDeclaration<SimpleClass>(listBuilderImpl, objectBuilder);
 
-            using (mocks.Playback())
-            {
-                declaration = new GlobalDeclaration<SimpleClass>(listBuilderImpl, objectBuilder);
-
-                declaration.Construct();
-            }
+            declaration.Construct();
         }
 
         [Test]
@@ -57,21 +42,14 @@ namespace FizzWare.NBuilder.Tests.Unit
             var obj1 = new SimpleClass();
             var obj2 = new SimpleClass();
 
-            using (mocks.Record())
-            {
 
-                objectBuilder.Stub(x => x.BuilderSettings).Return(builderSettings);
-                objectBuilder.Expect(x => x.Construct(0)).Return(obj1);
-                objectBuilder.Expect(x => x.Construct(1)).Return(obj2);
-            }
+            objectBuilder.BuilderSettings.Returns(builderSettings);
+            objectBuilder.Construct(0).Returns(obj1);
+            objectBuilder.Construct(1).Returns(obj2);
+            declaration = new GlobalDeclaration<SimpleClass>(listBuilderImpl, objectBuilder);
 
-            using (mocks.Playback())
-            {
-                declaration = new GlobalDeclaration<SimpleClass>(listBuilderImpl, objectBuilder);
-
-                declaration.Construct();
-                declaration.AddToMaster(masterList);
-            }
+            declaration.Construct();
+            declaration.AddToMaster(masterList);
 
             Assert.That(masterList[0], Is.SameAs(obj1));
             Assert.That(masterList[1], Is.SameAs(obj2));
@@ -80,22 +58,17 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Test]
         public void ShouldRecordMasterListKeys()
         {
-          
+
             SimpleClass[] masterList = new SimpleClass[19];
 
-            using (mocks.Record())
-            {
 
-                objectBuilder.Stub(x => x.BuilderSettings).Return(builderSettings);
-                objectBuilder.Expect(x => x.Construct(Arg<int>.Is.Anything)).Return(new SimpleClass()).Repeat.Times(2);
-            }
-            using (mocks.Playback())
-            {
-                declaration = new GlobalDeclaration<SimpleClass>(listBuilderImpl, objectBuilder);
-                declaration.Construct();
+            objectBuilder.BuilderSettings.Returns(builderSettings);
+            objectBuilder.Construct(Arg.Any<int>()).Returns(new SimpleClass());
 
-                declaration.AddToMaster(masterList);
-            }
+            declaration = new GlobalDeclaration<SimpleClass>(listBuilderImpl, objectBuilder);
+            declaration.Construct();
+
+            declaration.AddToMaster(masterList);
             Assert.That(declaration.MasterListAffectedIndexes.Count, Is.EqualTo(2));
             Assert.That(declaration.MasterListAffectedIndexes[0], Is.EqualTo(0));
             Assert.That(declaration.MasterListAffectedIndexes[1], Is.EqualTo(1));

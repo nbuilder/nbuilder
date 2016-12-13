@@ -22,7 +22,15 @@ namespace FizzWare.NBuilder.Implementation
 
         private Path path;
 
-        public HierarchyGenerator(IList<T> initialList, Action<T, T> addMethod, int numberOfRoots, int depth, int min, int max, IRandomGenerator randomGenerator, Func<T, string, string> namingMethod, IPersistenceService persistenceService)
+        public HierarchyGenerator(IList<T> initialList
+            , Action<T, T> addMethod
+            , int numberOfRoots
+            , int depth
+            , int min
+            , int max
+            , IRandomGenerator randomGenerator
+            , Func<T, string, string> namingMethod
+            , IPersistenceService persistenceService)
         {
             this.initialList = initialList;
             this.action = addMethod;
@@ -35,12 +43,12 @@ namespace FizzWare.NBuilder.Implementation
             this.persistenceService = persistenceService;
 
             this.listCount = initialList.Count;
-            
+
             Func<int, int, int> pwr = (x, y) => (int)Math.Pow(x, y);
 
             int requiredSize = 0;
 
-            for (int i = 0; i < depth; i++) 
+            for (int i = 0; i < depth; i++)
                 requiredSize += pwr(max, i);
 
             requiredSize = requiredSize * numberOfRoots;

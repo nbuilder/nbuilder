@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using FizzWare.NBuilder.Tests.TestClasses;
-using Rhino.Mocks;
+using NSubstitute;
 using NUnit.Framework;
 
 namespace FizzWare.NBuilder.Tests.Unit
@@ -11,78 +8,32 @@ namespace FizzWare.NBuilder.Tests.Unit
     [TestFixture]
     public class PersistenceServiceTests
     {
-        private MockRepository mocks;
-        private IMyClassRepository repository;
-        private IMyClassRepository repository2;
-
         [SetUp]
         public void SetUp()
         {
-            mocks = new MockRepository();
-            repository = mocks.DynamicMock<IMyClassRepository>();
-            repository2 = mocks.DynamicMock<IMyClassRepository>();
+            repository = Substitute.For<IMyClassRepository>();
+            repository2 = Substitute.For<IMyClassRepository>();
         }
 
-        [TearDown]
-        public void TearDown()
-        {
-            mocks.VerifyAll();
-        }
-
-        [Test]
-        public void ShouldBeAbleToPersistAnObject_Create()
-        {
-            var obj = new MyClass();
-
-            PersistenceService persistenceService = new PersistenceService();
-            persistenceService.SetPersistenceCreateMethod<MyClass>(x => repository.Save(x));
-
-            using (mocks.Record())
-            {
-                repository.Expect(x => x.Save(obj));
-            }
-
-            using (mocks.Playback())
-            {
-                persistenceService.Create(obj);
-            }
-        }
+        private IMyClassRepository repository;
+        private IMyClassRepository repository2;
 
         [Test]
         public void ShouldBeAbleToPersistAList_Create()
         {
             IList<MyClass> list = new List<MyClass>();
 
-            PersistenceService persistenceService = new PersistenceService();
+            var persistenceService = new PersistenceService();
             persistenceService.SetPersistenceCreateMethod<IList<MyClass>>(x => repository.SaveAll(x));
 
-            using (mocks.Record())
+
             {
-                repository.Expect(x => x.SaveAll(list));
+                repository.SaveAll(list);
             }
 
-            using (mocks.Playback())
+
             {
                 persistenceService.Create(list);
-            }
-        }
-
-        [Test]
-        public void ShouldBeAbleToPersistAnObject_Update()
-        {
-            var obj = new MyClass();
-
-            PersistenceService persistenceService = new PersistenceService();
-            persistenceService.SetPersistenceUpdateMethod<MyClass>(x => repository.Save(x));
-
-            using (mocks.Record())
-            {
-                repository.Expect(x => x.Save(obj));
-            }
-
-            using (mocks.Playback())
-            {
-                persistenceService.Update(obj);
             }
         }
 
@@ -91,55 +42,45 @@ namespace FizzWare.NBuilder.Tests.Unit
         {
             IList<MyClass> list = new List<MyClass>();
 
-            PersistenceService persistenceService = new PersistenceService();
+            var persistenceService = new PersistenceService();
             persistenceService.SetPersistenceUpdateMethod<IList<MyClass>>(x => repository.SaveAll(x));
-
-            using (mocks.Record())
-            {
-                repository.Expect(x => x.SaveAll(list));
-            }
-
-            using (mocks.Playback())
-            {
-                persistenceService.Update(list);
-            }
+            repository.SaveAll(list);
+            persistenceService.Update(list);
         }
 
         [Test]
-        public void ShouldReplaceExistingCreatePersister()
+        public void ShouldBeAbleToPersistAnObject_Create()
         {
             var obj = new MyClass();
 
-            PersistenceService persistenceService = new PersistenceService();
+            var persistenceService = new PersistenceService();
             persistenceService.SetPersistenceCreateMethod<MyClass>(x => repository.Save(x));
-            persistenceService.SetPersistenceCreateMethod<MyClass>(x => repository2.Save(x));
 
-            using (mocks.Record())
+
             {
-                repository2.Expect(x => x.Save(obj));
+                repository.Save(obj);
             }
 
-            using (mocks.Playback())
+
             {
                 persistenceService.Create(obj);
             }
         }
 
         [Test]
-        public void ShouldReplaceExistingUpdatePersister()
+        public void ShouldBeAbleToPersistAnObject_Update()
         {
             var obj = new MyClass();
 
-            PersistenceService persistenceService = new PersistenceService();
+            var persistenceService = new PersistenceService();
             persistenceService.SetPersistenceUpdateMethod<MyClass>(x => repository.Save(x));
-            persistenceService.SetPersistenceUpdateMethod<MyClass>(x => repository2.Save(x));
 
-            using (mocks.Record())
+
             {
-                repository2.Expect(x => x.Save(obj));
+                repository.Save(obj);
             }
 
-            using (mocks.Playback())
+
             {
                 persistenceService.Update(obj);
             }
@@ -148,62 +89,69 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Test]
         public void ShouldComplainIfNoCreatePersistenceServiceFound()
         {
-            using (mocks.Record()) { }
 
-            using (mocks.Playback())
             {
-                PersistenceService persistenceService = new PersistenceService();
+                var persistenceService = new PersistenceService();
 
-                Assert.Throws<PersistenceMethodNotFoundException>(() =>
-                {
-                    persistenceService.Create(new MyClass());
-                });
-            }
-        }
-
-        [Test]
-        public void ShouldComplainIfNoUpdatePersistenceServiceFound()
-        {
-            using (mocks.Record()) { }
-
-            using (mocks.Playback())
-            {
-                PersistenceService persistenceService = new PersistenceService();
-                Assert.Throws<PersistenceMethodNotFoundException>(() =>
-                {
-                    persistenceService.Update(new MyClass());
-                });
+                Assert.Throws<PersistenceMethodNotFoundException>(() => { persistenceService.Create(new MyClass()); });
             }
         }
 
         [Test]
         public void ShouldComplainIfNoCreatePersistenceServiceFoundForList()
         {
-            using (mocks.Record()) { }
 
-            using (mocks.Playback())
             {
-                PersistenceService persistenceService = new PersistenceService();
-                Assert.Throws<PersistenceMethodNotFoundException>(() =>
-                {
-                    persistenceService.Create((IList<MyClass>)new List<MyClass>());
-                });
+                var persistenceService = new PersistenceService();
+                Assert.Throws<PersistenceMethodNotFoundException>(
+                    () => { persistenceService.Create((IList<MyClass>) new List<MyClass>()); });
+            }
+        }
+
+        [Test]
+        public void ShouldComplainIfNoUpdatePersistenceServiceFound()
+        {
+
+
+            {
+                var persistenceService = new PersistenceService();
+                Assert.Throws<PersistenceMethodNotFoundException>(() => { persistenceService.Update(new MyClass()); });
             }
         }
 
         [Test]
         public void ShouldComplainIfNoUpdatePersistenceServiceFoundForList()
         {
-            using (mocks.Record()) { }
 
-            using (mocks.Playback())
             {
-                PersistenceService persistenceService = new PersistenceService();
-                Assert.Throws<PersistenceMethodNotFoundException>(() =>
-                {
-                    persistenceService.Update((IList<MyClass>)new List<MyClass>());
-                });
+                var persistenceService = new PersistenceService();
+                Assert.Throws<PersistenceMethodNotFoundException>(
+                    () => { persistenceService.Update((IList<MyClass>) new List<MyClass>()); });
             }
+        }
+
+        [Test]
+        public void ShouldReplaceExistingCreatePersister()
+        {
+            var obj = new MyClass();
+
+            var persistenceService = new PersistenceService();
+            persistenceService.SetPersistenceCreateMethod<MyClass>(x => repository.Save(x));
+            persistenceService.SetPersistenceCreateMethod<MyClass>(x => repository2.Save(x));
+            repository2.Save(obj);
+            persistenceService.Create(obj);
+        }
+
+        [Test]
+        public void ShouldReplaceExistingUpdatePersister()
+        {
+            var obj = new MyClass();
+
+            var persistenceService = new PersistenceService();
+            persistenceService.SetPersistenceUpdateMethod<MyClass>(x => repository.Save(x));
+            persistenceService.SetPersistenceUpdateMethod<MyClass>(x => repository2.Save(x));
+            repository2.Save(obj);
+            persistenceService.Update(obj);
         }
     }
 }

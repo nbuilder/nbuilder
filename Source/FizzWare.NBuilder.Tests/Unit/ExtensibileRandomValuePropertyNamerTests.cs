@@ -3,27 +3,25 @@ using System.Reflection;
 using FizzWare.NBuilder.Generators;
 using FizzWare.NBuilder.PropertyNaming;
 using FizzWare.NBuilder.Tests.TestClasses;
+using NSubstitute;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
     [TestFixture]
     public class ExtensibileRandomValuePropertyNamerTests
     {
-        BuilderSettings builderSettings ;
+        BuilderSettings builderSettings;
         private ExtensibleRandomValuePropertyNamer target;
 
-        private MockRepository mocks;
         private IRandomGenerator randomGenerator;
 
         [SetUp]
         public void SetUp()
         {
             builderSettings = new BuilderSettings();
-            mocks = new MockRepository();
 
-            randomGenerator = mocks.DynamicMock<IRandomGenerator>();
+            randomGenerator = Substitute.For<IRandomGenerator>();
             target = new ExtensibleRandomValuePropertyNamer(randomGenerator, builderSettings);
 
             bool @bool = true;
@@ -44,36 +42,33 @@ namespace FizzWare.NBuilder.Tests.Unit
             ushort @ushort = 8;
             MyEnum @enum = MyEnum.EnumValue3;
 
-            using (mocks.Record())
+
             {
-                randomGenerator.Expect(x => x.Boolean()).Return(@bool);
-                randomGenerator.Expect(x => x.Byte()).Return(@byte);
-                randomGenerator.Expect(x => x.Char()).Return(@char);
-                randomGenerator.Expect(x => x.DateTime()).Return(dateTime);
-                randomGenerator.Expect(x => x.Decimal()).Return(@decimal);
-                randomGenerator.Expect(x => x.Double()).Return(@double);
-                randomGenerator.Expect(x => x.Float()).Return(@float);
-                randomGenerator.Expect(x => x.Guid()).Return(guid);
-                randomGenerator.Expect(x => x.Int()).Return(@int);
-                randomGenerator.Expect(x => x.Long()).Return(@long);
-                randomGenerator.Expect(x => x.Phrase(50)).Return(@phrase);
-                randomGenerator.Expect(x => x.SByte()).Return(@sbyte);
-                randomGenerator.Expect(x => x.Short()).Return(@short);
-                randomGenerator.Expect(x => x.UInt()).Return(@uint);
-                randomGenerator.Expect(x => x.ULong()).Return(@ulong);
-                randomGenerator.Expect(x => x.UShort()).Return(@ushort);
-                randomGenerator.Expect(x => x.Enumeration(typeof(MyEnum))).Return(@enum);
+                randomGenerator.Boolean().Returns(@bool);
+                randomGenerator.Byte().Returns(@byte);
+                randomGenerator.Char().Returns(@char);
+                randomGenerator.DateTime().Returns(dateTime);
+                randomGenerator.Decimal().Returns(@decimal);
+                randomGenerator.Double().Returns(@double);
+                randomGenerator.Float().Returns(@float);
+                randomGenerator.Guid().Returns(guid);
+                randomGenerator.Int().Returns(@int);
+                randomGenerator.Long().Returns(@long);
+                randomGenerator.Phrase(50).Returns(@phrase);
+                randomGenerator.SByte().Returns(@sbyte);
+                randomGenerator.Short().Returns(@short);
+                randomGenerator.UInt().Returns(@uint);
+                randomGenerator.ULong().Returns(@ulong);
+                randomGenerator.UShort().Returns(@ushort);
+                randomGenerator.Enumeration(typeof(MyEnum)).Returns(@enum);
             }
         }
 
         [Test]
         public void can_set_values_of()
         {
-            using (mocks.Playback())
-            {
-                var myClass = new MyClass();
-                target.SetValuesOf(myClass);
-            }
+            var myClass = new MyClass();
+            target.SetValuesOf(myClass);
         }
 
         [Test]
@@ -132,8 +127,8 @@ namespace FizzWare.NBuilder.Tests.Unit
         {
             var foo = new MyClass();
             MemberInfo simpleClassMemberInfo = null;
-            target.NameWith(m => 
-            { 
+            target.NameWith(m =>
+            {
                 simpleClassMemberInfo = m;
                 return new SimpleClass();
             });
@@ -144,12 +139,12 @@ namespace FizzWare.NBuilder.Tests.Unit
                 dateTimeMemberInfo = m;
                 return DateTime.UtcNow;
             });
-            
+
             target.SetValuesOf(foo);
 
             Assert.That(simpleClassMemberInfo.Name, Is.EqualTo("SimpleClassProperty"));
             Assert.That(simpleClassMemberInfo.DeclaringType, Is.EqualTo(typeof(MyClass)));
-            
+
             Assert.That(dateTimeMemberInfo.Name, Is.EqualTo("DateTime"));
             Assert.That(dateTimeMemberInfo.DeclaringType, Is.EqualTo(typeof(MyClass)));
         }
@@ -170,6 +165,6 @@ namespace FizzWare.NBuilder.Tests.Unit
             Assert.That(myClass.Long, Is.EqualTo(default(long)));
         }
 
-        
+
     }
 }

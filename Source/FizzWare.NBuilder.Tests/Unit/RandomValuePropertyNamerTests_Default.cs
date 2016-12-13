@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using FizzWare.NBuilder.Implementation;
 using FizzWare.NBuilder.PropertyNaming;
 using FizzWare.NBuilder.Tests.TestClasses;
+using NSubstitute;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
@@ -14,41 +14,38 @@ namespace FizzWare.NBuilder.Tests.Unit
         public override void TestFixtureSetUp()
         {
             var builderSetup = new BuilderSettings();
-            mocks = new MockRepository();
 
-            generator = mocks.DynamicMock<IRandomGenerator>();
+            generator = Substitute.For<IRandomGenerator>();
 
-            reflectionUtil = MockRepository.GenerateStub<IReflectionUtil>();
-            reflectionUtil.Stub(x => x.IsDefaultValue(null)).IgnoreArguments().Return(true).Repeat.Any();
+            reflectionUtil = Substitute.For<IReflectionUtil>();
+            reflectionUtil.IsDefaultValue(null).Returns(true);
+
+            reflectionUtil = new ReflectionUtil();
 
             theList = new List<MyClass>();
 
             for (int i = 0; i < listSize; i++)
                 theList.Add(new MyClass());
 
-            using (mocks.Record())
             {
-                generator.Expect(x => x.Next(short.MinValue, short.MaxValue)).Return(1).Repeat.Times(listSize);
-                generator.Expect(x => x.Next(int.MinValue, int.MaxValue)).Return(1).Repeat.Times(listSize);
-                generator.Expect(x => x.Next(long.MinValue, long.MaxValue)).Return(1).Repeat.Times(listSize);
-                generator.Expect(x => x.Next(ushort.MinValue, ushort.MaxValue)).Return(1).Repeat.Times(listSize);
-                generator.Expect(x => x.Next(uint.MinValue, uint.MaxValue)).Return(1).Repeat.Times(listSize);
-                generator.Expect(x => x.Next(ulong.MinValue, ulong.MaxValue)).Return(1).Repeat.Times(listSize);
-                generator.Expect(x => x.Next(float.MinValue, float.MaxValue)).Return(1).Repeat.Times(listSize);
-                generator.Expect(x => x.Next(double.MinValue, double.MaxValue)).Return(1).Repeat.Times(listSize);
-                generator.Expect(x => x.Next(decimal.MinValue, decimal.MaxValue)).Return(1).Repeat.Times(listSize);
-                generator.Expect(x => x.Next(byte.MinValue, byte.MaxValue)).Return(1).Repeat.Times(listSize);
-                generator.Expect(x => x.Next(char.MinValue, char.MaxValue)).Return('A').Repeat.Times(listSize);
-                generator.Expect(x => x.Next(DateTime.MinValue, DateTime.MaxValue)).Return(DateTime.Today.Date).Repeat.Times(listSize);
-                generator.Expect(x => x.Next()).Return(true).Repeat.Times(listSize);
+                generator.Next(short.MinValue, short.MaxValue).Returns((short) 1);
+                generator.Next(int.MinValue, int.MaxValue).Returns(1);
+                generator.Next(long.MinValue, long.MaxValue).Returns(1);
+                generator.Next(ushort.MinValue, ushort.MaxValue).Returns((ushort) 1);
+                generator.Next(uint.MinValue, uint.MaxValue).Returns((uint) 1);
+                generator.Next(ulong.MinValue, ulong.MaxValue).Returns((ulong) 1);
+                generator.Next(float.MinValue, float.MaxValue).Returns(1);
+                generator.Next(double.MinValue, double.MaxValue).Returns(1);
+                generator.Next(decimal.MinValue, decimal.MaxValue).Returns(1);
+                generator.Next(byte.MinValue, byte.MaxValue).Returns((byte) 1);
+                generator.Next(char.MinValue, char.MaxValue).Returns('A');
+                generator.Next(DateTime.MinValue, DateTime.MaxValue).Returns(DateTime.Today.Date);
+                generator.Next().Returns(true);
 
-                generator.Expect(x => x.Next(0, 255)).Return(5).Repeat.Any();
+                generator.Next(0, 255).Returns(5);
             }
-
-            using (mocks.Playback())
-            {
-                new RandomValuePropertyNamer(generator, reflectionUtil, false,builderSetup).SetValuesOfAllIn(theList);
-            }
+            new RandomValuePropertyNamer(generator, reflectionUtil, false, builderSetup)
+                .SetValuesOfAllIn(theList);
         }
 
         [Test]
@@ -74,7 +71,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             {
                 Assert.That(item.GetNullCharConst(), Is.EqualTo(MyClassWithCharConst.NullCharConst));
                 Assert.That(item.GetNonNullCharConst(), Is.EqualTo(MyClassWithCharConst.NonNullCharConst));
-            }            
+            }
 
             Assert.Pass("A System.FieldAccessException was not thrown because NBuilder didn't try to set the value of the constant");
         }

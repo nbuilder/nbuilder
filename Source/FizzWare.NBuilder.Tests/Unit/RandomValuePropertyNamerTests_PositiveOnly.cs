@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using FizzWare.NBuilder.Implementation;
 using FizzWare.NBuilder.PropertyNaming;
 using FizzWare.NBuilder.Tests.TestClasses;
+using NSubstitute;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
@@ -14,40 +14,37 @@ namespace FizzWare.NBuilder.Tests.Unit
         public override void TestFixtureSetUp()
         {
             var builderSetup = new BuilderSettings();
-            mocks = new MockRepository();
 
-            generator = mocks.DynamicMock<IRandomGenerator>();
+            generator = Substitute.For<IRandomGenerator>();
 
-            reflectionUtil = MockRepository.GenerateStub<IReflectionUtil>();
-            reflectionUtil.Stub(x => x.IsDefaultValue(null)).IgnoreArguments().Return(true).Repeat.Any();
+            reflectionUtil = Substitute.For<IReflectionUtil>();
+            reflectionUtil.IsDefaultValue(null).Returns(true);
+            reflectionUtil = new ReflectionUtil();
 
             theList = new List<MyClass>();
 
             for (int i = 0; i < listSize; i++)
                 theList.Add(new MyClass());
 
-            using (mocks.Record())
             {
-                generator.Expect(x => x.Next((short)0, short.MaxValue)).Return(1).Repeat.Times(listSize);
-                generator.Expect(x => x.Next(0, int.MaxValue)).Return(1).Repeat.Times(listSize);
-                generator.Expect(x => x.Next((long)0, long.MaxValue)).Return(1).Repeat.Times(listSize);
-                generator.Expect(x => x.Next(ushort.MinValue, ushort.MaxValue)).Return(1).Repeat.Times(listSize);
-                generator.Expect(x => x.Next(uint.MinValue, uint.MaxValue)).Return(1).Repeat.Times(listSize);
-                generator.Expect(x => x.Next(ulong.MinValue, ulong.MaxValue)).Return(1).Repeat.Times(listSize);
-                generator.Expect(x => x.Next((float)0, float.MaxValue)).Return(1).Repeat.Times(listSize);
-                generator.Expect(x => x.Next((double)0, double.MaxValue)).Return(1).Repeat.Times(listSize);
-                generator.Expect(x => x.Next((decimal)0, decimal.MaxValue)).Return(1).Repeat.Times(listSize);
-                generator.Expect(x => x.Next(byte.MinValue, byte.MaxValue)).Return(1).Repeat.Times(listSize);
-                generator.Expect(x => x.Next(char.MinValue, char.MaxValue)).Return('A').Repeat.Times(listSize);
-                generator.Expect(x => x.Next(DateTime.MinValue, DateTime.MaxValue)).Return(DateTime.Today.Date).Repeat.Times(listSize);
-                generator.Expect(x => x.Next()).Return(true).Repeat.Times(listSize);
-                generator.Expect(x => x.Guid()).Return(Guid.NewGuid()).Repeat.Times(listSize);
+                generator.Next((short) 0, short.MaxValue).Returns((short) 1);
+                generator.Next(0, int.MaxValue).Returns(1);
+                generator.Next((long) 0, long.MaxValue).Returns(1);
+                generator.Next(ushort.MinValue, ushort.MaxValue).Returns((ushort) 1);
+                generator.Next(uint.MinValue, uint.MaxValue).Returns((uint) 1);
+                generator.Next(ulong.MinValue, ulong.MaxValue).Returns((ulong) 1);
+                generator.Next((float) 0, float.MaxValue).Returns(1);
+                generator.Next((double) 0, double.MaxValue).Returns(1);
+                generator.Next((decimal) 0, decimal.MaxValue).Returns(1);
+                generator.Next(byte.MinValue, byte.MaxValue).Returns((byte) 1);
+                generator.Next(char.MinValue, char.MaxValue).Returns('A');
+                generator.Next(DateTime.MinValue, DateTime.MaxValue).Returns(DateTime.Today.Date);
+                generator.Next().Returns(true);
+                generator.Guid().Returns(Guid.NewGuid());
             }
-
-            using (mocks.Playback())
-            {
-                new RandomValuePropertyNamer(generator, reflectionUtil, true,builderSetup).SetValuesOfAllIn(theList);
-            }
+            new RandomValuePropertyNamer(generator, reflectionUtil, true, builderSetup)
+                .SetValuesOfAllIn(theList)
+                ;
         }
     }
 }

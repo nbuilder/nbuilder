@@ -4,15 +4,14 @@ using System.Linq;
 using FizzWare.NBuilder.Implementation;
 using FizzWare.NBuilder.PropertyNaming;
 using FizzWare.NBuilder.Tests.TestClasses;
+using NSubstitute;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
     [TestFixture]
     public class RandomValuePropertyNamerTests_LoremIpsumStrings
     {
-        protected MockRepository mocks;
         protected IRandomGenerator generator;
         protected IList<MyClass> theList;
         protected const int listSize = 10;
@@ -21,12 +20,10 @@ namespace FizzWare.NBuilder.Tests.Unit
         [SetUp]
         public void SetUp()
         {
-            mocks = new MockRepository();
+            generator = Substitute.For<IRandomGenerator>();
+            reflectionUtil = Substitute.For<IReflectionUtil>();
 
-            generator = MockRepository.GenerateStub<IRandomGenerator>();
-            reflectionUtil = MockRepository.GenerateStub<IReflectionUtil>();
-
-            reflectionUtil.Stub(x => x.IsDefaultValue(null)).IgnoreArguments().Return(true).Repeat.Any();
+            reflectionUtil.IsDefaultValue(null).Returns(true);
 
             theList = new List<MyClass>();
 
@@ -34,7 +31,7 @@ namespace FizzWare.NBuilder.Tests.Unit
                 theList.Add(new MyClass());
 
             // The lorem ipsum string generator does this to get a random length of the string
-            generator.Expect(x => x.Next(1, 10)).Return(5).Repeat.Any();
+            generator.Next(1, 10).Returns(5);
 
             new RandomValuePropertyNamer(generator, reflectionUtil, false, DateTime.MinValue, DateTime.MaxValue, true,new BuilderSettings()).SetValuesOfAllIn(theList);
         }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using FizzWare.NBuilder.Implementation;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NUnit.Framework;
-using Rhino.Mocks;
+using NSubstitute;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
@@ -11,7 +11,6 @@ namespace FizzWare.NBuilder.Tests.Unit
     [TestFixture]
     public class PersistenceExtensionTests
     {
-        private MockRepository mocks;
         private IPersistenceService persistenceService;
         private IOperable<MyClass> operable;
         private IListBuilderImpl<MyClass> listBuilderImpl;
@@ -21,19 +20,12 @@ namespace FizzWare.NBuilder.Tests.Unit
         [SetUp]
         public void SetUp()
         {
-            mocks = new MockRepository();
-            persistenceService = mocks.DynamicMock<IPersistenceService>();
-            listBuilderImpl = mocks.DynamicMock<IListBuilderImpl<MyClass>>();
-            operable = mocks.DynamicMultiMock<IOperable<MyClass>>(typeof(IDeclaration<MyClass>));
-            singleObjectBuilder = mocks.DynamicMultiMock<ISingleObjectBuilder<MyClass>>();
+            persistenceService = Substitute.For<IPersistenceService>();
+            listBuilderImpl = Substitute.For<IListBuilderImpl<MyClass>>();
+            operable = Substitute.For<IOperable<MyClass>, IDeclaration<MyClass>>();
+            singleObjectBuilder = Substitute.For<ISingleObjectBuilder<MyClass>>();
 
             theList = new List<MyClass>();
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            mocks.VerifyAll();
         }
 
         [Test]
@@ -42,16 +34,13 @@ namespace FizzWare.NBuilder.Tests.Unit
             var builderSetup = new BuilderSettings();
             var obj = new MyClass();
 
-            using (mocks.Record())
             {
-                singleObjectBuilder.Stub(x => x.BuilderSettings).Return(builderSetup);
+                singleObjectBuilder.BuilderSettings.Returns(builderSetup);
 
-                singleObjectBuilder.Expect(x => x.Build()).Return(obj);
-                persistenceService.Expect(x => x.Create(obj));
+                singleObjectBuilder.Build().Returns(obj);
+                persistenceService.Create(obj);
             }
 
-           
-            using (mocks.Playback())
             {
                 builderSetup.SetPersistenceService(persistenceService);
 
@@ -63,15 +52,14 @@ namespace FizzWare.NBuilder.Tests.Unit
         public void ShouldBeAbleToPersistUsingListBuilder()
         {
             var builderSetup = new BuilderSettings();
-            using (mocks.Record())
             {
-                listBuilderImpl.Stub(x => x.BuilderSettings).Return(builderSetup);
+                listBuilderImpl.BuilderSettings.Returns(builderSetup);
 
-                listBuilderImpl.Expect(x => x.Build()).Return(theList);
-                persistenceService.Expect(x => x.Create(theList));
+                listBuilderImpl.Build().Returns(theList);
+                persistenceService.Create(theList);
             }
 
-            using (mocks.Playback())
+
             {
                 builderSetup.SetPersistenceService(persistenceService);
                 PersistenceExtensions.Persist(listBuilderImpl);
@@ -82,18 +70,15 @@ namespace FizzWare.NBuilder.Tests.Unit
         public void ShouldBeAbleToPersistFromADeclaration()
         {
             var builderSetup = new BuilderSettings();
-            using (mocks.Record())
             {
-                listBuilderImpl.Stub(x => x.BuilderSettings).Return(builderSetup);
-               
-                listBuilderImpl.Expect(x => x.Build()).Return(theList);
-                listBuilderImpl.Stub(x => x.BuilderSettings).Return(builderSetup);
-                persistenceService.Expect(x => x.Create(theList));
-                ((IDeclaration<MyClass>) operable).Expect(x => x.ListBuilderImpl).Return(listBuilderImpl);
+                listBuilderImpl.BuilderSettings.Returns(builderSetup);
+
+                listBuilderImpl.Build().Returns(theList);
+                listBuilderImpl.BuilderSettings.Returns(builderSetup);
+                persistenceService.Create(theList);
+                ((IDeclaration<MyClass>) operable).ListBuilderImpl.Returns(listBuilderImpl);
             }
 
-         
-            using (mocks.Playback())
             {
                 builderSetup.SetPersistenceService(persistenceService);
                 PersistenceExtensions.Persist(operable);
@@ -103,18 +88,10 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Test]
         public void Persist_TypeOfIOperableOnlyNotIDeclaration_ThrowsException()
         {
-            var builderSetup = new BuilderSettings();
-            var operableOnly = mocks.DynamicMock<IOperable<MyClass>>();
+            var operableOnly = Substitute.For<IOperable<MyClass>>();
 
-            using (mocks.Record())
-            {}
-
-            using (mocks.Playback())
             {
-                // TODO FIX
-                #if !SILVERLIGHT
                 Assert.Throws<ArgumentException>(() => PersistenceExtensions.Persist(operableOnly));
-                #endif
             }
         }
     }
