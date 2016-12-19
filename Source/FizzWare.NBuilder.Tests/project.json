@@ -1,0 +1,30 @@
+{
+    "version": "1.0.0-*",
+    "dependencies": {
+        "dotnet-test-nunit": "3.4.0-beta-3",
+        "FizzWare.NBuilder": "1.1.0-*",
+        "NSubstitute": "2.0.1-rc",
+        "NUnit": "3.5.0",
+        "Shouldly": "2.8.2",
+        "System.Threading.Thread": "4.3.0"
+    },
+    "testRunner": "nunit",
+
+    "frameworks": {
+        "netcoreapp1.1": {
+            "imports": [
+                "netcoreapp1.1",
+                "portable-net45+win8"
+            ],
+            "dependencies": {
+                "Microsoft.NETCore.App": {
+                    "version": "1.0.0-*",
+                    "type": "platform"
+                }
+            }
+        }
+    },
+    "buildOptions": {
+        "define": [ "DNCORE" ]
+    }
+}
