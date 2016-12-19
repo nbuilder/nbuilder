@@ -11,9 +11,9 @@
     "testRunner": "nunit",
 
     "frameworks": {
-        "netcoreapp1.1": {
+        "netcoreapp1.0": {
             "imports": [
-                "netcoreapp1.1",
+                "netcoreapp1.0",
                 "portable-net45+win8"
             ],
             "dependencies": {
