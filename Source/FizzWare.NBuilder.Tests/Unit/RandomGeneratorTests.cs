@@ -93,7 +93,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Test]
         public void ShouldBeAbleToGenerateDoubleUsingNext_InPoland()
         {
-            System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("pl-PL");
+            CultureInfo.CurrentCulture = new CultureInfo("pl-PL");
             try
             {
                 randomGenerator.Next(double.MinValue, double.MaxValue);
@@ -105,7 +105,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             }
             finally
             {
-                System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+                CultureInfo.CurrentCulture = new CultureInfo("en-US");
             }
         }
 
@@ -118,7 +118,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Test]
         public void ShouldBeAbleToGenerateDecimalUsingNext_InPoland()
         {
-            System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("pl-PL");
+            CultureInfo.CurrentCulture = new CultureInfo("pl-PL");
             try
             {
                 randomGenerator.Next(decimal.MinValue, decimal.MaxValue);
@@ -130,7 +130,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             }
             finally
             {
-                System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+                CultureInfo.CurrentCulture = new CultureInfo("en-US");
             }
         }
 

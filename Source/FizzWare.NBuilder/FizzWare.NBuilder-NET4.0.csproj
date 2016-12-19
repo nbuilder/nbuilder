@@ -151,6 +151,7 @@
     <Compile Include="Picking\UpToConstraint.cs" />
     <Compile Include="Picking\With.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
+    <Compile Include="ReflectionHelper.cs" />
     <Compile Include="SingleObjectBuilderExtensions.cs" />
     <Compile Include="TypeCreationException.cs" />
     <Compile Include="Implementation\RandomDeclaration.cs" />

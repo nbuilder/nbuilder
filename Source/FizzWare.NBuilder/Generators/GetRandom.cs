@@ -382,7 +382,7 @@ namespace FizzWare.NBuilder.Generators
 
         public static Enum Enumeration(Type type)
         {
-            if (!type.IsEnum)
+            if (!ReflectionHelper.GetTypeInfo(type).IsEnum)
             {
                 throw new ArgumentException(string.Format("{0} is not an enum type.", type.FullName), "type");
             }

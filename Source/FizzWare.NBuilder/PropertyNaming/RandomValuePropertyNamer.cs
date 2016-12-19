@@ -65,12 +65,12 @@ namespace FizzWare.NBuilder.PropertyNaming
 
             for (int i = 0; i < objects.Count; i++)
             {
-                foreach (var propertyInfo in type.GetProperties(FLAGS).Where(p => p.CanWrite))
+                foreach (var propertyInfo in ReflectionHelper.GetTypeInfo(type).GetProperties(FLAGS).Where(p => p.CanWrite))
                 {
                     SetMemberValue(propertyInfo, objects[i]);
                 }
 
-                foreach (var fieldInfo in type.GetFields().Where(f => !f.IsLiteral))
+                foreach (var fieldInfo in ReflectionHelper.GetTypeInfo(type).GetFields().Where(f => !f.IsLiteral))
                 {
                     SetMemberValue(fieldInfo, objects[i]);
                 }
