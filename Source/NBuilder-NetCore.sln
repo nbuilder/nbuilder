@@ -1,0 +1,45 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.4
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FizzWare.NBuilder.Tests", "FizzWare.NBuilder.Tests\FizzWare.NBuilder.Tests.csproj", "{19C2A470-C015-46B7-84A1-B8F6895795B1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FizzWare.NBuilder.FunctionalTests", "FizzWare.NBuilder.FunctionalTests\FizzWare.NBuilder.FunctionalTests.csproj", "{AE67FEEE-07B1-4B32-A11A-E696E6CCE877}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FizzWare.NBuilder.FunctionalTests.Model", "FizzWare.FunctionalTests.Model\FizzWare.NBuilder.FunctionalTests.Model.csproj", "{201FC511-5E98-4321-9595-E0653F9BB73B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FC94E63F-2ACD-4E49-97FB-4EE2A7535374}"
+	ProjectSection(SolutionItems) = preProject
+		..\README.md = ..\README.md
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FizzWare.NBuilder-NetCore", "FizzWare.NBuilder\FizzWare.NBuilder-NetCore.csproj", "{6E86BFAF-E73F-496C-8FC4-2806F3B7097D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{19C2A470-C015-46B7-84A1-B8F6895795B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19C2A470-C015-46B7-84A1-B8F6895795B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19C2A470-C015-46B7-84A1-B8F6895795B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19C2A470-C015-46B7-84A1-B8F6895795B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE67FEEE-07B1-4B32-A11A-E696E6CCE877}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE67FEEE-07B1-4B32-A11A-E696E6CCE877}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE67FEEE-07B1-4B32-A11A-E696E6CCE877}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE67FEEE-07B1-4B32-A11A-E696E6CCE877}.Release|Any CPU.Build.0 = Release|Any CPU
+		{201FC511-5E98-4321-9595-E0653F9BB73B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{201FC511-5E98-4321-9595-E0653F9BB73B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{201FC511-5E98-4321-9595-E0653F9BB73B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{201FC511-5E98-4321-9595-E0653F9BB73B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E86BFAF-E73F-496C-8FC4-2806F3B7097D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E86BFAF-E73F-496C-8FC4-2806F3B7097D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E86BFAF-E73F-496C-8FC4-2806F3B7097D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E86BFAF-E73F-496C-8FC4-2806F3B7097D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
