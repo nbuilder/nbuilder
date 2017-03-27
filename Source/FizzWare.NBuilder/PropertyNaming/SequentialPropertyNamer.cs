@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using FizzWare.NBuilder.Extensions;
 using FizzWare.NBuilder.Implementation;
 using System.Text;
 

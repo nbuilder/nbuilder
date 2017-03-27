@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
+using FizzWare.NBuilder.Extensions;
 using FizzWare.NBuilder.Implementation;
 using System.Linq;
+
 
 namespace FizzWare.NBuilder.PropertyNaming
 {
@@ -22,8 +24,7 @@ namespace FizzWare.NBuilder.PropertyNaming
 
         public virtual void SetValuesOf<T>(T obj)
         {
-            var type = typeof(T);
-
+            var type = typeof(T).GetInfo();
             foreach (var propertyInfo in type.GetProperties(FLAGS).Where(p => p.CanWrite))
                 SetMemberValue(propertyInfo, obj);
 
@@ -51,9 +52,9 @@ namespace FizzWare.NBuilder.PropertyNaming
                 }
                 catch (Exception)
                 {
-                    #if !SILVERLIGHT
+#if !SILVERLIGHT && !NETCORE
                     Trace.WriteLine(string.Format("NBuilder warning: {0} threw an exception when attempting to read its current value", memberInfo.Name));
-                    #endif
+#endif
                 }
             }
 
@@ -84,7 +85,7 @@ namespace FizzWare.NBuilder.PropertyNaming
 
         private static bool IsNullableType(Type type)
         {
-            return (type.IsGenericType && type.GetGenericTypeDefinition() == typeof (Nullable<>));
+            return (type.GetTypeInfo().IsGenericType && type.GetGenericTypeDefinition() == typeof (Nullable<>));
         }
 
         protected virtual void SetValue<T>(MemberInfo memberInfo, T obj, object value)
@@ -223,7 +224,7 @@ namespace FizzWare.NBuilder.PropertyNaming
                 value = GetBoolean(memberInfo);
             }
 
-            else if (type.BaseType == typeof(Enum))
+            else if (type.GetTypeInfo().BaseType == typeof(Enum))
             {
                 value = GetEnum(memberInfo);
             }

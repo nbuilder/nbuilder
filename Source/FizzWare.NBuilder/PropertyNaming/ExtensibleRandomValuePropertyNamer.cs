@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reflection;
 using FizzWare.NBuilder.Extensions;
 
@@ -97,7 +98,10 @@ namespace FizzWare.NBuilder.PropertyNaming
             {
                 return;
             }
-            var value = handler.Method.GetParameters().Length == 1 ? 
+            
+            var methodInfo = handler.GetInfo();
+            
+            var value = methodInfo.GetParameters().Length == 1 ? 
                 handler.DynamicInvoke(memberInfo) : 
                 handler.DynamicInvoke();
             memberInfo.SetFieldOrPropertyValue(instance, value);
@@ -110,10 +114,13 @@ namespace FizzWare.NBuilder.PropertyNaming
             {
                 return Handlers[type];
             }
+            
+            var isEnum = type.GetInfo().IsEnum;
+
             var typeWithoutNullability = type.GetTypeWithoutNullability();
             return Handlers.ContainsKey(typeWithoutNullability)
                 ? Handlers[typeWithoutNullability]
-                : type.IsEnum
+                : isEnum
                     ? GetDefaultEnumHandler(typeWithoutNullability)
                     : null;
         }
@@ -145,7 +152,7 @@ namespace FizzWare.NBuilder.PropertyNaming
 
         protected void NameWith(Delegate handler)
         {
-            var returnType = handler.Method.ReturnType;
+            var returnType = handler.GetMethodInfo().ReturnType;
             if (Handlers.ContainsKey(returnType))
             {
                 Handlers.Remove(returnType);

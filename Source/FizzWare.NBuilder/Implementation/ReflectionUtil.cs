@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+using FizzWare.NBuilder.Extensions;
 using FizzWare.NBuilder.Implementation;
 using System.Runtime.Serialization;
 
@@ -56,10 +57,10 @@ namespace FizzWare.NBuilder.Implementation
 
         public bool RequiresConstructorArgs(Type type)
         {
-            if (type.IsValueType)
+            if (type.GetInfo().IsValueType)
                 return false;
 
-            var constructors = type.GetConstructors(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            var constructors = type.GetInfo().GetConstructors(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
             foreach (var constructorInfo in constructors)
             {
