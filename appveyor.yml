@@ -1,7 +1,7 @@
 # feature branches
 
 -
-  version: '4.0.0.{build}'
+  version: '4.1.0.{build}'
   configuration: Release
 
   branches:
@@ -29,13 +29,14 @@
         Import-Module "$(pwd)\DeployNBuilder\DeployNBuilder.psd1"
         Invoke-DisplayBuildInfo
         
+        nuget restore Source\NBuilder-NET4.6.sln
         nuget restore Source\NBuilder-NET4.0.sln
         nuget restore Source\NBuilder-NET3.5.sln
 
   build_script:
     - ps: |
         Import-Module "$(pwd)\DeployNBuilder\DeployNBuilder.psd1"
-        "NET3.5", "NET4.0" | Invoke-Build -WorkingDirectory $(pwd)
+        "NET3.5", "NET4.0", "NET4.6" | Invoke-Build -WorkingDirectory $(pwd)
         Invoke-NuGetPack -Version  (Get-NuGetPackageVersion -Beta) -NuSpec "$(pwd)\nuget\NBuilder.nuspec" -Destination "$(pwd)"
     
   before_test:
@@ -44,9 +45,11 @@
     assemblies:
       - 'nuget\net35\FizzWare.NBuilder.Tests.dll'
       - 'nuget\net40\FizzWare.NBuilder.Tests.dll'
+      - 'nuget\net46\FizzWare.NBuilder.Tests.dll'
 
       - 'nuget\net35\FizzWare.NBuilder.FunctionalTests*.dll'
       - 'nuget\net40\FizzWare.NBuilder.FunctionalTests*.dll'
+      - 'nuget\net46\FizzWare.NBuilder.FunctionalTests*.dll'
 
   artifacts:
   - path: NBuilder*.nupkg

@@ -6,7 +6,7 @@ using System.Text;
 using FizzWare.NBuilder.Implementation;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NUnit.Framework;
-using Rhino.Mocks;
+using NSubstitute;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
@@ -15,7 +15,6 @@ namespace FizzWare.NBuilder.Tests.Unit
     public class SingleObjectBuilderExtensionsTests
     {
         private ISingleObjectBuilder<MyClass> objectBuilder;
-        private MockRepository mocks;
         private Func<MyClass, string> func;
         private Expression<Func<MyClass, int>> propertyExpression;
         private Action<MyClass> action;
@@ -25,23 +24,20 @@ namespace FizzWare.NBuilder.Tests.Unit
         [SetUp]
         public void SetUp()
         {
-            mocks = new MockRepository();
-            objectBuilder = mocks.DynamicMock<IObjectBuilder<MyClass>>();
+            objectBuilder = Substitute.For<IObjectBuilder<MyClass>>();
             func = x => x.StringOne = "test";
             propertyExpression = x => x.IntGetterOnly;
             action = x => x.DoSomething();
-            actionForAll = (x,y) => x.Add(y);
+            actionForAll = (x, y) => x.Add(y);
             actionList = new List<SimpleClass>();
         }
 
         [Test]
         public void ShouldBeAbleToUseWith()
         {
-            using (mocks.Record())
-                objectBuilder.Expect(x => x.With(func)).Return(objectBuilder);
+            objectBuilder.With(func).Returns(objectBuilder);
 
-            using (mocks.Playback())
-                SingleObjectBuilderExtensions.With(objectBuilder, func);
+            SingleObjectBuilderExtensions.With(objectBuilder, func);
         }
 
         [Test]
@@ -49,51 +45,41 @@ namespace FizzWare.NBuilder.Tests.Unit
         {
             Expression<Func<MyClass>> constructor = () => new MyClass();
 
-            using (mocks.Record())
-                objectBuilder.Expect(x => x.WithConstructor(constructor)).Return(objectBuilder);
+            objectBuilder.WithConstructor(constructor).Returns(objectBuilder);
 
-            using (mocks.Playback())
-                SingleObjectBuilderExtensions.WithConstructor(objectBuilder, constructor);
+            SingleObjectBuilderExtensions.WithConstructor(objectBuilder, constructor);
         }
 
         [Test]
         public void ShouldBeAbleToUseAnd()
         {
-            using (mocks.Record())
-                objectBuilder.Expect(x => x.With(func)).Return(objectBuilder);
+            objectBuilder.With(func).Returns(objectBuilder);
 
-            using (mocks.Playback())
-                SingleObjectBuilderExtensions.And(objectBuilder, func);
+            SingleObjectBuilderExtensions.And(objectBuilder, func);
         }
 
         [Test]
         public void ShouldBeAbleToUseAndToCallFunction()
         {
-            using (mocks.Record())
-                objectBuilder.Expect(x => x.Do(action)).Return(objectBuilder);
+            objectBuilder.Do(action).Returns(objectBuilder);
 
-            using (mocks.Playback())
-                SingleObjectBuilderExtensions.And(objectBuilder, action);
+            SingleObjectBuilderExtensions.And(objectBuilder, action);
         }
 
         [Test]
         public void ShouldBeAbleToAddMultiFunction()
         {
-            using (mocks.Record())
-                objectBuilder.Expect(x => x.DoForAll(actionForAll, actionList)).Return(objectBuilder);
+            objectBuilder.DoForAll(actionForAll, actionList).Returns(objectBuilder);
 
-            using (mocks.Playback())
-                SingleObjectBuilderExtensions.DoForAll(objectBuilder, actionForAll, actionList);
+            SingleObjectBuilderExtensions.DoForAll(objectBuilder, actionForAll, actionList);
         }
 
         [Test]
         public void ShouldBeAbleToUseWithToSetPrivateProperties()
         {
-            using (mocks.Record())
-                objectBuilder.Expect(x => x.Do(new Action<MyClass>(a => a.StringOne = ""))).IgnoreArguments().Return(objectBuilder);
+            objectBuilder.Do(new Action<MyClass>(a => a.StringOne = "")).Returns(objectBuilder);
 
-            using (mocks.Playback())
-                SingleObjectBuilderExtensions.With(objectBuilder, propertyExpression, 100);
+            SingleObjectBuilderExtensions.With(objectBuilder, propertyExpression, 100);
         }
     }
     // ReSharper restore InvokeAsExtensionMethod

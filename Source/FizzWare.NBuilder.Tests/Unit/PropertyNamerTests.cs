@@ -4,7 +4,7 @@ using FizzWare.NBuilder.Implementation;
 using FizzWare.NBuilder.PropertyNaming;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NUnit.Framework;
-using Rhino.Mocks;
+using NSubstitute;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
@@ -17,8 +17,8 @@ namespace FizzWare.NBuilder.Tests.Unit
         public void SetUp()
         {
             BuilderSettings builderSettings = new BuilderSettings();
-            IReflectionUtil reflectionUtil = MockRepository.GenerateStub<IReflectionUtil>();
-            reflectionUtil.Stub(p => p.IsDefaultValue(Arg<int>.Is.Anything)).Return(true);
+            IReflectionUtil reflectionUtil = Substitute.For<IReflectionUtil>();
+            reflectionUtil.IsDefaultValue(Arg.Any<int?>()).Returns(true);
 
             propertyNamer = new PropertyNamerStub(reflectionUtil, builderSettings);
         }
@@ -33,8 +33,6 @@ namespace FizzWare.NBuilder.Tests.Unit
             Assert.That(mc.NullableInt.HasValue, Is.True);
         }
 
-        // TODO FIX
-        #if !SILVERLIGHT
         [Test]
         public void SetValuesOf_ClassWithNullCharConst_CharConstantIsNotSetByNamer()
         {
@@ -47,7 +45,6 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             Assert.Pass("A System.FieldAccessException was not thrown because NBuilder didn't try to set the value of the constant");
         }
-        #endif
 
         [Test]
         public void SetValuesOf_GetOnlyProperty_PropertyIsNotSet()

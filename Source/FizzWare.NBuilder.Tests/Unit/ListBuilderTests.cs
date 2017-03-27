@@ -3,7 +3,7 @@ using FizzWare.NBuilder.Implementation;
 using FizzWare.NBuilder.PropertyNaming;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NUnit.Framework;
-using Rhino.Mocks;
+using NSubstitute;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
@@ -15,96 +15,68 @@ namespace FizzWare.NBuilder.Tests.Unit
         private readonly MyClass myClass = new MyClass();
         private const int listSize = 10;
 
-        private MockRepository mocks;
-
         [SetUp]
         public void SetUp()
         {
-            mocks = new MockRepository();
-
-            reflectionUtil = mocks.StrictMock<IReflectionUtil>();
-            propertyNamer = mocks.StrictMock<IPropertyNamer>();
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            mocks.VerifyAll();
+            reflectionUtil = Substitute.For<IReflectionUtil>();
+            propertyNamer = Substitute.For<IPropertyNamer>();
         }
 
         [Test]
         public void ShouldConstructDeclarations()
         {
-            IGlobalDeclaration<MyClass> declaration = MockRepository.GenerateMock<IGlobalDeclaration<MyClass>>();
+            IGlobalDeclaration<MyClass> declaration = Substitute.For<IGlobalDeclaration<MyClass>>();
 
             var builder = new ListBuilder<MyClass>(listSize, propertyNamer, reflectionUtil, new BuilderSettings());
 
             builder.AddDeclaration(declaration);
 
-            using (mocks.Record())
-                declaration.Expect(x => x.Construct());
+            declaration.Construct();
 
-            using (mocks.Playback())
-                builder.Construct();
+            builder.Construct();
         }
 
         [Test]
         public void ConstructShouldComplainIfTypeNotParameterlessNoAllAndSumOfItemsInDeclarationsDoNotEqualCapacity()
         {
-            IDeclaration<MyClassWithConstructor> declaration1 = MockRepository.GenerateMock<IDeclaration<MyClassWithConstructor>>();
-            IDeclaration<MyClassWithConstructor> declaration2 = MockRepository.GenerateMock<IDeclaration<MyClassWithConstructor>>();
+            IDeclaration<MyClassWithConstructor> declaration1 = Substitute.For<IDeclaration<MyClassWithConstructor>>();
+            IDeclaration<MyClassWithConstructor> declaration2 = Substitute.For<IDeclaration<MyClassWithConstructor>>();
 
-            using (mocks.Record())
-            {
-                declaration1.Expect(x => x.NumberOfAffectedItems).Return(2);
-                declaration2.Expect(x => x.NumberOfAffectedItems).Return(2);
-                reflectionUtil.Expect(x => x.RequiresConstructorArgs(typeof (MyClass))).Return(true);
-            }
+            declaration1.NumberOfAffectedItems.Returns(2);
+            declaration2.NumberOfAffectedItems.Returns(2);
+            reflectionUtil.RequiresConstructorArgs(typeof(MyClass)).Returns(true);
+            var builder = new ListBuilder<MyClass>(10, propertyNamer, reflectionUtil, new BuilderSettings());
 
-            var builder = new ListBuilder<MyClass>(10, propertyNamer, reflectionUtil,new BuilderSettings());
-
-            using (mocks.Playback())
-            {
-                // TODO FIX
-                #if !SILVERLIGHT
-                Assert.Throws<BuilderException>(() => builder.Construct());
-                #endif
-            }
+            Assert.Throws<BuilderException>(() => builder.Construct());
         }
 
         [Test]
         public void Constructing_AssignsValuesToProperties()
         {
-            using (mocks.Record())
-                propertyNamer.Expect(x => x.SetValuesOfAllIn(Arg<IList<MyClass>>.Is.TypeOf));
+            propertyNamer.SetValuesOfAllIn(Arg.Any<IList<MyClass>>());
 
             var list = new List<MyClass>();
-            
+
             var builder = new ListBuilder<MyClass>(listSize, propertyNamer, reflectionUtil, new BuilderSettings());
 
-            using (mocks.Playback())
-                builder.Name(list);
+            builder.Name(list);
         }
 
         [Test]
         public void ShouldBeAbleToBuildAList()
         {
-            IDeclaration<MyClass> declaration = MockRepository.GenerateMock<IDeclaration<MyClass>>();
-           
+            IDeclaration<MyClass> declaration = Substitute.For<IDeclaration<MyClass>>();
+
             var builder = new ListBuilder<MyClass>(listSize, propertyNamer, reflectionUtil, new BuilderSettings());
 
-            using (mocks.Record())
-            {
-                reflectionUtil.Stub(x => x.RequiresConstructorArgs(typeof (MyClass))).Return(false).Repeat.Any();
-                reflectionUtil.Expect(x => x.CreateInstanceOf<MyClass>()).Return(myClass).Repeat.Any();
-                declaration.Expect(x => x.Construct());
-                declaration.Expect(x => x.AddToMaster(Arg<MyClass[]>.Is.TypeOf));
-                propertyNamer.Expect(x => x.SetValuesOfAllIn(Arg<IList<MyClass>>.Is.TypeOf));
-                declaration.Expect(x => x.CallFunctions(Arg<IList<MyClass>>.Is.TypeOf)).IgnoreArguments();
-            }
+            reflectionUtil.RequiresConstructorArgs(typeof(MyClass)).Returns(false);
+            reflectionUtil.CreateInstanceOf<MyClass>().Returns(myClass);
+            declaration.Construct();
+            declaration.AddToMaster(Arg.Any<MyClass[]>());
+            propertyNamer.SetValuesOfAllIn(Arg.Any<IList<MyClass>>());
+            declaration.CallFunctions(Arg.Any<IList<MyClass>>());
 
-            using (mocks.Playback())
-                builder.Build();
+            builder.Build();
         }
 
         [Test]
@@ -113,17 +85,12 @@ namespace FizzWare.NBuilder.Tests.Unit
             var builder = new ListBuilder<MyClass>(30, propertyNamer, reflectionUtil, new BuilderSettings());
             builder.TheFirst(10);
 
-            using (mocks.Record())
-            {
-                reflectionUtil.Expect(x => x.RequiresConstructorArgs(typeof (MyClass))).Return(false).Repeat.Any();
+            reflectionUtil.RequiresConstructorArgs(typeof(MyClass)).Returns(false);
 
-                // Even though a declaration of 10 has been added, we expect the list builder to add
-                // a default GlobalDeclaration (All). Therefore we expect CreateInstanceOf to be called 40 times
-                reflectionUtil.Expect(x => x.CreateInstanceOf<MyClass>()).Return(myClass).Repeat.Times(40);
-            }
-
-            using (mocks.Playback())
-                builder.Construct();
+            // Even though a declaration of 10 has been added, we expect the list builder to add
+            // a default GlobalDeclaration (All). Therefore we expect CreateInstanceOf to be called 40 times
+            reflectionUtil.CreateInstanceOf<MyClass>().Returns(myClass);
+            builder.Construct();
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Text;
 using NUnit.Framework;
 using FizzWare.NBuilder.Tests.TestClasses;
 using FizzWare.NBuilder.Implementation;
-using Rhino.Mocks;
+using NSubstitute;
 using FizzWare.NBuilder.PropertyNaming;
 using System.Reflection;
 
@@ -21,15 +21,15 @@ namespace FizzWare.NBuilder.Tests.Unit
         [SetUp]
         public void SetUp()
         {
-            reflectionUtil = MockRepository.GenerateStub<IReflectionUtil>();
-            reflectionUtil.Stub(x => x.IsDefaultValue(null)).IgnoreArguments().Return(true).Repeat.Any();
+            reflectionUtil = new ReflectionUtil();
 
             theList = new List<MyClass>();
 
             for (int i = 0; i < listSize; i++)
                 theList.Add(new MyClass());
 
-            new SequentialPropertyNamer(reflectionUtil,new BuilderSettings()).SetValuesOfAllIn(theList);
+            new SequentialPropertyNamer(reflectionUtil,new BuilderSettings())
+                .SetValuesOfAllIn(theList);
         }
 
         [Test]
@@ -180,12 +180,11 @@ namespace FizzWare.NBuilder.Tests.Unit
         public void ShouldOnlyNamePropertiesThatAreNullOrDefault()
         {
             var myClass = new MyClass();
-            var reflectionUtil = MockRepository.GenerateMock<IReflectionUtil>();
+            var reflectionUtil = Substitute.For<IReflectionUtil>();
 
-            reflectionUtil.Expect(x => x.IsDefaultValue(myClass.HasADefaultValue)).Return(false).Repeat.Times(listSize);
+            reflectionUtil.IsDefaultValue(myClass.HasADefaultValue).Returns(false);
 
-            reflectionUtil.Expect(x => x.IsDefaultValue(Arg<object>.Is.NotEqual(myClass.HasADefaultValue))).
-                IgnoreArguments().Return(true).Repeat.AtLeastOnce();
+            reflectionUtil.IsDefaultValue(Arg.Is<object>(o => o != myClass.HasADefaultValue)).Returns(true);
 
             theList = new List<MyClass>();
 
@@ -197,7 +196,6 @@ namespace FizzWare.NBuilder.Tests.Unit
             Assert.That(theList[0].HasADefaultValue, Is.EqualTo(myClass.HasADefaultValue));
             Assert.That(theList[9].HasADefaultValue, Is.EqualTo(myClass.HasADefaultValue));
 
-            reflectionUtil.VerifyAllExpectations();
         }
 
         [Test]

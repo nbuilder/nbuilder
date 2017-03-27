@@ -1,12 +1,11 @@
-﻿using NUnit.Framework;
-using Rhino.Mocks;
+﻿using NSubstitute;
+using NUnit.Framework;
 
 namespace FizzWare.NBuilder.Tests.Unit.Picking
 {
     [TestFixture]
     public class BetweenConstraintTests
     {
-        private MockRepository mocks;
         private IUniqueRandomGenerator uniqueRandomGenerator;
         private int lower;
         private int upper;
@@ -14,8 +13,7 @@ namespace FizzWare.NBuilder.Tests.Unit.Picking
         [SetUp]
         public void SetUp()
         {
-            mocks = new MockRepository();
-            uniqueRandomGenerator = mocks.StrictMock<IUniqueRandomGenerator>();
+            uniqueRandomGenerator = Substitute.For<IUniqueRandomGenerator>();
         }
 
         [Test]
@@ -23,36 +21,23 @@ namespace FizzWare.NBuilder.Tests.Unit.Picking
         {
             lower = 1;
             upper = 5;
+            uniqueRandomGenerator.Next(lower, upper).Returns(2);
             var constraint = new BetweenConstraint(uniqueRandomGenerator, lower, upper);
 
-            using (mocks.Record())
-            {
-                uniqueRandomGenerator.Expect(x => x.Next(lower, upper)).Return(2);
-            }
+            int end = constraint.GetEnd();
 
-            using (mocks.Ordered())
-            {
-                int end = constraint.GetEnd();
-
-                Assert.That(end, Is.EqualTo(2));
-            }
+            Assert.That(end, Is.EqualTo(2));
         }
 
         [Test]
         public void ShouldBeAbleToAddUpperUsingAnd()
         {
-            using (mocks.Record())
-            {
-                uniqueRandomGenerator.Expect(x => x.Next(lower, upper)).Return(2);
-            }
+            uniqueRandomGenerator.Next(lower, upper).Returns(2);
 
             var constraint = new BetweenConstraint(uniqueRandomGenerator, lower);
             constraint.And(upper);
 
-            using (mocks.Playback())
-            {
-                constraint.GetEnd();
-            }
+            constraint.GetEnd();
         }
     }
 }

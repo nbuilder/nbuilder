@@ -10,7 +10,7 @@ namespace FizzWare.NBuilder.FunctionalTests
     [TestFixture]
     public class HierarchyBuilderTests
     {
-       
+
 
         [Test]
         public void CreatingAHierarchyOfCategoriesUsingRepositories()

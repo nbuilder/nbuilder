@@ -161,9 +161,7 @@ namespace FizzWare.NBuilder.Tests.Unit.Dates
         [Test]
         public void Can_use_The_x_properties_with_static_months()
         {
-            DateTime date;
-
-            date = January.The1st;
+            var date = January.The1st;
             Assert.That(date.Day, Is.EqualTo(1));
             date = January.The2nd;
             Assert.That(date.Day, Is.EqualTo(2));
@@ -259,9 +257,7 @@ namespace FizzWare.NBuilder.Tests.Unit.Dates
         [Test]
         public void Can_use_all_the_months()
         {
-            DateTime date;
-
-            date = new Month(1).The(1);
+            var date = new Month(1).The(1);
             Assert.That(date.Month, Is.EqualTo(1));
             date = new Month(2).The(1);
             Assert.That(date.Month, Is.EqualTo(2));
@@ -290,9 +286,7 @@ namespace FizzWare.NBuilder.Tests.Unit.Dates
         [Test]
         public void Can_use_months_class()
         {
-            DateTime date;
-
-            date = new Months(2009).January.The(1);
+            var date = new Months(2009).January.The(1);
             Assert.That(date.Month, Is.EqualTo(1));
 
             date = new Months(2009).February.The(1);
@@ -332,9 +326,7 @@ namespace FizzWare.NBuilder.Tests.Unit.Dates
         [Test]
         public void Can_use_On_class()
         {
-            DateTime date;
-
-            date = On.January.The(1);
+            var date = On.January.The(1);
             Assert.That(date.Month, Is.EqualTo(1));
 
             date = On.February.The(1);

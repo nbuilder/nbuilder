@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using FizzWare.NBuilder;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NUnit.Framework;
 
 namespace FizzWare.NBuilder.Tests.Integration
 {
-    // TODO: Finish
+    // //TODO: Finish
 
     //[TestFixture]
     //public class UsingHierarchyGenerator
@@ -23,7 +24,9 @@ namespace FizzWare.NBuilder.Tests.Integration
     //            .With(x => x.NumberOfRoots = 10)
     //            .Build();
 
-    //        var list = Builder<MyHierarchicalClass>.CreateListOfSize(1000).BuildHierarchy(hierarchySpec);
+    //        var list = Builder<MyHierarchicalClass>
+    //            .CreateListOfSize(1000)
+    //            .BuildHierarchy(hierarchySpec);
 
     //        Assert.That(list.Count, Is.EqualTo(10));
     //    }

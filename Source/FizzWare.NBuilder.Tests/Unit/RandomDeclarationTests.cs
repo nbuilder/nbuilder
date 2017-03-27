@@ -1,7 +1,7 @@
 using FizzWare.NBuilder.Implementation;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NUnit.Framework;
-using Rhino.Mocks;
+using NSubstitute;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
@@ -20,9 +20,9 @@ namespace FizzWare.NBuilder.Tests.Unit
         [SetUp]
         public void SetUp()
         {
-            listBuilderImpl = MockRepository.GenerateStub<IListBuilderImpl<MyClass>>();
-            objectBuilder = MockRepository.GenerateStub<IObjectBuilder<MyClass>>();
-            uniqueRandomGenerator = MockRepository.GenerateMock<IUniqueRandomGenerator>();
+            listBuilderImpl = Substitute.For<IListBuilderImpl<MyClass>>();
+            objectBuilder = Substitute.For<IObjectBuilder<MyClass>>();
+            uniqueRandomGenerator = Substitute.For<IUniqueRandomGenerator>();
 
             declaration = new RandomDeclaration<MyClass>(listBuilderImpl, objectBuilder, uniqueRandomGenerator, amount, start, end);
         }
@@ -34,7 +34,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             declaration.Construct();
 
             // Assert
-            objectBuilder.AssertWasCalled(x => x.Construct(Arg<int>.Is.Anything), opt => opt.Repeat.Times(amount));
+            objectBuilder.Received().Construct(Arg.Any<int>());
         }
 
         [Test]
@@ -42,12 +42,10 @@ namespace FizzWare.NBuilder.Tests.Unit
         {
             var masterList = new MyClass[listSize];
 
-            objectBuilder.Stub(x => x.Construct(Arg<int>.Is.Anything)).Return(new MyClass()).Repeat.Times(amount);
+            objectBuilder.Construct(Arg.Any<int>()).Returns(new MyClass());
 
-            uniqueRandomGenerator.Stub(x => x.Next(start, end)).Return(0).Repeat.Once();
-            uniqueRandomGenerator.Stub(x => x.Next(start, end)).Return(2).Repeat.Once();
-            uniqueRandomGenerator.Stub(x => x.Next(start, end)).Return(4).Repeat.Once();
-            
+            uniqueRandomGenerator.Next(start, end).Returns(0, 2, 4);
+
             declaration.Construct();
 
             // Act

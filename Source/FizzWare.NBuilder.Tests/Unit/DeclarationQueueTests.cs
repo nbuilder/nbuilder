@@ -2,7 +2,7 @@ using System;
 using FizzWare.NBuilder.Implementation;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NUnit.Framework;
-using Rhino.Mocks;
+using NSubstitute;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
@@ -10,7 +10,6 @@ namespace FizzWare.NBuilder.Tests.Unit
     public class DeclarationQueueTests
     {
         private DeclarationQueue<MyClass> declarations;
-        private MockRepository mocks;
         private IDeclaration<MyClass> declaration1;
         private IDeclaration<MyClass> declaration2;
         private IGlobalDeclaration<MyClass> globalDeclaration;
@@ -20,18 +19,14 @@ namespace FizzWare.NBuilder.Tests.Unit
         [SetUp]
         public void SetUp()
         {
-            mocks = new MockRepository();
             declarations = new DeclarationQueue<MyClass>(listSize);
 
-            declaration1 = mocks.DynamicMock<IDeclaration<MyClass>>();
-            declaration2 = mocks.DynamicMock<IDeclaration<MyClass>>();
-            globalDeclaration = mocks.DynamicMock<IGlobalDeclaration<MyClass>>();
+            declaration1 = Substitute.For<IDeclaration<MyClass>>();
+            declaration2 = Substitute.For<IDeclaration<MyClass>>();
+            globalDeclaration = Substitute.For<IGlobalDeclaration<MyClass>>();
 
-            using (mocks.Record())
-            {
-                declaration1.Stub(x => x.Start).Return(0).Repeat.Any();
-                declaration1.Stub(x => x.End).Return(10).Repeat.Any();
-            }
+            declaration1.Start.Returns(0);
+            declaration1.End.Returns(10);
         }
 
         [Test]
@@ -113,44 +108,34 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Test]
         public void ShouldComplainIfEndIsGreaterThanCapacity()
         {
-            using (mocks.Record())
+            declaration1.Start.Returns(0);
+            declaration1.End.Returns(9);
+
+            declaration2.Start.Returns(10);
+            declaration2.End.Returns(40);
+
+            declarations.Enqueue(declaration1);
+
+            Assert.Throws<BuilderException>(() =>
             {
-                declaration1.Expect(x => x.Start).Return(0);
-                declaration1.Expect(x => x.End).Return(9);
+                declarations.Enqueue(declaration2);
+            });
 
-                declaration2.Expect(x => x.Start).Return(10);
-                declaration2.Expect(x => x.End).Return(40);
-            }
-
-            using (mocks.Record())
-            {
-                declarations.Enqueue(declaration1);
-
-                Assert.Throws<BuilderException>(() =>
-                {
-                    declarations.Enqueue(declaration2);
-                });
-            }
         }
 
         [Test]
         public void ShouldComplainIfStartIsLessThanZero()
         {
-            using (mocks.Record())
-            {
-                declaration1.BackToRecord(BackToRecordOptions.Expectations);
+            //declaration1.BackToRecord(BackToRecordOptions.Expectations);
 
-                declaration1.Expect(x => x.Start).Return(-2);
-                declaration1.Expect(x => x.End).Return(9);
-            }
+            declaration1.Start.Returns(-2);
+            declaration1.End.Returns(9);
 
-            using (mocks.Record())
-            {
-                Assert.Throws<BuilderException>(() =>
+            Assert.Throws<BuilderException>(() =>
                 {
                     declarations.Enqueue(declaration1);
                 });
-            }
+
         }
     }
 }

@@ -4,7 +4,7 @@ using FizzWare.NBuilder.Implementation;
 using FizzWare.NBuilder.PropertyNaming;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NUnit.Framework;
-using Rhino.Mocks;
+using NSubstitute;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
@@ -15,38 +15,27 @@ namespace FizzWare.NBuilder.Tests.Unit
         private ObjectBuilder<MyClass> builder;
         private ObjectBuilder<MyClassWithConstructor> myClassWithConstructorBuilder;
         private ObjectBuilder<MyClassWithOptionalConstructor> myClassWithOptionalConstructorBuilder;
-        private MockRepository mocks;
 
         [SetUp]
         public void SetUp()
         {
             var builderSetup = new BuilderSettings();
-            mocks = new MockRepository();
 
-            reflectionUtil = mocks.DynamicMock<IReflectionUtil>();
+            reflectionUtil = Substitute.For<IReflectionUtil>();
 
             builder = new ObjectBuilder<MyClass>(reflectionUtil, builderSetup);
             myClassWithConstructorBuilder = new ObjectBuilder<MyClassWithConstructor>(reflectionUtil, builderSetup);
             myClassWithOptionalConstructorBuilder = new ObjectBuilder<MyClassWithOptionalConstructor>(reflectionUtil, builderSetup);
         }
 
-        [TearDown]
-        public void TearDown()
-        {
-            mocks.VerifyAll();
-        }
-
         [Test]
         public void ShouldBeAbleToConstructAnObjectWithNoConstructorArgs()
         {
-            using (mocks.Record())
-            {
-                reflectionUtil.Expect(x => x.RequiresConstructorArgs(typeof(MyClass))).Return(false);
-                reflectionUtil.Expect(x => x.CreateInstanceOf<MyClass>()).Return(new MyClass());
-            }
 
-            using (mocks.Playback())
-                builder.Construct(index:1);
+            reflectionUtil.RequiresConstructorArgs(typeof(MyClass)).Returns(false);
+            reflectionUtil.CreateInstanceOf<MyClass>().Returns(new MyClass());
+
+            builder.Construct(index: 1);
         }
 
         [Test]
@@ -55,19 +44,19 @@ namespace FizzWare.NBuilder.Tests.Unit
             const int arg1 = 1;
             const float arg2 = 2f;
 
-            using (mocks.Record())
+
             {
-                reflectionUtil.Expect(x => x.RequiresConstructorArgs(typeof(MyClassWithConstructor))).Return(true);
-                reflectionUtil.Expect(x => x.CreateInstanceOf<MyClassWithConstructor>(arg1, arg2)).Return(new MyClassWithConstructor(arg1, arg2));
+                reflectionUtil.RequiresConstructorArgs(typeof(MyClassWithConstructor)).Returns(true);
+                reflectionUtil.CreateInstanceOf<MyClassWithConstructor>(arg1, arg2).Returns(new MyClassWithConstructor(arg1, arg2));
             }
 
-            using (mocks.Playback())
+
             {
-                #pragma warning disable 0618
+#pragma warning disable 0618
                 myClassWithConstructorBuilder
                         .WithConstructor(() => new MyClassWithConstructor(arg1, arg2))
                         .Construct(1);
-                #pragma warning restore 0618
+#pragma warning restore 0618
             }
         }
 
@@ -76,17 +65,17 @@ namespace FizzWare.NBuilder.Tests.Unit
         {
             const string arg1 = null;
 
-            using (mocks.Record())
+
             {
-                reflectionUtil.Expect(x => x.RequiresConstructorArgs(typeof(MyClassWithConstructor))).Return(true);
-                reflectionUtil.Expect(x => x.CreateInstanceOf<MyClassWithConstructor>(arg1)).Return(new MyClassWithConstructor(arg1));
+                reflectionUtil.RequiresConstructorArgs(typeof(MyClassWithConstructor)).Returns(true);
+                reflectionUtil.CreateInstanceOf<MyClassWithConstructor>(arg1).Returns(new MyClassWithConstructor(arg1));
             }
 
-            using (mocks.Playback())
+
             {
                 myClassWithConstructorBuilder
-                        .WithConstructor( () => new MyClassWithConstructor(arg1) )
-                        .Construct(Arg<int>.Is.Anything);
+                        .WithConstructor(() => new MyClassWithConstructor(arg1))
+                        .Construct(Arg.Any<int>());
             }
         }
 
@@ -96,13 +85,13 @@ namespace FizzWare.NBuilder.Tests.Unit
             const int arg1 = 1;
             const float arg2 = 2f;
 
-            using (mocks.Record())
+
             {
-                reflectionUtil.Expect(x => x.RequiresConstructorArgs(typeof(MyClassWithConstructor))).Return(true);
-                reflectionUtil.Expect(x => x.CreateInstanceOf<MyClassWithConstructor>(arg1, arg2)).Return(new MyClassWithConstructor(arg1, arg2));
+                reflectionUtil.RequiresConstructorArgs(typeof(MyClassWithConstructor)).Returns(true);
+                reflectionUtil.CreateInstanceOf<MyClassWithConstructor>(arg1, arg2).Returns(new MyClassWithConstructor(arg1, arg2));
             }
 
-            using (mocks.Playback())
+
             {
                 myClassWithConstructorBuilder
                         .WithConstructor(() => new MyClassWithConstructor(arg1, arg2))
@@ -113,19 +102,15 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Test]
         public void WithConstructor_NotANewExpressionSupplied_Throws()
         {
-            using (mocks.Record())
-            {}
 
-            using (mocks.Playback())
+
+
             {
-                // TODO FIX
-                #if !SILVERLIGHT
                 var myClass = new MyClassWithConstructor(1, 2);
                 Assert.Throws<ArgumentException>(() => myClassWithConstructorBuilder.WithConstructor(() => myClass));
-                #endif
             }
         }
-        
+
         [Test]
         public void ShouldBeAbleToConstructAnObjectWithOptionalConstructorArgs()
         {
@@ -134,30 +119,26 @@ namespace FizzWare.NBuilder.Tests.Unit
             const string arg1 = "test";
             const int arg2 = 2;
 
-            using (mocks.Record())
+
             {
-                reflectionUtil.Expect(x => x.CreateInstanceOf<MyClassWithOptionalConstructor>(arg1, arg2)).Return(new MyClassWithOptionalConstructor(arg1, arg2));
+                reflectionUtil.CreateInstanceOf<MyClassWithOptionalConstructor>(arg1, arg2).Returns(new MyClassWithOptionalConstructor(arg1, arg2));
             }
 
-            using (mocks.Playback())
+
             {
-                #pragma warning disable 0618 // (prevent warning for using obsolete method)
+#pragma warning disable 0618 // (prevent warning for using obsolete method)
                 myClassWithOptionalConstructorBuilder
                         .WithConstructor(() => new MyClassWithOptionalConstructor(arg1, arg2))
                         .Construct(1);
-                #pragma warning restore 0618
+#pragma warning restore 0618
             }
         }
 
         [Test]
         public void ShouldBeAbleToUseWith()
         {
-            using (mocks.Record())
-            {
-                
-            }
 
-            using (mocks.Playback())
+
             {
                 var myClass = new MyClass();
 
@@ -171,12 +152,8 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Test]
         public void ShouldBeAbleToUseWith_WithAnIndex()
         {
-            using (mocks.Record())
-            {
 
-            }
 
-            using (mocks.Playback())
             {
                 var myClass = new MyClass();
 
@@ -190,14 +167,14 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Test]
         public void ShouldBeAbleToUseDo()
         {
-            var myClass = MockRepository.GenerateMock<MyClass>();
+            var myClass = Substitute.For<MyClass>();
 
-            using (mocks.Record())
+
             {
-                myClass.Expect(x => x.DoSomething());
+                myClass.DoSomething();
             }
 
-            using (mocks.Playback())
+
             {
                 builder.Do(x => x.DoSomething());
                 builder.CallFunctions(myClass);
@@ -207,14 +184,14 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Test]
         public void ShouldBeAbleToUseANamingStrategy()
         {
-            IPropertyNamer propertyNamer = MockRepository.GenerateMock<IPropertyNamer>();
+            IPropertyNamer propertyNamer = Substitute.For<IPropertyNamer>();
 
-            using (mocks.Record())
+
             {
-                propertyNamer.Expect(x => x.SetValuesOf(Arg<MyClass>.Is.TypeOf));    
+                propertyNamer.SetValuesOf(Arg.Any<MyClass>());
             }
 
-            using (mocks.Playback())
+
             {
                 builder.WithPropertyNamer(propertyNamer);
                 builder.Name(new MyClass());
@@ -225,15 +202,15 @@ namespace FizzWare.NBuilder.Tests.Unit
         public void ShouldBeAbleToUseBuild()
         {
             var myClass = new MyClass();
-            IPropertyNamer propertyNamer = MockRepository.GenerateMock<IPropertyNamer>();
+            IPropertyNamer propertyNamer = Substitute.For<IPropertyNamer>();
 
-            using (mocks.Record())
+
             {
-                reflectionUtil.Expect(x => x.CreateInstanceOf<MyClass>()).Return(myClass);
-                propertyNamer.Expect(x => x.SetValuesOf(Arg<MyClass>.Is.TypeOf));
+                reflectionUtil.CreateInstanceOf<MyClass>().Returns(myClass);
+                propertyNamer.SetValuesOf(Arg.Any<MyClass>());
             }
 
-            using (mocks.Playback())
+
             {
                 builder.WithPropertyNamer(propertyNamer);
                 builder.With(x => x.Float = 2f);
@@ -245,18 +222,17 @@ namespace FizzWare.NBuilder.Tests.Unit
         public void ShouldBeAbleToUseDoMultiple()
         {
             var builderSetup = new BuilderSettings();
-            var myClass = mocks.DynamicMock<IMyInterface>();
-            var list = new List<IMyOtherInterface> { mocks.Stub<IMyOtherInterface>(), mocks.Stub<IMyOtherInterface>(), mocks.Stub<IMyOtherInterface>() };
+            var myClass = Substitute.For<IMyInterface>();
+            var list = new List<IMyOtherInterface> { Substitute.For<IMyOtherInterface>(), Substitute.For<IMyOtherInterface>(), Substitute.For<IMyOtherInterface>() };
 
-            var builder2 = new ObjectBuilder<IMyInterface>(reflectionUtil,builderSetup);
+            var builder2 = new ObjectBuilder<IMyInterface>(reflectionUtil, builderSetup);
 
-            using (mocks.Record())
+
             {
-                const int listSize = 3;
-                myClass.Expect(x => x.Add(Arg<IMyOtherInterface>.Is.TypeOf)).Repeat.Times(listSize);
+                myClass.Add(Arg.Any<IMyOtherInterface>());
             }
 
-            using (mocks.Playback())
+
             {
                 builder2.DoMultiple((x, y) => x.Add(y), list);
                 builder2.CallFunctions(myClass);

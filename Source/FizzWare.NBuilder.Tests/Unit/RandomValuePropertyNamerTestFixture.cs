@@ -2,14 +2,12 @@ using System;
 using FizzWare.NBuilder.Implementation;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NUnit.Framework;
-using Rhino.Mocks;
 using System.Collections.Generic;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
     public abstract class RandomValuePropertyNamerTestFixture
     {
-        protected MockRepository mocks;
         protected IRandomGenerator generator;
         protected IList<MyClass> theList;
         protected const int listSize = 10;
@@ -18,11 +16,6 @@ namespace FizzWare.NBuilder.Tests.Unit
         [OneTimeSetUp]
         public abstract void TestFixtureSetUp();
 
-        [TearDown]
-        public void TearDown()
-        {
-            mocks.VerifyAll();
-        }
 
         [Test]
         public void ShouldNameInt16Properties()

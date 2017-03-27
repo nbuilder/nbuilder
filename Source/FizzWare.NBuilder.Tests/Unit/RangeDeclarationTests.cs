@@ -2,7 +2,8 @@
 using FizzWare.NBuilder.Implementation;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NUnit.Framework;
-using Rhino.Mocks;
+using NSubstitute;
+using Arg = NSubstitute.Arg;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
@@ -12,39 +13,29 @@ namespace FizzWare.NBuilder.Tests.Unit
         private Declaration<SimpleClass> declaration;
         private IObjectBuilder<SimpleClass> objectBuilder;
         private IListBuilderImpl<SimpleClass> listBuilderImpl;
-        private MockRepository mocks;
 
         [SetUp]
         public void SetUp()
         {
-            mocks = new MockRepository();
-            listBuilderImpl = mocks.DynamicMock<IListBuilderImpl<SimpleClass>>();
-            objectBuilder = mocks.StrictMock<IObjectBuilder<SimpleClass>>();
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            mocks.VerifyAll();
+            listBuilderImpl = Substitute.For<IListBuilderImpl<SimpleClass>>();
+            objectBuilder = Substitute.For<IObjectBuilder<SimpleClass>>();
         }
 
         [Test]
         public void DeclarationShouldUseObjectBuilderToConstructItems()
         {
-          
-            using (mocks.Record())
-            {
-                listBuilderImpl.Stub(x => x.BuilderSettings).Return(new BuilderSettings());
-                objectBuilder.Stub(x => x.BuilderSettings).Return(new BuilderSettings());
 
-                objectBuilder.Expect(x => x.Construct(Arg<int>.Is.Anything)).Return(new SimpleClass()).Repeat.Times(10);
+            {
+                listBuilderImpl.BuilderSettings.Returns(new BuilderSettings());
+                objectBuilder.BuilderSettings.Returns(new BuilderSettings());
+
+                objectBuilder.Construct(Arg.Any<int>()).Returns(new SimpleClass());
             }
 
-            using (mocks.Playback())
             {
                 declaration = new RangeDeclaration<SimpleClass>(listBuilderImpl, objectBuilder, 0, 9);
 
-                declaration.Construct();                
+                declaration.Construct();
             }
         }
 
@@ -55,12 +46,11 @@ namespace FizzWare.NBuilder.Tests.Unit
             var obj1 = new SimpleClass();
             var obj2 = new SimpleClass();
 
-            using (mocks.Record())
             {
-                listBuilderImpl.Stub(x => x.BuilderSettings).Return(new BuilderSettings());
-                objectBuilder.Stub(x => x.BuilderSettings).Return(new BuilderSettings());
-                objectBuilder.Expect(x => x.Construct(9)).Return(obj1);
-                objectBuilder.Expect(x => x.Construct(10)).Return(obj2);
+                listBuilderImpl.BuilderSettings.Returns(new BuilderSettings());
+                objectBuilder.BuilderSettings.Returns(new BuilderSettings());
+                objectBuilder.Construct(9).Returns(obj1);
+                objectBuilder.Construct(10).Returns(obj2);
             }
 
             declaration = new RangeDeclaration<SimpleClass>(listBuilderImpl, objectBuilder, 9, 10);
@@ -74,38 +64,33 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Test]
         public void ShouldCallFunctionsOnItemsInTheMasterList()
         {
-            IList<SimpleClass> masterList = mocks.StrictMock<IList<SimpleClass>>();
+            IList<SimpleClass> masterList = Substitute.For<IList<SimpleClass>>();
 
-            using (mocks.Record())
             {
-                masterList.Expect(x => x[4]).Return(null);
-                masterList.Expect(x => x[5]).Return(null);
+                masterList[4].Returns((SimpleClass)null);
+                masterList[5].Returns((SimpleClass)null);
 
-                objectBuilder.Expect(x => x.CallFunctions(null, 0)).IgnoreArguments().Repeat.Times(2);
             }
 
-            using (mocks.Playback())
             {
                 declaration = new RangeDeclaration<SimpleClass>(listBuilderImpl, objectBuilder, 9, 11);
                 declaration.MasterListAffectedIndexes = new List<int> { 4, 5 };
                 declaration.CallFunctions(masterList);
             }
+
+            objectBuilder.Received().CallFunctions(null, 0);
+
         }
 
         [Test]
         public void ShouldBeAbleToUseAll()
         {
-          
-            using (mocks.Record())
-            {
-                listBuilderImpl.Stub(x => x.BuilderSettings).Return(new BuilderSettings());
-                objectBuilder.Stub(x => x.BuilderSettings).Return(new BuilderSettings());
 
-                listBuilderImpl.Expect(x => x.All()).Return(declaration);
-            }
-
-            using (mocks.Playback())
             {
+                listBuilderImpl.BuilderSettings.Returns(new BuilderSettings());
+                objectBuilder.BuilderSettings.Returns(new BuilderSettings());
+                listBuilderImpl.All().Returns(declaration);
+
                 declaration = new RangeDeclaration<SimpleClass>(listBuilderImpl, objectBuilder, 9, 10);
 
                 declaration.All();
@@ -117,18 +102,17 @@ namespace FizzWare.NBuilder.Tests.Unit
         {
             SimpleClass[] masterList = new SimpleClass[19];
 
-            using (mocks.Record())
-                objectBuilder.Expect(x => x.Construct(Arg<int>.Is.Anything)).Return(new SimpleClass()).Repeat.Times(2);
+            objectBuilder.Construct(Arg.Any<int>()).Returns(new SimpleClass());
 
             declaration = new RangeDeclaration<SimpleClass>(listBuilderImpl, objectBuilder, 9, 10);
             declaration.Construct();
-            
+
             declaration.AddToMaster(masterList);
 
             Assert.That(declaration.MasterListAffectedIndexes.Count, Is.EqualTo(2));
             Assert.That(declaration.MasterListAffectedIndexes[0], Is.EqualTo(9));
             Assert.That(declaration.MasterListAffectedIndexes[1], Is.EqualTo(10));
-         
+
         }
     }
 }

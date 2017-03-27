@@ -5,7 +5,7 @@ using FizzWare.NBuilder.Implementation;
 using FizzWare.NBuilder.PropertyNaming;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NUnit.Framework;
-using Rhino.Mocks;
+using NSubstitute;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
@@ -18,15 +18,15 @@ namespace FizzWare.NBuilder.Tests.Unit
         [SetUp]
         public void SetUp()
         {
-            reflectionUtil = MockRepository.GenerateStub<IReflectionUtil>();
+            reflectionUtil = Substitute.For<IReflectionUtil>();
             propertyNamer = new SequentialPropertyNamer(reflectionUtil, new BuilderSettings());
         }
 
         [Test]
         public void SetValuesOfAllIn_ListOfTypeWithPrivateSetOnlyProperty_ValueIsNotSet()
         {
-            var privateSetOnlyType = new MyClassWithGetOnlyPropertySpy();   
-                        
+            var privateSetOnlyType = new MyClassWithGetOnlyPropertySpy();
+
             propertyNamer.SetValuesOfAllIn(new List<MyClassWithGetOnlyPropertySpy>{ privateSetOnlyType });
 
             Assert.That(privateSetOnlyType.IsSet, Is.False);
