@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using FizzWare.NBuilder.Extensions;
@@ -73,7 +75,7 @@ namespace FizzWare.NBuilder
             int integer = rnd.Next(iMin, iMax);
             int fraction = rnd.Next(0, 4000);
 
-            var separator = System.Threading.Thread.CurrentThread.CurrentCulture.NumberFormat.CurrencyDecimalSeparator;
+            var separator = CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator;
 
             return (decimal)Convert.ToDecimal(string.Format("{0}{1}{2}", integer, separator, fraction));
         }
@@ -232,7 +234,7 @@ namespace FizzWare.NBuilder
 
         public Enum Enumeration(Type type)
         {
-            if (!type.IsEnum)
+            if (!type.GetInfo().IsEnum)
             {
                 throw new ArgumentException(string.Format("{0} is not an enum type.", type.FullName), "type");
             }

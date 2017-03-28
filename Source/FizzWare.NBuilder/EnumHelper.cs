@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using FizzWare.NBuilder.Extensions;
 
 namespace FizzWare.NBuilder
 {
@@ -12,14 +13,14 @@ namespace FizzWare.NBuilder
         {
             Type enumType = typeof(T);
 
-            if (!enumType.IsEnum)
+            if (!enumType.GetInfo().IsEnum)
             {
                 throw new ArgumentException("Type '" + enumType.Name + "' is not an enum");
             }
 
             List<T> values = new List<T>();
 
-            var fields = from field in enumType.GetFields()
+            var fields = from field in enumType.GetInfo().GetFields()
                          where field.IsLiteral
                          select field;
 
@@ -34,14 +35,14 @@ namespace FizzWare.NBuilder
 
         public static object[] GetValues(Type enumType)
         {
-            if (!enumType.IsEnum)
+            if (!enumType.GetInfo().IsEnum)
             {
                 throw new ArgumentException("Type '" + enumType.Name + "' is not an enum");
             }
 
             List<object> values = new List<object>();
 
-            var fields = from field in enumType.GetFields()
+            var fields = from field in enumType.GetInfo().GetFields()
                          where field.IsLiteral
                          select field;
 

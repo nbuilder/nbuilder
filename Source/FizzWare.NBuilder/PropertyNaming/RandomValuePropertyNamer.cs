@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Text;
+using FizzWare.NBuilder.Extensions;
 using FizzWare.NBuilder.Implementation;
-using System.Linq;
 
 namespace FizzWare.NBuilder.PropertyNaming
 {
