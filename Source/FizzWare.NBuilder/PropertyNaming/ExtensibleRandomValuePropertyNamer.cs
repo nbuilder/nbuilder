@@ -152,7 +152,7 @@ namespace FizzWare.NBuilder.PropertyNaming
 
         protected void NameWith(Delegate handler)
         {
-            var returnType = handler.GetMethodInfo().ReturnType;
+            var returnType = handler.GetInfo().ReturnType;
             if (Handlers.ContainsKey(returnType))
             {
                 Handlers.Remove(returnType);

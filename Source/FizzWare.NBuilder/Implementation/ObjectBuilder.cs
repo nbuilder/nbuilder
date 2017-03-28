@@ -128,6 +128,8 @@ namespace FizzWare.NBuilder.Implementation
 
         public T Construct(int index)
         {
+            bool requiresArgs = reflectionUtil.RequiresConstructorArgs(typeof(T));
+
             var ti = typeof(T).GetInfo();
 
             if (ti.IsInterface)
@@ -142,7 +144,11 @@ namespace FizzWare.NBuilder.Implementation
             {
                 obj = _constructorExpression.Compile().Invoke(index);
             }
-            else if (constructorArgs != null) 
+            else if (requiresArgs && constructorArgs != null)
+            {
+                obj = reflectionUtil.CreateInstanceOf<T>(constructorArgs);
+            }
+            else if (constructorArgs != null)
             {
                 obj = reflectionUtil.CreateInstanceOf<T>(constructorArgs);
             }

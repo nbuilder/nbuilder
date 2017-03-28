@@ -85,7 +85,7 @@ namespace FizzWare.NBuilder.PropertyNaming
 
         private static bool IsNullableType(Type type)
         {
-            return (type.GetTypeInfo().IsGenericType && type.GetGenericTypeDefinition() == typeof (Nullable<>));
+            return (type.GetInfo().IsGenericType && type.GetGenericTypeDefinition() == typeof (Nullable<>));
         }
 
         protected virtual void SetValue<T>(MemberInfo memberInfo, T obj, object value)
@@ -224,7 +224,7 @@ namespace FizzWare.NBuilder.PropertyNaming
                 value = GetBoolean(memberInfo);
             }
 
-            else if (type.GetTypeInfo().BaseType == typeof(Enum))
+            else if (type.GetInfo().BaseType == typeof(Enum))
             {
                 value = GetEnum(memberInfo);
             }

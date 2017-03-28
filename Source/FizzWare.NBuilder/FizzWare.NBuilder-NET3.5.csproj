@@ -102,6 +102,7 @@
     <Compile Include="Dates\Today.cs" />
     <Compile Include="Dates\Year.cs" />
     <Compile Include="EnumHelper.cs" />
+    <Compile Include="Extensions\MethodInfoExtensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Generators\GetRandom.cs" />
@@ -173,6 +174,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="NBuilder.snk" />
+    <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
