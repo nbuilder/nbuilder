@@ -264,16 +264,15 @@ namespace FizzWare.NBuilder.Tests.Integration
         [Test]
         public void ShouldBeAbleToUseMultipleTheFirsts()
         {
-            var builderSettings = new BuilderSettings();
             var title = "FirstTitle";
             var overwrittenTitle = "OverwrittenTitle";
 
             var list =
                 Builder<MyClass>.CreateListOfSize(10)
                     .TheFirst(5)
-                    .With(x => x.StringOne = title)
+                    .Do(x =>x.StringOne = title)
                     .TheFirst(5)
-                    .With(x => x.StringOne = overwrittenTitle)
+                    .Do(x => x.StringOne = overwrittenTitle)
                     .Build();
 
             Assert.That(list.Count, Is.EqualTo(10));
@@ -284,7 +283,6 @@ namespace FizzWare.NBuilder.Tests.Integration
         [Test]
         public void ShouldBeAbleToUseTheFirst()
         {
-            var builderSettings = new BuilderSettings();
             var specialTitle = "SpecialTitle";
 
             var list =

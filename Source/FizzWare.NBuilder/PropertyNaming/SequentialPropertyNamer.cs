@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using FizzWare.NBuilder.Implementation;
 using System.Text;
+using FizzWare.NBuilder.Extensions;
 
 namespace FizzWare.NBuilder.PropertyNaming
 {

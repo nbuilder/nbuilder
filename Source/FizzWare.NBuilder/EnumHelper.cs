@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using FizzWare.NBuilder.Extensions;
 
 namespace FizzWare.NBuilder
 {
@@ -12,7 +13,7 @@ namespace FizzWare.NBuilder
         {
             Type enumType = typeof(T);
 
-            if (!enumType.IsEnum)
+            if (!enumType.IsEnum())
             {
                 throw new ArgumentException("Type '" + enumType.Name + "' is not an enum");
             }
@@ -34,7 +35,7 @@ namespace FizzWare.NBuilder
 
         public static object[] GetValues(Type enumType)
         {
-            if (!enumType.IsEnum)
+            if (!enumType.IsEnum())
             {
                 throw new ArgumentException("Type '" + enumType.Name + "' is not an enum");
             }

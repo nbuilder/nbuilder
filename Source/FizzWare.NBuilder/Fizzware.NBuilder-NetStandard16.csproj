@@ -1,0 +1,10 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net47;netstandard1.6</TargetFrameworks>
+    <AssemblyName>FizzWare.NBuilder</AssemblyName>
+    <RootNamespace>FizzWare.NBuilder</RootNamespace>
+    <Description />
+  </PropertyGroup>
+
+</Project>

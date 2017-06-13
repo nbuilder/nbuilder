@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using FizzWare.NBuilder.Extensions;
 using FizzWare.NBuilder.PropertyNaming;
 
 namespace FizzWare.NBuilder.Implementation
@@ -107,7 +108,7 @@ namespace FizzWare.NBuilder.Implementation
             for (int i = 0; i < functions.Count; i++)
             {
                 var del = functions[i];
-                int parameterCount = del.Method.GetParameters().Count();
+                int parameterCount = del.GetMethodInfo().GetParameters().Count();
                 switch (parameterCount)
                 {
                     case 1:
@@ -129,10 +130,10 @@ namespace FizzWare.NBuilder.Implementation
         {
             bool requiresArgs = reflectionUtil.RequiresConstructorArgs(typeof(T));
 
-            if (typeof(T).IsInterface)
+            if (typeof(T).IsInterface())
                 throw new TypeCreationException("Cannot build an interface");
 
-            if (typeof(T).IsAbstract)
+            if (typeof(T).IsAbstract())
                 throw new TypeCreationException("Cannot build an abstract class");
 
             T obj;

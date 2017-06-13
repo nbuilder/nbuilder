@@ -29,14 +29,14 @@
         Import-Module "$(pwd)\DeployNBuilder\DeployNBuilder.psd1"
         Invoke-DisplayBuildInfo
         
-        nuget restore Source\NBuilder-NET4.6.sln
+        nuget restore Source\NBuilder-NETStandard16.sln
         nuget restore Source\NBuilder-NET4.0.sln
         nuget restore Source\NBuilder-NET3.5.sln
 
   build_script:
     - ps: |
         Import-Module "$(pwd)\DeployNBuilder\DeployNBuilder.psd1"
-        "NET3.5", "NET4.0", "NET4.6" | Invoke-Build -WorkingDirectory $(pwd)
+        "NET3.5", "NET4.0", "NETStandard16" | Invoke-Build -WorkingDirectory $(pwd)
         Invoke-NuGetPack -Version  (Get-NuGetPackageVersion -Beta) -NuSpec "$(pwd)\nuget\NBuilder.nuspec" -Destination "$(pwd)"
     
   before_test:

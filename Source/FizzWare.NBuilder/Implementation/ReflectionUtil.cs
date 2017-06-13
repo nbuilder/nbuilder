@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
-using FizzWare.NBuilder.Implementation;
-using System.Runtime.Serialization;
+using FizzWare.NBuilder.Extensions;
 
 namespace FizzWare.NBuilder.Implementation
 {
@@ -13,21 +11,7 @@ namespace FizzWare.NBuilder.Implementation
         {
             try
             {
-                // nb: Silverlight only has two overloads, one without params, one with.
-                #if SILVERLIGHT
-                return (T)Activator.CreateInstance(typeof(T));
-                #endif
-
-                // nb: The non-silverlight version allows creation of a class without a public constructor.
-                //     Think someone submitted this as a patch. I didn't like it then, and don't like it now.
-                //     It was always in the back of my mind that NBuilder wouldn't mess around with your classes in ways that
-                //     weren't possible doing things without reflection.
-                //
-                //     Plus, now the SL and .NET versions have differences.
-                #if !SILVERLIGHT
                 return (T)Activator.CreateInstance(typeof(T), true);
-                #endif
-
             }
             catch (MissingMethodException e)
             {
@@ -56,7 +40,7 @@ namespace FizzWare.NBuilder.Implementation
 
         public bool RequiresConstructorArgs(Type type)
         {
-            if (type.IsValueType)
+            if (type.IsValueType())
                 return false;
 
             var constructors = type.GetConstructors(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);

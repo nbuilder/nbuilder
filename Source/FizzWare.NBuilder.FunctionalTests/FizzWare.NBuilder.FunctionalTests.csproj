@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FizzWare.NBuilder.FunctionalTests</RootNamespace>
     <AssemblyName>FizzWare.NBuilder.FunctionalTests</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -86,13 +86,11 @@
       <HintPath>..\packages\EntityFramework.SqlServerCompact.6.1.3\lib\net40\EntityFramework.SqlServerCompact.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\packages\log4net.2.0.5\lib\net40-full\log4net.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.framework, Version=3.5.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.3.5.0\lib\net45\nunit.framework.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="nunit.framework, Version=3.7.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.7.1\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -138,9 +136,9 @@
       <Project>{201FC511-5E98-4321-9595-E0653F9BB73B}</Project>
       <Name>FizzWare.NBuilder.FunctionalTests.Model</Name>
     </ProjectReference>
-    <ProjectReference Include="..\FizzWare.NBuilder\FizzWare.NBuilder-NET3.5.csproj">
-      <Project>{2A91787B-AFB7-4A4C-A5D5-836F578F2DB6}</Project>
-      <Name>FizzWare.NBuilder-NET3.5</Name>
+    <ProjectReference Include="..\FizzWare.NBuilder\Fizzware.NBuilder-NetStandard16.csproj">
+      <Project>{d7f1e34f-2976-4b83-b3c2-4efeb665e805}</Project>
+      <Name>Fizzware.NBuilder-NetStandard16</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

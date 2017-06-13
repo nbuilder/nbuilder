@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using FizzWare.NBuilder.Extensions;
 
 namespace FizzWare.NBuilder.Generators
 {
@@ -382,7 +383,7 @@ namespace FizzWare.NBuilder.Generators
 
         public static Enum Enumeration(Type type)
         {
-            if (!type.IsEnum)
+            if (!type.IsEnum())
             {
                 throw new ArgumentException(string.Format("{0} is not an enum type.", type.FullName), "type");
             }

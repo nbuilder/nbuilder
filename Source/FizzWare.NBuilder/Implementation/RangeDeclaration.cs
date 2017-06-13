@@ -1,6 +1,10 @@
 
+using System;
+using System.Diagnostics;
+
 namespace FizzWare.NBuilder.Implementation
 {
+    [DebuggerDisplay("Range: Start={Start}; End={End}; ({NumberOfAffectedItems} Affected Items)")]
     public class RangeDeclaration<T> : Declaration<T>
     {
         private readonly int start;
@@ -12,6 +16,8 @@ namespace FizzWare.NBuilder.Implementation
             this.start = start;
             this.end = end;
         }
+
+        internal DateTime Created { get; } = DateTime.Now;
 
         public override int Start
         {

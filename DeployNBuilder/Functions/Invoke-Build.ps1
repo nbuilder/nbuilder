@@ -1,7 +1,6 @@
 function Invoke-Build(
     [Parameter(Mandatory, ValueFromPipeline)] [string] $SolutionTag,
     [Parameter(Mandatory)] [string] $WorkingDirectory,
-    [string] $OutputDirectory = (Join-Path $WorkingDirectory "nuget" -Resolve),
     [string] $SourceDirectory = (Join-Path $WorkingDirectory "Source" -Resolve)
 ){
     Begin {
@@ -12,7 +11,7 @@ function Invoke-Build(
     }
 
     Process {
-        $OutputPath = Join-Path $OutputDirectory ($SolutionTag -replace "\.", "")
+        $OutputPath = Get-BuildOutputPath -WorkingDirectory $WorkingDirectory -Framework $SolutionTag
         write-host "Invoke-Build -SolutionTag $SolutionTag -WorkingDirectory $WorkingDirectory -OutputDirectory $OutputDirectory -SourceDirectory $SourceDirectory" -ForegroundColor Blue
 
         $solution = Join-Path $SourceDirectory "NBuilder-$solutionTag.sln"
@@ -26,6 +25,7 @@ function Invoke-Build(
         # Give the system time to let go of file locks
         Start-Sleep -Seconds 5
 
+        return $OutputPath
     }
 
     End {
