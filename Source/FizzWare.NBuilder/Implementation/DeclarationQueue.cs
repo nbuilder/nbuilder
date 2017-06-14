@@ -17,7 +17,10 @@ namespace FizzWare.NBuilder.Implementation
 
         public void Prioritise()
         {
-            queuedDeclarations.Sort(new DeclarationComparer<T>());
+            // global declarations should be at the front of the list.
+            var globals = queuedDeclarations.OfType<IGlobalDeclaration<T>>().ToList();
+            globals.ForEach(row => queuedDeclarations.Remove(row));
+            queuedDeclarations.InsertRange(0, globals);
         }
         
         public void Enqueue(IDeclaration<T> item)
