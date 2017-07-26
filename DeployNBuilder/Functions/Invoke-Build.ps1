@@ -11,15 +11,21 @@ function Invoke-Build(
     }
 
     Process {
+
         $OutputPath = Get-BuildOutputPath -WorkingDirectory $WorkingDirectory -Framework $SolutionTag
         write-host "Invoke-Build -SolutionTag $SolutionTag -WorkingDirectory $WorkingDirectory -OutputDirectory $OutputDirectory -SourceDirectory $SourceDirectory" -ForegroundColor Blue
 
-        $solution = Join-Path $SourceDirectory "NBuilder-$solutionTag.sln"
+        $Solution = Join-Path $SourceDirectory "NBuilder-$solutionTag.sln"
+        nuget restore $Solution
+        if ($_ -match "Standard") {
+            dotnet restore $Solution
+        }
+
         $args = @($solution, "/t:ReBuild", $logger, "/verbosity:minimal", "/p:OutputPath=$OutputPath")
         write-host "Executing: msbuild $args" -ForegroundColor Yellow
         msbuild $args | Out-Host    
         if ($LASTEXITCODE -ne 0){
-            write-error "Building $solutionTag failed: exit code $LASTEXITCODE"
+            write-error "Building $Solution failed: exit code $LASTEXITCODE"
         }
 
         # Give the system time to let go of file locks

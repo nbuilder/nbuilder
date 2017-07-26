@@ -1,11 +1,11 @@
 param(
-    [switch] $SkipBuild,
-    [switch] $SkipTests,
-    [switch] $SkipNuget,
-    [ValidateSet("NET3.5", "NET4.0", "NetStandard16")] [Array]$Frameworks
+    [ValidateSet("NET3.5", "NET4.0", "NetStandard16")] [Array] $Frameworks,
+    [switch] $Build,
+    [switch] $Test,
+    [switch] $Pack
 )
 
-write-host "Emulating AppVeyor: Build: $(-not $SkipBuild), Test: $(-not $SkipTests), NuGet: $(-not $SkipNuget)" -ForegroundColor Green
+write-host "Emulating AppVeyor: Build: $Build, Test: $Test, Pack: $Pack" -ForegroundColor Green
 
 # init 
 Import-Module "$PsScriptRoot\DeployNBuilder\DeployNBuilder.psd1" -Force
@@ -17,21 +17,14 @@ Invoke-DisplayBuildInfo
 
 # build_script
 $workingDirectory = $(pwd)
-if (-not $SkipBuild) {
-    $Frameworks | foreach {
-        $Solution = "Source\NBuilder-$_.sln"
-        nuget restore $Solution
-        if ($_ -match "Standard") {
-            dotnet restore $Solution
-        }
-    }
+if ($Build) {
     $Frameworks | Invoke-Build -WorkingDirectory $workingDirectory
 }
 
 # before_test
 
 # test
-if (-not $SkipTests) {
+if ($Test) {
 
     $assemblies = @()
     $Frameworks| %{
@@ -43,9 +36,8 @@ if (-not $SkipTests) {
     $assemblies | Invoke-RunTests
 }
 
-
 # package
 
-if(-not $SkipNuGet) {
+if($Pack) {
     Invoke-NugetPack -Version $env:PackageVersion -NuSpec "nuget\NBuilder.nuspec" -Destination "."
 }
