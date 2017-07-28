@@ -1,7 +1,11 @@
 function Invoke-RunTests(
-    [Parameter(Mandatory, ValueFromPipeline)] [string] $assembly
+    [Parameter(Mandatory, ValueFromPipeline)] 
+    [ValidateNotNullOrEmpty()]
+    [string] $Assembly
 ) {
     Begin {
+        write-host "Invoke-RunTests -Assembly $Assembly" -ForegroundColor Blue
+
         $file = "nunit3-console.exe"
         $found = gci -filter "nunit3-console.exe" -Path "tools" -Recurse
         if(-not $found) {

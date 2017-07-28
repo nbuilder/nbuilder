@@ -1,6 +1,7 @@
 # Build Folders (you can keep bin if you'd like, to store dlls and pdbs)
 [Bb]in/
 [Oo]bj/
+[Oo]bj-NetStandard*
 /tests/
 # mstest test results
 TestResults
@@ -39,8 +40,6 @@ x64/
 *.vssscc
 .builds
 
-nuget/**/*.dll
-
 # Visual C++ cache files
 ipch/
 *.aps
@@ -58,10 +57,7 @@ ipch/
 
 # ReSharper is a .NET coding add-in
 Source/*/bin/
-nuget/**/*.xml
-nuget/**/*.config
-nuget/**/*.txt
-nuget/**/*.manifest
+nuget/**/*.*
 *.nupkg
 tools
 

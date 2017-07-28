@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard1.6</TargetFramework>
-    <AssemblyName>FizzWare.NBuilder.NetStandard1.6.Tests</AssemblyName>
+    <AssemblyName>FizzWare.NBuilder.Tests</AssemblyName>
     <RootNamespace>FizzWare.NBuilder.Tests</RootNamespace>
     <Description />
       <BaseIntermediateOutputPath>obj-NetStandard16</BaseIntermediateOutputPath>
@@ -31,6 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="MSTest.TestFramework" Version="1.1.18" />
     <PackageReference Include="NSubstitute" Version="2.0.3" />
     <PackageReference Include="NUnit" Version="3.7.1" />
     <PackageReference Include="Shouldly" Version="2.8.3" />

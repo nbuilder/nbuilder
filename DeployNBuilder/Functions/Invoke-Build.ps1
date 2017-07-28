@@ -21,9 +21,15 @@ function Invoke-Build(
             dotnet restore $Solution
         }
 
-        $args = @($solution, "/t:ReBuild", $logger, "/verbosity:minimal", "/p:OutputPath=$OutputPath")
-        write-host "Executing: msbuild $args" -ForegroundColor Yellow
-        msbuild $args | Out-Host    
+        if ($SolutionTag -match "NetStandard") {
+            write-host "dotnet build '$Solution' -o '$OutputPath'" -ForegroundColor Yellow
+            dotnet build $Solution -o "$OutputPath"
+        } else {
+            $args = @($solution, "/t:ReBuild", $logger, "/verbosity:minimal", "/p:OutputPath=$OutputPath")
+            write-host "msbuild $args" -ForegroundColor Yellow
+            msbuild $args | Out-Host    
+        }
+
         if ($LASTEXITCODE -ne 0){
             write-error "Building $Solution failed: exit code $LASTEXITCODE"
         }

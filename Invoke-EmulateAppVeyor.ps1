@@ -29,11 +29,14 @@ if ($Test) {
     $assemblies = @()
     $Frameworks| %{
         $OutputPath = Get-BuildOutputPath -WorkingDirectory $workingDirectory -Framework $_
-        $assemblies += Resolve-Path "$OutputPath\FizzWare.NBuilder.FunctionalTests.dll"
+        write-host "Searching $OutputPath for Test assembly..." -ForegroundColor Cyan
         $assmeblies += Resolve-Path "$OutputPath\FizzWare.NBuilder.Tests.dll"
     }
 
-    $assemblies | Invoke-RunTests
+    $assemblies | %{
+        write-host "Running tests for $_"
+        return $_;
+    } | Invoke-RunTests
 }
 
 # package
