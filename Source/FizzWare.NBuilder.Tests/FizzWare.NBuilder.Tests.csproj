@@ -97,17 +97,51 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Integration\BuilderSetupTests.cs" />
+    <Compile Include="Integration\Extensibility\CustomOperableExtensions.cs" />
+    <Compile Include="Integration\Extensibility\CustomProductPropertyNamer.cs" />
+    <Compile Include="Integration\Extensibility\ExtensibilityTests.cs" />
+    <Compile Include="Integration\Extensibility\LocationGenerator.cs" />
+    <Compile Include="Integration\HierarchyBuilderTests.cs" />
     <Compile Include="Integration\IssueTests.cs" />
+    <Compile Include="Integration\ListBuilderTests.cs" />
     <Compile Include="Integration\ListBuilderTests_UsingIndexedApi.cs" />
     <Compile Include="Integration\ListBuilderTests_WithAClassThatHasANullCharConstant.cs" />
     <Compile Include="Integration\ListBuilderNegativeTests.cs" />
     <Compile Include="Integration\MockPropertyNamerTests.cs" />
     <Compile Include="Integration\HierarchyGeneratorTests.cs" />
     <Compile Include="Integration\ListBuilderTests_WithAClassThatHasANonParameterlessConstructor.cs" />
+    <Compile Include="Integration\Models\BasketItem.cs" />
+    <Compile Include="Integration\Models\Category.cs" />
+    <Compile Include="Integration\Models\ChuckNorris.cs" />
+    <Compile Include="Integration\Models\Invoice.cs" />
+    <Compile Include="Integration\Models\IProduct.cs" />
+    <Compile Include="Integration\Models\Product.cs" />
+    <Compile Include="Integration\Models\Repositories\BaseRepository.cs" />
+    <Compile Include="Integration\Models\Repositories\BasketRepository.cs" />
+    <Compile Include="Integration\Models\Repositories\CategoryRepository.cs" />
+    <Compile Include="Integration\Models\Repositories\IBasketRepository.cs" />
+    <Compile Include="Integration\Models\Repositories\ICategoryRepository.cs" />
+    <Compile Include="Integration\Models\Repositories\IProductRepository.cs" />
+    <Compile Include="Integration\Models\Repositories\IRepository.cs" />
+    <Compile Include="Integration\Models\Repositories\ITaxTypeRepository.cs" />
+    <Compile Include="Integration\Models\Repositories\ProductRepository.cs" />
+    <Compile Include="Integration\Models\Repositories\TaxTypeRepository.cs" />
+    <Compile Include="Integration\Models\ShoppingBasket.cs" />
+    <Compile Include="Integration\Models\TaxType.cs" />
+    <Compile Include="Integration\Models\WarehouseLocation.cs" />
+    <Compile Include="Integration\PersistenceTests.cs" />
+    <Compile Include="Integration\PersistenceTestsBuilderSetup.cs" />
     <Compile Include="Integration\PickerTests.cs" />
+    <Compile Include="Integration\RepositoryBuilderSetup.cs" />
+    <Compile Include="Integration\RepositoryPersistenceTests.cs" />
+    <Compile Include="Integration\SingleObjectBuilderTests.cs" />
     <Compile Include="Integration\SingleObjectBuilderTests_WithAClassThatHasANullCharConstant.cs" />
     <Compile Include="Integration\SingleObjectBuilderTests_WithAClassThatHasAParameterlessConstructor.cs" />
     <Compile Include="Integration\SingleObjectBuilderTests_WithAClassThatHasANonParameterlessConstructor.cs" />
+    <Compile Include="Integration\Support\Dependency.cs" />
+    <Compile Include="Integration\UsingFluentDates.cs" />
+    <Compile Include="Integration\WebsiteExamples\WebsiteExamples.cs" />
     <Compile Include="TestClasses\MyClassWithGetOnlyPropertySpy.cs" />
     <Compile Include="TestClasses\MyClassWithPrivateParameterizedConstructor.cs" />
     <Compile Include="TestClasses\MyClassWithPrivateParameterlessConstructor.cs" />
@@ -197,6 +231,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Integration\App.config" />
+    <None Include="Integration\packages.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
