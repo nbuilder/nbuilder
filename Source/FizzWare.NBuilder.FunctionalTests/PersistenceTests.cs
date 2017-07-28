@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Data;
 using System.Linq;
-using System.Text;
 using FizzWare.NBuilder.FunctionalTests.Model;
 using FizzWare.NBuilder.FunctionalTests.Model.Repositories;
 using NUnit.Framework;
@@ -10,20 +7,20 @@ using NUnit.Framework;
 namespace FizzWare.NBuilder.FunctionalTests
 {
     [TestFixture]
-    public class RepositoryPersistenceTests
+    public class PersistenceTests
     {
-        [OneTimeSetUp]
+        private BuilderSettings builderSettings;
+
+        [SetUp]
         public void BeforeEach()
         {
-            new ProductRepository().DeleteAll();
-            new CategoryRepository().DeleteAll();
+            this.builderSettings = new PersistenceTestsBuilderSetup().SetUp();
         }
 
         [Test]
         public void PersistingASingleObject()
         {
-            var builderSetup =new RepositoryBuilderSetup().SetUp();
-            new Builder(builderSetup).CreateNew< Product>().Persist();
+            new Builder(builderSettings).CreateNew<Product>().Persist();
 
             // Go directly to the database to do some asserts
             var dataTable = new ProductRepository().GetAll();
@@ -39,12 +36,12 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void PersistingASingleTaxTypeAndAListOf100Products()
         {
-            var builderSetup = new RepositoryBuilderSetup().SetUp();
-            var taxType = new Builder(builderSetup).CreateNew< TaxType>().Persist();
+            var builder = new Builder(builderSettings);
+            var taxType = builder.CreateNew<TaxType>().Persist();
 
-            new Builder(builderSetup).CreateListOfSize< Product>(100)
+            builder.CreateListOfSize<Product>(100)
                 .All()
-                    .With(x => x.TaxType = taxType)
+                .With(x => x.TaxType = taxType)
                 .Persist(); // NB: Persistence is setup in the RepositoryBuilderSetup class
 
             var dbProducts = new ProductRepository().GetAll();
@@ -56,22 +53,22 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void PersistingAListOfProductsAndCategories()
         {
-            var builderSetup = new RepositoryBuilderSetup().SetUp();
             const int numProducts = 500;
             const int numCategories = 50;
             const int numCategoriesForEachProduct = 5;
 
-            var categories = new Builder(builderSetup)
-                .CreateListOfSize< Category>(numCategories)
+            var builder = new Builder(builderSettings);
+            var categories = builder
+                .CreateListOfSize<Category>(numCategories)
                 .Persist();
 
-            new Builder(builderSetup)
-                 .CreateListOfSize< Product>(numProducts)
+            builder
+                .CreateListOfSize<Product>(numProducts)
                 .All()
-                    .With(x => x.Categories = Pick<Category>.
-                        UniqueRandomList(With.Exactly(numCategoriesForEachProduct).Elements)
-                        .From(categories)
-                        .ToList())
+                .With(x => x.Categories = Pick<Category>.
+                    UniqueRandomList(With.Exactly(numCategoriesForEachProduct).Elements)
+                    .From(categories)
+                    .ToList())
                 .Persist(); // NB: Persistence is setup in the RepositoryBuilderSetup class
 
             var productsTable = new ProductRepository().GetAll();

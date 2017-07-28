@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Data.Entity;
 using FizzWare.NBuilder;
 using FizzWare.NBuilder.FunctionalTests.Model;
 using FizzWare.NBuilder.FunctionalTests.Model.Repositories;
@@ -18,11 +17,8 @@ public class RepositoryBuilderSetup
 
     public BuilderSettings DoSetup()
     {
-        DbConfiguration.SetConfiguration(new IntegrationTestConfiguration());
-        using (var db = new ProductsDbContext())
-        {
-            db.Database.Delete();
-        }
+        new ProductRepository().DeleteAll();
+        new CategoryRepository().DeleteAll();
 
         BuilderSettings builderSettings = new BuilderSettings();
 

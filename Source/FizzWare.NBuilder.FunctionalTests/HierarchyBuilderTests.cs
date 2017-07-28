@@ -57,7 +57,7 @@ namespace FizzWare.NBuilder.FunctionalTests
         [Test]
         public void CreatingAHierarchyOfCategoriesUsingEntityFramework()
         {
-            var builderSetup = new EntityFrameworkBuilderSetup().SetUp();
+            var builderSetup = new PersistenceTestsBuilderSetup().SetUp();
             const int depth = 3;
             const int minChildren = 3;
             const int maxChildren = 8;
