@@ -7,6 +7,26 @@ namespace FizzWare.NBuilder.Extensions
 {
     public static class TypeExtensions
     {
+#if !NETSTANDARD1_6
+        // added for api compatibility with .net standard
+
+        //public static MethodInfo GetMethodInfo(this MulticastDelegate d)
+        //{
+        //    return d.Method;
+        //}
+
+        public static MethodInfo GetMethodInfo(this Delegate d)
+        {
+            return d.Method;
+        }
+
+        public static Type GetTypeInfo(this Type t)
+        {
+            return t; 
+        }
+#else
+#endif
+
         public static Type GetTypeWithoutNullability(this Type t)
         {
             return t.GetTypeInfo().IsGenericType &&

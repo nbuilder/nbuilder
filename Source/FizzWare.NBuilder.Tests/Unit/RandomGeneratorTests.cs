@@ -93,20 +93,24 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Test]
         public void ShouldBeAbleToGenerateDoubleUsingNext_InPoland()
         {
-            System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("pl-PL");
+            SetCulture("pl-PL");
             try
             {
                 randomGenerator.Next(double.MinValue, double.MaxValue);
             }
-            catch (Exception)
-            {
-
-                throw;
-            }
             finally
             {
-                System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+                SetCulture("en-US");
             }
+        }
+
+        private static void SetCulture(string cultureIdentifier)
+        {
+#if NETSTANDARD1_6
+            CultureInfo.CurrentCulture = new CultureInfo(cultureIdentifier);
+#else
+            System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo(cultureIdentifier);
+#endif
         }
 
         [Test]
@@ -118,19 +122,14 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Test]
         public void ShouldBeAbleToGenerateDecimalUsingNext_InPoland()
         {
-            System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("pl-PL");
+            SetCulture("pl-PL");
             try
             {
                 randomGenerator.Next(decimal.MinValue, decimal.MaxValue);
             }
-            catch (Exception)
-            {
-
-                throw;
-            }
             finally
             {
-                System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+                SetCulture("en-US");
             }
         }
 
@@ -296,7 +295,7 @@ namespace FizzWare.NBuilder.Tests.Unit
 
 
         [Test(Description = "Tests the NextString returns a string that is between the minimum and maximum values specified")]
-        [TestCase(1,10)]
+        [TestCase(1, 10)]
         [TestCase(4, 5)]
         [TestCase(16, 20)]
         [TestCase(100, 200)]
@@ -321,10 +320,10 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Test]
         public void enum_should_throw_if_not_an_enum_type()
         {
-            var type = typeof (string);
+            var type = typeof(string);
             Assert.Throws<ArgumentException>(() => randomGenerator.Enumeration(type));
         }
-        #endif
+#endif
 
         [Test]
         public void RandomGenerator_SeedInitialization_ShouldAllowRandomValuesToBeRepeatable()

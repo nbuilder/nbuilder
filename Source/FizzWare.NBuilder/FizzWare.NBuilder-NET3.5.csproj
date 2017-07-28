@@ -123,7 +123,6 @@
     <Compile Include="IBuildable.cs" />
     <Compile Include="Implementation\DistinctAffectedItemCalculator.cs" />
     <Compile Include="Implementation\IListBuilderImpl.cs" />
-    <Compile Include="Implementation\DeclarationComparer.cs" />
     <Compile Include="Implementation\DeclarationQueue.cs" />
     <Compile Include="Implementation\GlobalDeclaration.cs" />
     <Compile Include="BuilderException.cs" />

@@ -18,7 +18,10 @@ namespace FizzWare.NBuilder.Implementation
         public void Prioritise()
         {
             // global declarations should be at the front of the list.
-            var globals = queuedDeclarations.OfType<IGlobalDeclaration<T>>().ToList();
+            var globals = queuedDeclarations
+                .OfType<IGlobalDeclaration<T>>()
+                .Cast<IDeclaration<T>>() // added for 3.5 compatibility
+                .ToList();
             globals.ForEach(row => queuedDeclarations.Remove(row));
             queuedDeclarations.InsertRange(0, globals);
         }

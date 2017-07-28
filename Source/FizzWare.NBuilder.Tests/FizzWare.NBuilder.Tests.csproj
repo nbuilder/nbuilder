@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FizzWare.NBuilder.Tests</RootNamespace>
     <AssemblyName>FizzWare.NBuilder.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -225,15 +225,15 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FizzWare.NBuilder\Fizzware.NBuilder-NetStandard16.csproj">
-      <Project>{d7f1e34f-2976-4b83-b3c2-4efeb665e805}</Project>
-      <Name>Fizzware.NBuilder-NetStandard16</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Integration\App.config" />
     <None Include="Integration\packages.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FizzWare.NBuilder\FizzWare.NBuilder-NET4.0.csproj">
+      <Project>{2a91787b-afb7-4a4c-a5d5-836f578f2db6}</Project>
+      <Name>FizzWare.NBuilder-NET4.0</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
