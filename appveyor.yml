@@ -41,9 +41,11 @@
         dotnet build -c Release /p:AssemblyVersion=$env:AssemblyVersion /p:ProductVersion=$env:AssemblyVersion
         popd           
 
+        $outputDirectory = $(pwd)
+
         write-host "Creating nuget package version $($env:PackageVersion)" -ForegroundColor Yellow 
         pushd ".\Source\FizzWare.NBuilder"
-        dotnet pack -c Release /p:PackageVersion=$env:PackageVersion FizzWare.NBuilder.csproj -o "$PsScriptRoot"
+        dotnet pack -c Release /p:PackageVersion=$env:PackageVersion FizzWare.NBuilder.csproj -o "$outputDirectory"
         popd
 
   before_test:
@@ -109,11 +111,13 @@
         dotnet build -c Release /p:AssemblyVersion=$env:AssemblyVersion /p:ProductVersion=$env:AssemblyVersion
         popd           
 
+        $outputDirectory = $(pwd)
+
         write-host "Creating nuget package version $($env:PackageVersion)" -ForegroundColor Yellow 
         pushd ".\Source\FizzWare.NBuilder"
-        dotnet pack -c Release /p:PackageVersion=$env:PackageVersion FizzWare.NBuilder.csproj -o "$PsScriptRoot"
+        dotnet pack -c Release /p:PackageVersion=$env:PackageVersion FizzWare.NBuilder.csproj -o "$outputDirectory"
         popd
-    
+
   assembly_info:
     patch: true
     file: AssemblyInfo.*
@@ -175,11 +179,13 @@
         dotnet build -c Release /p:AssemblyVersion=$env:AssemblyVersion /p:ProductVersion=$env:AssemblyVersion
         popd           
 
+        $outputDirectory = $(pwd)
+
         write-host "Creating nuget package version $($env:PackageVersion)" -ForegroundColor Yellow 
         pushd ".\Source\FizzWare.NBuilder"
-        dotnet pack -c Release /p:PackageVersion=$env:PackageVersion FizzWare.NBuilder.csproj -o "$PsScriptRoot"
+        dotnet pack -c Release /p:PackageVersion=$env:PackageVersion FizzWare.NBuilder.csproj -o "$outputDirectory"
         popd
-    
+            
   assembly_info:
     patch: true
     file: AssemblyInfo.*
