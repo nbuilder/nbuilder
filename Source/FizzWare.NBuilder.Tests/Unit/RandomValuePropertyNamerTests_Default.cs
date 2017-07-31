@@ -5,10 +5,13 @@ using FizzWare.NBuilder.PropertyNaming;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NSubstitute;
 using NUnit.Framework;
+using Shouldly;
+using Xunit;
+using Assert = NUnit.Framework.Assert;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
-    [TestFixture]
+    
     public class RandomValuePropertyNamerTests_Default : RandomValuePropertyNamerTestFixture
     {
         public override void TestFixtureSetUp()
@@ -48,16 +51,14 @@ namespace FizzWare.NBuilder.Tests.Unit
                 .SetValuesOfAllIn(theList);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToCreateUsingDefaultConstructor()
         {
             var builderSetup = new BuilderSettings();
             new RandomValuePropertyNamer(builderSetup);
         }
 
-        // TODO FIX
-        #if !SILVERLIGHT
-        [Test]
+        [Fact]
         public void SetValuesOfAllIn_ClassWithNullCharConst_CharConstantIsNotSetByNamer()
         {
             var builderSetup = new BuilderSettings();
@@ -69,12 +70,10 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             foreach (var item in list)
             {
-                Assert.That(item.GetNullCharConst(), Is.EqualTo(MyClassWithCharConst.NullCharConst));
-                Assert.That(item.GetNonNullCharConst(), Is.EqualTo(MyClassWithCharConst.NonNullCharConst));
+                item.GetNullCharConst().ShouldBe(MyClassWithCharConst.NullCharConst);
+                item.GetNonNullCharConst().ShouldBe(MyClassWithCharConst.NonNullCharConst);
             }
 
-            Assert.Pass("A System.FieldAccessException was not thrown because NBuilder didn't try to set the value of the constant");
         }
-        #endif
     }
 }

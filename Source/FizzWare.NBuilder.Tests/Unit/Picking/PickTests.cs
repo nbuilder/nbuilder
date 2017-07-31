@@ -4,32 +4,34 @@ using System.Linq;
 using System.Text;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NUnit.Framework;
+using Shouldly;
+using Xunit;
+using Assert = NUnit.Framework.Assert;
 
 namespace FizzWare.NBuilder.Tests.Unit.Picking
 {
-    [TestFixture]
     public class PickTests
     {
-        [Test]
+        [Fact]
         public void ShouldBeAbleToPickUniqueRandomListGivingExactCount()
         {
             var picker = Pick<MyClass>.UniqueRandomList(10);
-            Assert.That(picker, Is.TypeOf(typeof(UniqueRandomPicker<MyClass>)));
+            picker.ShouldBeOfType<UniqueRandomPicker<MyClass>>();
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToPickUsingConstraint()
         {
             var picker = Pick<MyClass>.UniqueRandomList(new ExactlyConstraint(10));
-            Assert.That(picker, Is.TypeOf(typeof(UniqueRandomPicker<MyClass>)));
+            picker.ShouldBeOfType<UniqueRandomPicker<MyClass>>();
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToUseRandomItemFrom()
         {
             var list = new List<MyClass> { new MyClass() };
             var item = Pick<MyClass>.RandomItemFrom(list);
-            Assert.That(item, Is.EqualTo(list[0]));
+            item.ShouldBe(list[0]);
         }
     }
 }

@@ -5,11 +5,14 @@ using FizzWare.NBuilder.PropertyNaming;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NUnit.Framework;
 using NSubstitute;
+using Shouldly;
+using Xunit;
+using Assert = NUnit.Framework.Assert;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
     // TODO: These tests aren't great and are in need of some attention
-    [TestFixture]
+    
     public class HierarchyGeneratorTests
     {
         private IRandomGenerator randomGenerator;
@@ -22,8 +25,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         private HierarchyGenerator<MyHierarchicalClass> hierarchyGenerator;
         private Func<MyHierarchicalClass, string, string> namingMethod;
 
-        [SetUp]
-        public void SetUp()
+        public HierarchyGeneratorTests()
         {
             randomGenerator = Substitute.For<IRandomGenerator>();
             sourceList = Substitute.For<IList<MyHierarchicalClass>>();
@@ -37,7 +39,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             namingMethod = (x, y) => x.Title = y;
         }
 
-        [Test]
+        [Fact]
         public void ShouldGenerateTheCorrectNumberOfRoots()
         {
             sourceList.Count.Returns(categoryCount);
@@ -46,10 +48,10 @@ namespace FizzWare.NBuilder.Tests.Unit
             hierarchyGenerator = new HierarchyGenerator<MyHierarchicalClass>(sourceList, (x, y) => x.AddChild(y), numberOfRoots, depth, minCategories, maxCategories, randomGenerator, namingMethod, null);
             IList<MyHierarchicalClass> hierarchy = hierarchyGenerator.Generate();
 
-            Assert.That(hierarchy.Count, Is.EqualTo(numberOfRoots));
+            hierarchy.Count.ShouldBe(numberOfRoots);
         }
 
-        [Test]
+        [Fact]
         public void ShouldAddChildren()
         {
             sourceList.Count.Returns(categoryCount);
@@ -62,7 +64,7 @@ namespace FizzWare.NBuilder.Tests.Unit
 
         }
 
-        [Test]
+        [Fact]
         public void ShouldTryToPersistIfPersistenceServiceSupplied()
         {
             IPersistenceService persistenceService = Substitute.For<IPersistenceService>();
@@ -81,7 +83,7 @@ namespace FizzWare.NBuilder.Tests.Unit
 
         }
 
-        [Test]
+        [Fact]
         public void HierarchyGeneratorConstructor_SourceListNotBigEnough_Complains()
         {
             // Formula is (maxCategories^0 + maxCategories^1 + maxCategories^2) * numRoots
@@ -95,7 +97,7 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             sourceList.Count.Returns(requiredSizeOfList - 1);
 
-            Assert.Throws<ArgumentException>(
+            Should.Throw<ArgumentException>(
                 () =>
                     hierarchyGenerator =
                     new HierarchyGenerator<MyHierarchicalClass>(sourceList, null, numberOfRoots, depth, minCategories,

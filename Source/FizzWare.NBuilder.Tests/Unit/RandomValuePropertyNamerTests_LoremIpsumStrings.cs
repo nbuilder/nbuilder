@@ -6,10 +6,13 @@ using FizzWare.NBuilder.PropertyNaming;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NSubstitute;
 using NUnit.Framework;
+using Shouldly;
+using Xunit;
+using Assert = NUnit.Framework.Assert;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
-    [TestFixture]
+    
     public class RandomValuePropertyNamerTests_LoremIpsumStrings
     {
         protected IRandomGenerator generator;
@@ -17,8 +20,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         protected const int listSize = 10;
         protected IReflectionUtil reflectionUtil;
 
-        [SetUp]
-        public void SetUp()
+        public RandomValuePropertyNamerTests_LoremIpsumStrings()
         {
             generator = Substitute.For<IRandomGenerator>();
             reflectionUtil = Substitute.For<IReflectionUtil>();
@@ -36,7 +38,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             new RandomValuePropertyNamer(generator, reflectionUtil, false, DateTime.MinValue, DateTime.MaxValue, true,new BuilderSettings()).SetValuesOfAllIn(theList);
         }
 
-        [Test]
+        [Fact]
         public void ShouldNameStringsUsingLoremIpsumText()
         {
             string[] words = @"lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit anim id est laborum".Split(' ');
@@ -46,7 +48,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             var wordList = words.ToList();
 
             for (int i = 0; i < actual.Length; i++)
-                Assert.That(wordList.Contains(actual[i]));
+                wordList.Contains(actual[i]).ShouldBeTrue();
         }
     }
 }

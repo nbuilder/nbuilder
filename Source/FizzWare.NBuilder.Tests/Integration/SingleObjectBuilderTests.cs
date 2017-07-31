@@ -1,10 +1,13 @@
 ﻿using FizzWare.NBuilder.Tests.Integration.Models;
 using NUnit.Framework;
+using Shouldly;
+using Xunit;
+using Assert = NUnit.Framework.Assert;
 
 namespace FizzWare.NBuilder.Tests.Integration
 {
     // Note: The assertions are intentionally verbose to show how NBuilder works
-    [TestFixture]
+    
     public class SingleObjectBuilderTests
     {
         private interface IMyInterface { }
@@ -17,21 +20,21 @@ namespace FizzWare.NBuilder.Tests.Integration
             new RepositoryBuilderSetup().SetUp();
         }
 
-        [Test]
+        [Fact]
         public void CreatingAnObject()
         {
             var builderSetup = new BuilderSettings();
             var product = new Builder(builderSetup).CreateNew< Product>().Build();
 
-            Assert.That(product.Id, Is.EqualTo(1));
-            Assert.That(product.Title, Is.EqualTo("Title1"));
-            Assert.That(product.Description, Is.EqualTo("Description1"));
-            Assert.That(product.PriceBeforeTax, Is.EqualTo(1m));
-            Assert.That(product.QuantityInStock, Is.EqualTo(1));
-            Assert.That(product.Weight, Is.EqualTo(1.0));
+            product.Id.ShouldBe(1);
+            product.Title.ShouldBe("Title1");
+            product.Description.ShouldBe("Description1");
+            product.PriceBeforeTax.ShouldBe(1m);
+            product.QuantityInStock.ShouldBe(1);
+            product.Weight.ShouldBe(1.0);
         }
 
-        [Test]
+        [Fact]
         public void SettingTheValueOfAProperty()
         {
             var builderSetup = new BuilderSettings();
@@ -40,12 +43,12 @@ namespace FizzWare.NBuilder.Tests.Integration
                     .With(x => x.Description = "A custom description here")
                 .Build();
 
-            Assert.That(product.Title, Is.EqualTo("Title1"));
-            Assert.That(product.Description, Is.EqualTo("A custom description here"));
-            Assert.That(product.Id, Is.EqualTo(1));
+            product.Title.ShouldBe("Title1");
+            product.Description.ShouldBe("A custom description here");
+            product.Id.ShouldBe(1);
         }
 
-        [Test]
+        [Fact]
         public void SettingMultipleProperties()
         {
             var builderSetup = new BuilderSettings();
@@ -56,16 +59,16 @@ namespace FizzWare.NBuilder.Tests.Integration
                 .And(x => x.Id = 2)
                 .Build();
 
-            Assert.That(product.Title, Is.EqualTo("Special title"));
-            Assert.That(product.Description, Is.EqualTo("Special description"));
-            Assert.That(product.Id, Is.EqualTo(2));
+            product.Title.ShouldBe("Special title");
+            product.Description.ShouldBe("Special description");
+            product.Id.ShouldBe(2);
 
             // NB: You can call With() multiple times too, but And() is provided
             //     to improve readability
         }
 
 
-        [Test]
+        [Fact]
         public void ItsPossibleToAssignValuesToPrivateSetProperties()
         {
             var builderSetup = new BuilderSettings();
@@ -74,10 +77,10 @@ namespace FizzWare.NBuilder.Tests.Integration
                 .With(x => x.Amount, 100)
                 .Build();
 
-            Assert.That(invoice.Amount, Is.EqualTo(100));
+            invoice.Amount.ShouldBe(100);
         }
 
-        [Test]
+        [Fact]
         public void ItsPossibleToAssignValuesToReadonlyProperties()
         {
             var builderSetup = new BuilderSettings();
@@ -86,10 +89,10 @@ namespace FizzWare.NBuilder.Tests.Integration
                 .With(x => x.Id, 100)
                 .Build();
 
-            Assert.That(invoice.Id, Is.EqualTo(100));
+            invoice.Id.ShouldBe(100);
         }
 
-        [Test]
+        [Fact]
         public void ItsPosibleToUseAndInAdditionToWithInOrderToImproveReadability()
         {
             var builderSetup = new BuilderSettings();
@@ -99,11 +102,11 @@ namespace FizzWare.NBuilder.Tests.Integration
                 .And(x => x.Id, 200)
                 .Build();
 
-            Assert.That(invoice.Amount, Is.EqualTo(100));
-            Assert.That(invoice.Id, Is.EqualTo(200));
+            invoice.Amount.ShouldBe(100);
+            invoice.Id.ShouldBe(200);
         }
 
-        [Test]
+        [Fact]
         public void ItsPossibleToUseThePrivateSetWithToSetNormalProperties()
         {
             var builderSetup = new BuilderSettings();
@@ -112,10 +115,10 @@ namespace FizzWare.NBuilder.Tests.Integration
                 .With(x => x.Title, "special title")
                 .Build();
 
-            Assert.That(product.Title, Is.EqualTo("special title"));
+            product.Title.ShouldBe("special title");
         }
 
-        [Test]
+        [Fact]
         public void CreatingAClassThatHasAConstructorUsingLegacySyntax()
         {
             var builder = new Builder();
@@ -131,14 +134,14 @@ namespace FizzWare.NBuilder.Tests.Integration
 
             // The property namer will still apply sequential names to the properties
             // however it won't overwrite any properties that have been set through the constructor
-            Assert.That(basketItem.DiscountCode, Is.EqualTo("DiscountCode1"));
+            basketItem.DiscountCode.ShouldBe("DiscountCode1");
 
-            Assert.That(basketItem.Basket, Is.EqualTo(basket));
-            Assert.That(basketItem.Product, Is.EqualTo(product));
-            Assert.That(basketItem.Quantity, Is.EqualTo(quantity));
+            basketItem.Basket.ShouldBe(basket);
+            basketItem.Product.ShouldBe(product);
+            basketItem.Quantity.ShouldBe(quantity);
         }
 
-        [Test]
+        [Fact]
         public void CreatingAClassThatHasAConstructorUsingExpressionSyntax()
         {
             var builder = new Builder();
@@ -154,14 +157,14 @@ namespace FizzWare.NBuilder.Tests.Integration
 
             // The property namer will still apply sequential names to the properties
             // however it won't overwrite any properties that have been set through the constructor
-            Assert.That(basketItem.DiscountCode, Is.EqualTo("DiscountCode1"));
+            basketItem.DiscountCode.ShouldBe("DiscountCode1");
 
-            Assert.That(basketItem.Basket, Is.EqualTo(basket));
-            Assert.That(basketItem.Product, Is.EqualTo(product));
-            Assert.That(basketItem.Quantity, Is.EqualTo(quantity));
+            basketItem.Basket.ShouldBe(basket);
+            basketItem.Product.ShouldBe(product);
+            basketItem.Quantity.ShouldBe(quantity);
         }
 
-        [Test]
+        [Fact]
         public void UsingDo()
         {
             var builder = new Builder();
@@ -172,10 +175,10 @@ namespace FizzWare.NBuilder.Tests.Integration
                     .Do(x => x.AddChild(child))
                 .Build();
 
-            Assert.That(category.Children[0], Is.EqualTo(child));
+            category.Children[0].ShouldBe(child);
         }
 
-        [Test]
+        [Fact]
         public void CallingMultipleMethods()
         {
             var builderSetup = new BuilderSettings();
@@ -189,11 +192,11 @@ namespace FizzWare.NBuilder.Tests.Integration
                     .And(x => x.AddChild(anotherChild))
                 .Build();
 
-            Assert.That(category.Children[0], Is.EqualTo(child));
-            Assert.That(category.Children[1], Is.EqualTo(anotherChild));
+            category.Children[0].ShouldBe(child);
+            category.Children[1].ShouldBe(anotherChild);
         }
 
-        [Test]
+        [Fact]
         [Description("Multi functions allow you to call a method on an object on each item in a list")]
         public void UsingMultiFunctions()
         {
@@ -207,45 +210,45 @@ namespace FizzWare.NBuilder.Tests.Integration
                     .Build();
 
             // Assertions are intentionally verbose for clarity
-            Assert.That(product.Categories.Count, Is.EqualTo(5));
-            Assert.That(product.Categories[0], Is.EqualTo(categories[0]));
-            Assert.That(product.Categories[1], Is.EqualTo(categories[1]));
-            Assert.That(product.Categories[2], Is.EqualTo(categories[2]));
-            Assert.That(product.Categories[3], Is.EqualTo(categories[3]));
-            Assert.That(product.Categories[4], Is.EqualTo(categories[4]));
+            product.Categories.Count.ShouldBe(5);
+            product.Categories[0].ShouldBe(categories[0]);
+            product.Categories[1].ShouldBe(categories[1]);
+            product.Categories[2].ShouldBe(categories[2]);
+            product.Categories[3].ShouldBe(categories[3]);
+            product.Categories[4].ShouldBe(categories[4]);
         }
 
-        [Test]
+        [Fact]
         public void NBuilderIsNotAMockingFramework() // (!)
         {
             var builderSetup = new BuilderSettings();
-            Assert.Throws<TypeCreationException>(() =>
+            Should.Throw<TypeCreationException>(() =>
             {
                 new Builder(builderSetup).CreateNew< IProduct>().Build();
             });
         }
 
-        [Test]
+        [Fact]
         public void NBuilderCannotBeUsedToBuildInterfaces()
         {
             var builderSetup = new BuilderSettings();
-            var ex = Assert.Throws<TypeCreationException>(() => new Builder(builderSetup).CreateNew< IMyInterface>().Build());
-            Assert.That(ex.Message, Is.EqualTo("Cannot build an interface"));
+            var ex = Should.Throw<TypeCreationException>(() => new Builder(builderSetup).CreateNew< IMyInterface>().Build());
+            ex.Message.ShouldBe("Cannot build an interface");
         }
 
-        [Test]
+        [Fact]
         public void NBuilderCannotBeUsedToBuildAbstractClasses()
         {
             var builderSetup = new BuilderSettings();
-            var ex = Assert.Throws<TypeCreationException>(() => new Builder(builderSetup).CreateNew< MyAbstractClass>().Build(), "Cannot build an abstract class");
-            Assert.That(ex.Message, Is.EqualTo("Cannot build an abstract class"));
+            var ex = Should.Throw<TypeCreationException>(() => new Builder(builderSetup).CreateNew< MyAbstractClass>().Build(), "Cannot build an abstract class");
+            ex.Message.ShouldBe("Cannot build an abstract class");
         }
 
-        [Test]
+        [Fact]
         public void WillComplainIfYouTryToBuildAClassThatCannotBeInstantiatedDirectly()
         {
             var builderSetup = new BuilderSettings();
-            Assert.Throws<TypeCreationException>(() =>
+            Should.Throw<TypeCreationException>(() =>
             {
                 new Builder(builderSetup).CreateNew< ChuckNorris>().Build();
             });

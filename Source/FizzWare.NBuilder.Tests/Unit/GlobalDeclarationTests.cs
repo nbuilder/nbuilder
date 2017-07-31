@@ -2,10 +2,13 @@ using FizzWare.NBuilder.Implementation;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NSubstitute;
 using NUnit.Framework;
+using Shouldly;
+using Xunit;
+using Assert = NUnit.Framework.Assert;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
-    [TestFixture]
+    
     public class GlobalDeclarationTests
     {
         private IGlobalDeclaration<SimpleClass> declaration;
@@ -13,8 +16,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         private IListBuilderImpl<SimpleClass> listBuilderImpl;
 
         BuilderSettings builderSettings;
-        [SetUp]
-        public void SetUp()
+        public GlobalDeclarationTests()
         {
             builderSettings = new BuilderSettings();
             listBuilderImpl = Substitute.For<IListBuilderImpl<SimpleClass>>();
@@ -24,7 +26,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             objectBuilder.BuilderSettings.Returns(builderSettings);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToConstructItems()
         {
             objectBuilder.BuilderSettings.Returns(builderSettings);
@@ -34,7 +36,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             declaration.Construct();
         }
 
-        [Test]
+        [Fact]
         public void ShouldAddToMasterList()
         {
             var masterList = new SimpleClass[2];
@@ -51,11 +53,11 @@ namespace FizzWare.NBuilder.Tests.Unit
             declaration.Construct();
             declaration.AddToMaster(masterList);
 
-            Assert.That(masterList[0], Is.SameAs(obj1));
-            Assert.That(masterList[1], Is.SameAs(obj2));
+            masterList[0].ShouldBeSameAs(obj1);
+            masterList[1].ShouldBeSameAs(obj2);
         }
 
-        [Test]
+        [Fact]
         public void ShouldRecordMasterListKeys()
         {
 
@@ -69,9 +71,9 @@ namespace FizzWare.NBuilder.Tests.Unit
             declaration.Construct();
 
             declaration.AddToMaster(masterList);
-            Assert.That(declaration.MasterListAffectedIndexes.Count, Is.EqualTo(2));
-            Assert.That(declaration.MasterListAffectedIndexes[0], Is.EqualTo(0));
-            Assert.That(declaration.MasterListAffectedIndexes[1], Is.EqualTo(1));
+            declaration.MasterListAffectedIndexes.Count.ShouldBe(2);
+            declaration.MasterListAffectedIndexes[0].ShouldBe(0);
+            declaration.MasterListAffectedIndexes[1].ShouldBe(1);
         }
     }
 }

@@ -2,46 +2,48 @@
 using System.Diagnostics;
 using System.Linq;
 using NUnit.Framework;
+using Shouldly;
+using Xunit;
+using Assert = NUnit.Framework.Assert;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
-    [TestFixture]
+    
     public class SequentialGeneratorTests
     {
         private SequentialGenerator<int> generator;
 
-        [SetUp]
-        public void SetUp()
+        public SequentialGeneratorTests()
         {
             generator = new SequentialGenerator<int>();
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToGenerate()
         {
-            Assert.That(generator.Generate(), Is.EqualTo(0));
-            Assert.That(generator.Generate(), Is.EqualTo(1));
-            Assert.That(generator.Generate(), Is.EqualTo(2));
+            generator.Generate().ShouldBe(0);
+            generator.Generate().ShouldBe(1);
+            generator.Generate().ShouldBe(2);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToSetIncrement()
         {
             generator.Increment = 2;
-            Assert.That(generator.Generate(), Is.EqualTo(0));
-            Assert.That(generator.Generate(), Is.EqualTo(2));
-            Assert.That(generator.Generate(), Is.EqualTo(4));
-            Assert.That(generator.Generate(), Is.EqualTo(6));
+            generator.Generate().ShouldBe(0);
+            generator.Generate().ShouldBe(2);
+            generator.Generate().ShouldBe(4);
+            generator.Generate().ShouldBe(6);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToGenerateInReverse()
         {
             generator.Direction = GeneratorDirection.Descending;
-            Assert.That(generator.Generate(), Is.EqualTo(0));
-            Assert.That(generator.Generate(), Is.EqualTo(-1));
-            Assert.That(generator.Generate(), Is.EqualTo(-2));
-            Assert.That(generator.Generate(), Is.EqualTo(-3));
+            generator.Generate().ShouldBe(0);
+            generator.Generate().ShouldBe(-1);
+            generator.Generate().ShouldBe(-2);
+            generator.Generate().ShouldBe(-3);
         }
 
         [DebuggerDisplay("Property: {Property}")]
@@ -50,7 +52,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             public string Property { get; set; }
         }
 
-        [Test]
+        [Fact]
         public void RangeDeclarationsShouldExecuteInOrderOfStartingPosition()
         {
             var generator = new SequentialGenerator<int>();
@@ -67,8 +69,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             var expected = new[]{"item01", "item23", "item4", "item5", "item6", "item7", "item8", "item9", "item", "item"};
             var actual = build.Select(row => row.Property).ToArray();
 
-            Assert.That(actual, Is.EquivalentTo(expected), string.Join(", ", expected));
-
+            actual.ShouldBe(expected);
         }
     }
 }

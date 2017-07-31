@@ -4,28 +4,26 @@ using FizzWare.NBuilder.Implementation;
 using FizzWare.NBuilder.PropertyNaming;
 using FizzWare.NBuilder.Tests.Integration.Models;
 using NUnit.Framework;
+using Shouldly;
+using Xunit;
+using Assert = NUnit.Framework.Assert;
 
 namespace FizzWare.NBuilder.Tests.Integration
 {
     /// <remarks>
     /// To run these tests, create a local database named 'NBuilderTests'
     /// </remarks>
-    [TestFixture]
+    
     public class ListBuilderTests
     {
-        /// <summary>
-        /// Tests the fixture set up.
-        /// </summary>
-        [SetUp]
-        public void SetUp()
+        public ListBuilderTests()
         {
-            // Need to call this explicitly here to overcome a bug in resharper's test runner
             new RepositoryBuilderSetup().SetUp();
+
         }
+       
 
-        
-
-        [Test]
+        [Fact]
         public void CreatingAList()
         {
             var builderSetup = new BuilderSettings();
@@ -34,26 +32,26 @@ namespace FizzWare.NBuilder.Tests.Integration
             // Note: The asserts here are intentionally verbose to show how NBuilder works
 
             // It sets strings to their name plus their 1-based sequence number
-            Assert.That(products[0].Title, Is.EqualTo("Title1"));
-            Assert.That(products[1].Title, Is.EqualTo("Title2"));
-            Assert.That(products[2].Title, Is.EqualTo("Title3"));
-            Assert.That(products[3].Title, Is.EqualTo("Title4"));
-            Assert.That(products[4].Title, Is.EqualTo("Title5"));
-            Assert.That(products[5].Title, Is.EqualTo("Title6"));
-            Assert.That(products[6].Title, Is.EqualTo("Title7"));
-            Assert.That(products[7].Title, Is.EqualTo("Title8"));
-            Assert.That(products[8].Title, Is.EqualTo("Title9"));
-            Assert.That(products[9].Title, Is.EqualTo("Title10"));
+            products[0].Title.ShouldBe("Title1");
+            products[1].Title.ShouldBe("Title2");
+            products[2].Title.ShouldBe("Title3");
+            products[3].Title.ShouldBe("Title4");
+            products[4].Title.ShouldBe("Title5");
+            products[5].Title.ShouldBe("Title6");
+            products[6].Title.ShouldBe("Title7");
+            products[7].Title.ShouldBe("Title8");
+            products[8].Title.ShouldBe("Title9");
+            products[9].Title.ShouldBe("Title10");
 
             // Ints are set to their 1-based sequence number
-            Assert.That(products[0].Id, Is.EqualTo(1));
+            products[0].Id.ShouldBe(1);
             // ... 2, 3, 4, 5, 6, 7, 8 ...
-            Assert.That(products[9].Id, Is.EqualTo(10));
+            products[9].Id.ShouldBe(10);
 
             // Any other numeric types are set to their 1-based sequence number
-            Assert.That(products[0].PriceBeforeTax, Is.EqualTo(1m));
+            products[0].PriceBeforeTax.ShouldBe(1m);
             // ... 2m, 3m, 4m, 5m, 6m, 7m, 8m ...
-            Assert.That(products[9].PriceBeforeTax, Is.EqualTo(10m));
+            products[9].PriceBeforeTax.ShouldBe(10m);
         }
 
         public void UsingAllToSetValues()
@@ -66,10 +64,10 @@ namespace FizzWare.NBuilder.Tests.Integration
                 .Build();
 
             for (int i = 0; i < products.Count; i++)
-                Assert.That(products[i].Title, Is.EqualTo("A special title"));
+                products[i].Title.ShouldBe("A special title");
         }
 
-        [Test]
+        [Fact]
         public void SettingTheValueOfAProperty()
         {
             var builderSetup = new BuilderSettings();
@@ -79,17 +77,17 @@ namespace FizzWare.NBuilder.Tests.Integration
                     .With(x => x.Title = "A special title")
                 .Build();
 
-            Assert.That(products[0].Title, Is.EqualTo("A special title"));
-            Assert.That(products[1].Title, Is.EqualTo("A special title"));
+            products[0].Title.ShouldBe("A special title");
+            products[1].Title.ShouldBe("A special title");
 
             // After that the naming would carry on
-            Assert.That(products[2].Title, Is.EqualTo("Title3"));
-            Assert.That(products[3].Title, Is.EqualTo("Title4"));
+            products[2].Title.ShouldBe("Title3");
+            products[3].Title.ShouldBe("Title4");
             // ...4, 5, 6, 7, 8...
-            Assert.That(products[9].Title, Is.EqualTo("Title10"));
+            products[9].Title.ShouldBe("Title10");
         }
 
-        [Test]
+        [Fact]
         public void UsingSingularSyntaxInstead()
         {
             var builderSetup = new BuilderSettings();
@@ -99,10 +97,10 @@ namespace FizzWare.NBuilder.Tests.Integration
                                 .With(x => x.Title = "Special title 1")
                             .Build();
 
-            Assert.That(products[0].Title, Is.EqualTo("Special title 1"));
+            products[0].Title.ShouldBe("Special title 1");
         }
 
-        [Test]
+        [Fact]
         public void UsingAGenerator()
         {
             var builderSetup = new BuilderSettings();
@@ -117,12 +115,12 @@ namespace FizzWare.NBuilder.Tests.Integration
 
             foreach (var product in products)
             {
-                Assert.That(product.PriceBeforeTax, Is.AtLeast(50m));
-                Assert.That(product.PriceBeforeTax, Is.AtMost(1000m));
+                product.PriceBeforeTax.ShouldBeGreaterThanOrEqualTo(50m);
+                product.PriceBeforeTax.ShouldBeLessThanOrEqualTo(1000m);
             }
         }
 
-        [Test]
+        [Fact]
         public void DeclaringThatARandomNumberOfElementsShouldHaveCertainProperties()
         {
             var builderSetup = new BuilderSettings();
@@ -145,10 +143,10 @@ namespace FizzWare.NBuilder.Tests.Integration
                 }
             }
 
-            Assert.That(count, Is.EqualTo(5));
+            count.ShouldBe(5);
         }
 
-        [Test]
+        [Fact]
         public void CreatingAListOfProductsAndAddingThemToCategories()
         {
             var builderSetup = new BuilderSettings();
@@ -163,12 +161,12 @@ namespace FizzWare.NBuilder.Tests.Integration
 
             foreach (var product in products)
             {
-                Assert.That(product.Categories.Count, Is.AtLeast(5));
-                Assert.That(product.Categories.Count, Is.AtMost(10));
+                product.Categories.Count.ShouldBeGreaterThanOrEqualTo(5);
+                product.Categories.Count.ShouldBeLessThanOrEqualTo(10);
             }
         }
 
-        [Test]
+        [Fact]
         public void UsingTheSequentialGenerator()
         {
             var builderSetup = new BuilderSettings();
@@ -181,13 +179,13 @@ namespace FizzWare.NBuilder.Tests.Integration
                     .With(x => x.Id = generator.Generate())
                 .Build();
 
-            Assert.That(products[0].Id, Is.EqualTo(6));
-            Assert.That(products[1].Id, Is.EqualTo(4));
-            Assert.That(products[2].Id, Is.EqualTo(2));
+            products[0].Id.ShouldBe(6);
+            products[1].Id.ShouldBe(4);
+            products[2].Id.ShouldBe(2);
         }
 
 
-        [Test]
+        [Fact]
         public void UsingSequentialGenerators()
         {
             var builderSetup = new BuilderSettings();
@@ -210,16 +208,16 @@ namespace FizzWare.NBuilder.Tests.Integration
                 .Build();
 
             // Assert
-            Assert.That(list[0].PriceBeforeTax, Is.EqualTo(2000));
-            Assert.That(list[1].PriceBeforeTax, Is.EqualTo(1990));
-            Assert.That(list[2].PriceBeforeTax, Is.EqualTo(1980));
+            list[0].PriceBeforeTax.ShouldBe(2000);
+            list[1].PriceBeforeTax.ShouldBe(1990);
+            list[2].PriceBeforeTax.ShouldBe(1980);
 
-            Assert.That(list[0].Id, Is.EqualTo(0));
-            Assert.That(list[1].Id, Is.EqualTo(10000));
-            Assert.That(list[2].Id, Is.EqualTo(20000));
+            list[0].Id.ShouldBe(0);
+            list[1].Id.ShouldBe(10000);
+            list[2].Id.ShouldBe(20000);
         }
 
-        [Test]
+        [Fact]
         public void SequentialGenerator_DateTimeGeneration()
         {
             var builderSetup = new BuilderSettings();
@@ -240,11 +238,11 @@ namespace FizzWare.NBuilder.Tests.Integration
                     .With(x => x.Created = dateTimeGenerator.Generate())
                 .Build();
 
-            Assert.That(list[0].Created, Is.EqualTo(startingDate));
-            Assert.That(list[1].Created, Is.EqualTo(startingDate.AddDays(increment)));
+            list[0].Created.ShouldBe(startingDate);
+            list[1].Created.ShouldBe(startingDate.AddDays(increment));
         }
 
-        [Test]
+        [Fact]
         public void UsingTheWithBetween_And_SyntaxForGreaterReadability()
         {
             var builderSetup  = new BuilderSettings();
@@ -259,12 +257,12 @@ namespace FizzWare.NBuilder.Tests.Integration
 
             foreach (var product in products)
             {
-                Assert.That(product.Categories.Count, Is.AtLeast(5));
-                Assert.That(product.Categories.Count, Is.AtMost(10));
+                product.Categories.Count.ShouldBeGreaterThanOrEqualTo(5);;
+                product.Categories.Count.ShouldBeLessThanOrEqualTo(10);
             }
         }
         
-        [Test]
+        [Fact]
         public void CreatingAListOfATypeWithAConstructor()
         {
             var builderSetup = new BuilderSettings();
@@ -283,13 +281,13 @@ namespace FizzWare.NBuilder.Tests.Integration
 
             foreach (var basketItem in basketItems)
             {
-                Assert.That(basketItem.Basket, Is.EqualTo(basket));
-                Assert.That(basketItem.Product, Is.EqualTo(product));
-                Assert.That(basketItem.Quantity, Is.EqualTo(quantity));
+                basketItem.Basket.ShouldBe(basket);
+                basketItem.Product.ShouldBe(product);
+                basketItem.Quantity.ShouldBe(quantity);
             }
         }
 
-        [Test]
+        [Fact]
         public void DifferentPartsOfTheListCanBeConstructedDifferently()
         {
             var builderSetup = new BuilderSettings();
@@ -309,25 +307,25 @@ namespace FizzWare.NBuilder.Tests.Integration
                     .WithConstructor(() => new BasketItem(basket2, product2, quantity2))
                 .Build();
 
-            Assert.That(items[0].Basket, Is.EqualTo(basket1));
-            Assert.That(items[0].Basket, Is.EqualTo(basket1));
-            Assert.That(items[0].Basket, Is.EqualTo(basket1));
-            Assert.That(items[0].Basket, Is.EqualTo(basket1));
-            Assert.That(items[0].Basket, Is.EqualTo(basket1));
-            Assert.That(items[0].Basket, Is.EqualTo(basket1));
+            items[0].Basket.ShouldBe(basket1);
+            items[0].Basket.ShouldBe(basket1);
+            items[0].Basket.ShouldBe(basket1);
+            items[0].Basket.ShouldBe(basket1);
+            items[0].Basket.ShouldBe(basket1);
+            items[0].Basket.ShouldBe(basket1);
         }
 
-        [Test]
+        [Fact]
         public void WillComplainIfYouTryToBuildAClassThatCannotBeInstantiatedDirectly()
         {
-            Assert.Throws<BuilderException>(() =>
+            Should.Throw<BuilderException>(() =>
             {
                 var builderSetup = new BuilderSettings();
                 new Builder(builderSetup).CreateListOfSize< ChuckNorris>(10).Build();
             });
         }
 
-        [Test]
+        [Fact]
         public void UsingWith_WithImmutableClassProperties()
         {
             var builderSetup = new BuilderSettings();
@@ -337,11 +335,11 @@ namespace FizzWare.NBuilder.Tests.Integration
                     .With(p => p.Amount, 100)
                 .Build();
 
-            Assert.That(invoices[0].Amount, Is.EqualTo(100));
-            Assert.That(invoices[1].Amount, Is.EqualTo(100));
+            invoices[0].Amount.ShouldBe(100);
+            invoices[1].Amount.ShouldBe(100);
         }
 
-        [Test]
+        [Fact]
         public void UsingWith_WithAnIndex()
         {
             var builderSetup = new BuilderSettings();
@@ -351,11 +349,11 @@ namespace FizzWare.NBuilder.Tests.Integration
                     .With((p, idx) => p.Description = "Description" + (idx + 5))
                 .Build();
 
-            Assert.That(invoices[0].Description, Is.EqualTo("Description5"));
-            Assert.That(invoices[1].Description, Is.EqualTo("Description6"));
+            invoices[0].Description.ShouldBe("Description5");
+            invoices[1].Description.ShouldBe("Description6");
         }
 
-        [Test]
+        [Fact]
         public void UsingAndWithAnIndex()
         {
             var builderSetup = new BuilderSettings();
@@ -366,13 +364,13 @@ namespace FizzWare.NBuilder.Tests.Integration
                     .And((p, idx) => p.Description = "Description" + (idx + 5))
                 .Build();
 
-            Assert.That(invoices[0].Title, Is.EqualTo("Title"));
-            Assert.That(invoices[0].Description, Is.EqualTo("Description5"));
-            Assert.That(invoices[1].Title, Is.EqualTo("Title"));
-            Assert.That(invoices[1].Description, Is.EqualTo("Description6"));
+            invoices[0].Title.ShouldBe("Title");
+            invoices[0].Description.ShouldBe("Description5");
+            invoices[1].Title.ShouldBe("Title");
+            invoices[1].Description.ShouldBe("Description6");
         }
 
-        [Test]
+        [Fact]
         public void UsingAndWithImmutableClassProperties()
         {
             var builderSetup = new BuilderSettings();
@@ -383,13 +381,13 @@ namespace FizzWare.NBuilder.Tests.Integration
                     .And(p => p.Id, 200)
                 .Build();
 
-            Assert.That(invoices[0].Amount, Is.EqualTo(100));
-            Assert.That(invoices[1].Amount, Is.EqualTo(100));
-            Assert.That(invoices[0].Id, Is.EqualTo(200));
-            Assert.That(invoices[1].Id, Is.EqualTo(200));
+            invoices[0].Amount.ShouldBe(100);
+            invoices[1].Amount.ShouldBe(100);
+            invoices[0].Id.ShouldBe(200);
+            invoices[1].Id.ShouldBe(200);
         }
 
-        [Test]
+        [Fact]
         public void UsingHasWithImmutableClassProperties()
         {
             var builderSetup = new BuilderSettings();
@@ -399,11 +397,11 @@ namespace FizzWare.NBuilder.Tests.Integration
                     .With(p => p.Amount, 100)
                 .Build();
 
-            Assert.That(invoices[0].Amount, Is.EqualTo(100));
+            invoices[0].Amount.ShouldBe(100);
         }
 
         
-        [Test]
+        [Fact]
         public void ChainingDeclarationsTogether()
         {
             var builderSetup = new BuilderSettings();
@@ -417,15 +415,15 @@ namespace FizzWare.NBuilder.Tests.Integration
                     .With(x => x.Title = "Special Title 3")
                 .Build();
 
-            Assert.That(list[0].Title, Is.EqualTo("Special Title 1"));
-            Assert.That(list[9].Title, Is.EqualTo("Special Title 1"));
-            Assert.That(list[10].Title, Is.EqualTo("Special Title 2"));
-            Assert.That(list[19].Title, Is.EqualTo("Special Title 2"));
-            Assert.That(list[20].Title, Is.EqualTo("Special Title 3"));
-            Assert.That(list[29].Title, Is.EqualTo("Special Title 3"));
+            list[0].Title.ShouldBe("Special Title 1");
+            list[9].Title.ShouldBe("Special Title 1");
+            list[10].Title.ShouldBe("Special Title 2");
+            list[19].Title.ShouldBe("Special Title 2");
+            list[20].Title.ShouldBe("Special Title 3");
+            list[29].Title.ShouldBe("Special Title 3");
         }
 
-        ////[Test]
+        ////[Fact]
         ////public void UsingAndTheRemaining()
         ////{ 
         ////    var list = Builder<Product>
@@ -436,13 +434,13 @@ namespace FizzWare.NBuilder.Tests.Integration
         ////            .With(x => x.Title = "Special Title 2")
         ////        .Build();
 
-        ////    Assert.That(list[0].Title, Is.EqualTo("Special Title 1"));
-        ////    Assert.That(list[1].Title, Is.EqualTo("Special Title 1"));
-        ////    Assert.That(list[2].Title, Is.EqualTo("Special Title 2"));
-        ////    Assert.That(list[3].Title, Is.EqualTo("Special Title 2"));
+        ////    list[0].Title.ShouldBe("Special Title 1");
+        ////    list[1].Title.ShouldBe("Special Title 1");
+        ////    list[2].Title.ShouldBe("Special Title 2");
+        ////    list[3].Title.ShouldBe("Special Title 2");
         ////}
 
-        [Test]
+        [Fact]
         public void UsingAndThePrevious()
         {
             var builderSetup = new BuilderSettings();
@@ -454,13 +452,13 @@ namespace FizzWare.NBuilder.Tests.Integration
                     .With(x => x.Title = "Special Title 2")
                 .Build();
 
-            Assert.That(list[10].Title, Is.EqualTo("Special Title 2"));
-            Assert.That(list[19].Title, Is.EqualTo("Special Title 2"));
-            Assert.That(list[20].Title, Is.EqualTo("Special Title 1"));
-            Assert.That(list[29].Title, Is.EqualTo("Special Title 1"));
+            list[10].Title.ShouldBe("Special Title 2");
+            list[19].Title.ShouldBe("Special Title 2");
+            list[20].Title.ShouldBe("Special Title 1");
+            list[29].Title.ShouldBe("Special Title 1");
         }
 
-        [Test]
+        [Fact]
         public void UsingSection()
         {
             var builderSetup = new BuilderSettings();
@@ -475,23 +473,23 @@ namespace FizzWare.NBuilder.Tests.Integration
                 .Build();
 
             // All
-            Assert.That(list[0].Title, Is.EqualTo("Special Title 1"));
-            Assert.That(list[1].Title, Is.EqualTo("Special Title 1"));
+            list[0].Title.ShouldBe("Special Title 1");
+            list[1].Title.ShouldBe("Special Title 1");
             // ...
-            Assert.That(list[29].Title, Is.EqualTo("Special Title 1"));
+            list[29].Title.ShouldBe("Special Title 1");
 
             // Section 1 - 12 - 14
-            Assert.That(list[12].Title, Is.EqualTo("Special Title 2"));
-            Assert.That(list[13].Title, Is.EqualTo("Special Title 2"));
-            Assert.That(list[14].Title, Is.EqualTo("Special Title 2"));
+            list[12].Title.ShouldBe("Special Title 2");
+            list[13].Title.ShouldBe("Special Title 2");
+            list[14].Title.ShouldBe("Special Title 2");
 
             // Section 2 - 16 - 18
-            Assert.That(list[16].Title, Is.EqualTo("Special Title 3"));
-            Assert.That(list[17].Title, Is.EqualTo("Special Title 3"));
-            Assert.That(list[18].Title, Is.EqualTo("Special Title 3"));
+            list[16].Title.ShouldBe("Special Title 3");
+            list[17].Title.ShouldBe("Special Title 3");
+            list[18].Title.ShouldBe("Special Title 3");
         }
 
-        [Test]
+        [Fact]
         public void UsingSectionAndTheNext()
         {
             var builderSetup = new BuilderSettings();
@@ -505,11 +503,11 @@ namespace FizzWare.NBuilder.Tests.Integration
                     .With(x => x.Title = "Special Title 3")
                 .Build();
 
-            Assert.That(list[0].Title, Is.EqualTo("Special Title 1"));
-            Assert.That(list[15].Title, Is.EqualTo("Special Title 3"));
+            list[0].Title.ShouldBe("Special Title 1");
+            list[15].Title.ShouldBe("Special Title 3");
         }
 
-        [Test]
+        [Fact]
         [Description("You can use Do to do something to all the items in the declaration")]
         public void UsingDo()
         {
@@ -525,15 +523,15 @@ namespace FizzWare.NBuilder.Tests.Integration
                     .Do(x => x.AddChild(children[2]))
                 .Build();
                 
-            Assert.That(categories[0].Children[0], Is.EqualTo(children[0]));
-            Assert.That(categories[0].Children[1], Is.EqualTo(children[1]));
-            Assert.That(categories[1].Children[0], Is.EqualTo(children[0]));
-            Assert.That(categories[1].Children[1], Is.EqualTo(children[1]));
-            Assert.That(categories[2].Children[0], Is.EqualTo(children[2]));
-            Assert.That(categories[3].Children[0], Is.EqualTo(children[2]));
+            categories[0].Children[0].ShouldBe(children[0]);
+            categories[0].Children[1].ShouldBe(children[1]);
+            categories[1].Children[0].ShouldBe(children[0]);
+            categories[1].Children[1].ShouldBe(children[1]);
+            categories[2].Children[0].ShouldBe(children[2]);
+            categories[3].Children[0].ShouldBe(children[2]);
         }
 
-        [Test]
+        [Fact]
         public void UsingDoAndPickTogether()
         {
             var builderSetup = new BuilderSettings();
@@ -545,11 +543,11 @@ namespace FizzWare.NBuilder.Tests.Integration
                     .Do(x => x.AddChild(Pick<Category>.RandomItemFrom(children)))
                 .Build();
 
-            Assert.That(categories[0].Children.Count, Is.EqualTo(1));
-            Assert.That(categories[1].Children.Count, Is.EqualTo(1));
+            categories[0].Children.Count.ShouldBe(1);
+            categories[1].Children.Count.ShouldBe(1);
         }
 
-        [Test]
+        [Fact]
         [Description("Multi functions allow you to call a method on an object on each item in a list")]
         public void UsingMultiFunctions()
         {
@@ -566,16 +564,16 @@ namespace FizzWare.NBuilder.Tests.Integration
             // Assertions are intentionally verbose for clarity
             foreach (var product in products)
             {
-                Assert.That(product.Categories.Count, Is.EqualTo(5));
-                Assert.That(product.Categories[0], Is.EqualTo(categories[0]));
-                Assert.That(product.Categories[1], Is.EqualTo(categories[1]));
-                Assert.That(product.Categories[2], Is.EqualTo(categories[2]));
-                Assert.That(product.Categories[3], Is.EqualTo(categories[3]));
-                Assert.That(product.Categories[4], Is.EqualTo(categories[4]));
+                product.Categories.Count.ShouldBe(5);
+                product.Categories[0].ShouldBe(categories[0]);
+                product.Categories[1].ShouldBe(categories[1]);
+                product.Categories[2].ShouldBe(categories[2]);
+                product.Categories[3].ShouldBe(categories[3]);
+                product.Categories[4].ShouldBe(categories[4]);
             }
         }
 
-        [Test]
+        [Fact]
         public void UsingRandomGenerator()
         {
             var builderSetup = new BuilderSettings();
@@ -586,22 +584,22 @@ namespace FizzWare.NBuilder.Tests.Integration
                 .With(x => x.QuantityInStock = generator.Next(1000, 2000))
                 .Build();
 
-            Assert.That(list[0].QuantityInStock, Is.AtLeast(1000));
-            Assert.That(list[0].QuantityInStock, Is.AtMost(2000));
+            list[0].QuantityInStock.ShouldBeGreaterThanOrEqualTo(1000);
+            list[0].QuantityInStock.ShouldBeLessThanOrEqualTo(2000);
 
-            Assert.That(list[1].QuantityInStock, Is.AtLeast(1000));
-            Assert.That(list[1].QuantityInStock, Is.AtMost(2000));
+            list[1].QuantityInStock.ShouldBeGreaterThanOrEqualTo(1000);
+            list[1].QuantityInStock.ShouldBeLessThanOrEqualTo(2000);
 
-            Assert.That(list[2].QuantityInStock, Is.AtLeast(1000));
-            Assert.That(list[2].QuantityInStock, Is.AtMost(2000));
+            list[2].QuantityInStock.ShouldBeGreaterThanOrEqualTo(1000);
+            list[2].QuantityInStock.ShouldBeLessThanOrEqualTo(2000);
         }
 
-        [Test]
+        [Fact]
         public void WillNotLetYouDoThingsThatDoNotMakeSense()
         {
             var builderSetup = new BuilderSettings();
 
-            Assert.Throws<BuilderException>(() =>
+            Should.Throw<BuilderException>(() =>
             {
                 new Builder(builderSetup)
                     .CreateListOfSize< Product>(10)
@@ -614,7 +612,7 @@ namespace FizzWare.NBuilder.Tests.Integration
             });
         }
 
-        [Test]
+        [Fact]
         public void SupportsStructsButDoesNotSupportAutomaticallyNamingTheProperties()
         {
             var builderSetup = new BuilderSettings();
@@ -622,12 +620,12 @@ namespace FizzWare.NBuilder.Tests.Integration
                 .CreateListOfSize< WarehouseLocation>(10)
                 .Build();
 
-            Assert.That(locations.Count, Is.EqualTo(10));
-            Assert.That(locations[0].Location, Is.EqualTo(0));
-            Assert.That(locations[1].Location, Is.EqualTo(0));
+            locations.Count.ShouldBe(10);
+            locations[0].Location.ShouldBe(0);
+            locations[1].Location.ShouldBe(0);
         }
 
-        [Test]
+        [Fact]
         public void StructsCanHavePropertyAssignments()
         {
             var builderSetup = new BuilderSettings();
@@ -637,17 +635,17 @@ namespace FizzWare.NBuilder.Tests.Integration
                 .WithConstructor(() => new WarehouseLocation('A', 1, 2))
                 .Build();
 
-            Assert.That(locations[5].Aisle, Is.EqualTo('A'));
-            Assert.That(locations[6].Aisle, Is.EqualTo('A'));
+            locations[5].Aisle.ShouldBe('A');
+            locations[6].Aisle.ShouldBe('A');
 
-            Assert.That(locations[5].Shelf, Is.EqualTo(1));
-            Assert.That(locations[6].Shelf, Is.EqualTo(1));
+            locations[5].Shelf.ShouldBe(1);
+            locations[6].Shelf.ShouldBe(1);
 
-            Assert.That(locations[5].Location, Is.EqualTo(2));
-            Assert.That(locations[6].Location, Is.EqualTo(2));
+            locations[5].Location.ShouldBe(2);
+            locations[6].Location.ShouldBe(2);
         }
 
-        [Test]
+        [Fact]
         public void AutomaticPropertyAndPublicFieldNamingCanBeSwitchedOff()
         {
             var builderSetup = new BuilderSettings();
@@ -655,14 +653,14 @@ namespace FizzWare.NBuilder.Tests.Integration
 
             var products = new Builder(builderSetup).CreateListOfSize< Product>(10).Build();
 
-            Assert.That(products[0].Title, Is.Null);
-            Assert.That(products[9].Title, Is.Null);
+            products[0].Title.ShouldBeNull();
+            products[9].Title.ShouldBeNull();
 
-            Assert.That(products[0].Id, Is.EqualTo(0));
-            Assert.That(products[9].Id, Is.EqualTo(0));
+            products[0].Id.ShouldBe(0);
+            products[9].Id.ShouldBe(0);
         }
 
-        [Test]
+        [Fact]
         public void ItIsPossibleToSwitchOffAutomaticPropertyNamingForASinglePropertyOfASpecificType()
         {
             var builderSetup = new BuilderSettings();
@@ -671,25 +669,26 @@ namespace FizzWare.NBuilder.Tests.Integration
             var products = new Builder(builderSetup).CreateListOfSize< Product>(10).Build();
 
             // The Product.Id will always be its default value
-            Assert.That(products[0].Id, Is.EqualTo(0));
-            Assert.That(products[9].Id, Is.EqualTo(0));
+            products[0].Id.ShouldBe(0);
+            products[9].Id.ShouldBe(0);
 
             // Other properties are still given automatic values as normal
-            Assert.That(products[0].QuantityInStock, Is.EqualTo(1));
-            Assert.That(products[9].QuantityInStock, Is.EqualTo(10));
+            products[0].QuantityInStock.ShouldBe(1);
+            products[9].QuantityInStock.ShouldBe(10);
         }
 
-        [Test]
+        [Fact]
         public void SpecifyingADifferentDefaultPropertyNamer()
         {
 
             var builderSetup = new BuilderSettings();
-            builderSetup.SetDefaultPropertyNamer(new RandomValuePropertyNamer(new RandomGenerator(), new ReflectionUtil(), true, DateTime.Now, DateTime.Now.AddDays(10), true,new BuilderSettings()));
+            var propertyNamer = new RandomValuePropertyNamer(new RandomGenerator(), new ReflectionUtil(), true, DateTime.Now, DateTime.Now.AddDays(10), true,new BuilderSettings());
+            builderSetup.SetDefaultPropertyNamer(propertyNamer);
 
             var products = new Builder(builderSetup).CreateListOfSize< Product>(10).Build();
 
-            Assert.That(products[0].Title, Is.Not.EqualTo("StringOne1"));
-            Assert.That(products[9].Title, Is.Not.EqualTo("StringOne10"));
+            products[0].Title.ShouldNotBe("StringOne1");
+            products[9].Title.ShouldNotBe("StringOne10");
         }
     }
 }

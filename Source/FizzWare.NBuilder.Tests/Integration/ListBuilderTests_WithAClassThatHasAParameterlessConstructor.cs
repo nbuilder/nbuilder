@@ -4,10 +4,13 @@ using FizzWare.NBuilder.PropertyNaming;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NSubstitute;
 using NUnit.Framework;
+using Shouldly;
+using Xunit;
+using Assert = NUnit.Framework.Assert;
 
 namespace FizzWare.NBuilder.Tests.Integration
 {
-    [TestFixture]
+    
     public class ListBuilderTests_WithAClassThatHasAParameterlessConstructor
     {
         [TestCase(10, 5)]
@@ -27,18 +30,18 @@ namespace FizzWare.NBuilder.Tests.Integration
             Assert.AreEqual(randomItems, numObjectsWithRandomValue);
         }
 
-        [Test]
+        [Fact]
         public void PropertiesShouldBeSetSequentially()
         {
             var list = Builder<MyClass>.CreateListOfSize(10).Build();
 
-            Assert.That(list[0].StringOne, Is.EqualTo("StringOne1"));
-            Assert.That(list[9].StringOne, Is.EqualTo("StringOne10"));
-            Assert.That(list[0].EnumProperty, Is.EqualTo(MyEnum.EnumValue1));
-            Assert.That(list[9].EnumProperty, Is.EqualTo(MyEnum.EnumValue5));
+            list[0].StringOne.ShouldBe("StringOne1");
+            list[9].StringOne.ShouldBe("StringOne10");
+            list[0].EnumProperty.ShouldBe(MyEnum.EnumValue1);
+            list[9].EnumProperty.ShouldBe(MyEnum.EnumValue5);
         }
 
-        [Test]
+        [Fact]
         public void Random_test()
         {
             var items = new Builder().CreateListOfSize<MyClass>(40)
@@ -52,14 +55,14 @@ namespace FizzWare.NBuilder.Tests.Integration
                 .With(x => x.EnumProperty = MyEnum.EnumValue4)
                 .Build();
 
-            Assert.That(items.Count(), Is.EqualTo(40));
-            Assert.That(items.Count(x => x.EnumProperty == MyEnum.EnumValue1), Is.EqualTo(10));
-            Assert.That(items.Count(x => x.EnumProperty == MyEnum.EnumValue2), Is.EqualTo(10));
-            Assert.That(items.Count(x => x.EnumProperty == MyEnum.EnumValue3), Is.EqualTo(10));
-            Assert.That(items.Count(x => x.EnumProperty == MyEnum.EnumValue4), Is.EqualTo(10));
+            items.Count().ShouldBe(40);
+            items.Count(x => x.EnumProperty == MyEnum.EnumValue1).ShouldBe(10);
+            items.Count(x => x.EnumProperty == MyEnum.EnumValue2).ShouldBe(10);
+            items.Count(x => x.EnumProperty == MyEnum.EnumValue3).ShouldBe(10);
+            items.Count(x => x.EnumProperty == MyEnum.EnumValue4).ShouldBe(10);
         }
 
-        [Test]
+        [Fact]
         public void should_be_able_to_disable_property_naming_for_an_inherited_property()
         {
             var builderSettings = new BuilderSettings();
@@ -69,11 +72,11 @@ namespace FizzWare.NBuilder.Tests.Integration
 
                 var list = new Builder(builderSettings).CreateListOfSize<MyConcreteClass>(10).Build();
 
-                Assert.That(list[0].PropertyInAbstractClass, Is.EqualTo(0));
-                Assert.That(list[0].PropertyInInheritedClass, Is.EqualTo(1));
+                list[0].PropertyInAbstractClass.ShouldBe(0);
+                list[0].PropertyInInheritedClass.ShouldBe(1);
 
-                Assert.That(list[9].PropertyInAbstractClass, Is.EqualTo(0));
-                Assert.That(list[9].PropertyInInheritedClass, Is.EqualTo(10));
+                list[9].PropertyInAbstractClass.ShouldBe(0);
+                list[9].PropertyInInheritedClass.ShouldBe(10);
             }
             finally
             {
@@ -81,15 +84,15 @@ namespace FizzWare.NBuilder.Tests.Integration
             }
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToCreateAList()
         {
             var list = Builder<MyClass>.CreateListOfSize(10).Build();
 
-            Assert.That(list.Count, Is.EqualTo(10));
+            list.Count.ShouldBe(10);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToDisableAutomaticPropertyNaming()
         {
             var builderSettings = new BuilderSettings();
@@ -98,8 +101,8 @@ namespace FizzWare.NBuilder.Tests.Integration
                 builderSettings.AutoNameProperties = false;
                 var list = new Builder(builderSettings).CreateListOfSize<MyClass>(10).Build();
 
-                Assert.That(list[0].Int, Is.EqualTo(0));
-                Assert.That(list[9].Int, Is.EqualTo(0));
+                list[0].Int.ShouldBe(0);
+                list[9].Int.ShouldBe(0);
             }
             finally
             {
@@ -107,7 +110,7 @@ namespace FizzWare.NBuilder.Tests.Integration
             }
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToDisableAutomaticPropertyNamingForASpecificFieldOfASpecificType()
         {
             var builderSettings = new BuilderSettings();
@@ -117,11 +120,11 @@ namespace FizzWare.NBuilder.Tests.Integration
 
                 var list = new Builder(builderSettings).CreateListOfSize<MyClass>(10).Build();
 
-                Assert.That(list[0].Int, Is.EqualTo(0));
-                Assert.That(list[0].Long, Is.EqualTo(1));
+                list[0].Int.ShouldBe(0);
+                list[0].Long.ShouldBe(1);
 
-                Assert.That(list[9].Int, Is.EqualTo(0));
-                Assert.That(list[9].Long, Is.EqualTo(10));
+                list[9].Int.ShouldBe(0);
+                list[9].Long.ShouldBe(10);
             }
             finally
             {
@@ -129,7 +132,7 @@ namespace FizzWare.NBuilder.Tests.Integration
             }
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToDisableAutoPropertyNaming()
         {
             var builderSettings = new BuilderSettings();
@@ -139,11 +142,11 @@ namespace FizzWare.NBuilder.Tests.Integration
 
                 var list = new Builder(builderSettings).CreateListOfSize<MyClass>(10).Build();
 
-                Assert.That(list[0].Int, Is.EqualTo(0));
-                Assert.That(list[9].Int, Is.EqualTo(0));
+                list[0].Int.ShouldBe(0);
+                list[9].Int.ShouldBe(0);
 
-                Assert.That(list[0].StringOne, Is.Null);
-                Assert.That(list[9].StringOne, Is.Null);
+                list[0].StringOne.ShouldBeNull();
+                list[9].StringOne.ShouldBeNull();
             }
             finally
             {
@@ -151,7 +154,7 @@ namespace FizzWare.NBuilder.Tests.Integration
             }
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToSpecifyACustomPropertyNamerForASpecificType()
         {
             var builderSettings = new BuilderSettings();
@@ -165,7 +168,7 @@ namespace FizzWare.NBuilder.Tests.Integration
             propertyNamer.Received().SetValuesOfAllIn(Arg.Any<IList<MyClass>>());
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToSpecifyADefaultCustomPropertyNamer()
         {
             var builderSettings = new BuilderSettings();
@@ -173,7 +176,7 @@ namespace FizzWare.NBuilder.Tests.Integration
             {
                 builderSettings.SetDefaultPropertyNamer(new MockPropertyNamerTests());
                 new Builder(builderSettings).CreateListOfSize<MyClass>(10).Build();
-                Assert.That(MockPropertyNamerTests.SetValuesOfAllInCallCount, Is.EqualTo(1));
+                MockPropertyNamerTests.SetValuesOfAllInCallCount.ShouldBe(1);
             }
             finally
             {
@@ -181,7 +184,7 @@ namespace FizzWare.NBuilder.Tests.Integration
             }
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToUseAndTheNext()
         {
             var builderSettings = new BuilderSettings();
@@ -197,13 +200,13 @@ namespace FizzWare.NBuilder.Tests.Integration
                     .With(x => x.StringOne = titletwo)
                     .Build();
 
-            Assert.That(productList[0].StringOne, Is.EqualTo(titleone));
-            Assert.That(productList[1].StringOne, Is.EqualTo(titleone));
-            Assert.That(productList[2].StringOne, Is.EqualTo(titletwo));
-            Assert.That(productList[3].StringOne, Is.EqualTo(titletwo));
+            productList[0].StringOne.ShouldBe(titleone);
+            productList[1].StringOne.ShouldBe(titleone);
+            productList[2].StringOne.ShouldBe(titletwo);
+            productList[3].StringOne.ShouldBe(titletwo);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToUseAndTheNextAfterASectionDeclaration()
         {
             var builderSettings = new BuilderSettings();
@@ -215,17 +218,17 @@ namespace FizzWare.NBuilder.Tests.Integration
                 .With(x => x.Int = 2)
                 .Build();
 
-            Assert.That(objects[0].Int, Is.EqualTo(1));
-            Assert.That(objects[1].Int, Is.EqualTo(1));
-            Assert.That(objects[2].Int, Is.EqualTo(1));
-            Assert.That(objects[3].Int, Is.EqualTo(1));
-            Assert.That(objects[4].Int, Is.EqualTo(1));
-            Assert.That(objects[5].Int, Is.EqualTo(2));
-            Assert.That(objects[6].Int, Is.EqualTo(2));
-            Assert.That(objects[7].Int, Is.EqualTo(2));
+            objects[0].Int.ShouldBe(1);
+            objects[1].Int.ShouldBe(1);
+            objects[2].Int.ShouldBe(1);
+            objects[3].Int.ShouldBe(1);
+            objects[4].Int.ShouldBe(1);
+            objects[5].Int.ShouldBe(2);
+            objects[6].Int.ShouldBe(2);
+            objects[7].Int.ShouldBe(2);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToUseAndThePrevious()
         {
             var builderSettings = new BuilderSettings();
@@ -241,13 +244,13 @@ namespace FizzWare.NBuilder.Tests.Integration
                     .With(x => x.StringOne = titleone)
                     .Build();
 
-            Assert.That(productList[0].StringOne, Is.EqualTo(titleone));
-            Assert.That(productList[1].StringOne, Is.EqualTo(titleone));
-            Assert.That(productList[2].StringOne, Is.EqualTo(titletwo));
-            Assert.That(productList[3].StringOne, Is.EqualTo(titletwo));
+            productList[0].StringOne.ShouldBe(titleone);
+            productList[1].StringOne.ShouldBe(titleone);
+            productList[2].StringOne.ShouldBe(titletwo);
+            productList[3].StringOne.ShouldBe(titletwo);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToUseDo()
         {
             var builderSettings = new BuilderSettings();
@@ -257,11 +260,11 @@ namespace FizzWare.NBuilder.Tests.Integration
 
             for (var i = 0; i < objects.Count; i++)
             {
-                Assert.That(objects[i].SimpleClasses.Count, Is.EqualTo(1));
+                objects[i].SimpleClasses.Count.ShouldBe(1);
             }
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToUseMultipleTheFirsts()
         {
             var title = "FirstTitle";
@@ -275,12 +278,12 @@ namespace FizzWare.NBuilder.Tests.Integration
                     .Do(x => x.StringOne = overwrittenTitle)
                     .Build();
 
-            Assert.That(list.Count, Is.EqualTo(10));
-            Assert.That(list[0].StringOne, Is.EqualTo(overwrittenTitle));
-            Assert.That(list[4].StringOne, Is.EqualTo(overwrittenTitle));
+            list.Count.ShouldBe(10);
+            list[0].StringOne.ShouldBe(overwrittenTitle);
+            list[4].StringOne.ShouldBe(overwrittenTitle);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToUseTheFirst()
         {
             var specialTitle = "SpecialTitle";
@@ -290,19 +293,19 @@ namespace FizzWare.NBuilder.Tests.Integration
 
             // I want the asserts here to serve as documentation
             // so it's obvious how it works for anyone glancing at this test
-            Assert.That(list[0].StringOne, Is.EqualTo(specialTitle));
-            Assert.That(list[1].StringOne, Is.EqualTo(specialTitle));
-            Assert.That(list[2].StringOne, Is.EqualTo(specialTitle));
-            Assert.That(list[3].StringOne, Is.EqualTo(specialTitle));
-            Assert.That(list[4].StringOne, Is.EqualTo(specialTitle));
-            Assert.That(list[5].StringOne, Is.EqualTo("StringOne6"));
-            Assert.That(list[6].StringOne, Is.EqualTo("StringOne7"));
-            Assert.That(list[7].StringOne, Is.EqualTo("StringOne8"));
-            Assert.That(list[8].StringOne, Is.EqualTo("StringOne9"));
-            Assert.That(list[9].StringOne, Is.EqualTo("StringOne10"));
+            list[0].StringOne.ShouldBe(specialTitle);
+            list[1].StringOne.ShouldBe(specialTitle);
+            list[2].StringOne.ShouldBe(specialTitle);
+            list[3].StringOne.ShouldBe(specialTitle);
+            list[4].StringOne.ShouldBe(specialTitle);
+            list[5].StringOne.ShouldBe("StringOne6");
+            list[6].StringOne.ShouldBe("StringOne7");
+            list[7].StringOne.ShouldBe("StringOne8");
+            list[8].StringOne.ShouldBe("StringOne9");
+            list[9].StringOne.ShouldBe("StringOne10");
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToUseTheLast()
         {
             var specialTitle = "SpecialTitle";
@@ -310,16 +313,16 @@ namespace FizzWare.NBuilder.Tests.Integration
             var list =
                 Builder<MyClass>.CreateListOfSize(10).TheLast(5).With(x => x.StringOne = specialTitle).Build();
 
-            Assert.That(list[0].StringOne, Is.EqualTo("StringOne1"));
-            Assert.That(list[1].StringOne, Is.EqualTo("StringOne2"));
-            Assert.That(list[2].StringOne, Is.EqualTo("StringOne3"));
-            Assert.That(list[3].StringOne, Is.EqualTo("StringOne4"));
-            Assert.That(list[4].StringOne, Is.EqualTo("StringOne5"));
-            Assert.That(list[5].StringOne, Is.EqualTo(specialTitle));
-            Assert.That(list[6].StringOne, Is.EqualTo(specialTitle));
-            Assert.That(list[7].StringOne, Is.EqualTo(specialTitle));
-            Assert.That(list[8].StringOne, Is.EqualTo(specialTitle));
-            Assert.That(list[9].StringOne, Is.EqualTo(specialTitle));
+            list[0].StringOne.ShouldBe("StringOne1");
+            list[1].StringOne.ShouldBe("StringOne2");
+            list[2].StringOne.ShouldBe("StringOne3");
+            list[3].StringOne.ShouldBe("StringOne4");
+            list[4].StringOne.ShouldBe("StringOne5");
+            list[5].StringOne.ShouldBe(specialTitle);
+            list[6].StringOne.ShouldBe(specialTitle);
+            list[7].StringOne.ShouldBe(specialTitle);
+            list[8].StringOne.ShouldBe(specialTitle);
+            list[9].StringOne.ShouldBe(specialTitle);
         }
     }
 }

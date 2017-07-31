@@ -1,27 +1,30 @@
 using NUnit.Framework;
 using FizzWare.NBuilder.Tests.TestClasses;
+using Shouldly;
+using Xunit;
+using Assert = NUnit.Framework.Assert;
 
 namespace FizzWare.NBuilder.Tests.Integration
 {
-    [TestFixture]
+    
     public class SingleObjectBuilderTests_WithAClassThatHasANullCharConstant
     {
-        [Test]
+        [Fact]
         public void ShouldBeAbleToCreateAClassThatHasANullCharConstant()
         {
             var builderSetup = new BuilderSettings();
             var mc = Builder<MyClassWithCharConst>.CreateNew().Build();
 
-            Assert.That(mc.GetNullCharConst(), Is.EqualTo(MyClassWithCharConst.NullCharConst));
+            mc.GetNullCharConst().ShouldBe(MyClassWithCharConst.NullCharConst);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToCreateAClassThatHasACharConstant()
         {
             var builderSetup = new BuilderSettings();
             var mc = Builder<MyClassWithCharConst>.CreateNew().Build();
 
-            Assert.That(mc.GetNonNullCharConst(), Is.EqualTo(MyClassWithCharConst.NonNullCharConst));
+            mc.GetNonNullCharConst().ShouldBe(MyClassWithCharConst.NonNullCharConst);
         }
     }
 }

@@ -1,14 +1,17 @@
 ﻿using FizzWare.NBuilder.Tests.Integration.Models;
 using NUnit.Framework;
+using Shouldly;
+using Xunit;
+using Assert = NUnit.Framework.Assert;
 
 namespace FizzWare.NBuilder.Tests.Integration
 {
-    [TestFixture]
+    
     public class HierarchyBuilderTests
     {
 
 
-        [Test]
+        [Fact]
         public void CreatingAHierarchyOfCategoriesUsingRepositories()
         {
             var builderSetup = new RepositoryBuilderSetup().SetUp();
@@ -33,24 +36,24 @@ namespace FizzWare.NBuilder.Tests.Integration
 
             foreach (var root in categories)
             {
-                Assert.That(root.Children.Count, Is.AtLeast(minChildren));
-                Assert.That(root.Children.Count, Is.AtMost(maxChildren));
+                root.Children.Count.ShouldBeGreaterThanOrEqualTo(minChildren);
+                root.Children.Count.ShouldBeLessThanOrEqualTo(maxChildren);
 
                 foreach (var child1 in root.Children)
                 {
-                    Assert.That(child1.Children.Count, Is.AtLeast(minChildren));
-                    Assert.That(child1.Children.Count, Is.AtMost(maxChildren));
+                    child1.Children.Count.ShouldBeGreaterThanOrEqualTo(minChildren);
+                    child1.Children.Count.ShouldBeLessThanOrEqualTo(maxChildren);
 
                     foreach (var child2 in child1.Children)
                     {
-                        Assert.That(child2.Children.Count, Is.AtLeast(minChildren));
-                        Assert.That(child2.Children.Count, Is.AtMost(maxChildren));
+                        child2.Children.Count.ShouldBeGreaterThanOrEqualTo(minChildren);
+                        child2.Children.Count.ShouldBeLessThanOrEqualTo(maxChildren);
                     }
                 }
             }
         }
 
-        [Test]
+        [Fact]
         public void CreatingAHierarchyOfCategoriesUsingEntityFramework()
         {
             var builderSetup = new PersistenceTestsBuilderSetup().SetUp();
@@ -75,18 +78,18 @@ namespace FizzWare.NBuilder.Tests.Integration
 
             foreach (var root in categories)
             {
-                Assert.That(root.Children.Count, Is.AtLeast(minChildren));
-                Assert.That(root.Children.Count, Is.AtMost(maxChildren));
+                root.Children.Count.ShouldBeGreaterThanOrEqualTo(minChildren);
+                root.Children.Count.ShouldBeLessThanOrEqualTo(maxChildren);
 
                 foreach (var child1 in root.Children)
                 {
-                    Assert.That(child1.Children.Count, Is.AtLeast(minChildren));
-                    Assert.That(child1.Children.Count, Is.AtMost(maxChildren));
+                    child1.Children.Count.ShouldBeGreaterThanOrEqualTo(minChildren);
+                    child1.Children.Count.ShouldBeLessThanOrEqualTo(maxChildren);
 
                     foreach (var child2 in child1.Children)
                     {
-                        Assert.That(child2.Children.Count, Is.AtLeast(minChildren));
-                        Assert.That(child2.Children.Count, Is.AtMost(maxChildren));
+                        child2.Children.Count.ShouldBeGreaterThanOrEqualTo(minChildren);
+                        child2.Children.Count.ShouldBeLessThanOrEqualTo(maxChildren);
                     }
                 }
             }

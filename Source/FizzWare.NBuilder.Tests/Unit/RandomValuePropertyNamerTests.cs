@@ -7,18 +7,20 @@ using NSubstitute;
 using FizzWare.NBuilder.PropertyNaming;
 using FizzWare.NBuilder.Implementation;
 using FizzWare.NBuilder.Tests.TestClasses;
+using Shouldly;
+using Xunit;
+using Assert = NUnit.Framework.Assert;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
-    [TestFixture]
+    
     public class RandomValuePropertyNamerTests
     {
         private RandomValuePropertyNamer propertyNamer;
         private IReflectionUtil reflectionUtil;
         private IRandomGenerator generator;
 
-        [SetUp]
-        public void SetUp()
+        public RandomValuePropertyNamerTests()
         {
             var builderSetup = new BuilderSettings();
             reflectionUtil = Substitute.For<IReflectionUtil>();
@@ -26,14 +28,14 @@ namespace FizzWare.NBuilder.Tests.Unit
             propertyNamer = new RandomValuePropertyNamer(generator, reflectionUtil, false,builderSetup);
         }
 
-        [Test]
+        [Fact]
         public void SetValuesOfAllIn_ListOfTypeWithPrivateSetOnlyProperty_ValueIsNotSet()
         {
             var privateSetOnlyType = new MyClassWithGetOnlyPropertySpy();
 
             propertyNamer.SetValuesOfAllIn(new List<MyClassWithGetOnlyPropertySpy> { privateSetOnlyType });
 
-            Assert.That(privateSetOnlyType.IsSet, Is.False);
+            privateSetOnlyType.IsSet.ShouldBeFalse();
         }
     }
 }

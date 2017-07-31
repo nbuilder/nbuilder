@@ -3,25 +3,27 @@ using FizzWare.NBuilder.Implementation;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NUnit.Framework;
 using NSubstitute;
+using Shouldly;
+using Xunit;
 using Arg = NSubstitute.Arg;
+using Assert = NUnit.Framework.Assert;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
-    [TestFixture]
+    
     public class RangeDeclarationTests
     {
         private Declaration<SimpleClass> declaration;
         private IObjectBuilder<SimpleClass> objectBuilder;
         private IListBuilderImpl<SimpleClass> listBuilderImpl;
 
-        [SetUp]
-        public void SetUp()
+        public RangeDeclarationTests()
         {
             listBuilderImpl = Substitute.For<IListBuilderImpl<SimpleClass>>();
             objectBuilder = Substitute.For<IObjectBuilder<SimpleClass>>();
         }
 
-        [Test]
+        [Fact]
         public void DeclarationShouldUseObjectBuilderToConstructItems()
         {
 
@@ -39,7 +41,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             }
         }
 
-        [Test]
+        [Fact]
         public void DeclarationShouldAddToMasterListInCorrectPlace()
         {
             SimpleClass[] masterList = new SimpleClass[19];
@@ -57,11 +59,11 @@ namespace FizzWare.NBuilder.Tests.Unit
             declaration.Construct();
             declaration.AddToMaster(masterList);
 
-            Assert.That(masterList[9], Is.SameAs(obj1));
-            Assert.That(masterList[10], Is.SameAs(obj2));
+            masterList[9].ShouldBeSameAs(obj1);
+            masterList[10].ShouldBeSameAs(obj2);
         }
 
-        [Test]
+        [Fact]
         public void ShouldCallFunctionsOnItemsInTheMasterList()
         {
             IList<SimpleClass> masterList = Substitute.For<IList<SimpleClass>>();
@@ -82,7 +84,7 @@ namespace FizzWare.NBuilder.Tests.Unit
 
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToUseAll()
         {
 
@@ -97,7 +99,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             }
         }
 
-        [Test]
+        [Fact]
         public void ShouldRecordMasterListKeys()
         {
             SimpleClass[] masterList = new SimpleClass[19];
@@ -109,9 +111,9 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             declaration.AddToMaster(masterList);
 
-            Assert.That(declaration.MasterListAffectedIndexes.Count, Is.EqualTo(2));
-            Assert.That(declaration.MasterListAffectedIndexes[0], Is.EqualTo(9));
-            Assert.That(declaration.MasterListAffectedIndexes[1], Is.EqualTo(10));
+            declaration.MasterListAffectedIndexes.Count.ShouldBe(2);
+            declaration.MasterListAffectedIndexes[0].ShouldBe(9);
+            declaration.MasterListAffectedIndexes[1].ShouldBe(10);
 
         }
     }

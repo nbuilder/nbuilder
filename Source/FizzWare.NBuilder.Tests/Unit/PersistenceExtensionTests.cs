@@ -4,11 +4,14 @@ using FizzWare.NBuilder.Implementation;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NUnit.Framework;
 using NSubstitute;
+using Shouldly;
+using Xunit;
+using Assert = NUnit.Framework.Assert;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
     // ReSharper disable InvokeAsExtensionMethod
-    [TestFixture]
+    
     public class PersistenceExtensionTests
     {
         private IPersistenceService persistenceService;
@@ -17,8 +20,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         private ISingleObjectBuilder<MyClass> singleObjectBuilder;
         private IList<MyClass> theList;
 
-        [SetUp]
-        public void SetUp()
+        public PersistenceExtensionTests()
         {
             persistenceService = Substitute.For<IPersistenceService>();
             listBuilderImpl = Substitute.For<IListBuilderImpl<MyClass>>();
@@ -28,7 +30,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             theList = new List<MyClass>();
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToPersistUsingSingleObjectBuilder()
         {
             var builderSetup = new BuilderSettings();
@@ -48,7 +50,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             }
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToPersistUsingListBuilder()
         {
             var builderSetup = new BuilderSettings();
@@ -66,7 +68,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             }
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToPersistFromADeclaration()
         {
             var builderSetup = new BuilderSettings();
@@ -85,13 +87,13 @@ namespace FizzWare.NBuilder.Tests.Unit
             }
         }
 
-        [Test]
+        [Fact]
         public void Persist_TypeOfIOperableOnlyNotIDeclaration_ThrowsException()
         {
             var operableOnly = Substitute.For<IOperable<MyClass>>();
 
             {
-                Assert.Throws<ArgumentException>(() => PersistenceExtensions.Persist(operableOnly));
+                Should.Throw<ArgumentException>(() => PersistenceExtensions.Persist(operableOnly));
             }
         }
     }

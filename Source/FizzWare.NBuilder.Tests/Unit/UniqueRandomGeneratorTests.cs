@@ -1,10 +1,13 @@
 ﻿using System;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NUnit.Framework;
+using Shouldly;
+using Xunit;
+using Assert = NUnit.Framework.Assert;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
-    [TestFixture]
+    
     public class UniqueRandomGeneratorTests
     {
         private const string exceptionMessage = "There are no more unique values available";
@@ -12,19 +15,18 @@ namespace FizzWare.NBuilder.Tests.Unit
         private int min = 0;
         private int max = 4;
 
-        [SetUp]
-        public void SetUp()
+        public UniqueRandomGeneratorTests()
         {
             generator = new UniqueRandomGenerator();
         }
 
-        [Test]
+        [Fact]
         public void Next_Int16_ShouldGenerateWithinRange()
         {
             generator.Next((short)min, (short)max);
         }
 
-        [Test]
+        [Fact]
         public void Next_Int16_ShouldGenerateUniqueNumbers()
         {
             for (int i = 0; i < max; i++)
@@ -32,17 +34,17 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             // TODO FIX
             #if !SILVERLIGHT
-            Assert.Throws<InvalidOperationException>(() => generator.Next((short)min, (short)max), exceptionMessage);
+            Should.Throw<InvalidOperationException>(() => generator.Next((short)min, (short)max), exceptionMessage);
             #endif
         }
 
-        [Test]
+        [Fact]
         public void Next_Int32_ShouldGenerateWithinRange()
         {
             generator.Next(min, max);
         }
 
-        [Test]
+        [Fact]
         public void Next_Int32_ShouldGenerateUniqueNumbers()
         {
             for (int i = 0; i < max; i++)
@@ -50,17 +52,17 @@ namespace FizzWare.NBuilder.Tests.Unit
                 
             // TODO FIX
             #if !SILVERLIGHT
-            Assert.Throws<InvalidOperationException>(() => generator.Next(min, max), exceptionMessage);
+            Should.Throw<InvalidOperationException>(() => generator.Next(min, max), exceptionMessage);
             #endif
         }
 
-        [Test]
+        [Fact]
         public void Next_Int64_ShouldGenerateWithinRange()
         {
             generator.Next((long)min, (long)max);
         }
 
-        [Test]
+        [Fact]
         public void Next_Int64_ShouldGenerateUniqueNumbers()
         {
             for (int i = 0; i < max; i++)
@@ -68,17 +70,17 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             // TODO FIX
             #if !SILVERLIGHT
-            Assert.Throws<InvalidOperationException>(() => generator.Next((long)min, (long)max), exceptionMessage);
+            Should.Throw<InvalidOperationException>(() => generator.Next((long)min, (long)max), exceptionMessage);
             #endif
         }
 
-        [Test]
+        [Fact]
         public void Next_UInt16_ShouldGenerateWithinRange()
         {
             generator.Next((ushort)min, (ushort)max);
         }
 
-        [Test]
+        [Fact]
         public void Next_UInt16_ShouldGenerateUniqueNumbers()
         {
             for (int i = 0; i < max; i++)
@@ -86,178 +88,148 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             // TODO FIX
             #if !SILVERLIGHT
-            Assert.Throws<InvalidOperationException>(() => generator.Next((ushort)min, (ushort)max), exceptionMessage);
+            Should.Throw<InvalidOperationException>(() => generator.Next((ushort)min, (ushort)max), exceptionMessage);
             #endif
         }
 
-        [Test]
+        [Fact]
         public void Next_UInt32_ShouldGenerateWithinRange()
         {
             generator.Next((uint)min, (uint)max);
         }
 
-        [Test]
+        [Fact]
         public void Next_UInt32_ShouldGenerateUniqueNumbers()
         {
             for (int i = 0; i < max; i++)
                 generator.Next((uint)min, (uint)max);
 
-            // TODO FIX
-            #if !SILVERLIGHT
-            Assert.Throws<InvalidOperationException>(() => generator.Next((uint)min, (uint)max), exceptionMessage);
-            #endif
+            Should.Throw<InvalidOperationException>(() => generator.Next((uint)min, (uint)max), exceptionMessage);
         }
 
-        [Test]
+        [Fact]
         public void Next_UInt64_ShouldGenerateWithinRange()
         {
             generator.Next((ulong)min, (ulong)max);
         }
 
-        [Test]
+        [Fact]
         public void Next_UInt64_ShouldGenerateUniqueNumbers()
         {
             for (int i = 0; i < max; i++)
                 generator.Next((ulong)min, (ulong)max);
 
-            // TODO FIX
-            #if !SILVERLIGHT
-            Assert.Throws<InvalidOperationException>(() => generator.Next((ulong)min, (ulong)max), exceptionMessage);
-            #endif
+            Should.Throw<InvalidOperationException>(() => generator.Next((ulong)min, (ulong)max), exceptionMessage);
         }
 
-        [Test]
+        [Fact]
         public void Next_Single_ShouldGenerateWithinRange()
         {
             generator.Next((float)min, (float)max);
         }
 
-        [Test]
+        [Fact]
         public void Next_Single_ShouldGenerateUniqueNumbers()
         {
             for (int i = 0; i < max; i++)
                 generator.Next((float)min, (float)max);
 
-            // TODO FIX
-            #if !SILVERLIGHT
-            Assert.Throws<InvalidOperationException>(() => generator.Next((float)min, (float)max), exceptionMessage);
-            #endif
+            Should.Throw<InvalidOperationException>(() => generator.Next((float)min, (float)max), exceptionMessage);
         }
 
-        [Test]
+        [Fact]
         public void Next_Double_ShouldGenerateWithinRange()
         {
             double min = 1.0;
             var result = generator.Next(min, (double)max);
-            Assert.IsTrue(result > min);
-            Assert.IsTrue(result < max);
+            result.ShouldBeGreaterThan(min);
+            result.ShouldBeLessThan(max);
         }
 
-        [Test]
+        [Fact]
         public void Next_Double_ShouldGenerateUniqueNumbers()
         {
             for (int i = 0; i < max; i++)
                 generator.Next((double)min, (double)max);
 
-            // TODO FIX
-            #if !SILVERLIGHT
-            Assert.Throws<InvalidOperationException>(() => generator.Next((double)min, (double)max), exceptionMessage);
-            #endif
+            Should.Throw<InvalidOperationException>(() => generator.Next((double)min, (double)max), exceptionMessage);
         }
 
-        [Test]
+        [Fact]
         public void Next_Decimal_ShouldGenerateWithinRange()
         {
             generator.Next((decimal)min, (decimal)max);
         }
 
-        [Test]
+        [Fact]
         public void Next_Decimal_ShouldGenerateUniqueNumbers()
         {
             for (int i = 0; i < max; i++)
                 generator.Next((decimal)min, (decimal)max);
 
-            // TODO FIX
-            #if !SILVERLIGHT
-            Assert.Throws<InvalidOperationException>(() => generator.Next((decimal)min, (decimal)max), exceptionMessage);
-            #endif
+            Should.Throw<InvalidOperationException>(() => generator.Next((decimal)min, (decimal)max), exceptionMessage);
         }
 
-        [Test]
+        [Fact]
         public void Next_Byte_ShouldGenerateWithinRange()
         {
             generator.Next((byte)min, (byte)max);
         }
         
-        [Test]
+        [Fact]
         public void Next_Byte_ShouldGenerateUniqueNumbers()
         {
             for (int i = 0; i < max; i++)
                 generator.Next((byte)min, (byte)max);
 
-            // TODO FIX
-            #if !SILVERLIGHT
-            Assert.Throws<InvalidOperationException>(() => generator.Next((byte)min, (byte)max), exceptionMessage);
-            #endif
+            Should.Throw<InvalidOperationException>(() => generator.Next((byte)min, (byte)max), exceptionMessage);
         }
 
-        [Test]
+        [Fact]
         public void Next_SByte_ShouldGenerateWithinRange()
         {
             var value = generator.Next((sbyte)min, (sbyte)max);
 
-            Assert.That(value, Is.GreaterThanOrEqualTo(min));
-            Assert.That(value, Is.LessThanOrEqualTo(max));
+            value.ShouldBeGreaterThanOrEqualTo((sbyte)min);
+            value.ShouldBeLessThanOrEqualTo((sbyte)max);
         }
 
-        [Test]
+        [Fact]
         public void Next_SByte_ShouldGenerateUniqueNumbers()
         {
             for (int i = 0; i < max; i++)
                 generator.Next((sbyte)min, (sbyte)max);
 
-            // TODO FIX
-            #if !SILVERLIGHT
-            Assert.Throws<InvalidOperationException>(() => generator.Next((sbyte)min, (sbyte)max), exceptionMessage);
-            #endif
+            Should.Throw<InvalidOperationException>(() => generator.Next((sbyte)min, (sbyte)max), exceptionMessage);
         }
 
-        [Test]
+        [Fact]
         public void Next_Char_ShouldGenerateWithinRange()
         {
             generator.Next((char)min, (char)max);
         }
 
-        [Test]
+        [Fact]
         public void Next_Char_ShouldGenerateUniqueNumbers()
         {
             for (int i = 0; i < max; i++)
                 generator.Next((char)min, (char)max);
 
-            // TODO FIX
-            #if !SILVERLIGHT
-            Assert.Throws<InvalidOperationException>(() => generator.Next((char)min, (char)max), exceptionMessage);
-            #endif
+            Should.Throw<InvalidOperationException>(() => generator.Next((char)min, (char)max), exceptionMessage);
         }
 
-        [Test]
+        [Fact]
         public void EnumerationOfT_EnumerateAllEnumerationsInEnum_GeneratesEachEnumValueWithoutThrowingAnException()
         {
-            // TODO FIX
-            #if !SILVERLIGHT
             foreach (var enums in EnumHelper.GetValues<MyEnum>())
-                Assert.DoesNotThrow(() => generator.Enumeration<MyEnum>());
-            #endif
+                Should.NotThrow(() => generator.Enumeration<MyEnum>());
         }
 
-        [Test]
+        [Fact]
         public void EnumerationOfType_EnumerateAllEnumerationsInEnum_GeneratesEachEnumValueWithoutThrowingAnException()
         {
-            // TODO FIX
-            #if !SILVERLIGHT
             foreach (var enums in EnumHelper.GetValues<MyEnum>())
-                Assert.DoesNotThrow(() => generator.Enumeration(typeof(MyEnum)));
-            #endif
+                Should.NotThrow(() => generator.Enumeration(typeof(MyEnum)));
         } 
     }
 }

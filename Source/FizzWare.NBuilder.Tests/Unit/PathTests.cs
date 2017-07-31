@@ -1,54 +1,56 @@
 using FizzWare.NBuilder.Implementation;
 using NUnit.Framework;
+using Shouldly;
+using Xunit;
+using Assert = NUnit.Framework.Assert;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
-    [TestFixture]
+    
     public class PathTests
     {
         private Path path;
 
-        [SetUp]
-        public void SetUp()
+        public PathTests()
         {
             path = new Path();
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToConvertToString()
         {
-            Assert.That(path.ToString(), Is.EqualTo("1"));
+            path.ToString().ShouldBe("1");
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToIncreaseDepth()
         {
             path.IncreaseDepth();
-            Assert.That(path.ToString(), Is.EqualTo("1.1"));
+            path.ToString().ShouldBe("1.1");
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToSetCurrent()
         {
             path.SetCurrent(2);
-            Assert.That(path.ToString(), Is.EqualTo("2"));
+            path.ToString().ShouldBe("2");
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToDecreaseDepth()
         {
             path.IncreaseDepth();
             path.DecreaseDepth();
 
-            Assert.That(path.ToString(), Is.EqualTo("1"));
+            path.ToString().ShouldBe("1");
         }
 
-        [Test]
+        [Fact]
         public void SetCurrentShouldSetCurrentIdentifier()
         {
             path.IncreaseDepth();
             path.SetCurrent(2);
-            Assert.That(path.ToString(), Is.EqualTo("1.2"));
+            path.ToString().ShouldBe("1.2");
         }
     }
 }

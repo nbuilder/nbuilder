@@ -2,14 +2,16 @@
 using FizzWare.NBuilder.Tests.TestClasses;
 using NSubstitute;
 using NUnit.Framework;
+using Shouldly;
+using Xunit;
+using Assert = NUnit.Framework.Assert;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
-    [TestFixture]
+    
     public class PersistenceServiceTests
     {
-        [SetUp]
-        public void SetUp()
+        public PersistenceServiceTests()
         {
             repository = Substitute.For<IMyClassRepository>();
             repository2 = Substitute.For<IMyClassRepository>();
@@ -18,7 +20,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         private IMyClassRepository repository;
         private IMyClassRepository repository2;
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToPersistAList_Create()
         {
             IList<MyClass> list = new List<MyClass>();
@@ -37,7 +39,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             }
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToPersistAList_Update()
         {
             IList<MyClass> list = new List<MyClass>();
@@ -48,7 +50,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             persistenceService.Update(list);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToPersistAnObject_Create()
         {
             var obj = new MyClass();
@@ -67,7 +69,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             }
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToPersistAnObject_Update()
         {
             var obj = new MyClass();
@@ -86,51 +88,51 @@ namespace FizzWare.NBuilder.Tests.Unit
             }
         }
 
-        [Test]
+        [Fact]
         public void ShouldComplainIfNoCreatePersistenceServiceFound()
         {
 
             {
                 var persistenceService = new PersistenceService();
 
-                Assert.Throws<PersistenceMethodNotFoundException>(() => { persistenceService.Create(new MyClass()); });
+                Should.Throw<PersistenceMethodNotFoundException>(() => { persistenceService.Create(new MyClass()); });
             }
         }
 
-        [Test]
+        [Fact]
         public void ShouldComplainIfNoCreatePersistenceServiceFoundForList()
         {
 
             {
                 var persistenceService = new PersistenceService();
-                Assert.Throws<PersistenceMethodNotFoundException>(
+                Should.Throw<PersistenceMethodNotFoundException>(
                     () => { persistenceService.Create((IList<MyClass>) new List<MyClass>()); });
             }
         }
 
-        [Test]
+        [Fact]
         public void ShouldComplainIfNoUpdatePersistenceServiceFound()
         {
 
 
             {
                 var persistenceService = new PersistenceService();
-                Assert.Throws<PersistenceMethodNotFoundException>(() => { persistenceService.Update(new MyClass()); });
+                Should.Throw<PersistenceMethodNotFoundException>(() => { persistenceService.Update(new MyClass()); });
             }
         }
 
-        [Test]
+        [Fact]
         public void ShouldComplainIfNoUpdatePersistenceServiceFoundForList()
         {
 
             {
                 var persistenceService = new PersistenceService();
-                Assert.Throws<PersistenceMethodNotFoundException>(
+                Should.Throw<PersistenceMethodNotFoundException>(
                     () => { persistenceService.Update((IList<MyClass>) new List<MyClass>()); });
             }
         }
 
-        [Test]
+        [Fact]
         public void ShouldReplaceExistingCreatePersister()
         {
             var obj = new MyClass();
@@ -142,7 +144,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             persistenceService.Create(obj);
         }
 
-        [Test]
+        [Fact]
         public void ShouldReplaceExistingUpdatePersister()
         {
             var obj = new MyClass();

@@ -8,7 +8,7 @@ using NUnit.Framework;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
-    [TestFixture]
+    
     public class RandomValuePropertyNamerTests_PositiveOnly : RandomValuePropertyNamerTestFixture
     {
         public override void TestFixtureSetUp()

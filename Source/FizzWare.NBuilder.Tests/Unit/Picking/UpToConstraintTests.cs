@@ -4,22 +4,24 @@ using System.Linq;
 using System.Text;
 using NSubstitute;
 using NUnit.Framework;
+using Shouldly;
+using Xunit;
+using Assert = NUnit.Framework.Assert;
 
 namespace FizzWare.NBuilder.Tests.Unit.Picking
 {
-    [TestFixture]
+    
     public class UpToConstraintTests
     {
         private IUniqueRandomGenerator uniqueRandomGenerator;
         private const int count = 5;
 
-        [SetUp]
-        public void SetUp()
+        public  UpToConstraintTests()
         {
             uniqueRandomGenerator = Substitute.For<IUniqueRandomGenerator>();
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToUseBetweenPickerConstraint()
         {
             var constraint = new UpToConstraint(uniqueRandomGenerator, count);
@@ -27,7 +29,7 @@ namespace FizzWare.NBuilder.Tests.Unit.Picking
             uniqueRandomGenerator.Next(0, count).Returns(1);
             int end = constraint.GetEnd();
 
-            Assert.That(end, Is.EqualTo(1));
+            end.ShouldBe(1);
         }
     }
 }

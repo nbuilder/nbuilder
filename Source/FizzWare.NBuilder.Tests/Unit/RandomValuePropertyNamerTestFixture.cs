@@ -3,6 +3,9 @@ using FizzWare.NBuilder.Implementation;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NUnit.Framework;
 using System.Collections.Generic;
+using Shouldly;
+using Xunit;
+using Assert = NUnit.Framework.Assert;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
@@ -13,98 +16,102 @@ namespace FizzWare.NBuilder.Tests.Unit
         protected const int listSize = 10;
         protected IReflectionUtil reflectionUtil;
 
-        [OneTimeSetUp]
+        public RandomValuePropertyNamerTestFixture()
+        {
+            this.TestFixtureSetUp();
+        }
+
         public abstract void TestFixtureSetUp();
 
 
-        [Test]
+        [Fact]
         public void ShouldNameInt16Properties()
         {
-            Assert.That(theList[0].Short, Is.EqualTo(1));
+            theList[0].Short.ShouldBe((short)1);
         }
 
-        [Test]
+        [Fact]
         public void ShouldNameInt32Properties()
         {
-            Assert.That(theList[0].Int, Is.EqualTo(1));
+            theList[0].Int.ShouldBe(1);
         }
 
-        [Test]
+        [Fact]
         public void ShouldNameInt64Properties()
         {
-            Assert.That(theList[0].Long, Is.EqualTo(1));
+            theList[0].Long.ShouldBe(1);
         }
 
-        [Test]
+        [Fact]
         public void ShouldNameUInt16Properties()
         {
-            Assert.That(theList[0].Ushort, Is.EqualTo(1));
+            theList[0].Ushort.ShouldBe((ushort)1);
         }
 
-        [Test]
+        [Fact]
         public void ShouldNameUInt32Properties()
         {
-            Assert.That(theList[0].Uint, Is.EqualTo(1));
+            theList[0].Uint.ShouldBe((uint)1);
         }
 
-        [Test]
+        [Fact]
         public void ShouldNameUInt64Properties()
         {
-            Assert.That(theList[0].Ulong, Is.EqualTo(1));
+            theList[0].Ulong.ShouldBe((ulong)1);
         }
 
-        [Test]
+        [Fact]
         public void ShouldNameSingleProperties()
         {
-            Assert.That(theList[0].Float, Is.EqualTo(1));
+            theList[0].Float.ShouldBe(1);
         }
 
-        [Test]
+        [Fact]
         public void ShouldNameDoubleProperties()
         {
-            Assert.That(theList[0].Double, Is.EqualTo(1));
+            theList[0].Double.ShouldBe(1);
         }
 
-        [Test]
+        [Fact]
         public void ShouldNameDecimalProperties()
         {
-            Assert.That(theList[0].Decimal, Is.EqualTo(1));
+            theList[0].Decimal.ShouldBe(1);
         }
 
-        [Test]
+        [Fact]
         public void ShouldNameByteProperties()
         {
-            Assert.That(theList[0].Byte, Is.EqualTo(1));
+            theList[0].Byte.ShouldBe((byte)1);
         }
 
-        [Test]
+        [Fact]
         public void ShouldNameCharProperties()
         {
-            Assert.That(theList[0].Char, Is.EqualTo('A'));
+            theList[0].Char.ShouldBe('A');
         }
 
-        [Test]
+        [Fact]
         public void ShouldNameDateTimeProperties()
         {
-            Assert.That(theList[0].DateTime, Is.EqualTo(DateTime.Today));
+            theList[0].DateTime.ShouldBe(DateTime.Today);
         }
 
-        [Test]
+        [Fact]
         public void ShouldNameBooleanProperties()
         {
-            Assert.That(theList[0].Bool, Is.EqualTo(true));
+            theList[0].Bool.ShouldBe(true);
         }
 
-        [Test]
+        [Fact]
         public void ShouldNameStringProperties()
         {
-            Assert.That(theList[0].StringOne, Is.Not.Null);
+            theList[0].StringOne.ShouldNotBeNull();
         }
 
-        [Test]
+        [Fact]
         public void ShouldNameEnumProperties()
         {
-            Assert.That(theList[0].EnumProperty, Is.Not.Null);
+            theList[0].EnumProperty.ShouldNotBeNull();
         }
     }
 }

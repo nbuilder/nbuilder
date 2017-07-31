@@ -10,10 +10,10 @@ namespace FizzWare.NBuilder.Tests.Integration
 {
     // //TODO: Finish
 
-    //[TestFixture]
+    //
     //public class UsingHierarchyGenerator
     //{
-    //    [Test]
+    //    [Fact]
     //    public void ShouldBeAbleToGenerateAHierarchy()
     //    {
     //        var hierarchySpec = Builder<HierarchySpec<MyHierarchicalClass>>.CreateNew()
@@ -28,7 +28,7 @@ namespace FizzWare.NBuilder.Tests.Integration
     //            .CreateListOfSize(1000)
     //            .BuildHierarchy(hierarchySpec);
 
-    //        Assert.That(list.Count, Is.EqualTo(10));
+    //        list.Count.ShouldBe(10));
     //    }
     //}
 }

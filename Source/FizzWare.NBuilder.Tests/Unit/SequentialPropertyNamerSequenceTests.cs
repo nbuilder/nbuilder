@@ -8,18 +8,20 @@ using FizzWare.NBuilder.Implementation;
 using NSubstitute;
 using FizzWare.NBuilder.PropertyNaming;
 using System.Reflection;
+using Shouldly;
+using Xunit;
+using Assert = NUnit.Framework.Assert;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
-    [TestFixture]
+    
     public class SequentialPropertyNamerSequenceTests
     {
         private IList<MyClass> theList;
         private const int listSize = 1000;
         private IReflectionUtil reflectionUtil;
 
-        [SetUp]
-        public void SetUp()
+        public SequentialPropertyNamerSequenceTests()
         {
             reflectionUtil = new ReflectionUtil();
 
@@ -32,151 +34,151 @@ namespace FizzWare.NBuilder.Tests.Unit
                 .SetValuesOfAllIn(theList);
         }
 
-        [Test]
+        [Fact]
         public void ShouldNameStringPropertiesWithTheirNameAndSequenceNumber()
         {
-            Assert.That(theList[0].StringOne, Is.EqualTo("StringOne" + 1));
-            Assert.That(theList[9].StringOne, Is.EqualTo("StringOne" + 10));
+            theList[0].StringOne.ShouldBe("StringOne" + 1);
+            theList[9].StringOne.ShouldBe("StringOne" + 10);
         }
 
-        [Test]
+        [Fact]
         public void ShouldHandleMultiplePropertiesOfTheSameType()
         {
-            Assert.That(theList[9].StringOne, Is.EqualTo("StringOne" + 10));
-            Assert.That(theList[9].StringTwo, Is.EqualTo("StringTwo" + 10));
+            theList[9].StringOne.ShouldBe("StringOne" + 10);
+            theList[9].StringTwo.ShouldBe("StringTwo" + 10);
         }
 
-        [Test]
+        [Fact]
         public void ShouldAssignSequenceNumberToBytes()
         {
-            Assert.That(theList[0].Byte, Is.EqualTo(1));
-            Assert.That(theList[9].Byte, Is.EqualTo(10));
+            theList[0].Byte.ShouldBe((byte)1);
+            theList[9].Byte.ShouldBe((byte)10);
         }
 
-        [Test]
+        [Fact]
         public void ShouldAssignSequenceNumberToSBytes()
         {
-            Assert.That(theList[0].SByte, Is.EqualTo(1));
-            Assert.That(theList[9].SByte, Is.EqualTo(10));
+            theList[0].SByte.ShouldBe((sbyte)1);
+            theList[9].SByte.ShouldBe((sbyte)10);
         }
 
-        [Test]
+        [Fact]
         [Description("The desired behaviour is byte properties should be given the values 1...255, 1...255, 1...255 repeatedly")]
         public void ShouldRestartFromZeroToBytesWhenGoesAboveMaxValue()
         {
-            Assert.That(theList[0].Byte, Is.EqualTo(1));
-            Assert.That(theList[byte.MaxValue].Byte, Is.EqualTo(1));
-            Assert.That(theList[byte.MaxValue * 2].Byte, Is.EqualTo(1));
-            Assert.That(theList[byte.MaxValue * 3].Byte, Is.EqualTo(1));
+            theList[0].Byte.ShouldBe((byte)1);
+            theList[byte.MaxValue].Byte.ShouldBe((byte)1);
+            theList[byte.MaxValue * 2].Byte.ShouldBe((byte)1);
+            theList[byte.MaxValue * 3].Byte.ShouldBe((byte)1);
         }
 
-        [Test]
+        [Fact]
         [Description("The desired behaviour is byte properties should be given the values 1...255, 1...255, 1...255 repeatedly")]
         public void ShouldRestartFromZeroToSBytesWhenGoesAboveMaxValue()
         {
-            Assert.That(theList[0].SByte, Is.EqualTo(1));
-            Assert.That(theList[sbyte.MaxValue].SByte, Is.EqualTo(1));
-            Assert.That(theList[sbyte.MaxValue * 2].SByte, Is.EqualTo(1));
-            Assert.That(theList[sbyte.MaxValue * 3].SByte, Is.EqualTo(1));
+            theList[0].SByte.ShouldBe((sbyte)1);
+            theList[sbyte.MaxValue].SByte.ShouldBe((sbyte)1);
+            theList[sbyte.MaxValue * 2].SByte.ShouldBe((sbyte)1);
+            theList[sbyte.MaxValue * 3].SByte.ShouldBe((sbyte)1);
         }
 
-        [Test]
+        [Fact]
         public void ShouldAssignSequenceNumberToInts()
         {
-            Assert.That(theList[0].Int, Is.EqualTo(1));
-            Assert.That(theList[9].Int, Is.EqualTo(10));
+            theList[0].Int.ShouldBe(1);
+            theList[9].Int.ShouldBe(10);
         }
 
-        [Test]
+        [Fact]
         public void ShouldAssignSequenceNumberToLongs()
         {
-            Assert.That(theList[0].Long, Is.EqualTo(1));
-            Assert.That(theList[9].Long, Is.EqualTo(10));
+            theList[0].Long.ShouldBe(1);
+            theList[9].Long.ShouldBe(10);
         }
 
-        [Test]
+        [Fact]
         public void ShouldAssignSequenceNumberToDecimals()
         {
-            Assert.That(theList[0].Decimal, Is.EqualTo(1m));
-            Assert.That(theList[9].Decimal, Is.EqualTo(10m));
+            theList[0].Decimal.ShouldBe(1m);
+            theList[9].Decimal.ShouldBe(10m);
         }
 
-        [Test]
+        [Fact]
         public void ShouldAssignSequenceNumberToFloats()
         {
-            Assert.That(theList[0].Float, Is.EqualTo(1f));
-            Assert.That(theList[9].Float, Is.EqualTo(10f));
+            theList[0].Float.ShouldBe(1f);
+            theList[9].Float.ShouldBe(10f);
         }
 
-        [Test]
+        [Fact]
         public void ShouldAssignSequenceNumberToDoubles()
         {
-            Assert.That(theList[0].Double, Is.EqualTo(1d));
-            Assert.That(theList[9].Double, Is.EqualTo(10d));
+            theList[0].Double.ShouldBe(1d);
+            theList[9].Double.ShouldBe(10d);
         }
 
-        [Test]
+        [Fact]
         public void ShouldAssignUppercaseLetterBetweenAandZToChars()
         {
-            Assert.That(theList[0].Char, Is.EqualTo('A'));
-            Assert.That(theList[9].Char, Is.EqualTo('J'));
-            Assert.That(theList[25].Char, Is.EqualTo('Z'));
+            theList[0].Char.ShouldBe('A');
+            theList[9].Char.ShouldBe('J');
+            theList[25].Char.ShouldBe('Z');
         }
 
-        [Test]
+        [Fact]
         public void ShouldRestartAtAWhenOn26ForChars()
         {
-            Assert.That(theList[0].Char, Is.EqualTo('A'));
-            Assert.That(theList[26].Char, Is.EqualTo('A'));
-            Assert.That(theList[52].Char, Is.EqualTo('A'));
+            theList[0].Char.ShouldBe('A');
+            theList[26].Char.ShouldBe('A');
+            theList[52].Char.ShouldBe('A');
         }
 
-        [Test]
+        [Fact]
         public void ShouldAssignSequenceNumberToUShorts()
         {
-            Assert.That(theList[0].Ushort, Is.EqualTo(1));
-            Assert.That(theList[9].Ushort, Is.EqualTo(10));
+            theList[0].Ushort.ShouldBe((ushort)1);
+            theList[9].Ushort.ShouldBe((ushort)10);
         }
 
-        [Test]
+        [Fact]
         public void ShouldAssignSequenceNumberToUInts()
         {
-            Assert.That(theList[0].Uint, Is.EqualTo(1));
-            Assert.That(theList[9].Uint, Is.EqualTo(10));
+            theList[0].Uint.ShouldBe((uint)1);
+            theList[9].Uint.ShouldBe((uint)10);
         }
 
-        [Test]
+        [Fact]
         public void ShouldAssignSequenceNumberToULongs()
         {
-            Assert.That(theList[0].Ulong, Is.EqualTo(1));
-            Assert.That(theList[9].Ulong, Is.EqualTo(10));
+            theList[0].Ulong.ShouldBe((ulong)1);
+            theList[9].Ulong.ShouldBe((ulong)10);
         }
 
-        [Test]
+        [Fact]
         public void ShouldAssignSequenceNumberToGuids()
         {
-            Assert.That(theList[0].Guid.ToString(), Is.EqualTo("00000000-0000-0000-0000-000000000001"));
-            Assert.That(theList[9].Guid.ToString(), Is.EqualTo("00000000-0000-0000-0000-00000000000a"));
-            Assert.That(theList[254].Guid.ToString(), Is.EqualTo("00000000-0000-0000-0000-0000000000ff"));
+            theList[0].Guid.ToString().ShouldBe("00000000-0000-0000-0000-000000000001");
+            theList[9].Guid.ToString().ShouldBe("00000000-0000-0000-0000-00000000000a");
+            theList[254].Guid.ToString().ShouldBe("00000000-0000-0000-0000-0000000000ff");
         }
 
-        [Test]
+        [Fact]
         public void ShouldAlternateBooleanValues()
         {
-            Assert.That(theList[0].Bool, Is.False);
-            Assert.That(theList[1].Bool, Is.True);
-            Assert.That(theList[2].Bool, Is.False);
-            Assert.That(theList[3].Bool, Is.True);
+            theList[0].Bool.ShouldBeFalse();
+            theList[1].Bool.ShouldBeTrue();
+            theList[2].Bool.ShouldBeFalse();
+            theList[3].Bool.ShouldBeTrue();
         }
 
-        [Test]
+        [Fact]
         public void ShouldAssignCurrentDateThenCurrentDatePlus_N_DaysToDateTimeProperties()
         {
-            Assert.That(theList[0].DateTime, Is.EqualTo(DateTime.Now.Date));
-            Assert.That(theList[9].DateTime, Is.EqualTo(DateTime.Now.Date.AddDays(9)));
+            theList[0].DateTime.ShouldBe(DateTime.Now.Date);
+            theList[9].DateTime.ShouldBe(DateTime.Now.Date.AddDays(9));
         }
 
-        [Test]
+        [Fact]
         public void ShouldOnlyNamePropertiesThatAreNullOrDefault()
         {
             var myClass = new MyClass();
@@ -193,94 +195,92 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             new SequentialPropertyNamer(reflectionUtil,new BuilderSettings()).SetValuesOfAllIn(theList);
 
-            Assert.That(theList[0].HasADefaultValue, Is.EqualTo(myClass.HasADefaultValue));
-            Assert.That(theList[9].HasADefaultValue, Is.EqualTo(myClass.HasADefaultValue));
+            theList[0].HasADefaultValue.ShouldBe(myClass.HasADefaultValue);
+            theList[9].HasADefaultValue.ShouldBe(myClass.HasADefaultValue);
 
         }
 
-        [Test]
+        [Fact]
         public void ShouldNotTouchInternalProperties()
         {
-            Assert.That(theList[0].InternalInt, Is.EqualTo(0));
-            Assert.That(theList[9].InternalInt, Is.EqualTo(0));
+            theList[0].InternalInt.ShouldBe(0);
+            theList[9].InternalInt.ShouldBe(0);
         }
 
-        [Test]
+        [Fact]
         public void ShouldNotTouchPrivateProperties()
         {
             var prop0 = typeof(MyClass).GetProperty("PrivateInt", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(theList[0], null);
             var prop9 = typeof(MyClass).GetProperty("PrivateInt", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(theList[9], null);
 
-            Assert.That(prop0, Is.EqualTo(0));
-            Assert.That(prop9, Is.EqualTo(0));
+            prop0.ShouldBe(0);
+            prop9.ShouldBe(0);
         }
 
-        [Test]
+        [Fact]
         public void ShouldNotTouchProtectedIntProperties()
         {
             var prop0 = typeof(MyClass).GetProperty("ProtectedInt", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(theList[0], null);
             var prop9 = typeof(MyClass).GetProperty("ProtectedInt", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(theList[9], null);
 
-            Assert.That(prop0, Is.EqualTo(0));
-            Assert.That(prop9, Is.EqualTo(0));
+            prop0.ShouldBe(0);
+            prop9.ShouldBe(0);
         }
 
-        [Test]
+        [Fact]
         public void SupportsInheritedClasses()
         {
             var myClassInheritor = new MyClassInheritor();
             new SequentialPropertyNamer(reflectionUtil,new BuilderSettings()).SetValuesOf(myClassInheritor);
 
-            Assert.That(myClassInheritor.Int, Is.EqualTo(1));
-            Assert.That(myClassInheritor.AnotherProperty, Is.EqualTo(1));
+            myClassInheritor.Int.ShouldBe(1);
+            myClassInheritor.AnotherProperty.ShouldBe(1);
         }
 
-        [Test]
+        [Fact]
         public void DoesNotNameStaticProperties()
         {
-            Assert.That(MyClass.StaticInt, Is.EqualTo(0));
+            MyClass.StaticInt.ShouldBe(0);
         }
 
-        [Test]
+        [Fact]
         public void ShouldNamePublicFields()
         {
-            Assert.That(theList[0].PublicFieldInt, Is.EqualTo(1));
-            Assert.That(theList[9].PublicFieldInt, Is.EqualTo(10));
+            theList[0].PublicFieldInt.ShouldBe(1);
+            theList[9].PublicFieldInt.ShouldBe(10);
         }
 
-        [Test]
+        [Fact]
         public void ShouldNotTouchPrivateFields()
         {
             var prop0 = typeof(MyClass).GetField("PrivateFieldInt", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(theList[0]);
             var prop9 = typeof(MyClass).GetField("PrivateFieldInt", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(theList[9]);
 
-            Assert.That(prop0, Is.EqualTo(0));
-            Assert.That(prop9, Is.EqualTo(0));
+            prop0.ShouldBe(0);
+            prop9.ShouldBe(0);
         }
 
-        [Test]
+        [Fact]
         public void ShouldNotTouchProtectedFields()
         {
             var prop0 = typeof(MyClass).GetField("ProtectedFieldInt", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(theList[0]);
             var prop9 = typeof(MyClass).GetField("ProtectedFieldInt", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(theList[9]);
 
-            Assert.That(prop0, Is.EqualTo(0));
-            Assert.That(prop9, Is.EqualTo(0));
+            prop0.ShouldBe(0);
+            prop9.ShouldBe(0);
         }
 
-        [Test]
+        [Fact]
         public void ShouldNotTouchInternalFields()
         {
             var prop0 = typeof(MyClass).GetField("InternalFieldInt", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(theList[0]);
             var prop9 = typeof(MyClass).GetField("InternalFieldInt", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(theList[9]);
 
-            Assert.That(prop0, Is.EqualTo(0));
-            Assert.That(prop9, Is.EqualTo(0));
+            prop0.ShouldBe(0);
+            prop9.ShouldBe(0);
         }
 
-        // TODO FIX
-        #if !SILVERLIGHT
-        [Test]
+        [Fact]
         public void SetValuesOfAllIn_ClassWithNullCharConst_CharConstantIsNotSetByNamer()
         {
             var propertyNamer = new SequentialPropertyNamer(reflectionUtil,new BuilderSettings());
@@ -291,16 +291,14 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             foreach (var item in list)
             {
-                Assert.That(item.GetNullCharConst(), Is.EqualTo(MyClassWithCharConst.NullCharConst));
-                Assert.That(item.GetNonNullCharConst(), Is.EqualTo(MyClassWithCharConst.NonNullCharConst));
+                item.GetNullCharConst().ShouldBe(MyClassWithCharConst.NullCharConst);
+                item.GetNonNullCharConst().ShouldBe(MyClassWithCharConst.NonNullCharConst);
             }
 
-            Assert.Pass("A System.FieldAccessException was not thrown because NBuilder didn't try to set the value of the constant");
         }
-        #endif
 
         // TODO: Add this
-        //[Test]
+        //[Fact]
         //public void ShouldBeAbleToAddCustomHandler()
         //{
         //    SequentialPropertyNamer.AddHandlerFor(

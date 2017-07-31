@@ -2,13 +2,16 @@
 using System.Linq;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NUnit.Framework;
+using Shouldly;
+using Xunit;
+using Assert = NUnit.Framework.Assert;
 
 namespace FizzWare.NBuilder.Tests.Integration
 {
-    [TestFixture]
+    
     public class PickerTests
     {
-        [Test]
+        [Fact]
         public void ShouldBeAbleToPickUsingExactlyConstraint()
         {
             var builderSetup = new BuilderSettings();
@@ -20,10 +23,10 @@ namespace FizzWare.NBuilder.Tests.Integration
                             .With(x => x.SimpleClasses = Pick<SimpleClass>.UniqueRandomList(With.Exactly(1).Elements).From(simpleClasses)).Build();
 
             for (int i = 0; i < products.Count; i++)
-                Assert.That(products[i].SimpleClasses.Count, Is.EqualTo(1));
+                products[i].SimpleClasses.Count.ShouldBe(1);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToPickUsingBetweenPickerConstraint()
         {
             var builderSetup = new BuilderSettings();
@@ -36,12 +39,12 @@ namespace FizzWare.NBuilder.Tests.Integration
 
             for (int i = 0; i < products.Count; i++)
             {
-                Assert.That(products[i].SimpleClasses.Count, Is.AtLeast(1));
-                Assert.That(products[i].SimpleClasses.Count, Is.AtMost(5));
+                products[i].SimpleClasses.Count.ShouldBeGreaterThanOrEqualTo(1);
+                products[i].SimpleClasses.Count.ShouldBeLessThanOrEqualTo(5);
             }
         }
 
-        [Test]
+        [Fact]
         public void PickRandomItemShouldReturnRandomItems()
         {
             var itemList = new List<string>();
@@ -56,10 +59,10 @@ namespace FizzWare.NBuilder.Tests.Integration
 
             var distinctItems = results.Distinct();
 
-            Assert.That(distinctItems.Count(), Is.GreaterThan(1));
+            distinctItems.Count().ShouldBeGreaterThan(1);
         }
 
-        [Test]
+        [Fact]
         public void WhenUsedInContextRandomItemPickerShouldPickDifferentItems()
         {
             var builderSetup = new BuilderSettings();
@@ -80,24 +83,24 @@ namespace FizzWare.NBuilder.Tests.Integration
             var list = vehicles.Select(x => x.StringOne);
 
             var distinctList = list.Distinct();
-            Assert.That(distinctList.Count(), Is.GreaterThan(1));
+            distinctList.Count().ShouldBeGreaterThan(1);
         }
 
-		[Test]
-		public void WhenPickingFromSmallListLargeNumberOfTimesShouldPickEachItemAtLeastOnce()
+        [Fact]
+        public void WhenPickingFromSmallListLargeNumberOfTimesShouldPickEachItemAtLeastOnce()
         {
             var builderSetup = new BuilderSettings();
             var fruits = new List<string>() { "apple", "orange", "banana", "pear" };
 
-			var fruitBaskets =
+            var fruitBaskets =
                 Builder<MyClass>
                     .CreateListOfSize(100)
-					.All()
-					.With(x => x.StringOne = Pick<string>.RandomItemFrom(fruits))
-				.Build();
+                    .All()
+                    .With(x => x.StringOne = Pick<string>.RandomItemFrom(fruits))
+                .Build();
 
-			var fruitsPicked = fruitBaskets.Select(x => x.StringOne).Distinct();
-			Assert.AreEqual(4, fruitsPicked.Count());
-		}
+            var fruitsPicked = fruitBaskets.Select(x => x.StringOne).Distinct();
+            fruitsPicked.Count().ShouldBe(4);
+        }
     }
 }

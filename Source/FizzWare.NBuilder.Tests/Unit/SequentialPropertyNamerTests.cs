@@ -6,30 +6,32 @@ using FizzWare.NBuilder.PropertyNaming;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NUnit.Framework;
 using NSubstitute;
+using Shouldly;
+using Xunit;
+using Assert = NUnit.Framework.Assert;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
-    [TestFixture]
+    
     public class SequentialPropertyNamerTests
     {
         private SequentialPropertyNamer propertyNamer;
         private IReflectionUtil reflectionUtil;
 
-        [SetUp]
-        public void SetUp()
+        public SequentialPropertyNamerTests()
         {
             reflectionUtil = Substitute.For<IReflectionUtil>();
             propertyNamer = new SequentialPropertyNamer(reflectionUtil, new BuilderSettings());
         }
 
-        [Test]
+        [Fact]
         public void SetValuesOfAllIn_ListOfTypeWithPrivateSetOnlyProperty_ValueIsNotSet()
         {
             var privateSetOnlyType = new MyClassWithGetOnlyPropertySpy();
 
             propertyNamer.SetValuesOfAllIn(new List<MyClassWithGetOnlyPropertySpy>{ privateSetOnlyType });
 
-            Assert.That(privateSetOnlyType.IsSet, Is.False);
+            privateSetOnlyType.IsSet.ShouldBeFalse();
         }
     }
 }

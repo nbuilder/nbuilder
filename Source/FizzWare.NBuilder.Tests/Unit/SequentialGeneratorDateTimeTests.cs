@@ -1,30 +1,32 @@
 ﻿using System;
 using NUnit.Framework;
+using Shouldly;
+using Xunit;
+using Assert = NUnit.Framework.Assert;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
-    [TestFixture]
+    
     public class SequentialGeneratorDateTimeTests
     {
         private SequentialGenerator<DateTime> generator;
         private DateTime startingValue;
 
-        [SetUp]
-        public void SetUp()
+        public SequentialGeneratorDateTimeTests()
         {
             generator = new SequentialGenerator<DateTime>();
             startingValue = new DateTime(9, 9, 9, 9, 9, 9, 9);
             generator.StartingWith(startingValue);
         }
 
-        [Test]
+        [Fact]
         public void Generate_DefaultSetUp_IncrementsFromMinDateTimeValue()
         {
             generator = new SequentialGenerator<DateTime>();
-            Assert.That(generator.Generate(), Is.EqualTo(DateTime.MinValue));
+            generator.Generate().ShouldBe(DateTime.MinValue);
         }
 
-        [Test]
+        [Fact]
         public void Generate_DefaultIncrement_IncrementsByDay()
         {
             DateTime oneDay = startingValue.AddDays(1);
@@ -32,11 +34,11 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             generator.Generate();            
             
-            Assert.That(generator.Generate(), Is.EqualTo(oneDay));
-            Assert.That(generator.Generate(), Is.EqualTo(twoDays));
+            generator.Generate().ShouldBe(oneDay);
+            generator.Generate().ShouldBe(twoDays);
         }
 
-        [Test]
+        [Fact]
         public void Generate_TicksIncrement_AllowsIncrementingByTicks()
         {
             DateTime oneTick = startingValue.AddTicks(1);
@@ -45,11 +47,11 @@ namespace FizzWare.NBuilder.Tests.Unit
             generator.IncrementDateBy = IncrementDate.Tick;
             generator.Generate();
 
-            Assert.That(generator.Generate().Ticks, Is.EqualTo(oneTick.Ticks));
-            Assert.That(generator.Generate(), Is.EqualTo(twoTicks));        
+            generator.Generate().Ticks.ShouldBe(oneTick.Ticks);
+            generator.Generate().ShouldBe(twoTicks);        
         }
 
-        [Test]
+        [Fact]
         public void Generate_MillisecondsIncrement_IncrementsByMilliseconds()
         {
             DateTime oneMillisecond = startingValue.AddMilliseconds(1);
@@ -58,11 +60,11 @@ namespace FizzWare.NBuilder.Tests.Unit
             generator.IncrementDateBy = IncrementDate.Millisecond;
             generator.Generate();
 
-            Assert.That(generator.Generate(), Is.EqualTo(oneMillisecond));
-            Assert.That(generator.Generate(), Is.EqualTo(twoMilliseconds));
+            generator.Generate().ShouldBe(oneMillisecond);
+            generator.Generate().ShouldBe(twoMilliseconds);
         }
 
-        [Test]
+        [Fact]
         public void Generate_SecondsIncrement_IncrementsBySeconds()
         {
             DateTime oneSecond = startingValue.AddSeconds(1);
@@ -71,11 +73,11 @@ namespace FizzWare.NBuilder.Tests.Unit
             generator.IncrementDateBy = IncrementDate.Second;
             generator.Generate();
 
-            Assert.That(generator.Generate(), Is.EqualTo(oneSecond));
-            Assert.That(generator.Generate(), Is.EqualTo(twoSeconds));
+            generator.Generate().ShouldBe(oneSecond);
+            generator.Generate().ShouldBe(twoSeconds);
         }
 
-        [Test]
+        [Fact]
         public void Generate_MinutesIncrement_IncrementsByMinutes()
         {
             DateTime oneMinute = startingValue.AddMinutes(1);
@@ -84,11 +86,11 @@ namespace FizzWare.NBuilder.Tests.Unit
             generator.IncrementDateBy = IncrementDate.Minute;
             generator.Generate();
 
-            Assert.That(generator.Generate(), Is.EqualTo(oneMinute));
-            Assert.That(generator.Generate(), Is.EqualTo(twoMinutes));
+            generator.Generate().ShouldBe(oneMinute);
+            generator.Generate().ShouldBe(twoMinutes);
         }
 
-        [Test]
+        [Fact]
         public void Generate_HoursIncrement_IncrementsByHours()
         {
             DateTime oneHour = startingValue.AddHours(1);
@@ -97,11 +99,11 @@ namespace FizzWare.NBuilder.Tests.Unit
             generator.IncrementDateBy = IncrementDate.Hour;
             generator.Generate();
 
-            Assert.That(generator.Generate(), Is.EqualTo(oneHour));
-            Assert.That(generator.Generate(), Is.EqualTo(twoHours));
+            generator.Generate().ShouldBe(oneHour);
+            generator.Generate().ShouldBe(twoHours);
         }
 
-        [Test]
+        [Fact]
         public void Generate_DaysIncrement_IncrementsByDays()
         {
             DateTime oneDay = startingValue.AddDays(1);
@@ -110,11 +112,11 @@ namespace FizzWare.NBuilder.Tests.Unit
             generator.IncrementDateBy = IncrementDate.Day;
             generator.Generate();
 
-            Assert.That(generator.Generate(), Is.EqualTo(oneDay));
-            Assert.That(generator.Generate(), Is.EqualTo(twoDays));
+            generator.Generate().ShouldBe(oneDay);
+            generator.Generate().ShouldBe(twoDays);
         }
 
-        [Test]
+        [Fact]
         public void Generate_MonthsIncrement_IncrementsByMonths()
         {
             DateTime oneMonth = startingValue.AddMonths(1);
@@ -123,11 +125,11 @@ namespace FizzWare.NBuilder.Tests.Unit
             generator.IncrementDateBy = IncrementDate.Month;
             generator.Generate();
 
-            Assert.That(generator.Generate(), Is.EqualTo(oneMonth));
-            Assert.That(generator.Generate(), Is.EqualTo(twoMonths));
+            generator.Generate().ShouldBe(oneMonth);
+            generator.Generate().ShouldBe(twoMonths);
         }
 
-        [Test]
+        [Fact]
         public void Generate_YearsIncrement_IncrementsByYears()
         {
             DateTime oneYear = startingValue.AddYears(1);
@@ -136,11 +138,11 @@ namespace FizzWare.NBuilder.Tests.Unit
             generator.IncrementDateBy = IncrementDate.Year;
             generator.Generate();
 
-            Assert.That(generator.Generate(), Is.EqualTo(oneYear));
-            Assert.That(generator.Generate(), Is.EqualTo(twoYears));
+            generator.Generate().ShouldBe(oneYear);
+            generator.Generate().ShouldBe(twoYears);
         }
 
-        [Test]
+        [Fact]
         public void Generate_TicksDecrement_AllowsDecrementingByTicks()
         {
             DateTime oneTick = startingValue.AddTicks(-1);
@@ -150,11 +152,11 @@ namespace FizzWare.NBuilder.Tests.Unit
             generator.Direction = GeneratorDirection.Descending;
             generator.Generate();
 
-            Assert.That(generator.Generate().Ticks, Is.EqualTo(oneTick.Ticks));
-            Assert.That(generator.Generate(), Is.EqualTo(twoTicks));
+            generator.Generate().Ticks.ShouldBe(oneTick.Ticks);
+            generator.Generate().ShouldBe(twoTicks);
         }
 
-        [Test]
+        [Fact]
         public void Generate_MillisecondsDecrement_DecrementsByMilliseconds()
         {
             DateTime oneMillisecond = startingValue.AddMilliseconds(-1);
@@ -164,11 +166,11 @@ namespace FizzWare.NBuilder.Tests.Unit
             generator.Direction = GeneratorDirection.Descending;
             generator.Generate();
 
-            Assert.That(generator.Generate(), Is.EqualTo(oneMillisecond));
-            Assert.That(generator.Generate(), Is.EqualTo(twoMilliseconds));
+            generator.Generate().ShouldBe(oneMillisecond);
+            generator.Generate().ShouldBe(twoMilliseconds);
         }
 
-        [Test]
+        [Fact]
         public void Generate_SecondsDecrement_DecrementsBySeconds()
         {
             DateTime oneSecond = startingValue.AddSeconds(-1);
@@ -178,11 +180,11 @@ namespace FizzWare.NBuilder.Tests.Unit
             generator.Direction = GeneratorDirection.Descending;
             generator.Generate();
 
-            Assert.That(generator.Generate(), Is.EqualTo(oneSecond));
-            Assert.That(generator.Generate(), Is.EqualTo(twoSeconds));
+            generator.Generate().ShouldBe(oneSecond);
+            generator.Generate().ShouldBe(twoSeconds);
         }
 
-        [Test]
+        [Fact]
         public void Generate_MinutesDecrement_DecrementsByMinutes()
         {
             DateTime oneMinute = startingValue.AddMinutes(-1);
@@ -192,11 +194,11 @@ namespace FizzWare.NBuilder.Tests.Unit
             generator.Direction = GeneratorDirection.Descending;
             generator.Generate();
 
-            Assert.That(generator.Generate(), Is.EqualTo(oneMinute));
-            Assert.That(generator.Generate(), Is.EqualTo(twoMinutes));
+            generator.Generate().ShouldBe(oneMinute);
+            generator.Generate().ShouldBe(twoMinutes);
         }
 
-        [Test]
+        [Fact]
         public void Generate_HoursDecrement_DecrementsByHours()
         {
             DateTime oneHour = startingValue.AddHours(-1);
@@ -206,11 +208,11 @@ namespace FizzWare.NBuilder.Tests.Unit
             generator.Direction = GeneratorDirection.Descending;
             generator.Generate();
 
-            Assert.That(generator.Generate(), Is.EqualTo(oneHour));
-            Assert.That(generator.Generate(), Is.EqualTo(twoHours));
+            generator.Generate().ShouldBe(oneHour);
+            generator.Generate().ShouldBe(twoHours);
         }
 
-        [Test]
+        [Fact]
         public void Generate_DaysDecrement_DecrementsByDays()
         {
             DateTime oneDay = startingValue.AddDays(-1);
@@ -220,11 +222,11 @@ namespace FizzWare.NBuilder.Tests.Unit
             generator.Direction = GeneratorDirection.Descending;
             generator.Generate();
 
-            Assert.That(generator.Generate(), Is.EqualTo(oneDay));
-            Assert.That(generator.Generate(), Is.EqualTo(twoDays));
+            generator.Generate().ShouldBe(oneDay);
+            generator.Generate().ShouldBe(twoDays);
         }
 
-        [Test]
+        [Fact]
         public void Generate_MonthsDecrement_DecrementsByMonths()
         {
             DateTime oneMonth = startingValue.AddMonths(-1);
@@ -234,11 +236,11 @@ namespace FizzWare.NBuilder.Tests.Unit
             generator.Direction = GeneratorDirection.Descending;
             generator.Generate();
 
-            Assert.That(generator.Generate(), Is.EqualTo(oneMonth));
-            Assert.That(generator.Generate(), Is.EqualTo(twoMonths));
+            generator.Generate().ShouldBe(oneMonth);
+            generator.Generate().ShouldBe(twoMonths);
         }
 
-        [Test]
+        [Fact]
         public void Generate_YearsDecrement_DecrementsByYears()
         {
             DateTime oneYear = startingValue.AddYears(-1);
@@ -248,11 +250,11 @@ namespace FizzWare.NBuilder.Tests.Unit
             generator.Direction = GeneratorDirection.Descending;
             generator.Generate();
 
-            Assert.That(generator.Generate(), Is.EqualTo(oneYear));
-            Assert.That(generator.Generate(), Is.EqualTo(twoYears));
+            generator.Generate().ShouldBe(oneYear);
+            generator.Generate().ShouldBe(twoYears);
         }
 
-        [Test]
+        [Fact]
         public void Generate_MultiValueIncrement_AllowsDatesToBeIncrementedByValuesGreaterThanOne()
         {
             const double increment = 2;
@@ -263,10 +265,10 @@ namespace FizzWare.NBuilder.Tests.Unit
             generator.IncrementDateValueBy = increment;
             generator.Generate();
 
-            Assert.That(generator.Generate(), Is.EqualTo(expectedIncrementedDate));
+            generator.Generate().ShouldBe(expectedIncrementedDate);
         }
 
-        [Test]
+        [Fact]
         public void Generate_MultiValueDecrement_AllowsDatesToBeDecrementedByValuesGreaterThanOne()
         {
             const double increment = 2;
@@ -278,46 +280,46 @@ namespace FizzWare.NBuilder.Tests.Unit
             generator.Direction = GeneratorDirection.Descending;
             generator.Generate();
 
-            Assert.That(generator.Generate(), Is.EqualTo(expectedIncrementedDate));
+            generator.Generate().ShouldBe(expectedIncrementedDate);
 
         }
 
         // TODO FIX
         #if !SILVERLIGHT
-        [Test]
+        [Fact]
         public void Generate_IncrementDaysMoreThanMaximumAllowedValue_ThrowsException()
         {
             generator.StartingWith(DateTime.MaxValue);
             generator.IncrementDateBy = IncrementDate.Day;
             generator.Generate();
-            Assert.Throws<ArgumentOutOfRangeException>(() => generator.Generate());
+            Should.Throw<ArgumentOutOfRangeException>(() => generator.Generate());
         }
         
-        [Test]
+        [Fact]
         public void Generate_IncrementTicksMoreThanMaximumAllowedValue_ThrowsException()
         {
             generator.StartingWith(DateTime.MaxValue);
             generator.IncrementDateBy = IncrementDate.Tick;
             generator.Generate();
-            Assert.Throws<ArgumentOutOfRangeException>(() => generator.Generate());        
+            Should.Throw<ArgumentOutOfRangeException>(() => generator.Generate());        
         }
       
-        [Test]
+        [Fact]
         public void Generate_IncrementMonthsMoreThanMaximumAllowedValue_ThrowsException()
         {
             generator.StartingWith(DateTime.MaxValue);
             generator.IncrementDateBy = IncrementDate.Month;
             generator.Generate();
-            Assert.Throws<ArgumentOutOfRangeException>(() => generator.Generate());
+            Should.Throw<ArgumentOutOfRangeException>(() => generator.Generate());
         }
 
-        [Test]
+        [Fact]
         public void Generate_IncrementYearsMoreThanMaximumAllowedValue_ThrowsException()
         {
             generator.StartingWith(DateTime.MaxValue);
             generator.IncrementDateBy = IncrementDate.Year;
             generator.Generate();
-            Assert.Throws<ArgumentOutOfRangeException>(() => generator.Generate());
+            Should.Throw<ArgumentOutOfRangeException>(() => generator.Generate());
         }
 
         #endif

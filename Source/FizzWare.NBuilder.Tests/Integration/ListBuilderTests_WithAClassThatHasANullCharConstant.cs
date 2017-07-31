@@ -4,13 +4,16 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using FizzWare.NBuilder.Tests.TestClasses;
+using Shouldly;
+using Xunit;
+using Assert = NUnit.Framework.Assert;
 
 namespace FizzWare.NBuilder.Tests.Integration
 {
-    [TestFixture]
+    
     public class ListBuilderBuilderTests_WithAClassThatHasANullCharConstant
     {
-        [Test]
+        [Fact]
         public void ShouldBeAbleToCreateAListOfAClassThatHasANullCharConstant()
         {
             var builderSetup = new BuilderSettings();
@@ -18,11 +21,11 @@ namespace FizzWare.NBuilder.Tests.Integration
 
             foreach (var item in list)
             {
-                Assert.That(item.GetNullCharConst(), Is.EqualTo(MyClassWithCharConst.NullCharConst));
+                item.GetNullCharConst().ShouldBe(MyClassWithCharConst.NullCharConst);
             }           
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToCreateAListOfAClassThatHasACharConstant()
         {
             var builderSetup = new BuilderSettings();
@@ -30,7 +33,7 @@ namespace FizzWare.NBuilder.Tests.Integration
 
             foreach (var item in list)
             {
-                Assert.That(item.GetNonNullCharConst(), Is.EqualTo(MyClassWithCharConst.NonNullCharConst));
+                item.GetNonNullCharConst().ShouldBe(MyClassWithCharConst.NonNullCharConst);
             }            
         }
     }

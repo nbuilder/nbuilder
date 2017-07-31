@@ -4,11 +4,13 @@ using FizzWare.NBuilder.PropertyNaming;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NUnit.Framework;
 using NSubstitute;
+using Shouldly;
+using Xunit;
 using Assert = NUnit.Framework.Assert;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
-    [TestFixture]
+    
     public class ListBuilderTests
     {
         private IReflectionUtil reflectionUtil;
@@ -16,14 +18,13 @@ namespace FizzWare.NBuilder.Tests.Unit
         private readonly MyClass myClass = new MyClass();
         private const int listSize = 10;
 
-        [SetUp]
-        public void SetUp()
+        public ListBuilderTests()
         {
             reflectionUtil = Substitute.For<IReflectionUtil>();
             propertyNamer = Substitute.For<IPropertyNamer>();
         }
 
-        [Test]
+        [Fact]
         public void ShouldConstructDeclarations()
         {
             IGlobalDeclaration<MyClass> declaration = Substitute.For<IGlobalDeclaration<MyClass>>();
@@ -37,7 +38,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             builder.Construct();
         }
 
-        [Test]
+        [Fact]
         public void ConstructShouldComplainIfTypeNotParameterlessNoAllAndSumOfItemsInDeclarationsDoNotEqualCapacity()
         {
             IDeclaration<MyClassWithConstructor> declaration1 = Substitute.For<IDeclaration<MyClassWithConstructor>>();
@@ -48,10 +49,10 @@ namespace FizzWare.NBuilder.Tests.Unit
             reflectionUtil.RequiresConstructorArgs(typeof(MyClass)).Returns(true);
             var builder = new ListBuilder<MyClass>(10, propertyNamer, reflectionUtil, new BuilderSettings());
 
-            Assert.Throws<BuilderException>(() => builder.Construct());
+            Should.Throw<BuilderException>(() => builder.Construct());
         }
 
-        [Test]
+        [Fact]
         public void Constructing_AssignsValuesToProperties()
         {
             propertyNamer.SetValuesOfAllIn(Arg.Any<IList<MyClass>>());
@@ -63,7 +64,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             builder.Name(list);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToBuildAList()
         {
             IDeclaration<MyClass> declaration = Substitute.For<IDeclaration<MyClass>>();
@@ -80,7 +81,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             builder.Build();
         }
 
-        [Test]
+        [Fact]
         public void IfNoAllExistsAndSumOfAffectedItemsInDeclarationsIsLessThanCapacity_ShouldAddADefaultAll()
         {
             var builder = new ListBuilder<MyClass>(30, propertyNamer, reflectionUtil, new BuilderSettings());

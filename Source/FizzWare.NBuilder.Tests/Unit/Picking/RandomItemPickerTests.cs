@@ -2,23 +2,25 @@ using System.Collections.Generic;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NSubstitute;
 using NUnit.Framework;
+using Shouldly;
+using Xunit;
+using Assert = NUnit.Framework.Assert;
 
 namespace FizzWare.NBuilder.Tests.Unit.Picking
 {
-    [TestFixture]
+    
     public class RandomItemPickerTests
     {
         private IRandomGenerator randomGenerator;
         private IList<MyClass> list;
 
-        [SetUp]
-        public void SetUp()
+        public RandomItemPickerTests()
         {
             randomGenerator = Substitute.For<IRandomGenerator>();
             list = Substitute.For<IList<MyClass>>();
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToUseRandomItemPicker()
         {
             const int listCount = 5;
@@ -35,7 +37,7 @@ namespace FizzWare.NBuilder.Tests.Unit.Picking
             var ignored = list.Received()[2];
         }
 
-        [Test]
+        [Fact]
         public void RandomItemPickerShouldHitRandomGeneratorEveryTimeAnItemIsPicked()
         {
             var zero = new MyClass();
@@ -50,8 +52,8 @@ namespace FizzWare.NBuilder.Tests.Unit.Picking
 
             var picker = new RandomItemPicker<MyClass>(theList, randomGenerator);
 
-            Assert.That(picker.Pick(), Is.EqualTo(zero));
-            Assert.That(picker.Pick(), Is.EqualTo(one));
+            picker.Pick().ShouldBe(zero);
+            picker.Pick().ShouldBe(one);
         }
     }
 }

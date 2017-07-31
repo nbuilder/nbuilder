@@ -2,24 +2,24 @@ using System.Collections.Generic;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NSubstitute;
 using NUnit.Framework;
+using Xunit;
 
 namespace FizzWare.NBuilder.Tests.Unit.Picking
 {
-    [TestFixture]
+    
     public class UniqueRandomPickerMockedTests
     {
         private IConstraint constraint;
         private IUniqueRandomGenerator uniqueRandomGenerator;
 
-        [SetUp]
-        public void SetUp()
+        public UniqueRandomPickerMockedTests()
         {
             constraint = Substitute.For<IConstraint>();
             uniqueRandomGenerator = Substitute.For<IUniqueRandomGenerator>();
         }
 
 
-        [Test]
+        [Fact]
         public void UniqueRandomPickerShouldBeAbleToPickFromList()
         {
             var list = Substitute.For<IList<MyClass>>();

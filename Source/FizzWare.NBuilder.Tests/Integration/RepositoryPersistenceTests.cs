@@ -2,20 +2,22 @@
 using FizzWare.NBuilder.Tests.Integration.Models;
 using FizzWare.NBuilder.Tests.Integration.Models.Repositories;
 using NUnit.Framework;
+using Shouldly;
+using Xunit;
+using Assert = NUnit.Framework.Assert;
 
 namespace FizzWare.NBuilder.Tests.Integration
 {
-    [TestFixture]
+    
     public class RepositoryPersistenceTests
     {
-        [OneTimeSetUp]
-        public void BeforeEach()
+        public RepositoryPersistenceTests()
         {
             new ProductRepository().DeleteAll();
             new CategoryRepository().DeleteAll();
         }
 
-        [Test]
+        [Fact]
         public void PersistingASingleObject()
         {
             var builderSetup =new RepositoryBuilderSetup().SetUp();
@@ -24,15 +26,15 @@ namespace FizzWare.NBuilder.Tests.Integration
             // Go directly to the database to do some asserts
             var dataTable = new ProductRepository().GetAll();
 
-            Assert.That(dataTable.Count, Is.EqualTo(1));
+            dataTable.Count.ShouldBe(1);
 
-            Assert.That(dataTable[0].Title, Is.EqualTo("Title1"));
-            Assert.That(dataTable[0].Description, Is.EqualTo("Description1"));
-            Assert.That(dataTable[0].PriceBeforeTax, Is.EqualTo(1m));
-            Assert.That(dataTable[0].QuantityInStock, Is.EqualTo(1));
+            dataTable[0].Title.ShouldBe("Title1");
+            dataTable[0].Description.ShouldBe("Description1");
+            dataTable[0].PriceBeforeTax.ShouldBe(1m);
+            dataTable[0].QuantityInStock.ShouldBe(1);
         }
 
-        [Test]
+        [Fact]
         public void PersistingASingleTaxTypeAndAListOf100Products()
         {
             var builderSetup = new RepositoryBuilderSetup().SetUp();
@@ -45,11 +47,11 @@ namespace FizzWare.NBuilder.Tests.Integration
 
             var dbProducts = new ProductRepository().GetAll();
 
-            Assert.That(dbProducts.Count, Is.EqualTo(100));
+            dbProducts.Count.ShouldBe(100);
         }
 
 
-        [Test]
+        [Fact]
         public void PersistingAListOfProductsAndCategories()
         {
             var builderSetup = new RepositoryBuilderSetup().SetUp();
@@ -73,8 +75,8 @@ namespace FizzWare.NBuilder.Tests.Integration
             var productsTable = new ProductRepository().GetAll();
             var categoriesTable = new CategoryRepository().GetAll();
 
-            Assert.That(productsTable.Count, Is.EqualTo(numProducts), "products");
-            Assert.That(categoriesTable.Count, Is.EqualTo(numCategories), "categories");
+            productsTable.Count.ShouldBe(numProducts, "products");
+            categoriesTable.Count.ShouldBe(numCategories, "categories");
         }
 
         // TODO: Add CreatingAHierarchyOfCategoriesAndAddingProducts

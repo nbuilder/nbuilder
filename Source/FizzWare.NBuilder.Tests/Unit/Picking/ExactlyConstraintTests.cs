@@ -1,19 +1,20 @@
-﻿using NUnit.Framework;
+﻿using Shouldly;
+using Xunit;
+using Assert = NUnit.Framework.Assert;
 
 namespace FizzWare.NBuilder.Tests.Unit.Picking
 {
-    [TestFixture]
     public class ExactlyConstraintTests
     {
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToUseBetweenPickerConstraint()
         {
             var constraint = new ExactlyConstraint(5);
 
             int end = constraint.GetEnd();
 
-            Assert.That(end, Is.EqualTo(5));
+            end.ShouldBe(5);
         }
     }
 }

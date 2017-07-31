@@ -1,44 +1,47 @@
 ﻿using System;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NUnit.Framework;
+using Shouldly;
+using Xunit;
+using Assert = NUnit.Framework.Assert;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
-    [TestFixture]
+    
     public class EnumHelperTests
     {
-        [Test]
+        [Fact]
         public void GetValuesOfT_Enum_ReturnAllValues()
         {
             // Act
             MyEnum[] results = EnumHelper.GetValues<MyEnum>();
 
             // Assert
-            Assert.That(results[0], Is.EqualTo(MyEnum.EnumValue1));
-            Assert.That(results[1], Is.EqualTo(MyEnum.EnumValue2));
-            Assert.That(results[2], Is.EqualTo(MyEnum.EnumValue3));
-            Assert.That(results[3], Is.EqualTo(MyEnum.EnumValue4));
-            Assert.That(results[4], Is.EqualTo(MyEnum.EnumValue5));
+            results[0].ShouldBe(MyEnum.EnumValue1);
+            results[1].ShouldBe(MyEnum.EnumValue2);
+            results[2].ShouldBe(MyEnum.EnumValue3);
+            results[3].ShouldBe(MyEnum.EnumValue4);
+            results[4].ShouldBe(MyEnum.EnumValue5);
         }
 
-        [Test]
+        [Fact]
         public void GetValuesOfT_NotAnEnumType_Throws()
         {
             // Act, Assert
             // TODO FIX
             #if !SILVERLIGHT
-            Assert.Throws<ArgumentException>(() => EnumHelper.GetValues<MyClass>());
+            Should.Throw<ArgumentException>(() => EnumHelper.GetValues<MyClass>());
             #endif
 
         }
 
-        [Test]
+        [Fact]
         public void GetValues_NotAnEnumType_Throws()
         {
             // Act, Assert
             // TODO FIX
             #if !SILVERLIGHT
-            Assert.Throws<ArgumentException>(() => EnumHelper.GetValues(typeof(MyClass)));
+            Should.Throw<ArgumentException>(() => EnumHelper.GetValues(typeof(MyClass)));
             #endif
         }
     }

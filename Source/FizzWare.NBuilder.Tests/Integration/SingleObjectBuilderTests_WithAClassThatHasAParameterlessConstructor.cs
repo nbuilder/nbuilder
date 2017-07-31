@@ -2,40 +2,43 @@
 using FizzWare.NBuilder.Tests.TestClasses;
 using NSubstitute;
 using NUnit.Framework;
+using Shouldly;
+using Xunit;
+using Assert = NUnit.Framework.Assert;
 
 namespace FizzWare.NBuilder.Tests.Integration
 {
-    [TestFixture]
+    
     public class SingleObjectBuilderTests_WithAClassThatHasAParameterlessConstructor
     {
-        [Test]
+        [Fact]
         public void PropertiesShouldBeGivenDefaultValues()
         {
             var obj = Builder<MyClass>.CreateNew().Build();
 
-            Assert.That(obj.Int, Is.EqualTo(1));
-            Assert.That(obj.StringOne, Is.EqualTo("StringOne1"));
-            Assert.That(obj.StringTwo, Is.EqualTo("StringTwo1"));
-            Assert.That(obj.EnumProperty, Is.EqualTo(MyEnum.EnumValue1));
+            obj.Int.ShouldBe(1);
+            obj.StringOne.ShouldBe("StringOne1");
+            obj.StringTwo.ShouldBe("StringTwo1");
+            obj.EnumProperty.ShouldBe(MyEnum.EnumValue1);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToCreateAnObject()
         {
             var obj = Builder<MyClass>.CreateNew();
-            Assert.That(obj, Is.Not.Null);
+            obj.ShouldNotBeNull();
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToDisableAutomaticPropertyNaming()
         {
             var builderSetup = new BuilderSettings { AutoNameProperties = false };
             var obj = new Builder(builderSetup).CreateNew<MyClass>().Build();
 
-            Assert.That(obj.Int, Is.EqualTo(0));
+            obj.Int.ShouldBe(0);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToDisableAutomaticPropertyNamingForASpecificFieldOfASpecificType()
         {
             var builderSetup = new BuilderSettings();
@@ -43,25 +46,25 @@ namespace FizzWare.NBuilder.Tests.Integration
 
             var obj = new Builder(builderSetup).CreateNew<MyClass>().Build();
 
-            Assert.That(obj.Int, Is.EqualTo(0));
-            Assert.That(obj.Long, Is.EqualTo(1));
+            obj.Int.ShouldBe(0);
+            obj.Long.ShouldBe(1);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToDisableAutoPropertyNaming()
         {
             var builderSetup = new BuilderSettings { AutoNameProperties = false };
 
             var obj = new Builder(builderSetup).CreateNew<MyClass>().Build();
 
-            Assert.That(obj.Int, Is.EqualTo(0));
-            Assert.That(obj.Int, Is.EqualTo(0));
+            obj.Int.ShouldBe(0);
+            obj.Int.ShouldBe(0);
 
-            Assert.That(obj.StringOne, Is.Null);
-            Assert.That(obj.StringOne, Is.Null);
+            obj.StringOne.ShouldBeNull();
+            obj.StringOne.ShouldBeNull();
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToSpecifyACustomPropertyNamerForASpecificType()
         {
             var builderSetup = new BuilderSettings();
@@ -75,16 +78,16 @@ namespace FizzWare.NBuilder.Tests.Integration
             propertyNamer.Received().SetValuesOf(Arg.Any<MyClass>());
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToSpecifyADefaultCustomPropertyNamer()
         {
             var builderSetup = new BuilderSettings();
             builderSetup.SetDefaultPropertyNamer(new MockPropertyNamerTests());
             new Builder(builderSetup).CreateNew<MyClass>().Build();
-            Assert.That(MockPropertyNamerTests.SetValuesOf_obj_CallCount, Is.EqualTo(1));
+            MockPropertyNamerTests.SetValuesOf_obj_CallCount.ShouldBe(1);
         }
 
-        [Test]
+        [Fact]
         public void WithsShouldOverrideDefaultValues()
         {
             var builderSetup = new BuilderSettings();
@@ -93,8 +96,8 @@ namespace FizzWare.NBuilder.Tests.Integration
                 .With(x => x.StringTwo = "SpecialDescription")
                 .Build();
 
-            Assert.That(obj.StringOne, Is.EqualTo("StringOne1"));
-            Assert.That(obj.StringTwo, Is.EqualTo("SpecialDescription"));
+            obj.StringOne.ShouldBe("StringOne1");
+            obj.StringTwo.ShouldBe("SpecialDescription");
         }
     }
 }

@@ -1,161 +1,164 @@
 using System;
 using NUnit.Framework;
+using Shouldly;
+using Xunit;
+using Assert = NUnit.Framework.Assert;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
-    [TestFixture]
+    
     public class SequentialGeneratorMultiTypeTests
     {
-        [Test]
+        [Fact]
         public void ShouldBeAbleToUseAShort()
         {
             var generator = new SequentialGenerator<short>();
-            Assert.That(generator.Generate(), Is.EqualTo(0));
-            Assert.That(generator.Generate(), Is.EqualTo(1));
+            generator.Generate().ShouldBe((short)0);
+            generator.Generate().ShouldBe((short)1);
 
             generator.Direction = GeneratorDirection.Descending;
 
-            Assert.That(generator.Generate(), Is.EqualTo(0));
-            Assert.That(generator.Generate(), Is.EqualTo(-1));
+            generator.Generate().ShouldBe((short)0);
+            generator.Generate().ShouldBe((short)-1);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToUseALong()
         {
             var generator = new SequentialGenerator<long>();
-            Assert.That(generator.Generate(), Is.EqualTo(0));
-            Assert.That(generator.Generate(), Is.EqualTo(1));
+            generator.Generate().ShouldBe(0);
+            generator.Generate().ShouldBe(1);
 
             generator.Direction = GeneratorDirection.Descending;
 
-            Assert.That(generator.Generate(), Is.EqualTo(0));
-            Assert.That(generator.Generate(), Is.EqualTo(-1));
+            generator.Generate().ShouldBe(0);
+            generator.Generate().ShouldBe(-1);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToUseADecimal()
         {
             var generator = new SequentialGenerator<decimal> { Increment = .5m };
 
-            Assert.That(generator.Generate(), Is.EqualTo(0m));
-            Assert.That(generator.Generate(), Is.EqualTo(0.5m));
-            Assert.That(generator.Generate(), Is.EqualTo(1m));
+            generator.Generate().ShouldBe(0m);
+            generator.Generate().ShouldBe(0.5m);
+            generator.Generate().ShouldBe(1m);
 
             generator.Direction = GeneratorDirection.Descending;
 
-            Assert.That(generator.Generate(), Is.EqualTo(0.5m));
-            Assert.That(generator.Generate(), Is.EqualTo(0m));
+            generator.Generate().ShouldBe(0.5m);
+            generator.Generate().ShouldBe(0m);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToUseAFloat()
         {
             var generator = new SequentialGenerator<float>();
-            Assert.That(generator.Generate(), Is.EqualTo(0f));
-            Assert.That(generator.Generate(), Is.EqualTo(1f));
+            generator.Generate().ShouldBe(0f);
+            generator.Generate().ShouldBe(1f);
             generator.Direction = GeneratorDirection.Descending;
-            Assert.That(generator.Generate(), Is.EqualTo(0f));
-            Assert.That(generator.Generate(), Is.EqualTo(-1f));
+            generator.Generate().ShouldBe(0f);
+            generator.Generate().ShouldBe(-1f);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToUseADouble()
         {
             var generator = new SequentialGenerator<double>();
-            Assert.That(generator.Generate(), Is.EqualTo(0d));
-            Assert.That(generator.Generate(), Is.EqualTo(1d));
+            generator.Generate().ShouldBe(0d);
+            generator.Generate().ShouldBe(1d);
             generator.Direction = GeneratorDirection.Descending;
-            Assert.That(generator.Generate(), Is.EqualTo(0d));
-            Assert.That(generator.Generate(), Is.EqualTo(-1d));
+            generator.Generate().ShouldBe(0d);
+            generator.Generate().ShouldBe(-1d);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToUseAnUnsignedShort()
         {
             var generator = new SequentialGenerator<ushort>();
-            Assert.That(generator.Generate(), Is.EqualTo(0));
-            Assert.That(generator.Generate(), Is.EqualTo(1));
+            generator.Generate().ShouldBe((ushort)0);
+            generator.Generate().ShouldBe((ushort)1);
 
             generator.Direction = GeneratorDirection.Descending;
-            Assert.That(generator.Generate(), Is.EqualTo(0));
-            Assert.That(generator.Generate(), Is.EqualTo(0));
+            generator.Generate().ShouldBe((ushort)0);
+            generator.Generate().ShouldBe((ushort)0);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToUseAnUnsignedInt()
         {
             var generator = new SequentialGenerator<uint>();
-            Assert.That(generator.Generate(), Is.EqualTo(0));
-            Assert.That(generator.Generate(), Is.EqualTo(1));
+            generator.Generate().ShouldBe((uint)0);
+            generator.Generate().ShouldBe((uint)1);
 
             generator.Direction = GeneratorDirection.Descending;
-            Assert.That(generator.Generate(), Is.EqualTo(0));
-            Assert.That(generator.Generate(), Is.EqualTo(0));
+            generator.Generate().ShouldBe((uint)0);
+            generator.Generate().ShouldBe((uint)0);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToUseAnUnsignedLong()
         {
             var generator = new SequentialGenerator<ulong>();
-            Assert.That(generator.Generate(), Is.EqualTo(0));
-            Assert.That(generator.Generate(), Is.EqualTo(1));
+            generator.Generate().ShouldBe((ulong)0);
+            generator.Generate().ShouldBe((ulong)1);
 
             generator.Direction = GeneratorDirection.Descending;
-            Assert.That(generator.Generate(), Is.EqualTo(0));
-            Assert.That(generator.Generate(), Is.EqualTo(0));
+            generator.Generate().ShouldBe((ulong)0);
+            generator.Generate().ShouldBe((ulong)0);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToUseAByte()
         {
             var generator = new SequentialGenerator<byte>();
-            Assert.That(generator.Generate(), Is.EqualTo(0));
-            Assert.That(generator.Generate(), Is.EqualTo(1));
+            generator.Generate().ShouldBe((byte)0);
+            generator.Generate().ShouldBe((byte)1);
 
             generator.Direction = GeneratorDirection.Descending;
 
-            Assert.That(generator.Generate(), Is.EqualTo(0));
-            Assert.That(generator.Generate(), Is.EqualTo(0));
+            generator.Generate().ShouldBe((byte)0);
+            generator.Generate().ShouldBe((byte)0);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToUseAChar()
         {
             var generator = new SequentialGenerator<char>();
             generator.StartingWith('A');
-            Assert.That(generator.Generate(), Is.EqualTo('A'));
-            Assert.That(generator.Generate(), Is.EqualTo('B'));
-            Assert.That(generator.Generate(), Is.EqualTo('C'));
+            generator.Generate().ShouldBe('A');
+            generator.Generate().ShouldBe('B');
+            generator.Generate().ShouldBe('C');
 
             generator.Direction = GeneratorDirection.Descending;
 
-            Assert.That(generator.Generate(), Is.EqualTo('B'));
-            Assert.That(generator.Generate(), Is.EqualTo('A'));
+            generator.Generate().ShouldBe('B');
+            generator.Generate().ShouldBe('A');
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToUseABoolean()
         {
             var generator = new SequentialGenerator<bool>();
-            Assert.That(generator.Generate(), Is.EqualTo(false));
-            Assert.That(generator.Generate(), Is.EqualTo(true));
-            Assert.That(generator.Generate(), Is.EqualTo(false));
+            generator.Generate().ShouldBe(false);
+            generator.Generate().ShouldBe(true);
+            generator.Generate().ShouldBe(false);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToUseADateTime()
         {
             var generator = new SequentialGenerator<DateTime>();
-            Assert.That(generator.Generate(), Is.EqualTo(DateTime.MinValue));
-            Assert.That(generator.Generate(), Is.EqualTo(DateTime.MinValue.AddDays(1)));
+            generator.Generate().ShouldBe(DateTime.MinValue);
+            generator.Generate().ShouldBe(DateTime.MinValue.AddDays(1));
         }
 
-        [Test]
+        [Fact]
         public void Generate_UnsupportedStruct_ThrowsInvalidOperationException()
         {
             // TODO: Make this work for SL too
             #if !SILVERLIGHT
-            Assert.Throws<InvalidOperationException>(() => new SequentialGenerator<MyDummyStruct>());
+            Should.Throw<InvalidOperationException>(() => new SequentialGenerator<MyDummyStruct>());
             #endif
         }
 

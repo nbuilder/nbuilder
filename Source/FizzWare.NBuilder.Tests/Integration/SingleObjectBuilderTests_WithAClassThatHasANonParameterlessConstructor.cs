@@ -1,9 +1,12 @@
 using FizzWare.NBuilder.Tests.TestClasses;
 using NUnit.Framework;
+using Shouldly;
+using Xunit;
+using Assert = NUnit.Framework.Assert;
 
 namespace FizzWare.NBuilder.Tests.Integration
 {
-    [TestFixture]
+    
     public class SingleObjectBuilderTests_WithAClassThatHasANonParameterlessConstructor
     {
         private const string theString = "string";
@@ -12,7 +15,7 @@ namespace FizzWare.NBuilder.Tests.Integration
         private const float theFloat = 15f;
 
         #pragma warning disable 0618 // (prevent warning for using obsolete method)
-        [Test]
+        [Fact]
         public void ShouldBeAbleToCreateAnObject()
         {
             var obj = Builder<MyClassWithConstructor>
@@ -21,11 +24,11 @@ namespace FizzWare.NBuilder.Tests.Integration
                 .Build()
                 ;
 
-            Assert.That(obj.String, Is.EqualTo(theString));
-            Assert.That(obj.Decimal, Is.EqualTo(theDecimal));
+            obj.String.ShouldBe(theString);
+            obj.Decimal.ShouldBe(theDecimal);
         }
 
-        [Test]
+        [Fact]
         public void ShouldChooseCorrectConstructor()
         {
             var builderSetup = new BuilderSettings();
@@ -33,8 +36,8 @@ namespace FizzWare.NBuilder.Tests.Integration
                     .WithConstructor(() => new MyClassWithConstructor(theInt, theFloat))
                 .Build();
 
-            Assert.That(obj.Int, Is.EqualTo(theInt));
-            Assert.That(obj.Float, Is.EqualTo(theFloat));
+            obj.Int.ShouldBe(theInt);
+            obj.Float.ShouldBe(theFloat);
         }
         #pragma warning restore 0618
     }

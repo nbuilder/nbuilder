@@ -5,16 +5,18 @@ using FizzWare.NBuilder.PropertyNaming;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NUnit.Framework;
 using NSubstitute;
+using Shouldly;
+using Xunit;
+using Assert = NUnit.Framework.Assert;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
-    [TestFixture]
+    
     public class PropertyNamerTests
     {
         PropertyNamerStub propertyNamer;
 
-        [SetUp]
-        public void SetUp()
+        public PropertyNamerTests()
         {
             BuilderSettings builderSettings = new BuilderSettings();
             IReflectionUtil reflectionUtil = Substitute.For<IReflectionUtil>();
@@ -23,36 +25,35 @@ namespace FizzWare.NBuilder.Tests.Unit
             propertyNamer = new PropertyNamerStub(reflectionUtil, builderSettings);
         }
 
-        [Test]
+        [Fact]
         public void SetValuesOf_GivenObjectWithNullableProperty_SetsTheValueOfTheProperty()
         {
             MyClass mc = new MyClass { NullableInt = null };
 
             propertyNamer.SetValuesOf(mc);
 
-            Assert.That(mc.NullableInt.HasValue, Is.True);
+            mc.NullableInt.HasValue.ShouldBeTrue();
         }
 
-        [Test]
+        [Fact]
         public void SetValuesOf_ClassWithNullCharConst_CharConstantIsNotSetByNamer()
         {
             MyClassWithCharConst mc = new MyClassWithCharConst();
 
             propertyNamer.SetValuesOf(mc);
 
-            Assert.That(mc.GetNullCharConst(), Is.EqualTo(MyClassWithCharConst.NullCharConst));
-            Assert.That(mc.GetNonNullCharConst(), Is.EqualTo(MyClassWithCharConst.NonNullCharConst));
+            mc.GetNullCharConst().ShouldBe(MyClassWithCharConst.NullCharConst);
+            mc.GetNonNullCharConst().ShouldBe(MyClassWithCharConst.NonNullCharConst);
 
-            Assert.Pass("A System.FieldAccessException was not thrown because NBuilder didn't try to set the value of the constant");
         }
 
-        [Test]
+        [Fact]
         public void SetValuesOf_GetOnlyProperty_PropertyIsNotSet()
         {
             var myClass = new MyClassWithGetOnlyPropertySpy();
             propertyNamer.SetValuesOf(myClass);
 
-            Assert.That(myClass.IsSet, Is.False);
+            myClass.IsSet.ShouldBeFalse();
         }
 
         private class PropertyNamerStub : PropertyNamer

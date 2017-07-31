@@ -1,10 +1,13 @@
 ﻿using FizzWare.NBuilder.Implementation;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NUnit.Framework;
+using Shouldly;
+using Xunit;
+using Assert = NUnit.Framework.Assert;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
-    [TestFixture]
+    
     public class ReflectionUtilTests
     {
         private const decimal decimalArg = 2m;
@@ -12,110 +15,108 @@ namespace FizzWare.NBuilder.Tests.Unit
 
         readonly IReflectionUtil reflectionUtil = new ReflectionUtil();
 
-        [Test]
+        [Fact]
         public void RequiresConstructorArgsShouldReturnFalseIfTypeHasParameterlessConstructor()
         {
-            Assert.That(reflectionUtil.RequiresConstructorArgs(typeof (MyClass)), Is.EqualTo(false));
+            reflectionUtil.RequiresConstructorArgs(typeof(MyClass)).ShouldBe(false);
         }
 
-        [Test]
+        [Fact]
         public void RequiresConstructorArgsShouldReturnTrueIfTypeDoesNotHaveParameterlessConstructor()
         {
-            Assert.That(reflectionUtil.RequiresConstructorArgs(typeof(MyClassWithConstructor)), Is.EqualTo(true));
+            reflectionUtil.RequiresConstructorArgs(typeof(MyClassWithConstructor)).ShouldBe(true);
         }
 
-        [Test]
+        [Fact]
         public void RequiresConstructorArgsShouldWorkWithStructs()
         {
-            Assert.That(reflectionUtil.RequiresConstructorArgs(typeof (MyStruct)), Is.False);
+            reflectionUtil.RequiresConstructorArgs(typeof (MyStruct)).ShouldBe(false);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToCreateInstanceOfClass()
         {
             var instance = reflectionUtil.CreateInstanceOf<MyClass>();
-            Assert.That(instance, Is.TypeOf(typeof(MyClass)));
+            instance.ShouldBeOfType<MyClass>();
         }
 
         // nb: These tests don't run under silverlight at the moment, so this is actually unnecessary, but if I
         //     do ever make them run under silverlight, I don't want to get caught out by this.
-        #if !SILVERLIGHT
-        [Test]
+        [Fact]
         public void ShouldBeAbleToCreateInstanceOfClassThatHasPrivateParameterlessConstructor()
         {
             var instance = reflectionUtil.CreateInstanceOf<MyClassWithPrivateParameterlessConstructor>();
-            Assert.That(instance, Is.TypeOf(typeof(MyClassWithPrivateParameterlessConstructor)));
+            instance.ShouldBeOfType<MyClassWithPrivateParameterlessConstructor>();
         }
-        #endif
 
-        [Test]
+        [Fact]
         public void WillComplainIfYouAttemptToCreateInstanceOfClassThatOnlyHasAPrivateParameterizedConstructor()
         {
-            Assert.Throws<TypeCreationException>(() =>
+            Should.Throw<TypeCreationException>(() =>
             {
                 var instance = reflectionUtil.CreateInstanceOf<MyClassWithPrivateParameterizedConstructor>();
             });
-            //Assert.That(instance, Is.TypeOf(typeof(MyClassWithPrivateParameterizedConstructor)));
+            //instance.ShouldBeOfType<MyClassWithPrivateParameterizedConstructor)));
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToCreateInstanceOfClassWithConstructorArgs()
         {
             var instance = reflectionUtil.CreateInstanceOf<MyClassWithConstructor>(stringArg, decimalArg);
-            Assert.That(instance, Is.TypeOf(typeof(MyClassWithConstructor)));
+            instance.ShouldBeOfType<MyClassWithConstructor>();
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToCreateInstanceOfStruct()
         {
             var instance = reflectionUtil.CreateInstanceOf<MyStruct>();
-            Assert.That(instance, Is.TypeOf(typeof(MyStruct)));
+            instance.ShouldBeOfType<MyStruct>();
         }
 
-        [Test]
+        [Fact]
         public void ShouldCorrectlySetPropertiesThroughConstructor()
         {
             var instance = reflectionUtil.CreateInstanceOf<MyClassWithConstructor>(stringArg, decimalArg);
             
-            Assert.That(instance.String, Is.EqualTo(stringArg));
-            Assert.That(instance.Decimal, Is.EqualTo(decimalArg));
+            instance.String.ShouldBe(stringArg);
+            instance.Decimal.ShouldBe(decimalArg);
         }
 
-        [Test]
+        [Fact]
         public void ShouldComplainIfConstructorArgsDoNotMatchSignatureOfAnyConstructor()
         {
-            Assert.Throws<TypeCreationException>(() =>
+            Should.Throw<TypeCreationException>(() =>
             {
                 reflectionUtil.CreateInstanceOf<MyClassWithConstructor>(1m);
             });
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToTellThatReferenceTypeIsDefaultValue()
         {
             const MyClass myObj = null;
-            Assert.IsTrue(reflectionUtil.IsDefaultValue(myObj));
+            reflectionUtil.IsDefaultValue(myObj).ShouldBeTrue();
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToTellThatReferenceTypeIsNotDefaultValue()
         {
             MyClass myObj = new MyClass();
-            Assert.IsFalse(reflectionUtil.IsDefaultValue(myObj));
+            reflectionUtil.IsDefaultValue(myObj).ShouldBeFalse();
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToTellThatValueTypeIsDefaultValue()
         {
             int i = 0;
-            Assert.IsTrue(reflectionUtil.IsDefaultValue(i));
+            reflectionUtil.IsDefaultValue(i).ShouldBeTrue();
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToTellThatValueTypeIsNotDefaultValue()
         {
             int i = 1;
-            Assert.IsFalse(reflectionUtil.IsDefaultValue(i));
+            reflectionUtil.IsDefaultValue(i).ShouldBeFalse();
         }
     }
 }

@@ -5,10 +5,13 @@ using FizzWare.NBuilder.PropertyNaming;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NUnit.Framework;
 using NSubstitute;
+using Shouldly;
+using Xunit;
+using Assert = NUnit.Framework.Assert;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
-    [TestFixture]
+    
     public class ObjectBuilderTests
     {
         private IReflectionUtil reflectionUtil;
@@ -16,8 +19,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         private ObjectBuilder<MyClassWithConstructor> myClassWithConstructorBuilder;
         private ObjectBuilder<MyClassWithOptionalConstructor> myClassWithOptionalConstructorBuilder;
 
-        [SetUp]
-        public void SetUp()
+        public ObjectBuilderTests()
         {
             var builderSetup = new BuilderSettings();
 
@@ -28,7 +30,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             myClassWithOptionalConstructorBuilder = new ObjectBuilder<MyClassWithOptionalConstructor>(reflectionUtil, builderSetup);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToConstructAnObjectWithNoConstructorArgs()
         {
 
@@ -38,7 +40,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             builder.Construct(index: 1);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToConstructAnObjectWithConstructorArgs()
         {
             const int arg1 = 1;
@@ -60,7 +62,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             }
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToConstructAnObjectWithNullableConstructorArgs_using_expression_syntax()
         {
             const string arg1 = null;
@@ -79,7 +81,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             }
         }
 
-        [Test]
+        [Fact]
         public void Should_be_able_to_construct_an_object_using_WithConstructor()
         {
             const int arg1 = 1;
@@ -99,7 +101,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             }
         }
 
-        [Test]
+        [Fact]
         public void WithConstructor_NotANewExpressionSupplied_Throws()
         {
 
@@ -107,11 +109,11 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             {
                 var myClass = new MyClassWithConstructor(1, 2);
-                Assert.Throws<ArgumentException>(() => myClassWithConstructorBuilder.WithConstructor(() => myClass));
+                Should.Throw<ArgumentException>(() => myClassWithConstructorBuilder.WithConstructor(() => myClass));
             }
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToConstructAnObjectWithOptionalConstructorArgs()
         {
             // ctor: public MyClassWithOptionalConstructor(string arg1, int arg2)
@@ -134,7 +136,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             }
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToUseWith()
         {
 
@@ -145,11 +147,11 @@ namespace FizzWare.NBuilder.Tests.Unit
                 builder.With(x => x.Float = 2f);
                 builder.CallFunctions(myClass);
 
-                Assert.That(myClass.Float, Is.EqualTo(2f));
+                myClass.Float.ShouldBe(2f);
             }
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToUseWith_WithAnIndex()
         {
 
@@ -160,11 +162,11 @@ namespace FizzWare.NBuilder.Tests.Unit
                 builder.With((x, idx) => x.StringOne = "String" + (idx + 5));
                 builder.CallFunctions(myClass, 9);
 
-                Assert.That(myClass.StringOne, Is.EqualTo("String14"));
+                myClass.StringOne.ShouldBe("String14");
             }
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToUseDo()
         {
             var myClass = Substitute.For<MyClass>();
@@ -181,7 +183,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             }
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToUseANamingStrategy()
         {
             IPropertyNamer propertyNamer = Substitute.For<IPropertyNamer>();
@@ -198,7 +200,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             }
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToUseBuild()
         {
             var myClass = new MyClass();
@@ -218,7 +220,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             }
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToUseDoMultiple()
         {
             var builderSetup = new BuilderSettings();

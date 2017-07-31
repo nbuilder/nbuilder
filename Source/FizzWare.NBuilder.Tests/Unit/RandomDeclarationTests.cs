@@ -2,10 +2,13 @@ using FizzWare.NBuilder.Implementation;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NUnit.Framework;
 using NSubstitute;
+using Shouldly;
+using Xunit;
+using Assert = NUnit.Framework.Assert;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
-    [TestFixture]
+    
     public class RandomDeclarationTests
     {
         private RandomDeclaration<MyClass> declaration;
@@ -17,8 +20,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         private const int start = 0;
         private const int end = listSize - 1;
 
-        [SetUp]
-        public void SetUp()
+        public RandomDeclarationTests()
         {
             listBuilderImpl = Substitute.For<IListBuilderImpl<MyClass>>();
             objectBuilder = Substitute.For<IObjectBuilder<MyClass>>();
@@ -27,7 +29,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             declaration = new RandomDeclaration<MyClass>(listBuilderImpl, objectBuilder, uniqueRandomGenerator, amount, start, end);
         }
 
-        [Test]
+        [Fact]
         public void Construct_ConstructsEachItem()
         {
             // Act
@@ -37,7 +39,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             objectBuilder.Received().Construct(Arg.Any<int>());
         }
 
-        [Test]
+        [Fact]
         public void AddToMaster_AddsEachItemToTheList()
         {
             var masterList = new MyClass[listSize];
@@ -52,9 +54,9 @@ namespace FizzWare.NBuilder.Tests.Unit
             declaration.AddToMaster(masterList);
 
             // Assert
-            Assert.That(masterList[0], Is.Not.Null);
-            Assert.That(masterList[2], Is.Not.Null);
-            Assert.That(masterList[4], Is.Not.Null);
+            masterList[0].ShouldNotBeNull();
+            masterList[2].ShouldNotBeNull();
+            masterList[4].ShouldNotBeNull();
         }
     }
 }

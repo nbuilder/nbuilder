@@ -2,95 +2,98 @@
 using System.Globalization;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NUnit.Framework;
+using Shouldly;
+using Xunit;
+using Assert = NUnit.Framework.Assert;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
-    [TestFixture]
+    
     public class RandomGeneratorTests
     {
         readonly IRandomGenerator randomGenerator = new RandomGenerator();
 
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToGenerateUInt16UsingNext()
         {
             randomGenerator.Next(ushort.MinValue, ushort.MaxValue);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToGenerateUInt32UsingNext()
         {
             randomGenerator.Next(uint.MinValue, uint.MaxValue);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToGenerateUInt64UsingNext()
         {
             randomGenerator.Next(ulong.MinValue, ulong.MaxValue);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToGenerateInt16UsingNext()
         {
             randomGenerator.Next(short.MinValue, short.MaxValue);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToGeneratePositiveInt16UsingNext()
         {
             randomGenerator.Next((short)0, short.MaxValue);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToGenerateInt32UsingNext()
         {
             randomGenerator.Next(int.MinValue, int.MaxValue);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToGeneratePositiveInt32UsingNext()
         {
             randomGenerator.Next(0, int.MaxValue);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToGenerateInt64UsingNext()
         {
             randomGenerator.Next(long.MinValue, long.MaxValue);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToGeneratePositiveInt64UsingNext()
         {
             randomGenerator.Next(0, long.MaxValue);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToGenerateSingleUsingNext()
         {
             randomGenerator.Next(float.MinValue, float.MaxValue);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToGeneratePositiveSingleUsingNext()
         {
             randomGenerator.Next(0, Single.MaxValue);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToGenerateDoubleUsingNext()
         {
             randomGenerator.Next(double.MinValue, double.MaxValue);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToGeneratePositiveDoubleUsingNext()
         {
             randomGenerator.Next(0, double.MaxValue);
         }
 
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToGenerateDoubleUsingNext_InPoland()
         {
             SetCulture("pl-PL");
@@ -113,13 +116,13 @@ namespace FizzWare.NBuilder.Tests.Unit
 #endif
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToGenerateDecimalUsingNext()
         {
             randomGenerator.Next(decimal.MinValue, decimal.MaxValue);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToGenerateDecimalUsingNext_InPoland()
         {
             SetCulture("pl-PL");
@@ -133,164 +136,164 @@ namespace FizzWare.NBuilder.Tests.Unit
             }
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToGeneratePositiveDecimalUsingNext()
         {
             randomGenerator.Next(0, decimal.MaxValue);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToGeneratePositiveFloatUsingNext()
         {
             randomGenerator.Next(0, float.MaxValue);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToGenerateCharUsingNext()
         {
             randomGenerator.Next(char.MinValue, char.MaxValue);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToGenerateByteUsingNext()
         {
             randomGenerator.Next(byte.MinValue, byte.MaxValue);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToGenerateSByteUsingNext()
         {
             randomGenerator.Next(sbyte.MinValue, sbyte.MaxValue);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToGenerateGuid()
         {
             var value = randomGenerator.Guid();
 
-            Assert.That(value, Is.Not.EqualTo(Guid.Empty));
+            value.ShouldNotBe(Guid.Empty);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToGenerateDateTimeUsingNext()
         {
             randomGenerator.Next(DateTime.MinValue, DateTime.MaxValue);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToGenerateBooleanUsingNext()
         {
             randomGenerator.Next();
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToGenerateBoolean()
         {
             randomGenerator.Boolean();
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToGenerateDateTime()
         {
             randomGenerator.DateTime();
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToGenerateUInt16()
         {
             randomGenerator.UShort();
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToGenerateUInt32()
         {
             randomGenerator.UInt();
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToGenerateUInt64()
         {
             randomGenerator.ULong();
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToGenerateInt16()
         {
             randomGenerator.Short();
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToGenerateInt32()
         {
             randomGenerator.Int();
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToGenerateInt64()
         {
             randomGenerator.Long();
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToGenerateShort()
         {
             randomGenerator.Short();
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToGenerateFloat()
         {
             randomGenerator.Float();
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToGenerateDouble()
         {
             randomGenerator.Double();
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToGenerateDecimal()
         {
             randomGenerator.Decimal();
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToGenerateChar()
         {
             randomGenerator.Char();
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToGenerateByte()
         {
             randomGenerator.Byte();
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToGenerateSByte()
         {
             randomGenerator.SByte();
         }
 
-        [Test]
+        [Fact]
         public void should_be_able_to_generate_enum_using_type_param()
         {
             randomGenerator.Enumeration<MyEnum>();
         }
 
-        [Test]
+        [Fact]
         public void should_be_able_to_generate_enum()
         {
             randomGenerator.Enumeration(typeof(MyEnum));
         }
 
-        [Test]
+        [Fact]
         public void should_be_able_to_generate_a_phrase()
         {
             var phrase = randomGenerator.Phrase(50);
 
-            Assert.That(phrase.Length, Is.LessThanOrEqualTo(50));
+            phrase.Length.ShouldBeLessThanOrEqualTo(50);
         }
 
 
@@ -308,24 +311,21 @@ namespace FizzWare.NBuilder.Tests.Unit
                 var result = randomGenerator.NextString(minLength, maxLength);
 
                 // Assert
-                Assert.That(result.Length, Is.LessThanOrEqualTo(maxLength), result);
-                Assert.That(result.Length, Is.GreaterThanOrEqualTo(minLength), result);
+                result.Length.ShouldBeLessThanOrEqualTo(maxLength);
+                result.Length.ShouldBeGreaterThanOrEqualTo(minLength);
             }
 
         }
 
 
-        // TODO FIX
-#if !SILVERLIGHT
-        [Test]
+        [Fact]
         public void enum_should_throw_if_not_an_enum_type()
         {
             var type = typeof(string);
-            Assert.Throws<ArgumentException>(() => randomGenerator.Enumeration(type));
+            Should.Throw<ArgumentException>(() => randomGenerator.Enumeration(type));
         }
-#endif
 
-        [Test]
+        [Fact]
         public void RandomGenerator_SeedInitialization_ShouldAllowRandomValuesToBeRepeatable()
         {
             const int seed = 5;
@@ -333,10 +333,10 @@ namespace FizzWare.NBuilder.Tests.Unit
             IRandomGenerator seededRandomGenerator1 = new RandomGenerator(seed);
             IRandomGenerator seededRandomGenerator2 = new RandomGenerator(seed);
 
-            Assert.That(seededRandomGenerator1.Int(), Is.EqualTo(seededRandomGenerator2.Int()));
-            Assert.That(seededRandomGenerator1.Int(), Is.EqualTo(seededRandomGenerator2.Int()));
-            Assert.That(seededRandomGenerator1.Int(), Is.EqualTo(seededRandomGenerator2.Int()));
-            Assert.That(seededRandomGenerator1.Int(), Is.EqualTo(seededRandomGenerator2.Int()));
+            seededRandomGenerator1.Int().ShouldBe(seededRandomGenerator2.Int());
+            seededRandomGenerator1.Int().ShouldBe(seededRandomGenerator2.Int());
+            seededRandomGenerator1.Int().ShouldBe(seededRandomGenerator2.Int());
+            seededRandomGenerator1.Int().ShouldBe(seededRandomGenerator2.Int());
         }
     }
 }

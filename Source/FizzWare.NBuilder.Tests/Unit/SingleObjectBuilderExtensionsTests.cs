@@ -7,11 +7,12 @@ using FizzWare.NBuilder.Implementation;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NUnit.Framework;
 using NSubstitute;
+using Xunit;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
     // ReSharper disable InvokeAsExtensionMethod
-    [TestFixture]
+    
     public class SingleObjectBuilderExtensionsTests
     {
         private ISingleObjectBuilder<MyClass> objectBuilder;
@@ -21,8 +22,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         private Action<MyClass, SimpleClass> actionForAll;
         private IList<SimpleClass> actionList;
 
-        [SetUp]
-        public void SetUp()
+        public SingleObjectBuilderExtensionsTests()
         {
             objectBuilder = Substitute.For<IObjectBuilder<MyClass>>();
             func = x => x.StringOne = "test";
@@ -32,7 +32,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             actionList = new List<SimpleClass>();
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToUseWith()
         {
             objectBuilder.With(func).Returns(objectBuilder);
@@ -40,7 +40,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             SingleObjectBuilderExtensions.With(objectBuilder, func);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToUseWithConstructor()
         {
             Expression<Func<MyClass>> constructor = () => new MyClass();
@@ -50,7 +50,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             SingleObjectBuilderExtensions.WithConstructor(objectBuilder, constructor);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToUseAnd()
         {
             objectBuilder.With(func).Returns(objectBuilder);
@@ -58,7 +58,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             SingleObjectBuilderExtensions.And(objectBuilder, func);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToUseAndToCallFunction()
         {
             objectBuilder.Do(action).Returns(objectBuilder);
@@ -66,7 +66,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             SingleObjectBuilderExtensions.And(objectBuilder, action);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToAddMultiFunction()
         {
             objectBuilder.DoForAll(actionForAll, actionList).Returns(objectBuilder);
@@ -74,7 +74,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             SingleObjectBuilderExtensions.DoForAll(objectBuilder, actionForAll, actionList);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToUseWithToSetPrivateProperties()
         {
             objectBuilder.Do(new Action<MyClass>(a => a.StringOne = "")).Returns(objectBuilder);

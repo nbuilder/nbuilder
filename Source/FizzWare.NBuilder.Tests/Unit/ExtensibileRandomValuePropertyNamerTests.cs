@@ -5,10 +5,13 @@ using FizzWare.NBuilder.PropertyNaming;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NSubstitute;
 using NUnit.Framework;
+using Shouldly;
+using Xunit;
+using Assert = NUnit.Framework.Assert;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
-    [TestFixture]
+    
     public class ExtensibileRandomValuePropertyNamerTests
     {
         BuilderSettings builderSettings;
@@ -16,8 +19,7 @@ namespace FizzWare.NBuilder.Tests.Unit
 
         private IRandomGenerator randomGenerator;
 
-        [SetUp]
-        public void SetUp()
+        public ExtensibileRandomValuePropertyNamerTests()
         {
             builderSettings = new BuilderSettings();
 
@@ -64,24 +66,24 @@ namespace FizzWare.NBuilder.Tests.Unit
             }
         }
 
-        [Test]
+        [Fact]
         public void can_set_values_of()
         {
             var myClass = new MyClass();
             target.SetValuesOf(myClass);
         }
 
-        [Test]
+        [Fact]
         public void replace_a_default_handler_names_with_new_handler()
         {
             var myClass = new MyClass();
             const int intValue = 234;
             target.NameWith(() => GetRandom.Int(intValue, intValue));
             target.SetValuesOf(myClass);
-            Assert.That(myClass.Int, Is.EqualTo(intValue));
+            myClass.Int.ShouldBe(intValue);
         }
 
-        [Test]
+        [Fact]
         public void adding_handler_for_complex_type_names_using_the_added_handler()
         {
             // Arrange
@@ -92,37 +94,37 @@ namespace FizzWare.NBuilder.Tests.Unit
             target.SetValuesOf(myClass);
 
             // Assert
-            Assert.AreEqual(SimpleClassBuilder.String1Length, myClass.SimpleClassProperty.String1.Length);
-            Assert.AreEqual(SimpleClassBuilder.String2Length, myClass.SimpleClassProperty.String2.Length);
+            SimpleClassBuilder.String1Length.ShouldBe(myClass.SimpleClassProperty.String1.Length);
+            SimpleClassBuilder.String2Length.ShouldBe(myClass.SimpleClassProperty.String2.Length);
         }
 
-        [Test]
+        [Fact]
         public void removing_a_handler_causes_members_of_that_type_to_not_be_named()
         {
             var myClass = new MyClass();
             target.DontName<string>();
             target.SetValuesOf(myClass);
-            Assert.That(myClass.StringOne, Is.Null);
+            myClass.StringOne.ShouldBeNull();
         }
 
-        [Test]
+        [Fact]
         public void nullable_members_are_set_using_the_non_nullable_handler_when_no_nullable_handler_exists()
         {
             var myClass = new MyClass();
             target.SetValuesOf(myClass);
-            Assert.That(myClass.NullableInt, Is.Not.Null);
+            myClass.NullableInt.ShouldNotBeNull();
         }
 
-        [Test]
+        [Fact]
         public void nullable_members_are_set_using_the_specifc_nullable_handler_and_not_the_non_nullable_one_for_te_same_type()
         {
             var myClass = new MyClass();
             target.NameWith<int?>(() => 500);
             target.SetValuesOf(myClass);
-            Assert.That(myClass.NullableInt, Is.EqualTo(500));
+            myClass.NullableInt.ShouldBe(500);
         }
 
-        [Test]
+        [Fact]
         public void when_naming_with_handler_that_takes_memeberinfo_parameter__the_member_info_parameter_will_be_received()
         {
             var foo = new MyClass();
@@ -142,14 +144,14 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             target.SetValuesOf(foo);
 
-            Assert.That(simpleClassMemberInfo.Name, Is.EqualTo("SimpleClassProperty"));
-            Assert.That(simpleClassMemberInfo.DeclaringType, Is.EqualTo(typeof(MyClass)));
+            simpleClassMemberInfo.Name.ShouldBe("SimpleClassProperty");
+            simpleClassMemberInfo.DeclaringType.ShouldBe(typeof(MyClass));
 
-            Assert.That(dateTimeMemberInfo.Name, Is.EqualTo("DateTime"));
-            Assert.That(dateTimeMemberInfo.DeclaringType, Is.EqualTo(typeof(MyClass)));
+            dateTimeMemberInfo.Name.ShouldBe("DateTime");
+            dateTimeMemberInfo.DeclaringType.ShouldBe(typeof(MyClass));
         }
 
-        [Test]
+        [Fact]
         public void SetValuesOf_IgnoredProperty_HonorsIgnore()
         {
             // Arrange
@@ -162,7 +164,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             target.SetValuesOf(myClass);
 
             // Assert
-            Assert.That(myClass.Long, Is.EqualTo(default(long)));
+            myClass.Long.ShouldBe(default(long));
         }
 
 

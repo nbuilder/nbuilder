@@ -2,15 +2,18 @@
 using FizzWare.NBuilder.Dates;
 using FizzWare.NBuilder.Tests.Integration.Models;
 using NUnit.Framework;
+using Shouldly;
+using Xunit;
+using Assert = NUnit.Framework.Assert;
 
 namespace FizzWare.NBuilder.Tests.Integration
 {
-    [TestFixture]
+    
     // ReSharper disable AccessToStaticMemberViaDerivedType
     public class UsingFluentDates
     {
 
-        [Test]
+        [Fact]
         public void Fluent_dates_example()
         {
             var builderSetup = new BuilderSettings();
@@ -20,11 +23,11 @@ namespace FizzWare.NBuilder.Tests.Integration
                             .With(x => x.LastEdited = On.August.The15th.At(15, 43))
                             .Build();
 
-            Assert.That(product.Created, Is.EqualTo(new DateTime(2006, 5, 10, 09, 00, 00)));
-            Assert.That(product.LastEdited, Is.EqualTo(new DateTime(DateTime.Now.Year, 8, 15, 15, 43, 00)));
+            product.Created.ShouldBe(new DateTime(2006, 5, 10, 09, 00, 00));
+            product.LastEdited.ShouldBe(new DateTime(DateTime.Now.Year, 8, 15, 15, 43, 00));
         }
 
-        [Test]
+        [Fact]
         public void Using_random_dates()
         {
             var builderSetup = new BuilderSettings();
@@ -41,8 +44,8 @@ namespace FizzWare.NBuilder.Tests.Integration
 
             foreach (var product in products)
             {
-                Assert.That(product.Created, Is.AtLeast(expectedStart));
-                Assert.That(product.Created, Is.AtMost(expectedEnd));
+                product.Created.ShouldBeGreaterThanOrEqualTo(expectedStart);
+                product.Created.ShouldBeLessThanOrEqualTo(expectedEnd);
             }
         }
 
@@ -51,7 +54,7 @@ namespace FizzWare.NBuilder.Tests.Integration
 
 
 
-        [Test]
+        [Fact]
         public void Using_full_syntax()
         {
             var builderSetup = new BuilderSettings();
@@ -59,10 +62,10 @@ namespace FizzWare.NBuilder.Tests.Integration
                             .With(x => x.Created = The.Year(2008).On.January.The10th.At(05, 49, 38))
                             .Build();
 
-            Assert.That(product.Created, Is.EqualTo(new DateTime(2008, 01, 10, 05, 49, 38)));
+            product.Created.ShouldBe(new DateTime(2008, 01, 10, 05, 49, 38));
         }
 
-        [Test]
+        [Fact]
         public void Not_specifying_the_year()
         {
             // (Defaults to current year)
@@ -72,10 +75,10 @@ namespace FizzWare.NBuilder.Tests.Integration
                 .With(x => x.Created = On.July.The21st.At(07, 00))
                 .Build();
 
-            Assert.That(product.Created, Is.EqualTo(new DateTime(DateTime.Now.Year, 07, 21, 07, 00, 00)));
+            product.Created.ShouldBe(new DateTime(DateTime.Now.Year, 07, 21, 07, 00, 00));
         }
 
-        [Test]
+        [Fact]
         public void Just_the_date()
         {
             var builderSetup = new BuilderSettings();
@@ -83,10 +86,10 @@ namespace FizzWare.NBuilder.Tests.Integration
                 .With(x => x.Created = On.May.The14th)
                 .Build();
 
-            Assert.That(product.Created, Is.EqualTo(new DateTime(DateTime.Now.Year, 05, 14, 00, 00, 00)));
+            product.Created.ShouldBe(new DateTime(DateTime.Now.Year, 05, 14, 00, 00, 00));
         }
 
-        [Test]
+        [Fact]
         public void Static_month_names()
         {
             // You can use the month names on their own without On
@@ -98,10 +101,10 @@ namespace FizzWare.NBuilder.Tests.Integration
                                 .With(x => x.Created = December.The10th.At(09, 00))
                                 .Build();
 
-            Assert.That(product.Created, Is.EqualTo(new DateTime(DateTime.Now.Year, 12, 10, 09, 00, 00)));
+            product.Created.ShouldBe(new DateTime(DateTime.Now.Year, 12, 10, 09, 00, 00));
         }
 
-        [Test]
+        [Fact]
         public void Specifying_time_spans()
         {
             // There are two ways of specifying TimeSpans, again which one you use
@@ -110,11 +113,11 @@ namespace FizzWare.NBuilder.Tests.Integration
             var at8_31am = The.Time(08, 31);
             var at9_46am = At.Time(09, 46);
 
-            Assert.That(at8_31am, Is.EqualTo(new TimeSpan(0, 8, 31, 0)));
-            Assert.That(at9_46am, Is.EqualTo(new TimeSpan(0, 9, 46, 0)));
+            at8_31am.ShouldBe(new TimeSpan(0, 8, 31, 0));
+            at9_46am.ShouldBe(new TimeSpan(0, 9, 46, 0));
         }
 
-        [Test]
+        [Fact]
         public void Using_the_and_a_number()
         {
             var builderSetup = new BuilderSettings();
@@ -122,14 +125,14 @@ namespace FizzWare.NBuilder.Tests.Integration
                 .With(x => x.Created = On.August.The(21).At(16, 38, 46))
                 .Build();
 
-            Assert.That(product.Created, Is.EqualTo(new DateTime(DateTime.Now.Year, 08, 21, 16, 38, 46)));
+            product.Created.ShouldBe(new DateTime(DateTime.Now.Year, 08, 21, 16, 38, 46));
         }
 
-        [Test]
+        [Fact]
         public void Using_Today()
         {
             var date = Today.At(09, 00);
-            Assert.That(date, Is.EqualTo(new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 09, 00, 00)));
+            date.ShouldBe(new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 09, 00, 00));
         }
     }
     // ReSharper restore AccessToStaticMemberViaDerivedType

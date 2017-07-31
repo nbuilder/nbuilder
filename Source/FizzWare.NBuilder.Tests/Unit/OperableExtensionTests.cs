@@ -5,11 +5,14 @@ using FizzWare.NBuilder.Tests.TestClasses;
 using NUnit.Framework;
 using NSubstitute;
 using System.Linq.Expressions;
+using Shouldly;
+using Xunit;
+using Assert = NUnit.Framework.Assert;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
     // ReSharper disable InvokeAsExtensionMethod
-    [TestFixture]
+    
     public class OperableExtensionTests
     {
         private IObjectBuilder<MyClass> objectBuilder;
@@ -51,8 +54,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             }
         }
 
-        [SetUp]
-        public void SetUp()
+        public OperableExtensionTests()
         {
             objectBuilder = Substitute.For<IObjectBuilder<MyClass>>();
 
@@ -61,7 +63,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             propertyExpression = x => x.IntGetterOnly;
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToUseWith()
         {
             var builderSetup = new BuilderSettings();
@@ -74,7 +76,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             OperableExtensions.With((IOperable<MyClass>)operable, func);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToUseWith_WithAnIndex()
         {
             var builderSetup = new BuilderSettings();
@@ -88,7 +90,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             OperableExtensions.With((IOperable<MyClass>)operable, funcWithIndex);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToUseHas()
         {
             var builderSetup = new BuilderSettings();
@@ -101,7 +103,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             OperableExtensions.With((IOperable<MyClass>)operable, func);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToUseAnd()
         {
             var builderSetup = new BuilderSettings();
@@ -114,7 +116,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             OperableExtensions.And((IOperable<MyClass>)operable, func);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToUseAndWithAnIndex()
         {
             var builderSetup = new BuilderSettings();
@@ -128,7 +130,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             OperableExtensions.And((IOperable<MyClass>)operable, funcWithIndex);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToUseWithToSetPrivateProperties()
         {
             var builderSetup = new BuilderSettings();
@@ -141,7 +143,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             OperableExtensions.With((IOperable<MyClass>)operable, propertyExpression, 100);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToUseHasToSetPrivateProperties()
         {
             var builderSetup = new BuilderSettings();
@@ -154,7 +156,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             OperableExtensions.With((IOperable<MyClass>)operable, propertyExpression, 100);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToUseAndToSetPrivateProperties()
         {
             var builderSetup = new BuilderSettings();
@@ -167,7 +169,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             OperableExtensions.And((IOperable<MyClass>)operable, propertyExpression, 100);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToUseDoForEach()
         {
             var simpleClasses = new List<SimpleClass>();
@@ -182,7 +184,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             OperableExtensions.DoForEach((IOperable<MyClass>)operable, action, simpleClasses);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToUseHasDoneToItForAll()
         {
             var simpleClasses = new List<SimpleClass>();
@@ -197,7 +199,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             OperableExtensions.DoForEach((IOperable<MyClass>)operable, action, simpleClasses);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToUseDo()
         {
             Action<MyClass> action = x => x.DoSomething();
@@ -211,7 +213,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             OperableExtensions.Do((IOperable<MyClass>)operable, action);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToUseHasDoneToIt()
         {
             Action<MyClass, int> action = (x, y) => x.DoSomething();
@@ -225,7 +227,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             OperableExtensions.With((IOperable<MyClass>)operable, action);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToUseAndToAddAnAction()
         {
             Action<MyClass> action = x => x.DoSomething();
@@ -239,12 +241,12 @@ namespace FizzWare.NBuilder.Tests.Unit
             OperableExtensions.And((IOperable<MyClass>)operable, action);
         }
 
-        [Test]
+        [Fact]
         public void ShouldComplainIfOperableIsNotAlsoOfTypeIDeclaration()
         {
             var operableOnly = Substitute.For<IOperable<MyClass>>();
 
-            Assert.Throws<ArgumentException>(() =>
+            Should.Throw<ArgumentException>(() =>
             {
                 OperableExtensions.With(operableOnly, x => x.StringOne = "test");
             });

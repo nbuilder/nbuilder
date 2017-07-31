@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using FizzWare.NBuilder.Tests.Integration.Models;
 using NUnit.Framework;
+using Shouldly;
+using Xunit;
+using Assert = NUnit.Framework.Assert;
 
 namespace FizzWare.NBuilder.Tests.Integration
 {
-    [TestFixture]
+    
     public class BuilderSetupTests
     {
-        [Test]
+        [Fact]
         public void RegisteringACustomPersistenceService()
         {
             var buildersetup = new BuilderSettings();
@@ -16,7 +19,7 @@ namespace FizzWare.NBuilder.Tests.Integration
 
            new Builder(buildersetup).CreateNew<Product>().Persist();
 
-            Assert.That(MockCustomPersistenceService.ProductPersisted, Is.True);
+            MockCustomPersistenceService.ProductPersisted.ShouldBeTrue();
         }
 
     }

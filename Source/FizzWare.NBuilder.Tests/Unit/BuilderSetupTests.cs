@@ -2,18 +2,20 @@
 using FizzWare.NBuilder.Tests.TestClasses;
 using NSubstitute;
 using NUnit.Framework;
+using Shouldly;
+using Xunit;
+using Assert = NUnit.Framework.Assert;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
-    [TestFixture]
+    
     public class BuilderSetupTests
     {
         private IPersistenceService persistenceService;
         private IMyClassRepository repository;
         BuilderSettings builderSettings;
 
-        [SetUp]
-        public void SetUp()
+        public BuilderSetupTests()
         {
             persistenceService = Substitute.For<IPersistenceService>();
             repository = Substitute.For<IMyClassRepository>();
@@ -21,13 +23,13 @@ namespace FizzWare.NBuilder.Tests.Unit
             builderSettings.SetPersistenceService(this.persistenceService);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToRegisterThePersistenceService()
         {
-            Assert.That(builderSettings.GetPersistenceService(), Is.EqualTo(this.persistenceService));
+            builderSettings.GetPersistenceService().ShouldBe(this.persistenceService);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToSetCreatePersistenceMethod()
         {
             Action<MyClass> func = x => repository.Save(x);
@@ -37,7 +39,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             persistenceService.Received().SetPersistenceCreateMethod(func);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToSetUpdatePersistenceMethod()
         {
             Action<MyClass> func = x => repository.Save(x);

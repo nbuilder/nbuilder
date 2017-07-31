@@ -4,28 +4,32 @@ using System.Linq;
 using System.Text;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NUnit.Framework;
+using Shouldly;
+using Xunit;
+using Assert = NUnit.Framework.Assert;
 
 namespace FizzWare.NBuilder.Tests.Integration
 {
-    [TestFixture]
+    
     public class ListBuilderNegativeTests
     {
-        [Test]
+        [Fact]
         public void ShouldComplainIfTheFirstRangeTooBig()
         {
-            Assert.Throws<ArgumentException>(() =>
+
+            Should.Throw<ArgumentException>(() =>
             {
                 var builderSetup = new BuilderSettings();
                 new Builder(builderSetup).CreateListOfSize< MyClass>(10).TheFirst(11).With(x => x.StringOne = "Description").Build();
             });
         }
 
-        [Test]
+        [Fact]
         public void ShouldComplainIfTheNextRangeWillBeTooBig()
         {
             var builderSetup = new BuilderSettings();
 
-            Assert.Throws<BuilderException>(() =>
+            Should.Throw<BuilderException>(() =>
             {
                 new Builder(builderSetup)
                      .CreateListOfSize< MyClass>(10)
@@ -38,43 +42,43 @@ namespace FizzWare.NBuilder.Tests.Integration
             });
         }
 
-        [Test]
+        [Fact]
         public void ShouldComplainIfYouTryToCreateAnInterface()
         {
             var builderSetup = new BuilderSettings();
-            Assert.Throws<BuilderException>(() =>
+            Should.Throw<BuilderException>(() =>
             {
                 new Builder(builderSetup).CreateListOfSize< IMyInterface>(10).Build();
             });
         }
 
-        [Test]
+        [Fact]
         public void should_complain_if_you_try_to_create_an_abstract_class()
         {
             var builderSetup = new BuilderSettings();
 
-            Assert.Throws<TypeCreationException>(() =>
+            Should.Throw<TypeCreationException>(() =>
             {
                 new Builder(builderSetup).CreateNew< MyAbstractClass>().Build();
             });
         }
 
-        [Test]
+        [Fact]
         public void should_complain_if_you_try_to_create_an_interface()
         {
             var builderSetup = new BuilderSettings();
-            Assert.Throws<TypeCreationException>(() =>
+            Should.Throw<TypeCreationException>(() =>
             {
                 new Builder(builderSetup).CreateNew< IMyInterface>().Build();
             });
         }
 
-        [Test]
+        [Fact]
         public void ShouldComplainIfAndThePreviousRangeWillBeTooBig()
         {
             var builderSetup = new BuilderSettings();
 
-            Assert.Throws<BuilderException>(() =>
+            Should.Throw<BuilderException>(() =>
             {
                 new Builder(builderSetup)
                      .CreateListOfSize< MyClass>(10)
@@ -87,12 +91,12 @@ namespace FizzWare.NBuilder.Tests.Integration
             });
         }
 
-        [Test]
+        [Fact]
         public void ShouldComplainIfRandomAmountTooBig()
         {
             var builderSetup = new BuilderSettings();
 
-            Assert.Throws<ArgumentException>(() =>
+            Should.Throw<ArgumentException>(() =>
             {
                 new Builder(builderSetup)
                     .CreateListOfSize< MyClass>(10)
@@ -102,12 +106,12 @@ namespace FizzWare.NBuilder.Tests.Integration
             });
         }
 
-        [Test]
+        [Fact]
         public void ShouldComplainIfRandomAmountTooBigForRange()
         {
             var builderSetup = new BuilderSettings();
 
-            Assert.Throws<ArgumentException>(() =>
+            Should.Throw<ArgumentException>(() =>
             {
                 new Builder(builderSetup)
                      .CreateListOfSize< MyClass>(10)
@@ -117,12 +121,12 @@ namespace FizzWare.NBuilder.Tests.Integration
             });
         }
 
-        [Test]
+        [Fact]
         public void ShouldComplainIfRandomRangeTooBig()
         {
             var builderSetup = new BuilderSettings();
 
-            Assert.Throws<BuilderException>(() =>
+            Should.Throw<BuilderException>(() =>
             {
                 new Builder(builderSetup)
                     .CreateListOfSize< MyClass>(10)
@@ -132,23 +136,23 @@ namespace FizzWare.NBuilder.Tests.Integration
             });
         }
 
-        [Test]
+        [Fact]
         public void ShouldComplainIfSizeOfListLessThanOne()
         {
             var builderSetup = new BuilderSettings();
 
-            Assert.Throws<ArgumentException>(() =>
+            Should.Throw<ArgumentException>(() =>
             {
                 new Builder(builderSetup).CreateListOfSize< MyClass>(0).Build();
             });
         }
 
-        [Test]
+        [Fact]
         public void ShouldComplainIfSectionGreaterThanListSize()
         {
             var builderSetup = new BuilderSettings();
 
-            Assert.Throws<ArgumentException>(() =>
+            Should.Throw<ArgumentException>(() =>
             {
                 new Builder(builderSetup)
                     .CreateListOfSize< MyClass>(10)
@@ -158,12 +162,12 @@ namespace FizzWare.NBuilder.Tests.Integration
             });
         }
 
-        [Test]
+        [Fact]
         public void CanOnlyUseAndTheNextAfterAnotherDeclaration()
         {
             var builderSetup = new BuilderSettings();
 
-            Assert.Throws<BuilderException>(() =>
+            Should.Throw<BuilderException>(() =>
             {
                 new Builder(builderSetup)
                     .CreateListOfSize< MyClass>(10)
@@ -173,12 +177,12 @@ namespace FizzWare.NBuilder.Tests.Integration
             });
         }
 
-        [Test]
+        [Fact]
         public void CanOnlyUseAndThePreviousAfterAnotherDeclaration()
         {
             var builderSetup = new BuilderSettings();
 
-            Assert.Throws<BuilderException>(() =>
+            Should.Throw<BuilderException>(() =>
             {
                 new Builder(builderSetup)
                     .CreateListOfSize< MyClass>(10)

@@ -1,15 +1,18 @@
 using FizzWare.NBuilder.Tests.TestClasses;
 using NUnit.Framework;
+using Shouldly;
+using Xunit;
+using Assert = NUnit.Framework.Assert;
 
 namespace FizzWare.NBuilder.Tests.Integration
 {
-    [TestFixture]
+    
     public class ListBuilderTests_UsingIndexedApi
     {
         private const string theString = "TheString";
         private const decimal theDecimal = 10m;
 
-        [Test]
+        [Fact]
         public void Do_WithIndex()
         {
             var builderSettings = new BuilderSettings();
@@ -23,11 +26,11 @@ namespace FizzWare.NBuilder.Tests.Integration
             for (int i = 0; i < 10; i++)
             {
                 var row = list[i];
-                Assert.That(row.Int, Is.EqualTo(i*2));
+                row.Int.ShouldBe(i*2);
             }
         }
 
-        [Test]
+        [Fact]
         public void And_WithIndex()
         {
             var builderSetup = new BuilderSettings();
@@ -43,11 +46,11 @@ namespace FizzWare.NBuilder.Tests.Integration
             for (int i = 0; i < 10; i++)
             {
                 var row = list[i];
-                Assert.That(row.Int, Is.EqualTo(i * 3));
+                row.Int.ShouldBe(i * 3);
             }
         }
 
-        [Test]
+        [Fact]
         public void WithConstructor_WithIndex()
         {
             var builderSetup = new BuilderSettings();
@@ -62,7 +65,7 @@ namespace FizzWare.NBuilder.Tests.Integration
             for (int i = 0; i < 10; i++)
             {
                 var row = list[i];
-                Assert.That(row.Int, Is.EqualTo(i * 2));
+                row.Int.ShouldBe(i * 2);
             }        
         }
 

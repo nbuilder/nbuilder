@@ -7,15 +7,15 @@ using System.Diagnostics;
 using NSubstitute;
 using FizzWare.NBuilder.Tests.TestClasses;
 using Shouldly;
+using Xunit;
 
 namespace FizzWare.NBuilder.Tests.Integration
 {
-    [TestFixture]
+    
     public class IssueTests
     {
 
-
-        [Test]
+        [Fact]
         public void Guid_ShouldNotChangeValueOfStaticMember()
         {
             var guid1 = Guid.Empty;
@@ -27,14 +27,13 @@ namespace FizzWare.NBuilder.Tests.Integration
         }
 
         //http://code.google.com/p/nbuilder/issues/detail?id=68
-        [Test]
+        [Fact]
         public void Issue68_ReadonlyProperty_ShouldNotWriteTraceDueToAttemptingToSetAPropertyThatCannotBeSet()
         {
-            var builderSetup = new BuilderSettings();
             var traceListener = Substitute.For<TraceListener>();
             Trace.Listeners.Add(traceListener);
 
-            var product = new Builder(builderSetup)
+            var product = new Builder()
                            .CreateListOfSize< DataModel>(2)
                            .All()
                            .With(x => x.ExpirationMonth = "01")

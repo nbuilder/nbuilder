@@ -3,10 +3,13 @@ using FizzWare.NBuilder.Implementation;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NUnit.Framework;
 using NSubstitute;
+using Shouldly;
+using Xunit;
+using Assert = NUnit.Framework.Assert;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
-    [TestFixture]
+    
     public class DeclarationQueueTests
     {
         private DeclarationQueue<MyClass> declarations;
@@ -16,8 +19,7 @@ namespace FizzWare.NBuilder.Tests.Unit
 
         private const int listSize = 30;
 
-        [SetUp]
-        public void SetUp()
+        public DeclarationQueueTests()
         {
             declarations = new DeclarationQueue<MyClass>(listSize);
 
@@ -29,48 +31,48 @@ namespace FizzWare.NBuilder.Tests.Unit
             declaration1.End.Returns(10);
         }
 
-        [Test]
+        [Fact]
         public void CountShouldIncreaseWhenAddingAnItem()
         {
             declarations.Enqueue(declaration1);
-            Assert.That(declarations.Count, Is.EqualTo(1));
+            declarations.Count.ShouldBe(1);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToDequeueAnItem()
         {
             declarations.Enqueue(declaration1);
-            Assert.That(declarations.Dequeue(), Is.SameAs(declaration1));
+            declarations.Dequeue().ShouldBeSameAs(declaration1);
         }
 
-        [Test]
+        [Fact]
         public void CountShouldDecreaseWhenDequeuingAnItem()
         {
             declarations.Enqueue(declaration1);
             declarations.Dequeue();
-            Assert.That(declarations.Count, Is.EqualTo(0));
+            declarations.Count.ShouldBe(0);
         }
 
-        [Test]
+        [Fact]
         public void ShouldThrowIfTryToDequeueWhenQueueEmpty()
         {
-            Assert.Throws<InvalidOperationException>(() =>
+            Should.Throw<InvalidOperationException>(() =>
             {
                 declarations.Dequeue();
             });
         }
 
-        [Test]
+        [Fact]
         public void FirstItemsInShouldComeOutFirst()
         {
             declarations.Enqueue(declaration1);
             declarations.Enqueue(globalDeclaration);
 
-            Assert.That(declarations.Dequeue(), Is.SameAs(declaration1));
-            Assert.That(declarations.Dequeue(), Is.SameAs(globalDeclaration));
+            declarations.Dequeue().ShouldBeSameAs(declaration1);
+            declarations.Dequeue().ShouldBeSameAs(globalDeclaration);
         }
 
-        [Test]
+        [Fact]
         public void GlobalDeclarationsShouldBePrioritised()
         {
             declarations.Enqueue(declaration1);
@@ -78,12 +80,12 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             declarations.Prioritise();
 
-            Assert.That(declarations.Dequeue(), Is.SameAs(globalDeclaration));
-            Assert.That(declarations.Dequeue(), Is.SameAs(declaration1));
-            Assert.That(declarations.Count, Is.EqualTo(0));
+            declarations.Dequeue().ShouldBeSameAs(globalDeclaration);
+            declarations.Dequeue().ShouldBeSameAs(declaration1);
+            declarations.Count.ShouldBe(0);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToPrioritiseMultipleGlobalDeclarations()
         {
             declarations.Enqueue(declaration1);
@@ -92,20 +94,20 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             declarations.Prioritise();
 
-            Assert.That(declarations.Dequeue(), Is.SameAs(globalDeclaration));
-            Assert.That(declarations.Dequeue(), Is.SameAs(globalDeclaration));
-            Assert.That(declarations.Dequeue(), Is.SameAs(declaration1));
+            declarations.Dequeue().ShouldBeSameAs(globalDeclaration);
+            declarations.Dequeue().ShouldBeSameAs(globalDeclaration);
+            declarations.Dequeue().ShouldBeSameAs(declaration1);
         }
 
-        [Test]
+        [Fact]
         public void ShouldBeAbleToPeek()
         {
             declarations.Enqueue(declaration1);
-            Assert.That(declarations.GetLastItem(), Is.SameAs(declaration1));
-            Assert.That(declarations.Count, Is.EqualTo(1));
+            declarations.GetLastItem().ShouldBeSameAs(declaration1);
+            declarations.Count.ShouldBe(1);
         }
 
-        [Test]
+        [Fact]
         public void ShouldComplainIfEndIsGreaterThanCapacity()
         {
             declaration1.Start.Returns(0);
@@ -116,14 +118,14 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             declarations.Enqueue(declaration1);
 
-            Assert.Throws<BuilderException>(() =>
+            Should.Throw<BuilderException>(() =>
             {
                 declarations.Enqueue(declaration2);
             });
 
         }
 
-        [Test]
+        [Fact]
         public void ShouldComplainIfStartIsLessThanZero()
         {
             //declaration1.BackToRecord(BackToRecordOptions.Expectations);
@@ -131,7 +133,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             declaration1.Start.Returns(-2);
             declaration1.End.Returns(9);
 
-            Assert.Throws<BuilderException>(() =>
+            Should.Throw<BuilderException>(() =>
                 {
                     declarations.Enqueue(declaration1);
                 });
