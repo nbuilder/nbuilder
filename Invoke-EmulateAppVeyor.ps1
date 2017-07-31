@@ -1,5 +1,4 @@
 param(
-    [ValidateSet("NET3.5", "NET4.0", "NetStandard16")] [Array] $Frameworks,
     [switch] $Build,
     [switch] $Test,
     [switch] $Pack
@@ -18,7 +17,9 @@ Invoke-DisplayBuildInfo
 # build_script
 $workingDirectory = $(pwd)
 if ($Build) {
-    $Frameworks | Invoke-Build -WorkingDirectory $workingDirectory
+    pushd "Source"
+    dotnet build
+    popd
 }
 
 # before_test
@@ -26,17 +27,17 @@ if ($Build) {
 # test
 if ($Test) {
 
-    $assemblies = @()
-    $Frameworks| %{
-        $OutputPath = Get-BuildOutputPath -WorkingDirectory $workingDirectory -Framework $_
-        write-host "Searching $OutputPath for Test assembly..." -ForegroundColor Cyan
-        $assmeblies += Resolve-Path "$OutputPath\FizzWare.NBuilder.Tests.dll"
-    }
+    # $assemblies = @()
+    # $Frameworks| %{
+    #     $OutputPath = Get-BuildOutputPath -WorkingDirectory $workingDirectory -Framework $_
+    #     write-host "Searching $OutputPath for Test assembly..." -ForegroundColor Cyan
+    #     $assmeblies += Resolve-Path "$OutputPath\FizzWare.NBuilder.Tests.dll"
+    # }
 
-    $assemblies | %{
-        write-host "Running tests for $_"
-        return $_;
-    } | Invoke-RunTests
+    # $assemblies | %{
+    #     write-host "Running tests for $_"
+    #     return $_;
+    # } | Invoke-RunTests
 }
 
 # package

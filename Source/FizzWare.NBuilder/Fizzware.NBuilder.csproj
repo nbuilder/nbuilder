@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard1.6;net40</TargetFrameworks>
+    <AssemblyName>FizzWare.NBuilder</AssemblyName>
+    <RootNamespace>FizzWare.NBuilder</RootNamespace>
+    <Description />
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.6'">
+    <DefineConstants>NETCORE;NETSTANDARD;NETSTANDARD1_6</DefineConstants>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net40'">
+    <DefineConstants>NET40;NETFULL</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="obj\**" />
+    <EmbeddedResource Remove="obj\**" />
+    <None Remove="obj\**" />
+  </ItemGroup>
+
+</Project>
