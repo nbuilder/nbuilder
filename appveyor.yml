@@ -25,37 +25,18 @@
 
   before_build:
     - ps: |  
-        Import-Module "$(pwd)\DeployNBuilder\DeployNBuilder.psd1"
-        Invoke-DisplayBuildInfo
-        pushd Source
-        write-host "Building NBuilder $($env:AssemblyVersion)" -ForegroundColor Yellow
-        dotnet clean
-        dotnet restore
-        dotnet build -c Release /p:AssemblyVersion=$env:AssemblyVersion /p:ProductVersion=$env:AssemblyVersion
-        popd
+        . ./build/Write-BuildInfo.ps1
+        . ./build/Before-Build.ps1
 
   build_script:
     - ps: |
-        pushd Source
-        write-host "Building NBuilder $($env:AssemblyVersion)" -ForegroundColor Yellow
-        dotnet build -c Release /p:AssemblyVersion=$env:AssemblyVersion /p:ProductVersion=$env:AssemblyVersion
-        popd           
-
-        $outputDirectory = $(pwd)
-
-        write-host "Creating nuget package version $($env:PackageVersion)" -ForegroundColor Yellow 
-        pushd ".\Source\FizzWare.NBuilder"
-        dotnet pack -c Release /p:PackageVersion=$env:PackageVersion FizzWare.NBuilder.csproj -o "$outputDirectory"
-        popd
-
+        . ./build/Build-Script.ps1
+        
   before_test:
 
   test_script:
-    write-host "Testing..." -ForegroundColor Yellow
-    pushd "./Source/FizzWare.NBuilder.Tests"
-    dotnet test -c Release
-    popd
-
+    -ps: |
+      . ./build/Test-Script.ps1
 
   artifacts:
   - path: NBuilder*.nupkg
