@@ -2,14 +2,12 @@
 using FizzWare.NBuilder.Implementation;
 using FizzWare.NBuilder.PropertyNaming;
 using FizzWare.NBuilder.Tests.TestClasses;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NUnit.Framework;
 using NSubstitute;
 using Assert = NUnit.Framework.Assert;
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
-    [TestClass]
     [TestFixture]
     public class ListBuilderTests
     {
@@ -18,7 +16,6 @@ namespace FizzWare.NBuilder.Tests.Unit
         private readonly MyClass myClass = new MyClass();
         private const int listSize = 10;
 
-        [TestInitialize]
         [SetUp]
         public void SetUp()
         {
@@ -26,7 +23,6 @@ namespace FizzWare.NBuilder.Tests.Unit
             propertyNamer = Substitute.For<IPropertyNamer>();
         }
 
-        [TestMethod]
         [Test]
         public void ShouldConstructDeclarations()
         {
