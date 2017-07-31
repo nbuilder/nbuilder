@@ -1,8 +1,8 @@
 ﻿using FizzWare.NBuilder.Tests.Integration.Models;
-using NUnit.Framework;
+
 using Shouldly;
 using Xunit;
-using Assert = NUnit.Framework.Assert;
+
 
 namespace FizzWare.NBuilder.Tests.Integration
 {
@@ -14,7 +14,7 @@ namespace FizzWare.NBuilder.Tests.Integration
         [Fact]
         public void CreatingAHierarchyOfCategoriesUsingRepositories()
         {
-            var builderSetup = new RepositoryBuilderSetup().SetUp();
+            var builderSetup = new RepositoryBuilderSetup().DoSetup();
             const int depth = 3;
             const int minChildren = 3;
             const int maxChildren = 8;

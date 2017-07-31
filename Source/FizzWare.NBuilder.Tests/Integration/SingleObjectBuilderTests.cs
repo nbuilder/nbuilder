@@ -1,8 +1,9 @@
-﻿using FizzWare.NBuilder.Tests.Integration.Models;
-using NUnit.Framework;
+﻿using System.ComponentModel;
+using FizzWare.NBuilder.Tests.Integration.Models;
+
 using Shouldly;
 using Xunit;
-using Assert = NUnit.Framework.Assert;
+
 
 namespace FizzWare.NBuilder.Tests.Integration
 {
@@ -13,11 +14,10 @@ namespace FizzWare.NBuilder.Tests.Integration
         private interface IMyInterface { }
         private abstract class MyAbstractClass { }
 
-        [SetUp]
-        public void SetUp()
+        public SingleObjectBuilderTests()
         {
             // Need to call this explicitly here to overcome a bug in resharper's test runner
-            new RepositoryBuilderSetup().SetUp();
+            new RepositoryBuilderSetup().DoSetup();
         }
 
         [Fact]

@@ -1,10 +1,10 @@
 ﻿using System.Linq;
 using FizzWare.NBuilder.Tests.Integration.Models;
 using FizzWare.NBuilder.Tests.Integration.Models.Repositories;
-using NUnit.Framework;
+
 using Shouldly;
 using Xunit;
-using Assert = NUnit.Framework.Assert;
+
 
 namespace FizzWare.NBuilder.Tests.Integration
 {
@@ -20,7 +20,7 @@ namespace FizzWare.NBuilder.Tests.Integration
         [Fact]
         public void PersistingASingleObject()
         {
-            var builderSetup =new RepositoryBuilderSetup().SetUp();
+            var builderSetup =new RepositoryBuilderSetup().DoSetup();
             new Builder(builderSetup).CreateNew< Product>().Persist();
 
             // Go directly to the database to do some asserts
@@ -37,7 +37,7 @@ namespace FizzWare.NBuilder.Tests.Integration
         [Fact]
         public void PersistingASingleTaxTypeAndAListOf100Products()
         {
-            var builderSetup = new RepositoryBuilderSetup().SetUp();
+            var builderSetup = new RepositoryBuilderSetup().DoSetup();
             var taxType = new Builder(builderSetup).CreateNew< TaxType>().Persist();
 
             new Builder(builderSetup).CreateListOfSize< Product>(100)
@@ -54,7 +54,7 @@ namespace FizzWare.NBuilder.Tests.Integration
         [Fact]
         public void PersistingAListOfProductsAndCategories()
         {
-            var builderSetup = new RepositoryBuilderSetup().SetUp();
+            var builderSetup = new RepositoryBuilderSetup().DoSetup();
             const int numProducts = 500;
             const int numCategories = 50;
             const int numCategoriesForEachProduct = 5;

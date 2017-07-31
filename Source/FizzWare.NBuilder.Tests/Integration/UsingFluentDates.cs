@@ -1,10 +1,10 @@
 ﻿using System;
 using FizzWare.NBuilder.Dates;
 using FizzWare.NBuilder.Tests.Integration.Models;
-using NUnit.Framework;
+
 using Shouldly;
 using Xunit;
-using Assert = NUnit.Framework.Assert;
+
 
 namespace FizzWare.NBuilder.Tests.Integration
 {

@@ -2,7 +2,7 @@
 using FizzWare.NBuilder.Tests.Integration.Models;
 using FizzWare.NBuilder.Tests.Integration.Models.Repositories;
 using FizzWare.NBuilder.Tests.Integration.Support;
-using NUnit.Framework;
+
 
 namespace FizzWare.NBuilder.Tests.Integration
 {
@@ -10,11 +10,6 @@ namespace FizzWare.NBuilder.Tests.Integration
     {
         private bool _setup;
 
-        [SetUp]
-        public BuilderSettings SetUp()
-        {
-            return DoSetup();
-        }
 
         public BuilderSettings DoSetup()
         {

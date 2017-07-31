@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NSubstitute;
-using NUnit.Framework;
+
 using Xunit;
 
 namespace FizzWare.NBuilder.Tests.Unit.Picking

@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using FizzWare.NBuilder.Implementation;
 using FizzWare.NBuilder.Tests.TestClasses;
-using NUnit.Framework;
+
 using NSubstitute;
 using Shouldly;
 using Xunit;
 using Arg = NSubstitute.Arg;
-using Assert = NUnit.Framework.Assert;
+
 
 namespace FizzWare.NBuilder.Tests.Unit
 {

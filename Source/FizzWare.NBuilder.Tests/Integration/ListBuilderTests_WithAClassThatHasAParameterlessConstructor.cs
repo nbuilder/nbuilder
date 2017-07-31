@@ -3,20 +3,21 @@ using System.Linq;
 using FizzWare.NBuilder.PropertyNaming;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NSubstitute;
-using NUnit.Framework;
+
 using Shouldly;
 using Xunit;
-using Assert = NUnit.Framework.Assert;
+
 
 namespace FizzWare.NBuilder.Tests.Integration
 {
     
     public class ListBuilderTests_WithAClassThatHasAParameterlessConstructor
     {
-        [TestCase(10, 5)]
-        [TestCase(10, 1)]
-        [TestCase(5, 5)]
-        [TestCase(1, 1)]
+        [Theory]
+        [InlineData(10, 5)]
+        [InlineData(10, 1)]
+        [InlineData(5, 5)]
+        [InlineData(1, 1)]
         public void ShouldBeAbleToUseRandom(int listSize, int randomItems)
         {
             var objects = Builder<MyClass>
@@ -27,7 +28,7 @@ namespace FizzWare.NBuilder.Tests.Integration
 
             var numObjectsWithRandomValue = objects.Count(x => x.StringOne.Equals("TestRandom"));
 
-            Assert.AreEqual(randomItems, numObjectsWithRandomValue);
+            randomItems.ShouldBe(numObjectsWithRandomValue);
         }
 
         [Fact]

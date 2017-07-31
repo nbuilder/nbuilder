@@ -3,7 +3,7 @@ using FizzWare.NBuilder.Tests.Integration.Models;
 using FizzWare.NBuilder.Tests.Integration.Models.Repositories;
 using Shouldly;
 using Xunit;
-using Assert = NUnit.Framework.Assert;
+
 
 namespace FizzWare.NBuilder.Tests.Integration
 {
@@ -15,7 +15,7 @@ namespace FizzWare.NBuilder.Tests.Integration
         public PersistenceTests()
         {
             this.builderSettings = new PersistenceTestsBuilderSetup().SetUp();
-            new RepositoryBuilderSetup().SetUp();
+            new RepositoryBuilderSetup().DoSetup();
         }
 
         [Fact]

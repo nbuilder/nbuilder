@@ -4,7 +4,7 @@ using FizzWare.NBuilder.Implementation;
 using FizzWare.NBuilder.PropertyNaming;
 using FizzWare.NBuilder.Tests.TestClasses;
 using NSubstitute;
-using NUnit.Framework;
+
 
 namespace FizzWare.NBuilder.Tests.Unit
 {

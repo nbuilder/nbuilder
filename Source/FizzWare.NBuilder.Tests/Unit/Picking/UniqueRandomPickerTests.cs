@@ -2,10 +2,10 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using NUnit.Framework;
+
 using Shouldly;
 using Xunit;
-using Assert = NUnit.Framework.Assert;
+
 
 namespace FizzWare.NBuilder.Tests.Unit.Picking
 {

@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using FizzWare.NBuilder.Implementation;
 using FizzWare.NBuilder.Tests.TestClasses;
-using NUnit.Framework;
+
 using NSubstitute;
 using Xunit;
 

@@ -1,12 +1,13 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq;
 using FizzWare.NBuilder.Implementation;
 using FizzWare.NBuilder.PropertyNaming;
 using FizzWare.NBuilder.Tests.Integration.Models;
-using NUnit.Framework;
+
 using Shouldly;
 using Xunit;
-using Assert = NUnit.Framework.Assert;
+
 
 namespace FizzWare.NBuilder.Tests.Integration
 {
@@ -18,7 +19,7 @@ namespace FizzWare.NBuilder.Tests.Integration
     {
         public ListBuilderTests()
         {
-            new RepositoryBuilderSetup().SetUp();
+            new RepositoryBuilderSetup().DoSetup();
 
         }
        

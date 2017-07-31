@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Globalization;
 using FizzWare.NBuilder.Tests.TestClasses;
-using NUnit.Framework;
+
 using Shouldly;
 using Xunit;
-using Assert = NUnit.Framework.Assert;
+
 
 namespace FizzWare.NBuilder.Tests.Unit
 {
@@ -297,11 +297,10 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
 
 
-        [Test(Description = "Tests the NextString returns a string that is between the minimum and maximum values specified")]
-        [TestCase(1, 10)]
-        [TestCase(4, 5)]
-        [TestCase(16, 20)]
-        [TestCase(100, 200)]
+        [Theory]
+        [InlineData(4, 5)]
+        [InlineData(16, 20)]
+        [InlineData(100, 200)]
         public void ShouldBeBetweenMinAndMaxNextString(int minLength, int maxLength)
         {
             // Arrange
