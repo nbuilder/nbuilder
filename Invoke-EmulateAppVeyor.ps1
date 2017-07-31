@@ -11,6 +11,7 @@ Import-Module "$PsScriptRoot\DeployNBuilder\DeployNBuilder.psd1" -Force
 
 # before_build
 gci -Exclude *.nuspec -Path "nuget" -recurse | Remove-Item -recurse
+$env:AssemblyVersion = Get-NuGetPackageVersion
 $env:PackageVersion = Get-NuGetPackageVersion -beta
 Invoke-DisplayBuildInfo
 
@@ -18,7 +19,10 @@ Invoke-DisplayBuildInfo
 $workingDirectory = $(pwd)
 if ($Build) {
     pushd "Source"
-    dotnet build
+    write-host "Building NBuilder $($env:AssemblyVersion)" -ForegroundColor Yellow
+    dotnet clean
+    dotnet restore
+    dotnet build -c Release /p:AssemblyVersion=$env:AssemblyVersion /p:ProductVersion=$env:AssemblyVersion
     popd
 }
 
@@ -26,22 +30,16 @@ if ($Build) {
 
 # test
 if ($Test) {
-
-    # $assemblies = @()
-    # $Frameworks| %{
-    #     $OutputPath = Get-BuildOutputPath -WorkingDirectory $workingDirectory -Framework $_
-    #     write-host "Searching $OutputPath for Test assembly..." -ForegroundColor Cyan
-    #     $assmeblies += Resolve-Path "$OutputPath\FizzWare.NBuilder.Tests.dll"
-    # }
-
-    # $assemblies | %{
-    #     write-host "Running tests for $_"
-    #     return $_;
-    # } | Invoke-RunTests
+    write-host "Testing..." -ForegroundColor Yellow
+    pushd "./Source/FizzWare.NBuilder.Tests"
+    dotnet test -c Release
+    popd
 }
 
 # package
-
 if($Pack) {
-    Invoke-NugetPack -Version $env:PackageVersion -NuSpec "nuget\NBuilder.nuspec" -Destination "."
+    write-host "Packaging..." -ForegroundColor Yellow
+    pushd "./Source\FizzWare.NBuilder"
+    dotnet pack -c Release /p:PackageVersion=$env:PackageVersion FizzWare.NBuilder.csproj -o "$PsScriptRoot"
+    popd
 }

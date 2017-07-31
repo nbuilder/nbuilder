@@ -4,8 +4,19 @@
     <TargetFrameworks>netstandard1.6;net40</TargetFrameworks>
     <AssemblyName>FizzWare.NBuilder</AssemblyName>
     <RootNamespace>FizzWare.NBuilder</RootNamespace>
-    <Description />
-  </PropertyGroup>
+     
+    <PackageId>NBuilder</PackageId>
+    <Authors>Gareth Down and awesome contributors!</Authors>
+    <Description>Through a fluent, extensible interface, NBuilder allows you to rapidly create test data, automatically assigning values to properties and public fields that are one of the built in .NET data types (e.g. ints and strings). NBuilder allows you to override for properties you are interested in using lambda expressions.</Description>
+    <PackageLicenseUrl>http://www.gnu.org/licenses/lgpl.html</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/nbuilder/nbuilder/wiki</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/nbuilder/nbuilder</RepositoryUrl>
+    <PackageTags>TDD unit-testing unittesting unitesting testing fluent</PackageTags> 
+    <Owners>Gareth Down</Owners>
+    <Summary>Rapidly create test data using a fluent, extensible interface.</Summary>
+    <Company />
+    <RepositoryType>Github</RepositoryType> 
+</PropertyGroup>
 
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.6'">
     <DefineConstants>NETCORE;NETSTANDARD;NETSTANDARD1_6</DefineConstants>

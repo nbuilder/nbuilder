@@ -1,5 +1,4 @@
 # feature branches
-
 -
   version: '4.1.0.{build}'
   configuration: Release
@@ -28,28 +27,33 @@
     - ps: |  
         Import-Module "$(pwd)\DeployNBuilder\DeployNBuilder.psd1"
         Invoke-DisplayBuildInfo
-        
-        nuget restore Source\NBuilder-NETStandard16.sln
-        nuget restore Source\NBuilder-NET4.0.sln
-        nuget restore Source\NBuilder-NET3.5.sln
+        pushd Source
+        write-host "Building NBuilder $($env:AssemblyVersion)" -ForegroundColor Yellow
+        dotnet clean
+        dotnet restore
+        dotnet build -c Release /p:AssemblyVersion=$env:AssemblyVersion /p:ProductVersion=$env:AssemblyVersion
+        popd
 
   build_script:
     - ps: |
-        Import-Module "$(pwd)\DeployNBuilder\DeployNBuilder.psd1"
-        "NET3.5", "NET4.0", "NETStandard16" | Invoke-Build -WorkingDirectory $(pwd)
-        Invoke-NuGetPack -Version  (Get-NuGetPackageVersion -Beta) -NuSpec "$(pwd)\nuget\NBuilder.nuspec" -Destination "$(pwd)"
-    
+        pushd Source
+        write-host "Building NBuilder $($env:AssemblyVersion)" -ForegroundColor Yellow
+        dotnet build -c Release /p:AssemblyVersion=$env:AssemblyVersion /p:ProductVersion=$env:AssemblyVersion
+        popd           
+
+        write-host "Creating nuget package version $($env:PackageVersion)" -ForegroundColor Yellow 
+        pushd ".\Source\FizzWare.NBuilder"
+        dotnet pack -c Release /p:PackageVersion=$env:PackageVersion FizzWare.NBuilder.csproj -o "$PsScriptRoot"
+        popd
+
   before_test:
 
-  test:
-    assemblies:
-      - 'nuget\net35\FizzWare.NBuilder.Tests.dll'
-      - 'nuget\net40\FizzWare.NBuilder.Tests.dll'
-      - 'nuget\net46\FizzWare.NBuilder.Tests.dll'
+  test_script:
+    write-host "Testing..." -ForegroundColor Yellow
+    pushd "./Source/FizzWare.NBuilder.Tests"
+    dotnet test -c Release
+    popd
 
-      - 'nuget\net35\FizzWare.NBuilder.FunctionalTests*.dll'
-      - 'nuget\net40\FizzWare.NBuilder.FunctionalTests*.dll'
-      - 'nuget\net46\FizzWare.NBuilder.FunctionalTests*.dll'
 
   artifacts:
   - path: NBuilder*.nupkg
@@ -91,15 +95,24 @@
     - ps: |  
         Import-Module "$(pwd)\DeployNBuilder\DeployNBuilder.psd1"
         Invoke-DisplayBuildInfo
-
-        nuget restore Source\NBuilder-NET4.0.sln
-        nuget restore Source\NBuilder-NET3.5.sln
+        pushd Source
+        write-host "Building NBuilder $($env:AssemblyVersion)" -ForegroundColor Yellow
+        dotnet clean
+        dotnet restore
+        dotnet build -c Release /p:AssemblyVersion=$env:AssemblyVersion /p:ProductVersion=$env:AssemblyVersion
+        popd
 
   build_script:
     - ps: |
-        Import-Module "$(pwd)\DeployNBuilder\DeployNBuilder.psd1"
-        "NET3.5", "NET4.0" | Invoke-Build -WorkingDirectory $(pwd)
-        Invoke-NuGetPack -Version  (Get-NuGetPackageVersion -Beta) -NuSpec "$(pwd)\nuget\NBuilder.nuspec" -Destination "$(pwd)"
+        pushd Source
+        write-host "Building NBuilder $($env:AssemblyVersion)" -ForegroundColor Yellow
+        dotnet build -c Release /p:AssemblyVersion=$env:AssemblyVersion /p:ProductVersion=$env:AssemblyVersion
+        popd           
+
+        write-host "Creating nuget package version $($env:PackageVersion)" -ForegroundColor Yellow 
+        pushd ".\Source\FizzWare.NBuilder"
+        dotnet pack -c Release /p:PackageVersion=$env:PackageVersion FizzWare.NBuilder.csproj -o "$PsScriptRoot"
+        popd
     
   assembly_info:
     patch: true
@@ -108,11 +121,11 @@
     assembly_file_version: '{version}'
     assembly_informational_version: '{version}'
 
-  test:
-    assemblies:
-      - 'nuget\net40\FizzWare.NBuilder.Tests.dll'
-      - 'nuget\net40\FizzWare.NBuilder.FunctionalTests*.dll'
-      - 'nuget\sl5\FizzWare.NBuilder-Silverlight-4.Tests.dll'
+  test_script:
+    write-host "Testing..." -ForegroundColor Yellow
+    pushd "./Source/FizzWare.NBuilder.Tests"
+    dotnet test -c Release
+    popd
 
   cache:
     - packages -> **\packages.config
@@ -144,21 +157,28 @@
       secure: rEqnyErKFkhgxjUgir8i3zftWJ6AqqzYn/wXPXVSTJo1o9nQML8KU3pmG3sXOqCU
     artifact: nuget-package
 
-
-
   before_build:
     - ps: |  
         Import-Module "$(pwd)\DeployNBuilder\DeployNBuilder.psd1"
         Invoke-DisplayBuildInfo
-
-        nuget restore Source\NBuilder-NET4.0.sln
-        nuget restore Source\NBuilder-NET3.5.sln
+        pushd Source
+        write-host "Building NBuilder $($env:AssemblyVersion)" -ForegroundColor Yellow
+        dotnet clean
+        dotnet restore
+        dotnet build -c Release /p:AssemblyVersion=$env:AssemblyVersion /p:ProductVersion=$env:AssemblyVersion
+        popd
 
   build_script:
     - ps: |
-        Import-Module "$(pwd)\DeployNBuilder\DeployNBuilder.psd1"
-        "NET3.5", "NET4.0" | Invoke-Build -WorkingDirectory $(pwd)
-        Invoke-NuGetPack -Version  (Get-NuGetPackageVersion) -NuSpec "$(pwd)\nuget\NBuilder.nuspec" -Destination "$(pwd)"
+        pushd Source
+        write-host "Building NBuilder $($env:AssemblyVersion)" -ForegroundColor Yellow
+        dotnet build -c Release /p:AssemblyVersion=$env:AssemblyVersion /p:ProductVersion=$env:AssemblyVersion
+        popd           
+
+        write-host "Creating nuget package version $($env:PackageVersion)" -ForegroundColor Yellow 
+        pushd ".\Source\FizzWare.NBuilder"
+        dotnet pack -c Release /p:PackageVersion=$env:PackageVersion FizzWare.NBuilder.csproj -o "$PsScriptRoot"
+        popd
     
   assembly_info:
     patch: true
@@ -167,11 +187,11 @@
     assembly_file_version: '{version}'
     assembly_informational_version: '{version}'
 
-  test:
-    assemblies:
-      - 'nuget\net40\FizzWare.NBuilder.Tests.dll'
-      - 'nuget\net40\FizzWare.NBuilder.FunctionalTests*.dll'
-      - 'nuget\sl5\FizzWare.NBuilder-Silverlight-4.Tests.dll'
+  test_script:
+    write-host "Testing..." -ForegroundColor Yellow
+    pushd "./Source/FizzWare.NBuilder.Tests"
+    dotnet test -c Release
+    popd
 
   cache:
     - packages -> **\packages.config
