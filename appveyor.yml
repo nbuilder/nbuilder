@@ -36,8 +36,8 @@
   before_test:
 
   test_script:
-    -ps: |
-      . ./build/Test-Script.ps1
+    - ps: |
+        . ./build/Test-Script.ps1
 
   artifacts:
   - path: NBuilder*.nupkg
