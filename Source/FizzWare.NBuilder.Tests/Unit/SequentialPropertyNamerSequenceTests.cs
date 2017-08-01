@@ -187,7 +187,7 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             reflectionUtil.IsDefaultValue(myClass.HasADefaultValue).Returns(false);
 
-            reflectionUtil.IsDefaultValue(Arg.Is<object>(o => o != myClass.HasADefaultValue)).Returns(true);
+            reflectionUtil.IsDefaultValue(Arg.Is<string>(o => o != myClass.HasADefaultValue)).Returns(true);
 
             theList = new List<MyClass>();
 

@@ -58,6 +58,7 @@ namespace FizzWare.NBuilder.Tests.Integration
             products[9].PriceBeforeTax.ShouldBe(10m);
         }
 
+        [Fact]
         public void UsingAllToSetValues()
         {
             var builderSetup = new BuilderSettings();
@@ -652,9 +653,10 @@ namespace FizzWare.NBuilder.Tests.Integration
         [Fact]
         public void AutomaticPropertyAndPublicFieldNamingCanBeSwitchedOff()
         {
-            var builderSetup = new BuilderSettings();
-            builderSetup.AutoNameProperties = false;
-
+            var builderSetup = new BuilderSettings()
+            {
+                AutoNameProperties = false
+            };
             var products = new Builder(builderSetup).CreateListOfSize< Product>(10).Build();
 
             products[0].Title.ShouldBeNull();

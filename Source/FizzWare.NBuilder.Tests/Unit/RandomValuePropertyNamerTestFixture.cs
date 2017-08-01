@@ -21,7 +21,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             this.TestFixtureSetUp();
         }
 
-        public abstract void TestFixtureSetUp();
+        protected abstract void TestFixtureSetUp();
 
 
         [Fact]

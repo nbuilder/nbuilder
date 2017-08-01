@@ -64,7 +64,7 @@ namespace FizzWare.NBuilder.Tests.Integration
         }
 
         [Fact]
-        public void should_be_able_to_disable_property_naming_for_an_inherited_property()
+        public void Should_be_able_to_disable_property_naming_for_an_inherited_property()
         {
             var builderSettings = new BuilderSettings();
             try
@@ -290,7 +290,11 @@ namespace FizzWare.NBuilder.Tests.Integration
             var specialTitle = "SpecialTitle";
 
             var list =
-                Builder<MyClass>.CreateListOfSize(10).TheFirst(5).With(x => x.StringOne = specialTitle).Build();
+                new Builder().CreateListOfSize<MyClass>(10)
+                    .TheFirst(5)
+                    .With(x => x.StringOne = specialTitle)
+                    .Build()
+                    ;
 
             // I want the asserts here to serve as documentation
             // so it's obvious how it works for anyone glancing at this test
@@ -312,7 +316,7 @@ namespace FizzWare.NBuilder.Tests.Integration
             var specialTitle = "SpecialTitle";
 
             var list =
-                Builder<MyClass>.CreateListOfSize(10).TheLast(5).With(x => x.StringOne = specialTitle).Build();
+                new Builder().CreateListOfSize<MyClass>(10).TheLast(5).With(x => x.StringOne = specialTitle).Build();
 
             list[0].StringOne.ShouldBe("StringOne1");
             list[1].StringOne.ShouldBe("StringOne2");

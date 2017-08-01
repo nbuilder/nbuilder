@@ -14,7 +14,7 @@ namespace FizzWare.NBuilder.Tests.Integration
         [Fact]
         public void PropertiesShouldBeGivenDefaultValues()
         {
-            var obj = Builder<MyClass>.CreateNew().Build();
+            var obj = new Builder().CreateNew<MyClass>().Build();
 
             obj.Int.ShouldBe(1);
             obj.StringOne.ShouldBe("StringOne1");

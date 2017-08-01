@@ -6,7 +6,6 @@ using Xunit;
 
 namespace FizzWare.NBuilder.Tests.Integration
 {
-    
     public class HierarchyBuilderTests
     {
 
@@ -56,12 +55,12 @@ namespace FizzWare.NBuilder.Tests.Integration
         [Fact]
         public void CreatingAHierarchyOfCategoriesUsingEntityFramework()
         {
-            var builderSetup = new PersistenceTestsBuilderSetup().SetUp();
+            //var builderSetup = new PersistenceTestsBuilderSetup().SetUp();
             const int depth = 3;
             const int minChildren = 3;
             const int maxChildren = 8;
 
-            var builder = new Builder(builderSetup);
+            var builder = new Builder(new RepositoryBuilderSetup().DoSetup());
             var hierarchySpec = builder.CreateNew< HierarchySpec<Category>>()
                 .With(x => x.AddMethod = (parent, child) => parent.AddChild(child))
                 .With(x => x.Depth = depth)

@@ -14,7 +14,7 @@ namespace FizzWare.NBuilder.Tests.Unit
     
     public class RandomValuePropertyNamerTests_Default : RandomValuePropertyNamerTestFixture
     {
-        public override void TestFixtureSetUp()
+        protected override void TestFixtureSetUp()
         {
             var builderSetup = new BuilderSettings();
 
