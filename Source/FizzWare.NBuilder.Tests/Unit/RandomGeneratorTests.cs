@@ -109,7 +109,7 @@ namespace FizzWare.NBuilder.Tests.Unit
 
         private static void SetCulture(string cultureIdentifier)
         {
-#if NETSTANDARD1_6
+#if NETSTANDARD1_6 || NETCORE
             CultureInfo.CurrentCulture = new CultureInfo(cultureIdentifier);
 #else
             System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo(cultureIdentifier);
