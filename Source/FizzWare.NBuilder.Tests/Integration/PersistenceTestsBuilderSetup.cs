@@ -15,11 +15,8 @@ namespace FizzWare.NBuilder.Tests.Integration
 
         public BuilderSettings DoSetup()
         {
-            new ProductRepository().DeleteAll();
-            new CategoryRepository().DeleteAll();
-            new TaxTypeRepository().DeleteAll();
 
-            BuilderSettings builderSettings = new BuilderSettings();
+            this.builderSettings = new BuilderSettings();
 
             if (_setup)
                 return builderSettings;
@@ -31,6 +28,8 @@ namespace FizzWare.NBuilder.Tests.Integration
             SetPersistenceMethod<Category>(builderSettings);
             return builderSettings;
         }
+
+        public BuilderSettings builderSettings { get; set; }
 
         private static void SetPersistenceMethod<T>(BuilderSettings builderSettings) where T: class
         {

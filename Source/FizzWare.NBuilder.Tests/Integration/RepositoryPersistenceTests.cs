@@ -11,20 +11,23 @@ namespace FizzWare.NBuilder.Tests.Integration
     
     public class RepositoryPersistenceTests
     {
+        private BuilderSettings builderSettings;
+
         public RepositoryPersistenceTests()
         {
-            new ProductRepository().DeleteAll();
-            new CategoryRepository().DeleteAll();
+            this.Repositories = new RepositoryBuilderSetup();
+            this.builderSettings = this.Repositories.DoSetup();
         }
+
+        public RepositoryBuilderSetup Repositories { get; set; }
 
         [Fact]
         public void PersistingASingleObject()
         {
-            var builderSetup =new RepositoryBuilderSetup().DoSetup();
-            new Builder(builderSetup).CreateNew< Product>().Persist();
+            new Builder(builderSettings).CreateNew< Product>().Persist();
 
             // Go directly to the database to do some asserts
-            var dataTable = new ProductRepository().GetAll();
+            var dataTable = this.Repositories.Products.GetAll();
 
             dataTable.Count.ShouldBe(1);
 
@@ -37,15 +40,14 @@ namespace FizzWare.NBuilder.Tests.Integration
         [Fact]
         public void PersistingASingleTaxTypeAndAListOf100Products()
         {
-            var builderSetup = new RepositoryBuilderSetup().DoSetup();
-            var taxType = new Builder(builderSetup).CreateNew< TaxType>().Persist();
+            var taxType = new Builder(builderSettings).CreateNew< TaxType>().Persist();
 
-            new Builder(builderSetup).CreateListOfSize< Product>(100)
+            new Builder(builderSettings).CreateListOfSize< Product>(100)
                 .All()
                     .With(x => x.TaxType = taxType)
                 .Persist(); // NB: Persistence is setup in the RepositoryBuilderSetup class
 
-            var dbProducts = new ProductRepository().GetAll();
+            var dbProducts = this.Repositories.Products.GetAll();
 
             dbProducts.Count.ShouldBe(100);
         }
@@ -54,16 +56,15 @@ namespace FizzWare.NBuilder.Tests.Integration
         [Fact]
         public void PersistingAListOfProductsAndCategories()
         {
-            var builderSetup = new RepositoryBuilderSetup().DoSetup();
             const int numProducts = 500;
             const int numCategories = 50;
             const int numCategoriesForEachProduct = 5;
 
-            var categories = new Builder(builderSetup)
+            var categories = new Builder(builderSettings)
                 .CreateListOfSize< Category>(numCategories)
                 .Persist();
 
-            new Builder(builderSetup)
+            new Builder(builderSettings)
                  .CreateListOfSize< Product>(numProducts)
                 .All()
                     .With(x => x.Categories = Pick<Category>.
@@ -72,8 +73,8 @@ namespace FizzWare.NBuilder.Tests.Integration
                         .ToList())
                 .Persist(); // NB: Persistence is setup in the RepositoryBuilderSetup class
 
-            var productsTable = new ProductRepository().GetAll();
-            var categoriesTable = new CategoryRepository().GetAll();
+            var productsTable = this.Repositories.Products.GetAll();
+            var categoriesTable = this.Repositories.Categories.GetAll();
 
             productsTable.Count.ShouldBe(numProducts, "products");
             categoriesTable.Count.ShouldBe(numCategories, "categories");

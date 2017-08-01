@@ -28,7 +28,10 @@ namespace FizzWare.NBuilder.Tests.Integration
         public void CreatingAList()
         {
             var builderSetup = new BuilderSettings();
-            var products = new Builder(builderSetup).CreateListOfSize<Product>(10).Build();
+            var products = new Builder(builderSetup)
+                .CreateListOfSize<Product>(10)
+                .Build()
+                ;
 
             // Note: The asserts here are intentionally verbose to show how NBuilder works
 

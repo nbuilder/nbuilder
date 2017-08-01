@@ -14,9 +14,13 @@ namespace FizzWare.NBuilder.Tests.Integration
 
         public PersistenceTests()
         {
-            this.builderSettings = new PersistenceTestsBuilderSetup().SetUp();
-            new RepositoryBuilderSetup().DoSetup();
+            //this.builderSettings = new PersistenceTestsBuilderSetup().SetUp();
+            this.Repositories = new RepositoryBuilderSetup();
+            this.builderSettings = this.Repositories.DoSetup();
         }
+
+        public RepositoryBuilderSetup Repositories { get; set; }
+
 
         [Fact]
         public void PersistingASingleObject()
@@ -24,14 +28,14 @@ namespace FizzWare.NBuilder.Tests.Integration
             new Builder(builderSettings).CreateNew<Product>().Persist();
 
             // Go directly to the database to do some asserts
-            var dataTable = new ProductRepository().GetAll();
+            var dataTable = this.Repositories.Products.GetAll();
 
-            dataTable.Count.ShouldBe(1);
+            dataTable.Count.ShouldBe(1, "Count");
 
             dataTable[0].Title.ShouldBe("Title1");
             dataTable[0].Description.ShouldBe("Description1");
-            dataTable[0].PriceBeforeTax.ShouldBe(1m);
-            dataTable[0].QuantityInStock.ShouldBe(1);
+            dataTable[0].PriceBeforeTax.ShouldBe(1m, "PriceBeforeTax");
+            dataTable[0].QuantityInStock.ShouldBe(1, "QuantityInStock");
         }
 
         [Fact]
@@ -45,7 +49,7 @@ namespace FizzWare.NBuilder.Tests.Integration
                 .With(x => x.TaxType = taxType)
                 .Persist(); // NB: Persistence is setup in the RepositoryBuilderSetup class
 
-            var dbProducts = new ProductRepository().GetAll();
+            var dbProducts = this.Repositories.Products.GetAll();
 
             dbProducts.Count.ShouldBe(100);
         }
@@ -72,8 +76,8 @@ namespace FizzWare.NBuilder.Tests.Integration
                     .ToList())
                 .Persist(); // NB: Persistence is setup in the RepositoryBuilderSetup class
 
-            var productsTable = new ProductRepository().GetAll();
-            var categoriesTable = new CategoryRepository().GetAll();
+            var productsTable = this.Repositories.Products.GetAll();
+            var categoriesTable = this.Repositories.Categories.GetAll();
 
             productsTable.Count.ShouldBe(numProducts, "products");
             categoriesTable.Count.ShouldBe(numCategories, "categories");

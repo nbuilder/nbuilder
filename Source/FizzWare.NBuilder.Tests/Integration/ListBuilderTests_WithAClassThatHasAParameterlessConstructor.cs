@@ -34,7 +34,7 @@ namespace FizzWare.NBuilder.Tests.Integration
         [Fact]
         public void PropertiesShouldBeSetSequentially()
         {
-            var list = Builder<MyClass>.CreateListOfSize(10).Build();
+            var list = new Builder().CreateListOfSize<MyClass>(10).Build();
 
             list[0].StringOne.ShouldBe("StringOne1");
             list[9].StringOne.ShouldBe("StringOne10");

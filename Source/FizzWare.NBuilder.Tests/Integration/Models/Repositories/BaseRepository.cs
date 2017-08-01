@@ -5,7 +5,7 @@ namespace FizzWare.NBuilder.Tests.Integration.Models.Repositories
 {
     public class BaseRepository<T> : IRepository<T> where T : class
     {
-        protected static readonly List<T> Data = new List<T>();
+        protected readonly List<T> Data = new List<T>();
 
         public IList<T> GetAll()
         {
@@ -14,7 +14,8 @@ namespace FizzWare.NBuilder.Tests.Integration.Models.Repositories
 
         public void Save(T objectToSave)
         {
-            Data.Add(objectToSave);
+            //if (!this.Data.Contains(objectToSave))
+                Data.Add(objectToSave);
         }
 
         public void SaveAll(IEnumerable<T> rangeToSave)
@@ -24,7 +25,8 @@ namespace FizzWare.NBuilder.Tests.Integration.Models.Repositories
 
         public void Create(T objectToCreate)
         {
-            Data.Add(objectToCreate);
+            //if (!this.Data.Contains(objectToCreate))
+                Data.Add(objectToCreate);
         }
 
         public void CreateAll(IEnumerable<T> rangeToCreate)

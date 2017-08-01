@@ -176,29 +176,19 @@ This would allow you to say:
 Builder<Product>.CreateListOfSize(10).WhereAllHaveLongTitles();
 ```
 
-For more examples, [please check the functional tests](https://github.com/garethdown44/nbuilder/tree/master/Source/FizzWare.NBuilder.FunctionalTests)
+For more examples, [please check the functional tests](https://github.com/garethdown44/nbuilder/tree/master/Source/FizzWare.NBuilder.Tests/Integration)
 
 Until the full documentation is available please have a look at the functional tests in the source code. These explain how to do everything that's currently possible in NBuilder.
 
 ### Contributing
 
-##### To run the functional tests
-
-Create an SQL Database named `NBuilderTests`. 
-
-Update the connection string Data Source inside the `App.config` and make sure it points to an instance of SQL Server on your development machine.
-
-```xml
-<add name="Default" connectionString="Data Source=[.\SQLExpress ];Initial Catalog=NBuilderTests;Integrated Security=SSPI"/>
-```
-
 ##### Development guidelines
 
-- The project has two outputs - a CLR version and a Silverlight version. All code must compile for both.
+- The project has two outputs - a .NET Standard version and a .NET 4.0 version. All code must compile for both.
 - Every patch must have unit tests and those tests must provide 100% coverage.
 - Every new class must have a 'unit' test fixture at least.
 - Add integration tests when necessary to do so.
-- For new features or changes to existing features use the functional tests project for high level real world tests and to serve as simple documentation for users.
+- For new features or changes to existing features use the integration tests project for high level real world tests and to serve as simple documentation for users.
 - Any new tests must follow this naming convention: `MethodName_Scenario_Expectation()`
 - Every class must have an interface and must be injected through constructor arguments.
 - Every class must have a single responsibility. (SOLID Principles)
@@ -210,8 +200,7 @@ Update the connection string Data Source inside the `App.config` and make sure i
 
 Unit - The class under test is completely isolated by use of stubs or mocks.    
 Integration - Classes tested together.    
-Functional - 'Real life' tests and documentation.
 
 ##### Continuous Integration
 
-NBuilder uses [TeamCity](http://teamcity.codebetter.com/project.html?projectId=NBuilder) hosted by [CodeBetter](http://codebetter.com/) for continuous integration.
+NBuilder uses [AppVeyor](https://ci.appveyor.com/project/NBuilder) for continuous integration.
