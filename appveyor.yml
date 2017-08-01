@@ -1,6 +1,6 @@
 # feature branches
 -
-  version: '4.1.0.{build}'
+  version: '5.0.0.{build}'
   configuration: Release
 
   branches:
@@ -31,6 +31,7 @@
   build_script:
     - ps: |
         . ./build/Build-Script.ps1
+        . ./build/New-NugetPackage.ps1 -Beta
         
   before_test:
 
@@ -44,9 +45,6 @@
 
   cache:
     - packages -> **\packages.config
-
-
-
 
 # release branches
 # compile, test, release beta version to nuget

@@ -1,11 +1,11 @@
+
 pushd Source
-write-host "Building NBuilder $($env:AssemblyVersion)" -ForegroundColor Yellow
-dotnet build -c Release /p:AssemblyVersion=$env:AssemblyVersion /p:ProductVersion=$env:AssemblyVersion
+
+$version = ($env:APPVEYOR_BUILD_VERSION,"1.2.3.4" -ne $null)[0]
+
+write-host "dotnet build -c Release /p:AssemblyVersion=$version /p:ProductVersion=$version" -ForegroundColor Yellow
+dotnet build -c Release /p:AssemblyVersion=$version /p:ProductVersion=$version
 popd           
 
 $outputDirectory = $(pwd)
 
-write-host "Creating nuget package version $($env:PackageVersion)" -ForegroundColor Yellow 
-pushd ".\Source\FizzWare.NBuilder"
-dotnet pack -c Release /p:PackageVersion=$env:PackageVersion FizzWare.NBuilder.csproj -o "$outputDirectory"
-popd
