@@ -180,27 +180,6 @@ For more examples, [please check the functional tests](https://github.com/gareth
 
 Until the full documentation is available please have a look at the functional tests in the source code. These explain how to do everything that's currently possible in NBuilder.
 
-### Contributing
-
-##### Development guidelines
-
-- The project has two outputs - a .NET Standard version and a .NET 4.0 version. All code must compile for both.
-- Every patch must have unit tests and those tests must provide 100% coverage.
-- Every new class must have a 'unit' test fixture at least.
-- Add integration tests when necessary to do so.
-- For new features or changes to existing features use the integration tests project for high level real world tests and to serve as simple documentation for users.
-- Any new tests must follow this naming convention: `MethodName_Scenario_Expectation()`
-- Every class must have an interface and must be injected through constructor arguments.
-- Every class must have a single responsibility. (SOLID Principles)
-- Every new test must be in Arrange Act Assert form. If touching an existing test in record/replay, convert it to AAA syntax unless it is too time consuming.
-- The "Foo Bar" convention is not permitted anywhere
-- American English spellings should be used not British English
-
-#####  Tests are divided into three categories:
-
-Unit - The class under test is completely isolated by use of stubs or mocks.    
-Integration - Classes tested together.    
-
 ##### Continuous Integration
 
 NBuilder uses [AppVeyor](https://ci.appveyor.com/project/NBuilder) for continuous integration.

@@ -1,5 +1,9 @@
 # 5.0.0 - 2017-???
 
+* Added support for .NET Standard 1.6
+* (Breaking) Dropped support for .NET 3.5
+
+
 # 4.0.0 - 2016-11-28
 
 This is a catch-up release of cumulative changes to NBuilder that have accrued since the last offical release in 2011.

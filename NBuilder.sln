@@ -5,7 +5,9 @@ VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FC94E63F-2ACD-4E49-97FB-4EE2A7535374}"
 	ProjectSection(SolutionItems) = preProject
+		CONTRIBUTORS-GUIDE.md = CONTRIBUTORS-GUIDE.md
 		README.md = README.md
+		RELEASE-NOTES.md = RELEASE-NOTES.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fizzware.NBuilder", "src\FizzWare.NBuilder\Fizzware.NBuilder.csproj", "{D7F1E34F-2976-4B83-B3C2-4EFEB665E805}"
