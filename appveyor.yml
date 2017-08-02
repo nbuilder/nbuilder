@@ -1,7 +1,6 @@
 # feature branches
-
 -
-  version: '4.0.0.{build}'
+  version: '5.0.0.{build}'
   configuration: Release
 
   branches:
@@ -26,27 +25,19 @@
 
   before_build:
     - ps: |  
-        Import-Module "$(pwd)\DeployNBuilder\DeployNBuilder.psd1"
-        Invoke-DisplayBuildInfo
-        
-        nuget restore Source\NBuilder-NET4.0.sln
-        nuget restore Source\NBuilder-NET3.5.sln
+        . ./build/Write-BuildInfo.ps1
+        . ./build/Before-Build.ps1
 
   build_script:
     - ps: |
-        Import-Module "$(pwd)\DeployNBuilder\DeployNBuilder.psd1"
-        "NET3.5", "NET4.0" | Invoke-Build -WorkingDirectory $(pwd)
-        Invoke-NuGetPack -Version  (Get-NuGetPackageVersion -Beta) -NuSpec "$(pwd)\nuget\NBuilder.nuspec" -Destination "$(pwd)"
-    
+        . ./build/Build-Script.ps1
+        . ./build/New-NugetPackage.ps1 -Beta
+        
   before_test:
 
-  test:
-    assemblies:
-      - 'nuget\net35\FizzWare.NBuilder.Tests.dll'
-      - 'nuget\net40\FizzWare.NBuilder.Tests.dll'
-
-      - 'nuget\net35\FizzWare.NBuilder.FunctionalTests*.dll'
-      - 'nuget\net40\FizzWare.NBuilder.FunctionalTests*.dll'
+  test_script:
+    - ps: |
+        . ./build/Test-Script.ps1
 
   artifacts:
   - path: NBuilder*.nupkg
@@ -55,13 +46,10 @@
   cache:
     - packages -> **\packages.config
 
-
-
-
 # release branches
 # compile, test, release beta version to nuget
 -
-  version: '4.0.0.{build}'
+  version: '5.0.0.{build}'
   configuration: Release
 
   branches:
@@ -86,18 +74,14 @@
 
   before_build:
     - ps: |  
-        Import-Module "$(pwd)\DeployNBuilder\DeployNBuilder.psd1"
-        Invoke-DisplayBuildInfo
-
-        nuget restore Source\NBuilder-NET4.0.sln
-        nuget restore Source\NBuilder-NET3.5.sln
+        . ./build/Write-BuildInfo.ps1
+        . ./build/Before-Build.ps1
 
   build_script:
     - ps: |
-        Import-Module "$(pwd)\DeployNBuilder\DeployNBuilder.psd1"
-        "NET3.5", "NET4.0" | Invoke-Build -WorkingDirectory $(pwd)
-        Invoke-NuGetPack -Version  (Get-NuGetPackageVersion -Beta) -NuSpec "$(pwd)\nuget\NBuilder.nuspec" -Destination "$(pwd)"
-    
+        . ./build/Build-Script.ps1
+        . ./build/New-NugetPackage.ps1 -Beta
+
   assembly_info:
     patch: true
     file: AssemblyInfo.*
@@ -105,11 +89,9 @@
     assembly_file_version: '{version}'
     assembly_informational_version: '{version}'
 
-  test:
-    assemblies:
-      - 'nuget\net40\FizzWare.NBuilder.Tests.dll'
-      - 'nuget\net40\FizzWare.NBuilder.FunctionalTests*.dll'
-      - 'nuget\sl5\FizzWare.NBuilder-Silverlight-4.Tests.dll'
+  test_script:
+    - ps: |
+        . ./build/Test-Script.ps1
 
   cache:
     - packages -> **\packages.config
@@ -141,22 +123,16 @@
       secure: rEqnyErKFkhgxjUgir8i3zftWJ6AqqzYn/wXPXVSTJo1o9nQML8KU3pmG3sXOqCU
     artifact: nuget-package
 
-
-
   before_build:
     - ps: |  
-        Import-Module "$(pwd)\DeployNBuilder\DeployNBuilder.psd1"
-        Invoke-DisplayBuildInfo
-
-        nuget restore Source\NBuilder-NET4.0.sln
-        nuget restore Source\NBuilder-NET3.5.sln
+        . ./build/Write-BuildInfo.ps1
+        . ./build/Before-Build.ps1
 
   build_script:
     - ps: |
-        Import-Module "$(pwd)\DeployNBuilder\DeployNBuilder.psd1"
-        "NET3.5", "NET4.0" | Invoke-Build -WorkingDirectory $(pwd)
-        Invoke-NuGetPack -Version  (Get-NuGetPackageVersion) -NuSpec "$(pwd)\nuget\NBuilder.nuspec" -Destination "$(pwd)"
-    
+        . ./build/Build-Script.ps1
+        . ./build/New-NugetPackage.ps1 -Beta
+            
   assembly_info:
     patch: true
     file: AssemblyInfo.*
@@ -164,11 +140,9 @@
     assembly_file_version: '{version}'
     assembly_informational_version: '{version}'
 
-  test:
-    assemblies:
-      - 'nuget\net40\FizzWare.NBuilder.Tests.dll'
-      - 'nuget\net40\FizzWare.NBuilder.FunctionalTests*.dll'
-      - 'nuget\sl5\FizzWare.NBuilder-Silverlight-4.Tests.dll'
+  test_script:
+    - ps: |
+        . ./build/Test-Script.ps1
 
   cache:
     - packages -> **\packages.config
