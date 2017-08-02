@@ -14,8 +14,14 @@ if (-not $beta) {
 } else {
     $packageVersion = "{0}.{1}.{2}-beta-{3}" -f $version.Major, $version.Minor, $version.Build, $version.Revision
 }
-
-pushd ".\Source\FizzWare.NBuilder"
-write-host "dotnet pack -c Release /p:PackageVersion=$($packageVersion) FizzWare.NBuilder.csproj -o '$outputDirectory' " -ForegroundColor Yellow
-dotnet pack -c Release /p:PackageVersion=$($packageVersion) FizzWare.NBuilder.csproj -o "$outputDirectory"
-popd
+$outputDirectory = $(pwd)
+try {
+    pushd "./src/FizzWare.NBuilder"
+    write-host "dotnet pack -c Release /p:PackageVersion=$($packageVersion) FizzWare.NBuilder.csproj -o '$outputDirectory' " -ForegroundColor Yellow
+    dotnet pack -c Release /p:PackageVersion=$($packageVersion) FizzWare.NBuilder.csproj -o "$outputDirectory"
+    if ($LASTEXITCODE -ne 0) {
+        throw "'dotnet pack' exited with code $LastExitCode"
+    }
+} finally {
+    popd
+}
