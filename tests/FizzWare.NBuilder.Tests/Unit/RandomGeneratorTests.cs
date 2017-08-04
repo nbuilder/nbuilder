@@ -318,7 +318,7 @@ namespace FizzWare.NBuilder.Tests.Unit
 
 
         [Fact]
-        public void enum_should_throw_if_not_an_enum_type()
+        public void Enum_should_throw_if_not_an_enum_type()
         {
             var type = typeof(string);
             Should.Throw<ArgumentException>(() => randomGenerator.Enumeration(type));
@@ -336,6 +336,21 @@ namespace FizzWare.NBuilder.Tests.Unit
             seededRandomGenerator1.Int().ShouldBe(seededRandomGenerator2.Int());
             seededRandomGenerator1.Int().ShouldBe(seededRandomGenerator2.Int());
             seededRandomGenerator1.Int().ShouldBe(seededRandomGenerator2.Int());
+        }
+
+        [Fact]
+        public void RandomGenerator_WithShortPhrase_NeverReturnsEmptyString()
+        {
+            // Arrange
+            for (var i = 0; i < 10000; i++)
+            {
+                // Act
+                var result = randomGenerator.NextString(1, 10);
+
+                // Assert
+                result.Length.ShouldBeInRange(1,10);
+            }
+
         }
     }
 }
