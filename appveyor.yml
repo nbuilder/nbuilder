@@ -100,7 +100,7 @@
 # release branches
 # compile, test, release beta version to nuget
 -
-  version: '4.0.0.{build}'
+  version: '5.0.0.{build}'
   configuration: Release
 
   branches:
@@ -131,7 +131,7 @@
   build_script:
     - ps: |
         . ./build/Build-Script.ps1
-        . ./build/New-NugetPackage.ps1 -Beta
+        . ./build/New-NugetPackage.ps1
             
   assembly_info:
     patch: true
