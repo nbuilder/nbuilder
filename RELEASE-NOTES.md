@@ -1,4 +1,4 @@
-# 5.0.0 - 2017-???
+# 5.0.0 - 2017-08-08
 
 * Dropped support for .NET 3.5
 * Added support for .NET Standard 1.6
