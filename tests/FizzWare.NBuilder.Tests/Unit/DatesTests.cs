@@ -386,6 +386,18 @@ namespace FizzWare.NBuilder.Tests.Unit.Dates
             var expected = new TimeSpan(0, 23, 20, 15);
             dateWithTime.TimeOfDay.ShouldBe(expected);
         }
+
+        [Fact]
+        public void DoesNotAlterStaticProperties() 
+        {
+            var minDateTime = DateTime.MinValue;
+            var maxDateTime = DateTime.MaxValue;
+
+            var generatedDateTime = Builder<DateTime>.CreateNew().Build();
+
+            DateTime.MinValue.ShouldBe(minDateTime);
+            DateTime.MaxValue.ShouldBe(maxDateTime);
+        }
     }
     // ReSharper restore AccessToStaticMemberViaDerivedType
 }
