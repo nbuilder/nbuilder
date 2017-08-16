@@ -28,21 +28,14 @@ namespace FizzWare.NBuilder.Tests.Unit
         public void GetValuesOfT_NotAnEnumType_Throws()
         {
             // Act, Assert
-            // TODO FIX
-            #if !SILVERLIGHT
             Should.Throw<ArgumentException>(() => EnumHelper.GetValues<MyClass>());
-            #endif
-
         }
 
         [Fact]
         public void GetValues_NotAnEnumType_Throws()
         {
             // Act, Assert
-            // TODO FIX
-            #if !SILVERLIGHT
             Should.Throw<ArgumentException>(() => EnumHelper.GetValues(typeof(MyClass)));
-            #endif
         }
     }
 }

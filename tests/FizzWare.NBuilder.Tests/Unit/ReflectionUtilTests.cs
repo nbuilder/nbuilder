@@ -40,8 +40,6 @@ namespace FizzWare.NBuilder.Tests.Unit
             instance.ShouldBeOfType<MyClass>();
         }
 
-        // nb: These tests don't run under silverlight at the moment, so this is actually unnecessary, but if I
-        //     do ever make them run under silverlight, I don't want to get caught out by this.
         [Fact]
         public void ShouldBeAbleToCreateInstanceOfClassThatHasPrivateParameterlessConstructor()
         {

@@ -284,8 +284,6 @@ namespace FizzWare.NBuilder.Tests.Unit
 
         }
 
-        // TODO FIX
-        #if !SILVERLIGHT
         [Fact]
         public void Generate_IncrementDaysMoreThanMaximumAllowedValue_ThrowsException()
         {
@@ -322,6 +320,5 @@ namespace FizzWare.NBuilder.Tests.Unit
             Should.Throw<ArgumentOutOfRangeException>(() => generator.Generate());
         }
 
-        #endif
     }
 }
