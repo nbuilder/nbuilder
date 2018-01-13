@@ -13,7 +13,9 @@ namespace FizzWare.NBuilder.Tests.Integration
         [Fact]
         public void _Build_Tuple_DoesNotReturnNullValues()
         {
-            var target = new Builder().CreateNew<(MyClass Class1, MyClass Class2)>();
+            var target = new Builder().CreateNew<(MyClass Class1, MyClass Class2)>()
+                .With(x=>x.Class1 = new MyClass())
+                .With(x => x.Class2 = new MyClass());
             var actual = target.Build();
             actual.Class1.ShouldNotBeNull();
             actual.Class2.ShouldNotBeNull();
