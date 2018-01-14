@@ -98,8 +98,15 @@ You can change the default property namer to use the random value property namer
 ```c#
 var builderSettings = new BuilderSettings();
 builderSettings.SetDefaultPropertyNamer(new RandomValuePropertyNamer(builderSettings));
-var stub = new Builder(target).CreateNew<MyClass>().Build();
+var source = new Builder(target).CreateNew<MyClass>().Build();
 ```
+OR
+```c#
+var builderSettings = new BuilderSettings();
+BuilderSetup.SetDefaultPropertyName(new RandomValuePropertyNamer(builderSettings));
+var actual = Builder<MyClass>.CreateNew().Build();
+```
+
 
 ##### Adding a property namer for a specific type
 
