@@ -96,8 +96,17 @@ BuilderSetup.AutoNameProperties = false;
 You can change the default property namer to use the random value property namer, or you can create your own either from scratch implementing the IPropertyNamer interface, or by extending one of the classes, for example to add support
 
 ```c#
-BuilderSetup.SetDefaultPropertyNamer(new RandomValuePropertyNamer());
+var builderSettings = new BuilderSettings();
+builderSettings.SetDefaultPropertyNamer(new RandomValuePropertyNamer(builderSettings));
+var source = new Builder(target).CreateNew<MyClass>().Build();
 ```
+OR
+```c#
+var builderSettings = new BuilderSettings();
+BuilderSetup.SetDefaultPropertyName(new RandomValuePropertyNamer(builderSettings));
+var actual = Builder<MyClass>.CreateNew().Build();
+```
+
 
 ##### Adding a property namer for a specific type
 
