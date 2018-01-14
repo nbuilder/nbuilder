@@ -8,7 +8,7 @@ using FizzWare.NBuilder.PropertyNaming;
 
 namespace FizzWare.NBuilder.Implementation
 {
-    public class ObjectBuilder<T> : IObjectBuilder<T>
+    public class ObjectBuilder<T> : IObjectBuilder<T> 
     {
         private readonly IReflectionUtil reflectionUtil;
         private IPropertyNamer propertyNamer;
@@ -108,7 +108,8 @@ namespace FizzWare.NBuilder.Implementation
             for (int i = 0; i < functions.Count; i++)
             {
                 var del = functions[i];
-                int parameterCount = del.GetMethodInfo().GetParameters().Count();
+                var methodInfo = del.GetMethodInfo();
+                int parameterCount = methodInfo.GetParameters().Count();
                 switch (parameterCount)
                 {
                     case 1:
@@ -152,9 +153,15 @@ namespace FizzWare.NBuilder.Implementation
             }
             else
             {
-                obj = reflectionUtil.CreateInstanceOf<T>();
+                var type = typeof(T);
+                if (!type.Name.StartsWith(typeof(ValueTuple).Name) && !type.Name.StartsWith(typeof(Tuple).Name))
+                {
+                    obj = reflectionUtil.CreateInstanceOf<T>();
+                    return obj;
+                }
+                var argsTypes = type.GetTypeInfo().GetGenericArguments().ToArray();
+                obj = reflectionUtil.CreateInstanceOf<T>(argsTypes.Select(Activator.CreateInstance).ToArray());
             }
-
             return obj;
         }
 
