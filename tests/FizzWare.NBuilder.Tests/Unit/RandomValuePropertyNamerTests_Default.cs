@@ -73,7 +73,22 @@ namespace FizzWare.NBuilder.Tests.Unit
                 item.GetNullCharConst().ShouldBe(MyClassWithCharConst.NullCharConst);
                 item.GetNonNullCharConst().ShouldBe(MyClassWithCharConst.NonNullCharConst);
             }
+        }
 
+        [Fact]
+        public static void SetDefaultPropertyNamer_AsLocalRandomValuePropertyNamer_StillAllowsWith()
+        {
+            var expected = "RandomValuePropertyNamer Value";
+
+            var target = new BuilderSettings();
+            target.SetDefaultPropertyNamer(new RandomValuePropertyNamer(target));
+
+            var actual = new Builder(target).CreateNew<MyClass>()
+                .With(x => x.StringTwo = expected)
+                .Build();
+
+            actual.StringTwo.ShouldBe(expected);
+            actual.StringOne.ShouldNotContain($"{nameof(MyClass.StringOne)}");
         }
     }
 }
