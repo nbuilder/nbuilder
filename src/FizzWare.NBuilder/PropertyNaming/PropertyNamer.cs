@@ -24,12 +24,24 @@ namespace FizzWare.NBuilder.PropertyNaming
         public virtual void SetValuesOf<T>(T obj)
         {
             var type = typeof(T);
+            var actuals = new List<object>(){obj};
 
-            foreach (var propertyInfo in type.GetProperties(FLAGS).Where(p => p.CanWrite))
-                SetMemberValue(propertyInfo, obj);
+            if (type.IsValueTuple())
+            {
+                actuals.Clear();
+                var items = obj.GetType().GetFields(FLAGS).Select(propertyInfo => GetCurrentValue(propertyInfo, obj));
+                actuals.AddRange(items);
+            }
 
-            foreach (var propertyInfo in type.GetFields(FLAGS).Where(f => !f.IsLiteral))
-                SetMemberValue(propertyInfo, obj);
+            foreach (var actual in actuals)
+            {
+                foreach (var propertyInfo in actual.GetType().GetProperties(FLAGS).Where(p => p.CanWrite))
+                    SetMemberValue(propertyInfo, actual);
+
+                foreach (var propertyInfo in actual.GetType().GetFields(FLAGS).Where(f => !f.IsLiteral))
+                    SetMemberValue(propertyInfo, actual);    
+            }
+
         }
 
         protected static object GetCurrentValue<T>(MemberInfo memberInfo, T obj)
