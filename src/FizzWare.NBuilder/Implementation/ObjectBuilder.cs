@@ -128,16 +128,16 @@ namespace FizzWare.NBuilder.Implementation
 
         public T Construct(int index)
         {
-            bool requiresArgs = reflectionUtil.RequiresConstructorArgs(typeof(T));
+            var type = typeof(T);
+            bool requiresArgs = reflectionUtil.RequiresConstructorArgs(type);
 
-            if (typeof(T).IsInterface())
+            if (type.IsInterface())
                 throw new TypeCreationException("Cannot build an interface");
 
-            if (typeof(T).IsAbstract())
+            if (type.IsAbstract())
                 throw new TypeCreationException("Cannot build an abstract class");
 
             T obj;
-
             if (_constructorExpression != null)
             {
                 obj = _constructorExpression.Compile().Invoke(index);
@@ -149,6 +149,10 @@ namespace FizzWare.NBuilder.Implementation
             else if (constructorArgs != null)
             {
                 obj = reflectionUtil.CreateInstanceOf<T>(constructorArgs);
+            }
+            else if (type.IsValueTuple()) 
+            {
+                obj = reflectionUtil.CreateInstanceOfValueTuple<T>();
             }
             else
             {

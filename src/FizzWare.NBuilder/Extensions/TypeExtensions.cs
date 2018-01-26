@@ -104,5 +104,23 @@ namespace FizzWare.NBuilder.Extensions
         {
             return self.GetTypeInfo().BaseType;
         }
+
+        public static Type[] GenericTypeArguments(this Type self)
+        {
+            Type[] argsTypes = null;
+            
+#if NET35
+            argsTypes =self.GenericTypeArguments;
+#else
+            argsTypes = self.GetTypeInfo().GetGenericArguments();
+#endif
+            return argsTypes ?? new Type[0];
+        }
+
+        public static bool IsValueTuple(this Type self)
+        {
+            return self.IsValueType() && self.GenericTypeArguments().Any() &&
+                   (self.FullName?.Contains($"{nameof(System)}.Value{nameof(Tuple)}") ?? false);
+        }
     }
 }

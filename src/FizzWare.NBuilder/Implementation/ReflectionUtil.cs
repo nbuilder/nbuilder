@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using FizzWare.NBuilder.Extensions;
 
@@ -36,6 +37,14 @@ namespace FizzWare.NBuilder.Implementation
 
                 throw new TypeCreationException("Constructor with args " + argList, e);
             }
+        }
+
+        public T CreateInstanceOfValueTuple<T>()
+        {
+            var type = typeof(T);
+            var argsTypes = type.GenericTypeArguments();
+            var obj = CreateInstanceOf<T>(argsTypes.Select(Activator.CreateInstance).ToArray());
+            return obj;
         }
 
         public bool RequiresConstructorArgs(Type type)
