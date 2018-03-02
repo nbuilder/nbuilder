@@ -134,9 +134,10 @@ namespace FizzWare.NBuilder.PropertyNaming
             return Convert.ToSByte(newSequenceNumber);
         }
 
-        protected override DateTime GetDateTime(MemberInfo memberInfo)
+        protected override DateTime GetDateTime(MemberInfo memberInfo, DateTimeKind kind = DateTimeKind.Unspecified)
         {
-            return DateTime.Now.Date.AddDays(_sequenceNumber - 1);
+            var dateTime = DateTime.Now.Date.AddDays(_sequenceNumber - 1);
+            return DateTime.SpecifyKind(dateTime, kind);
         }
 
         protected override string GetString(MemberInfo memberInfo)

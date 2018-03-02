@@ -139,9 +139,9 @@ namespace FizzWare.NBuilder.PropertyNaming
             return generator.Next(sbyte.MinValue, sbyte.MaxValue);
         }
 
-        protected override DateTime GetDateTime(MemberInfo memberInfo)
+        protected override DateTime GetDateTime(MemberInfo memberInfo, DateTimeKind kind = DateTimeKind.Unspecified)
         {
-            return generator.Next(minDate, maxDate);
+            return generator.Next(minDate, maxDate, kind);
         }
 
         protected override string GetString(MemberInfo memberInfo)
