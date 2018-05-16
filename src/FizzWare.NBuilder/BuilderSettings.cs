@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using FizzWare.NBuilder.Extensions;
 using FizzWare.NBuilder.Implementation;
 using FizzWare.NBuilder.PropertyNaming;
 
@@ -83,8 +84,14 @@ namespace FizzWare.NBuilder
 
         public  bool ShouldIgnoreProperty(PropertyInfo info)
         {
-            if (disabledAutoNameProperties.Any(x => x.DeclaringType == info.DeclaringType && x.Name == info.Name))
+            if (disabledAutoNameProperties.Any(x => {
+                var typeInfo = x.DeclaringType.GetTypeInfo(); 
+                return (typeInfo.IsInterface ? typeInfo.IsAssignableFrom(info.DeclaringType) : x.DeclaringType == info.DeclaringType) &&
+                x.Name == info.Name;
+                }))
+            {
                 return true;
+            }
 
             return false;
         }
