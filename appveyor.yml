@@ -1,6 +1,6 @@
 # feature branches
 -
-  version: '5.0.0.{build}'
+  version: '5.1.0.{build}'
   configuration: Release
 
   branches:
@@ -49,7 +49,7 @@
 # release branches
 # compile, test, release beta version to nuget
 -
-  version: '5.0.0.{build}'
+  version: '5.1.0.{build}'
   configuration: Release
 
   branches:
@@ -97,10 +97,9 @@
     - packages -> **\packages.config
 
 
-# release branches
-# compile, test, release beta version to nuget
+# compile, test, release version to nuget
 -
-  version: '4.0.0.{build}'
+  version: '5.1.0.{build}'
   configuration: Release
 
   branches:
