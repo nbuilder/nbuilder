@@ -156,10 +156,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Fact]
         public void Generate_UnsupportedStruct_ThrowsInvalidOperationException()
         {
-            // TODO: Make this work for SL too
-            #if !SILVERLIGHT
-            Should.Throw<InvalidOperationException>(() => new SequentialGenerator<MyDummyStruct>());
-            #endif
+           Should.Throw<InvalidOperationException>(() => new SequentialGenerator<MyDummyStruct>());
         }
 
         private struct MyDummyStruct : IConvertible

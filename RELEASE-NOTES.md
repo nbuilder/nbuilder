@@ -1,7 +1,36 @@
+# 5.1.0 - 2018-05-15
+
+* Added support for disabling property naming via an interface:
+
+In a multi tenant scenario, the db entities usually have a property that denotes that they are for that specific tenant:
+
+```
+public interface ITenantEntity
+{
+    int TenantId {get; set;}
+}
+
+public class User: ITenantEntity
+{
+    public int TenantId {get; set;}
+    ...
+}
+
+public class Car: ITenantEntity
+{
+    public int TenantId {get; set;}
+    ...
+}
+```
+
+When writing tests for the db layer, it is useful to disable the autoassignment for this property by just specifying an interface in BuilderSetup.DisablePropertyNamingFor.
+
+
+
 # 5.0.0 - 2017-08-08
 
+* Dropped support for .NET 3.5
 * Added support for .NET Standard 1.6
-* (Breaking) Dropped support for .NET 3.5
 
 
 # 4.0.0 - 2016-11-28
