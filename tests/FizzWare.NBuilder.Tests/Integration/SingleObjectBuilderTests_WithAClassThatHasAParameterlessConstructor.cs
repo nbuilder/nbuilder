@@ -51,6 +51,17 @@ namespace FizzWare.NBuilder.Tests.Integration
         }
 
         [Fact]
+        public void ShouldBeAbleToDisableAutomaticPropertyNamingForASpecificFieldOfAnInterface()
+        {
+            var builderSetup = new BuilderSettings();
+            builderSetup.DisablePropertyNamingFor<IMyInterfaceWithProperty, int>(x => x.MyIntProperty);
+
+            var obj = new Builder(builderSetup).CreateNew<MyClassWithPropery>().Build();
+
+            obj.MyIntProperty.ShouldBe(0);
+        }
+
+        [Fact]
         public void ShouldBeAbleToDisableAutoPropertyNaming()
         {
             var builderSetup = new BuilderSettings { AutoNameProperties = false };

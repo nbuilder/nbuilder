@@ -32,10 +32,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             for (int i = 0; i < max; i++)
                 generator.Next((short)min, (short)max);
 
-            // TODO FIX
-            #if !SILVERLIGHT
             Should.Throw<InvalidOperationException>(() => generator.Next((short)min, (short)max), exceptionMessage);
-            #endif
         }
 
         [Fact]
@@ -50,10 +47,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             for (int i = 0; i < max; i++)
                 generator.Next(min, max);
                 
-            // TODO FIX
-            #if !SILVERLIGHT
             Should.Throw<InvalidOperationException>(() => generator.Next(min, max), exceptionMessage);
-            #endif
         }
 
         [Fact]
@@ -68,10 +62,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             for (int i = 0; i < max; i++)
                 generator.Next((long)min, (long)max);
 
-            // TODO FIX
-            #if !SILVERLIGHT
             Should.Throw<InvalidOperationException>(() => generator.Next((long)min, (long)max), exceptionMessage);
-            #endif
         }
 
         [Fact]
@@ -86,10 +77,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             for (int i = 0; i < max; i++)
                 generator.Next((ushort)min, (ushort)max);
 
-            // TODO FIX
-            #if !SILVERLIGHT
             Should.Throw<InvalidOperationException>(() => generator.Next((ushort)min, (ushort)max), exceptionMessage);
-            #endif
         }
 
         [Fact]

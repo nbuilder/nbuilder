@@ -10,9 +10,22 @@ using Xunit;
 
 namespace FizzWare.NBuilder.Tests.Integration
 {
-    
     public class ListBuilderNegativeTests
     {
+        [Fact]
+        public void SectionalOperationsAreAppliedAfterGlobalOperations() 
+        {
+            var results = new Builder().CreateListOfSize<MyClass>(10)
+                .TheFirst(1)
+                    .Do(row => row.Bool = true)
+                .All()
+                    .Do(row => row.Bool = false)
+                .Build()
+                ;
+            
+            results.First().Bool.ShouldBe(true);
+        }
+
         [Fact]
         public void ShouldComplainIfTheFirstRangeTooBig()
         {

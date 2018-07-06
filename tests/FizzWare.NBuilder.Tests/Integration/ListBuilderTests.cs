@@ -4,6 +4,7 @@ using System.Linq;
 using FizzWare.NBuilder.Implementation;
 using FizzWare.NBuilder.PropertyNaming;
 using FizzWare.NBuilder.Tests.Integration.Models;
+using FizzWare.NBuilder.Tests.TestClasses;
 
 using Shouldly;
 using Xunit;
@@ -22,6 +23,7 @@ namespace FizzWare.NBuilder.Tests.Integration
             new RepositoryBuilderSetup().DoSetup();
 
         }
+
        
 
         [Fact]
@@ -123,6 +125,20 @@ namespace FizzWare.NBuilder.Tests.Integration
                 product.PriceBeforeTax.ShouldBeGreaterThanOrEqualTo(50m);
                 product.PriceBeforeTax.ShouldBeLessThanOrEqualTo(1000m);
             }
+        }
+
+        [Fact]
+        public void SectionalOperationsAreAppliedAfterGlobalOperations() 
+        {
+            var results = new Builder().CreateListOfSize<MyClass>(10)
+                .TheFirst(1)
+                    .Do(row => row.Bool = true)
+                .All()
+                    .Do(row => row.Bool = false)
+                .Build()
+                ;
+            
+            results.First().Bool.ShouldBe(true);
         }
 
         [Fact]
@@ -633,14 +649,14 @@ namespace FizzWare.NBuilder.Tests.Integration
         [Fact]
         public void StructsCanHavePropertyAssignments()
         {
-            var builderSetup = new BuilderSettings();
-            var locations = new Builder(builderSetup)
-                .CreateListOfSize< WarehouseLocation>(10)
+            var locations = new Builder()
+                .CreateListOfSize<WarehouseLocation>(10)
                 .Section(5, 6)
-                .WithConstructor(() => new WarehouseLocation('A', 1, 2))
-                .Build();
+                    .WithConstructor(() => new WarehouseLocation('A', 1, 2))
+                .Build()
+                ;
 
-            locations[5].Aisle.ShouldBe('A');
+            locations[5].Aisle.ShouldBe('A', "Warehouse location was not correct. This implies that WithConstructor was not used for items 5 and 6.");
             locations[6].Aisle.ShouldBe('A');
 
             locations[5].Shelf.ShouldBe(1);
