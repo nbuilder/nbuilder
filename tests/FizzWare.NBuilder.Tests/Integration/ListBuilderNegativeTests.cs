@@ -13,6 +13,66 @@ namespace FizzWare.NBuilder.Tests.Integration
     public class ListBuilderNegativeTests
     {
         [Fact]
+        public void IfIndexParameterIsNull_ArgumentNullExceptionOccur()
+        {
+            Should.Throw<ArgumentNullException>(() =>
+            {
+                var builderSetup = new BuilderSettings();
+                new Builder(builderSetup).CreateListOfSize<MyClass>(10).IndexOf(null).With(x => x.StringOne = "Description").Build();
+            });
+        }
+
+        [Fact]
+        public void IfIndexParameterIsEmpty_ArgumentExceptionOccur()
+        {
+            Should.Throw<ArgumentException>(() =>
+            {
+                var builderSetup = new BuilderSettings();
+                new Builder(builderSetup).CreateListOfSize<MyClass>(10).IndexOf(new int[0]).With(x => x.StringOne = "Description").Build();
+            });
+        }
+
+        [Fact]
+        public void IfIndexParameterIsTooBig_ArgumentExceptionOccur()
+        {
+            Should.Throw<ArgumentOutOfRangeException>(() =>
+            {
+                var builderSetup = new BuilderSettings();
+                new Builder(builderSetup).CreateListOfSize<MyClass>(10).IndexOf(10).With(x => x.StringOne = "Description").Build();
+            });
+        }
+
+        [Fact]
+        public void IfAtLeastOneIndexParameterIsTooBig_ArgumentExceptionOccur()
+        {
+            Should.Throw<ArgumentOutOfRangeException>(() =>
+            {
+                var builderSetup = new BuilderSettings();
+                new Builder(builderSetup).CreateListOfSize<MyClass>(10).IndexOf(2,3,10).With(x => x.StringOne = "Description").Build();
+            });
+        }
+
+        [Fact]
+        public void IfIndexParameterIsNegative_ArgumentExceptionOccur()
+        {
+            Should.Throw<ArgumentOutOfRangeException>(() =>
+            {
+                var builderSetup = new BuilderSettings();
+                new Builder(builderSetup).CreateListOfSize<MyClass>(10).IndexOf(-1).With(x => x.StringOne = "Description").Build();
+            });
+        }
+
+        [Fact]
+        public void IfAtLeastOneIndexParameterIsNegative_ArgumentExceptionOccur()
+        {
+            Should.Throw<ArgumentOutOfRangeException>(() =>
+            {
+                var builderSetup = new BuilderSettings();
+                new Builder(builderSetup).CreateListOfSize<MyClass>(10).IndexOf(2,-1,4).With(x => x.StringOne = "Description").Build();
+            });
+        }
+
+        [Fact]
         public void SectionalOperationsAreAppliedAfterGlobalOperations() 
         {
             var results = new Builder().CreateListOfSize<MyClass>(10)

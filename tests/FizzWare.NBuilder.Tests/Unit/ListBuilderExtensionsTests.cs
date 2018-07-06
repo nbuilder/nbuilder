@@ -80,6 +80,26 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
 
         [Fact]
+        public void IndexOfIndexMustBeZeroOrGreater()
+        {
+            Should.Throw<ArgumentOutOfRangeException>(() =>
+            {
+                ListBuilderExtensions.IndexOf(listBuilderImpl, -1);
+            });
+        }
+
+        [Fact]
+        public void IndexOfIndexShouldBeLessThanListCapacity()
+        {
+            listBuilderImpl.Capacity.Returns(10);
+
+            Should.Throw<ArgumentOutOfRangeException>(() =>
+            {
+                ListBuilderExtensions.IndexOf(listBuilderImpl, 11);
+            });
+        }
+
+        [Fact]
         public void RandomAmountMustBeOneOrGreater()
         {
             Should.Throw<ArgumentException>(() =>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using FizzWare.NBuilder.Implementation;
 
 namespace FizzWare.NBuilder
@@ -29,6 +30,20 @@ namespace FizzWare.NBuilder
 
             int start = listBuilderImpl.Capacity - amount;
             var declaration = new RangeDeclaration<T>(listBuilderImpl, listBuilderImpl.CreateObjectBuilder(), start, listBuilderImpl.Capacity - 1);
+            return (IOperable<T>)listBuilderImpl.AddDeclaration(declaration);
+        }
+
+        public static IOperable<T> IndexOf<T>(this IListBuilder<T> listBuilder, params int[] indexes)
+        {
+            Guard.Against(indexes == null, new ArgumentNullException(nameof(indexes)));
+            Guard.Against(indexes.Length < 1, new ArgumentException(nameof(indexes), "At least one item should be included"));
+
+            var listBuilderImpl = GetListBuilderImpl<T>(listBuilder);
+
+            Guard.Against(indexes.Any(i => i < 0), new ArgumentOutOfRangeException(nameof(indexes), "Index must be 0 or greater"));
+            Guard.Against(indexes.Any(i => i > listBuilderImpl.Capacity - 1), new ArgumentOutOfRangeException(nameof(indexes), $"Index must be less than the size of the list ({listBuilderImpl.Capacity}) that is being generated"));
+
+            var declaration = new SpesificIndexDeclaration<T>(listBuilderImpl, listBuilderImpl.CreateObjectBuilder(), indexes);
             return (IOperable<T>)listBuilderImpl.AddDeclaration(declaration);
         }
 
