@@ -5,11 +5,11 @@ using FizzWare.NBuilder.Implementation;
 
 namespace FizzWare.NBuilder.Implementation
 {
-    public class SpesificIndexDeclaration<T> : Declaration<T>
+    public class IndexedElementDeclaration<T> : Declaration<T>
     {
         private readonly int[] _indexes;
 
-        public SpesificIndexDeclaration(IListBuilderImpl<T> listBuilderImpl, IObjectBuilder<T> objectBuilder, params int[] indexes) 
+        public IndexedElementDeclaration(IListBuilderImpl<T> listBuilderImpl, IObjectBuilder<T> objectBuilder, params int[] indexes) 
             : base(listBuilderImpl, objectBuilder)
         {
             _indexes = indexes ?? new int[0];

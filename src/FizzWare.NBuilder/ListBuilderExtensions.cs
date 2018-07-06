@@ -43,7 +43,7 @@ namespace FizzWare.NBuilder
             Guard.Against(indexes.Any(i => i < 0), new ArgumentOutOfRangeException(nameof(indexes), "Index must be 0 or greater"));
             Guard.Against(indexes.Any(i => i > listBuilderImpl.Capacity - 1), new ArgumentOutOfRangeException(nameof(indexes), $"Index must be less than the size of the list ({listBuilderImpl.Capacity}) that is being generated"));
 
-            var declaration = new SpesificIndexDeclaration<T>(listBuilderImpl, listBuilderImpl.CreateObjectBuilder(), indexes);
+            var declaration = new IndexedElementDeclaration<T>(listBuilderImpl, listBuilderImpl.CreateObjectBuilder(), indexes);
             return (IOperable<T>)listBuilderImpl.AddDeclaration(declaration);
         }
 
