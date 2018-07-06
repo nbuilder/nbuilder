@@ -18,10 +18,9 @@ namespace FizzWare.NBuilder.PropertyNaming
 
         private readonly IRandomGenerator generator;
         private readonly bool useLoremIpsumForStrings;
-        private readonly BuilderSettings BuilderSettings;
 
         public RandomValuePropertyNamer(BuilderSettings builderSettings)
-            : this (new RandomGenerator(), new ReflectionUtil(), false,builderSettings)
+            : this (new RandomGenerator(), new ReflectionUtil(), false, builderSettings)
         {
         }
 
@@ -37,7 +36,6 @@ namespace FizzWare.NBuilder.PropertyNaming
             this.generator = generator;
             this.generatePositiveValuesOnly = generatePositiveValuesOnly;
             this.useLoremIpsumForStrings = useLoremIpsumForStrings;
-            BuilderSettings = builderSettings;
             this.minDate = minDate;
             this.maxDate = maxDate;
         }

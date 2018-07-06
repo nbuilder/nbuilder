@@ -1,3 +1,25 @@
+# 6.0.0 - ???
+
+* [@AdemCatamak](https://github.com/AdemCatamak) Added support for `IndexOf` as part of the `ListBuilder` implementation.
+* [@PureKrome](https://github.com/PureKrome) Added support for `DateTimeKind` to `RandomGenerator`
+
+## ListBuilder.IndexOf
+
+```csharp
+var products = new Builder()
+    .CreateListOfSize<Product>(10)
+    .IndexOf(0, 2, 5)
+    .With(x => x.Title = "A special title")
+    .Build();
+```
+
+## DateTimeKind
+
+```csharp
+var result = randomGenerator.Next(DateTime.MinValue, DateTime.MaxValue, DateTimeKind.Utc);
+```
+
+
 # 5.1.0 - 2018-05-15
 
 * Added support for disabling property naming via an interface:
