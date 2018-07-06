@@ -370,14 +370,21 @@ namespace FizzWare.NBuilder.Generators
 
         public static string IpAddress()
         {
-            return string.Format("{0}.{1}.{2}.{3}",
-                PositiveInt(255), PositiveInt(255), PositiveInt(255), PositiveInt(255));
+            return $"{PositiveInt(255)}.{PositiveInt(255)}.{PositiveInt(255)}.{PositiveInt(255)}";
         }
 
         public static T Enumeration<T>() where T : struct
         {
             var values = EnumHelper.GetValues(typeof(T));
-            var index = PositiveInt(values.Length - 1);
+
+            /*
+             * This method is called to generate random enum values. Because
+             * Random.Next(min, max) is not upper-inclusive, we pass values.Length
+             * rather than values.Length - 1 as the upper bound to make sure all
+             * enum values are potentially returned.
+             */
+
+            var index = PositiveInt(values.Length); 
             return (T)values.GetValue(index);
         }
 

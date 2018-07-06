@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
+using FizzWare.NBuilder.Generators;
 using FizzWare.NBuilder.Tests.TestClasses;
 
 using Shouldly;
@@ -303,6 +306,30 @@ namespace FizzWare.NBuilder.Tests.Unit
             phrase.Length.ShouldBeLessThanOrEqualTo(50);
         }
 
+
+        public enum StatusType
+        {
+            Unknown,
+            Red,
+            Green,
+            Blue,
+            Pink
+        }
+
+        [Fact]
+        public void GenerateRandomEnum_ShouldIncludeAllEnumValues()
+        {
+            var expected = Enum.GetValues(typeof(StatusType)).Cast<StatusType>().ToList();
+            var actual = new List<StatusType>();
+
+            for (var i = 0; i < 100000; i++)
+            {
+                var statusType = GetRandom.Enumeration<StatusType>();
+                actual.Add(statusType);
+            }
+
+            expected.ShouldAllBe(e => actual.Contains(e));
+        }
 
         [Theory]
         [InlineData(4, 5)]

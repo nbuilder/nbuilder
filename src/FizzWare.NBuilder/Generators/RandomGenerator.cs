@@ -73,14 +73,8 @@ namespace FizzWare.NBuilder
 
             int integer = rnd.Next(iMin, iMax);
             int fraction = rnd.Next(0, 4000);
-
-
-            //CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator
-            
          
-
             var separator = NumberFormatInfo.CurrentInfo.CurrencyDecimalSeparator;
-
 
             return (decimal)Convert.ToDecimal(string.Format("{0}{1}{2}", integer, separator, fraction));
         }

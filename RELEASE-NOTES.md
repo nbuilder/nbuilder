@@ -2,6 +2,7 @@
 
 * [@AdemCatamak](https://github.com/AdemCatamak) Added support for `IndexOf` as part of the `ListBuilder` implementation.
 * [@PureKrome](https://github.com/PureKrome) Added support for `DateTimeKind` to `RandomGenerator`
+* Bug: Last item in enum is never generated when generating property values randomly.
 
 ## ListBuilder.IndexOf
 
