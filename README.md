@@ -123,7 +123,7 @@ Through extension methods you can extend NBuilder's fluent interface to add cust
 
 In NBuilder nearly all of the public interface is implemented with extension methods. This of course means it's possible to add your own.
 
-For example, out of the box the list builder has seven 'declarations' `WhereAll()`, `WhereRandom(n)`, `WhereRandom(n, start, end)`, `WhereTheFirst(n)`, `WhereTheLast(n)`, `AndTheNext(n)`, `AndThePrevious(n)`. However if you wanted to add your own,
+For example, out of the box the list builder has seven 'declarations' `All()`, `WhereRandom(n)`, `WhereRandom(n, start, end)`, `WhereTheFirst(n)`, `WhereTheLast(n)`, `AndTheNext(n)`, `AndThePrevious(n)`. However if you wanted to add your own,
 
 e.g. to return all the even or odd items, all you need to do is write a new extension method -` WhereAllEven()`
 
@@ -134,7 +134,11 @@ If, for example, you find yourself repeating yourself when creating test data an
 For example say if rather than saying:
 
 ```c#
-Builder<Product>.CreateListOfSize(10).WhereAll().Have(x => x.Title = "12345....[LongString].....12345").Build();
+Builder<Product>
+	.CreateListOfSize(10)
+	.All()
+	.Have(x => x.Title = "12345....[LongString].....12345")
+	.Build();
 ```
 
 You could instead create an extension method:
@@ -152,7 +156,7 @@ Giving you the ability to say:
 ```c#
 Builder<Product>
     .CreateListOfSize(10)
-    .WhereAll()
+    .All()
         .HaveLongTitles()
     .Build();
 ```
