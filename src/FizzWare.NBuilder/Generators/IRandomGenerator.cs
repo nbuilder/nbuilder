@@ -20,7 +20,7 @@ namespace FizzWare.NBuilder
         byte Next(byte min, byte max);
         sbyte Next(sbyte min, sbyte max);
 
-        DateTime Next(DateTime min, DateTime max);
+        DateTime Next(DateTime min, DateTime max, DateTimeKind kind = DateTimeKind.Unspecified);
 
         bool Next();
 

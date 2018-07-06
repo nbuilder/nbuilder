@@ -119,9 +119,11 @@ namespace FizzWare.NBuilder.Tests.Unit
                 return default(byte);
             }
 
-            protected override DateTime GetDateTime(System.Reflection.MemberInfo memberInfo)
+            protected override DateTime GetDateTime(System.Reflection.MemberInfo memberInfo, 
+                                                    DateTimeKind kind = DateTimeKind.Unspecified)
             {
-                return default(DateTime);
+                var dateTime = default(DateTime);
+                return DateTime.SpecifyKind(dateTime, kind);
             }
 
             protected override string GetString(System.Reflection.MemberInfo memberInfo)

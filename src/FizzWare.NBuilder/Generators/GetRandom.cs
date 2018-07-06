@@ -165,19 +165,19 @@ namespace FizzWare.NBuilder.Generators
             return generator.DateTime();
         }
 
-        public static DateTime DateTime(DateTime minValue, DateTime maxValue)
+        public static DateTime DateTime(DateTime minValue, DateTime maxValue, DateTimeKind kind = DateTimeKind.Unspecified)
         {
-            return generator.Next(minValue, maxValue);
+            return generator.Next(minValue, maxValue, kind);
         }
 
-        public static DateTime DateTimeFrom(DateTime minValue)
+        public static DateTime DateTimeFrom(DateTime minValue, DateTimeKind kind = DateTimeKind.Unspecified)
         {
-            return generator.Next(minValue, maxSqlServerDate);
+            return generator.Next(minValue, maxSqlServerDate, kind);
         }
 
-        public static DateTime DateTimeThrough(DateTime maxValue)
+        public static DateTime DateTimeThrough(DateTime maxValue, DateTimeKind kind = DateTimeKind.Unspecified)
         {
-            return generator.Next(minSqlServerDate, maxValue);
+            return generator.Next(minSqlServerDate, maxValue, kind);
         }
 
         public static bool Boolean()

@@ -130,7 +130,7 @@
   build_script:
     - ps: |
         . ./build/Build-Script.ps1
-        . ./build/New-NugetPackage.ps1 -Beta
+        . ./build/New-NugetPackage.ps1
             
   assembly_info:
     patch: true

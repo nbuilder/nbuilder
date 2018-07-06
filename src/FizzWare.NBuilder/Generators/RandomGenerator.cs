@@ -100,14 +100,14 @@ namespace FizzWare.NBuilder
             return (sbyte)Next((int)min, (int)max);
         }
 
-        public DateTime Next(DateTime min, DateTime max)
+        public DateTime Next(DateTime min, DateTime max, DateTimeKind kind = DateTimeKind.Unspecified)
         {
             long minTicks = min.Ticks;
             long maxTicks = max.Ticks;
             double rn = (Convert.ToDouble(maxTicks)
                - Convert.ToDouble(minTicks)) * rnd.NextDouble()
                + Convert.ToDouble(minTicks);
-            return new DateTime(Convert.ToInt64(rn));
+            return new DateTime(Convert.ToInt64(rn), kind);
 
         }
 
