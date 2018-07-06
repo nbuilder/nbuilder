@@ -14,6 +14,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fizzware.NBuilder", "src\Fi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FizzWare.NBuilder.Tests", "tests\FizzWare.NBuilder.Tests\FizzWare.NBuilder.Tests.csproj", "{A697F75B-FAFE-404E-A6C0-554249ED5B52}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{FE4C4BE3-B996-488F-BE38-6CB1E9B9E890}"
+	ProjectSection(SolutionItems) = preProject
+		appveyor.yml = appveyor.yml
+		Invoke-EmulateAppVeyor.ps1 = Invoke-EmulateAppVeyor.ps1
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,5 +37,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {36BA9388-F9F6-45FD-B4C3-AA967E6B649B}
 	EndGlobalSection
 EndGlobal
