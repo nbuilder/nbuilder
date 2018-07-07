@@ -15,7 +15,9 @@
     <Owners>Gareth Down</Owners>
     <Summary>Rapidly create test data using a fluent, extensible interface.</Summary>
     <Company />
-    <RepositoryType>Github</RepositoryType> 
+    <RepositoryType>Github</RepositoryType>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>NBuilder.snk</AssemblyOriginatorKeyFile> 
 </PropertyGroup>
 
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.6'">
