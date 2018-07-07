@@ -128,7 +128,7 @@ namespace FizzWare.NBuilder.Implementation
 
         public T Construct(int index)
         {
-            bool requiresArgs = reflectionUtil.RequiresConstructorArgs(typeof(T));
+            var requiresArgs = reflectionUtil.RequiresConstructorArgs(typeof(T));
 
             if (typeof(T).IsInterface())
                 throw new TypeCreationException("Cannot build an interface");

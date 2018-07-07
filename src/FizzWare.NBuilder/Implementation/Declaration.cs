@@ -24,15 +24,9 @@ namespace FizzWare.NBuilder.Implementation
         /// </summary>
         protected readonly IListBuilderImpl<T> listBuilderImpl;
 
-        public IListBuilderImpl<T> ListBuilderImpl
-        {
-            get { return listBuilderImpl; }
-        }
+        public IListBuilderImpl<T> ListBuilderImpl => listBuilderImpl;
 
-        public IObjectBuilder<T> ObjectBuilder
-        {
-            get { return objectBuilder; }
-        }
+        public IObjectBuilder<T> ObjectBuilder => objectBuilder;
 
         /// <summary>
         /// The object builder that this declaration uses to create its objects
@@ -81,9 +75,9 @@ namespace FizzWare.NBuilder.Implementation
             // the same objects in the master list, however NBuilder should also support structs
             // so in fact they need to be called on the actual objects in the master list
 
-            for (int i = 0; i < MasterListAffectedIndexes.Count; i++)
+            for (var i = 0; i < MasterListAffectedIndexes.Count; i++)
             {
-                int index = MasterListAffectedIndexes[i];
+                var index = MasterListAffectedIndexes[i];
                 objectBuilder.CallFunctions(masterList[index], i);
             }
         }

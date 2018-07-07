@@ -36,8 +36,6 @@ namespace FizzWare.NBuilder.Implementation
             return new ObjectBuilder<T>(reflectionUtil,this.BuilderSettings);
         }
 
-   
-
         public IOperable<T> All()
         {
             declarations.Enqueue(new GlobalDeclaration<T>(this, CreateObjectBuilder()));

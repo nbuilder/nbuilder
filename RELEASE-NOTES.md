@@ -4,7 +4,7 @@
 * [@PureKrome](https://github.com/PureKrome) Added support for `DateTimeKind` to `RandomGenerator`
 * Bug: Last item in enum is never generated when generating property values randomly.
 * Bug: Lost strong name when porting to .NET Standard.
-
+* Feature: Added `DisablePropertyNamingFor(PropertyInfo)` overload to `BuilderSettings`.
 
 ## ListBuilder.IndexOf
 

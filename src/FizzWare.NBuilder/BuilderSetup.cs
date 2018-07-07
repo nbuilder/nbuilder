@@ -8,17 +8,17 @@ namespace FizzWare.NBuilder
     public static class BuilderSetup
     {
         internal static readonly BuilderSettings Instance =new BuilderSettings();
-        public static bool AutoNameProperties
-        {
-            get { return Instance.AutoNameProperties; }
-            set { Instance.AutoNameProperties = value; }
-        }
+        public static bool AutoNameProperties => Instance.AutoNameProperties;
+        //{
+        //    get { return Instance.AutoNameProperties; }
+        //    set { Instance.AutoNameProperties = value; }
+        //}
 
-        public static bool HasDisabledAutoNameProperties
-        {
-            get { return Instance.HasDisabledAutoNameProperties;  }
-            set { Instance.HasDisabledAutoNameProperties = value; }
-        }
+        public static bool HasDisabledAutoNameProperties => Instance.HasDisabledAutoNameProperties;
+        //{
+        //    get { return Instance.HasDisabledAutoNameProperties;  }
+        //    set { Instance.HasDisabledAutoNameProperties = value; }
+        //}
 
         public static bool ShouldIgnoreProperty(PropertyInfo info)
         {
