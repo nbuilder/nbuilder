@@ -12,12 +12,12 @@ namespace FizzWare.NBuilder.Implementation
     {
         private readonly IReflectionUtil reflectionUtil;
         private IPropertyNamer propertyNamer;
-        private object[] constructorArgs;
 
         private readonly List<MulticastDelegate> functions = new List<MulticastDelegate>();
 
         private readonly List<MultiFunction> multiFunctions = new List<MultiFunction>();
-        private Expression<Func<int, T>> _constructorExpression = null;
+        private Func<T> _factoryFunction;
+        private Func<int, T> _indexedFactoryFunction;
         public BuilderSettings BuilderSettings { get; set; }
         public ObjectBuilder(IReflectionUtil reflectionUtil, BuilderSettings builderSettings)
         {
@@ -25,34 +25,30 @@ namespace FizzWare.NBuilder.Implementation
             this.reflectionUtil = reflectionUtil;
         }
 
-        public IObjectBuilder<T> WithConstructor(Expression<Func<T>> constructor)
+        public IObjectBuilder<T> WithFactory(Func<T> factory)
         {
-            if (constructor.Body.NodeType != ExpressionType.New)
-            {
-                throw new ArgumentException("WithConstructor expects a constructor expression");
-            }
-
-            var constructorArguments =
-                (from argument in ((NewExpression)constructor.Body).Arguments
-                select Expression.Lambda(argument).Compile().DynamicInvoke()).ToArray();
-
-            constructorArgs = constructorArguments;
+            this._factoryFunction = factory;
             return this;
         }
 
-        public IObjectBuilder<T> WithConstructor(Expression<Func<int, T>> constructor)
+        [Obsolete("Use WithFactory instead.")]
+        public IObjectBuilder<T> WithConstructor(Func<T> constructor)
         {
-            if (constructor.Body.NodeType != ExpressionType.New)
-            {
-                throw new ArgumentException("WithConstructor expects a constructor expression");
-            }
-
-            this._constructorExpression = constructor;
-
-            return this;
+            return this.WithFactory(constructor);
         }
 
-      
+        public IObjectBuilder<T> WithFactory(Func<int, T> constructor)
+        {
+            this._indexedFactoryFunction = constructor;
+            return this;
+        }
+    
+        [Obsolete("Use WithFactory instead.")]
+        public IObjectBuilder<T> WithConstructor(Func<int, T> constructor)
+        {
+            return this.WithFactory(constructor);
+        }
+
         public IObjectBuilder<T> With<TFunc>(Func<T, TFunc> func)
         {
             functions.Add(func);
@@ -105,10 +101,9 @@ namespace FizzWare.NBuilder.Implementation
 
         public void CallFunctions(T obj, int objIndex)
         {
-            for (int i = 0; i < functions.Count; i++)
+            foreach (var del in functions)
             {
-                var del = functions[i];
-                int parameterCount = del.GetMethodInfo().GetParameters().Count();
+                var parameterCount = del.GetMethodInfo().GetParameters().Count();
                 switch (parameterCount)
                 {
                     case 1:
@@ -120,15 +115,16 @@ namespace FizzWare.NBuilder.Implementation
                 }
             }
 
-            for (int i = 0; i < multiFunctions.Count; i++)
+
+            foreach (var t in multiFunctions)
             {
-                multiFunctions[i].Call(obj);
+                t.Call(obj);
             }
         }
 
         public T Construct(int index)
         {
-            bool requiresArgs = reflectionUtil.RequiresConstructorArgs(typeof(T));
+            var requiresArgs = reflectionUtil.RequiresConstructorArgs(typeof(T));
 
             if (typeof(T).IsInterface())
                 throw new TypeCreationException("Cannot build an interface");
@@ -136,28 +132,37 @@ namespace FizzWare.NBuilder.Implementation
             if (typeof(T).IsAbstract())
                 throw new TypeCreationException("Cannot build an abstract class");
 
-            T obj;
-
-            if (_constructorExpression != null)
+            if (_factoryFunction != null)
             {
-                obj = _constructorExpression.Compile().Invoke(index);
-            }
-            else if (requiresArgs && constructorArgs != null)
-            {
-                obj = reflectionUtil.CreateInstanceOf<T>(constructorArgs);
-            }
-            else if (constructorArgs != null)
-            {
-                obj = reflectionUtil.CreateInstanceOf<T>(constructorArgs);
-            }
-            else
-            {
-                obj = reflectionUtil.CreateInstanceOf<T>();
+                return _factoryFunction.Invoke();
             }
 
-            return obj;
+            if (_indexedFactoryFunction != null)
+            {
+                return _indexedFactoryFunction.Invoke(index);
+            }
+
+            //if (_indexedConstructorExpression != null)
+            //{
+            //    return _indexedConstructorExpression.Compile().Invoke(index);
+            //}
+
+            //if (_constructorExpression != null)
+            //{
+            //    return _constructorExpression.Compile().Invoke();
+            //}
+
+            //if (requiresArgs && constructorArgs != null)
+            //{
+            //    return reflectionUtil.CreateInstanceOf<T>(constructorArgs);
+            //}
+            //if (constructorArgs != null)
+            //{
+            //    return reflectionUtil.CreateInstanceOf<T>(constructorArgs);
+            //}
+
+            return reflectionUtil.CreateInstanceOf<T>();
         }
-
         public T Name(T obj)
         {
             if (!BuilderSettings.AutoNameProperties)

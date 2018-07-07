@@ -73,14 +73,8 @@ namespace FizzWare.NBuilder
 
             int integer = rnd.Next(iMin, iMax);
             int fraction = rnd.Next(0, 4000);
-
-
-            //CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator
-            
          
-
             var separator = NumberFormatInfo.CurrentInfo.CurrencyDecimalSeparator;
-
 
             return (decimal)Convert.ToDecimal(string.Format("{0}{1}{2}", integer, separator, fraction));
         }
@@ -100,14 +94,14 @@ namespace FizzWare.NBuilder
             return (sbyte)Next((int)min, (int)max);
         }
 
-        public DateTime Next(DateTime min, DateTime max)
+        public DateTime Next(DateTime min, DateTime max, DateTimeKind kind = DateTimeKind.Unspecified)
         {
             long minTicks = min.Ticks;
             long maxTicks = max.Ticks;
             double rn = (Convert.ToDouble(maxTicks)
                - Convert.ToDouble(minTicks)) * rnd.NextDouble()
                + Convert.ToDouble(minTicks);
-            return new DateTime(Convert.ToInt64(rn));
+            return new DateTime(Convert.ToInt64(rn), kind);
 
         }
 

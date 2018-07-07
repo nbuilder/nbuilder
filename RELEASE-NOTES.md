@@ -1,3 +1,39 @@
+# 6.0.0 - 2018-07-07
+
+* **Breaking Change:** `WithConstructor` 
+  * No longer takes an `Expression<Func<T>>`. 
+  * Takes a `Func<T>`.
+  * Marked `[Obsolete]` in favor of `WithFactory`
+  * This change was to address an [issue](https://github.com/nbuilder/nbuilder/issues/42) in which the constructor expression was not being reevaluated for each item in a list. 
+* **Feature:** [@AdemCatamak](https://github.com/AdemCatamak) Added support for `IndexOf` as part of the `ListBuilder` implementation.
+```csharp
+var products = new Builder()
+    .CreateListOfSize<Product>(10)
+    .IndexOf(0, 2, 5)
+    .With(x => x.Title = "A special title")
+    .Build();
+```
+* **Feature:** [@PureKrome](https://github.com/PureKrome) Added support for `DateTimeKind` to `RandomGenerator`
+```csharp
+var result = randomGenerator.Next(DateTime.MinValue, DateTime.MaxValue, DateTimeKind.Utc);
+```
+* **Feature:** Added `DisablePropertyNamingFor(PropertyInfo)` overload to `BuilderSettings`.
+* **Feature:** Added `TheRest` as an extension to the `ListBuilder`.
+```csharp
+var results = new Builder()
+        .CreateListOfSize<SimpleClass>(10)
+        .TheFirst(2)
+        .Do(row => row.String1 = "One")
+        .TheRest()
+        .Do(row => row.String1 = "Ten")
+        .Build()
+    ;
+```
+
+* **Bug:** Last item in enum is never generated when generating property values randomly.
+* **Bug:** Lost strong name when porting to .NET Standard.
+* **Bug:** Non-deterministic behavior when calling `TheLast` multiple times for the same range.
+
 # 5.1.0 - 2018-05-15
 
 * Added support for disabling property naming via an interface:

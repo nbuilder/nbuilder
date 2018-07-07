@@ -116,7 +116,7 @@ namespace FizzWare.NBuilder.PropertyNaming
         protected abstract ulong GetUInt64(MemberInfo memberInfo);
         protected abstract sbyte GetSByte(MemberInfo memberInfo);
         protected abstract byte GetByte(MemberInfo memberInfo);
-        protected abstract DateTime GetDateTime(MemberInfo memberInfo);
+        protected abstract DateTime GetDateTime(MemberInfo memberInfo, DateTimeKind kind = DateTimeKind.Unspecified);
         protected abstract string GetString(MemberInfo memberInfo);
         protected abstract bool GetBoolean(MemberInfo memberInfo);
         protected abstract char GetChar(MemberInfo memberInfo);

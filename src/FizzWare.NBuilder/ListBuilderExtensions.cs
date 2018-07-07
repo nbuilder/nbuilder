@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using FizzWare.NBuilder.Implementation;
 
 namespace FizzWare.NBuilder
@@ -29,6 +30,20 @@ namespace FizzWare.NBuilder
 
             int start = listBuilderImpl.Capacity - amount;
             var declaration = new RangeDeclaration<T>(listBuilderImpl, listBuilderImpl.CreateObjectBuilder(), start, listBuilderImpl.Capacity - 1);
+            return (IOperable<T>)listBuilderImpl.AddDeclaration(declaration);
+        }
+
+        public static IOperable<T> IndexOf<T>(this IListBuilder<T> listBuilder, params int[] indexes)
+        {
+            Guard.Against(indexes == null, new ArgumentNullException(nameof(indexes)));
+            Guard.Against(indexes.Length < 1, new ArgumentException(nameof(indexes), "At least one item should be included"));
+
+            var listBuilderImpl = GetListBuilderImpl<T>(listBuilder);
+
+            Guard.Against(indexes.Any(i => i < 0), new ArgumentOutOfRangeException(nameof(indexes), "Index must be 0 or greater"));
+            Guard.Against(indexes.Any(i => i > listBuilderImpl.Capacity - 1), new ArgumentOutOfRangeException(nameof(indexes), $"Index must be less than the size of the list ({listBuilderImpl.Capacity}) that is being generated"));
+
+            var declaration = new IndexedElementDeclaration<T>(listBuilderImpl, listBuilderImpl.CreateObjectBuilder(), indexes);
             return (IOperable<T>)listBuilderImpl.AddDeclaration(declaration);
         }
 
@@ -87,6 +102,26 @@ namespace FizzWare.NBuilder
 
             var andTheNextDeclaration = new RangeDeclaration<T>(listBuilderImpl, listBuilderImpl.CreateObjectBuilder(),
                                                                 start, end);
+
+            listBuilderImpl.AddDeclaration(andTheNextDeclaration);
+            return andTheNextDeclaration;
+        }
+
+
+        public static IOperable<T> TheRest<T>(this IListBuilder<T> listBuilder)
+        {
+            var listBuilderImpl = GetListBuilderImpl<T>(listBuilder);
+            var lastDeclaration = listBuilderImpl.Declarations.GetLastItem();
+            var rangeDeclaration = lastDeclaration as RangeDeclaration<T>;
+
+            if (rangeDeclaration == null)
+                throw new BuilderException("Before using TheNext you must have just used a RangeDeclaration - i.e. (TheFirst or Section)");
+
+            int start = rangeDeclaration.End + 1;
+            int end = listBuilderImpl.Length - start;
+
+            var andTheNextDeclaration = new RangeDeclaration<T>(listBuilderImpl, listBuilderImpl.CreateObjectBuilder(),
+                start, listBuilderImpl.Length-1);
 
             listBuilderImpl.AddDeclaration(andTheNextDeclaration);
             return andTheNextDeclaration;

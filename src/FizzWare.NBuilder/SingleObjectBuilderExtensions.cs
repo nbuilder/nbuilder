@@ -11,16 +11,34 @@ namespace FizzWare.NBuilder
         /// <summary>
         /// Sets the value of the constructor to be used to build the type
         /// </summary>
-        public static ISingleObjectBuilder<T> WithConstructor<T>(this ISingleObjectBuilder<T> objectBuilder, Expression<Func<T>> constructor)
+        [Obsolete("Use WithFactory instead.")]
+        public static ISingleObjectBuilder<T> WithConstructor<T>(this ISingleObjectBuilder<T> objectBuilder, Func<T> constructor)
         {
-            ((IObjectBuilder<T>)objectBuilder).WithConstructor(constructor);
+            return objectBuilder.WithFactory(constructor);
+        }
+
+        /// <summary>
+        /// Sets the value of the constructor to be used to build the type
+        /// </summary>
+        [Obsolete("Use WithFactory instead.")]
+        public static ISingleObjectBuilder<T> WithFactory<T>(this ISingleObjectBuilder<T> objectBuilder, Func<T, int> factory)
+        {
+            return objectBuilder.WithFactory(factory);
+        }
+
+        /// <summary>
+        /// Sets the value of the constructor to be used to build the type
+        /// </summary>
+        public static ISingleObjectBuilder<T> WithFactory<T>(this ISingleObjectBuilder<T> objectBuilder, Func<T> factory)
+        {
+            ((IObjectBuilder<T>)objectBuilder).WithFactory(factory);
             return objectBuilder;
         }
 
         /// <summary>
         /// Sets the value of the constructor to be used to build the type
         /// </summary>
-        public static ISingleObjectBuilder<T> WithConstructor<T>(this ISingleObjectBuilder<T> objectBuilder, Expression<Func<T, int>> constructor)
+        public static ISingleObjectBuilder<T> WithConstructor<T>(this ISingleObjectBuilder<T> objectBuilder, Func<T, int> constructor)
         {
             ((IObjectBuilder<T>)objectBuilder).WithConstructor(constructor);
             return objectBuilder;

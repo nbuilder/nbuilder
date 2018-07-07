@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using FizzWare.NBuilder.Implementation;
 using FizzWare.NBuilder.PropertyNaming;
 using FizzWare.NBuilder.Tests.TestClasses;
@@ -93,6 +94,130 @@ namespace FizzWare.NBuilder.Tests.Unit
             // a default GlobalDeclaration (All). Therefore we expect CreateInstanceOf to be called 40 times
             reflectionUtil.CreateInstanceOf<MyClass>().Returns(myClass);
             builder.Construct();
+        }
+
+        private class Faker
+        {
+            private readonly string[] _names;
+            private int indexer = 0;
+
+            public string Next()
+            {
+                if (indexer > _names.Length - 1)
+                    indexer = 0;
+
+                return _names[indexer++];
+            }
+
+            public Faker(params string[] names)
+            {
+                _names = names;
+            }
+        }
+
+        [Fact]
+        public void WithFactory_ShouldCreateMultipleInstances()
+        {
+
+            var faker = new Faker("value1", "value2", "value3");
+            var results = new Builder()
+                    .CreateListOfSize<SimpleClass>(2)
+                    .All()
+                    .WithFactory(() => new SimpleClass(faker.Next()))
+                    .Build()
+                ;
+
+            results[0].ShouldNotBe(results[1]);
+        }
+
+
+        [Fact]
+        public void WithFactory_InstancesShouldReevaluateExpressionEachTime()
+        {
+
+            var faker = new Faker("value1", "value2", "value3");
+            var results = new Builder()
+                    .CreateListOfSize<SimpleClass>(2)
+                    .All()
+                    .WithFactory(() => new SimpleClass(faker.Next()))
+                    .Build()
+                ;
+
+            results[0].String1.ShouldNotBe(results[1].String1);
+        }
+
+        [Fact]
+        public void TheRest_OperatesOnRemainingItems()
+        {
+            var results = new Builder()
+                    .CreateListOfSize<SimpleClass>(10)
+                    .TheFirst(2)
+                    .Do(row => row.String1 = "One")
+                    .TheRest()
+                    .Do(row => row.String1 = "Ten")
+                    .Build()
+                ;
+
+            results.Take(2).ToList().ForEach(e => e.String1.ShouldBe("One"));
+            results.Skip(2).ToList().ForEach(e => e.String1.ShouldBe("Ten"));
+        }
+
+        [Fact]
+        public void TheLast_WhenCalledMultipleTimes()
+        {
+            var listA = Builder<SimpleClass>.CreateListOfSize(3)
+                       .TheLast(1).With(x => x.PropA = 110)
+                       .TheLast(1).With(x => x.PropA = 100)
+                       .TheLast(1).With(x => x.PropA = 90)
+                       .TheLast(1).With(x => x.PropA = 80)
+                       .TheLast(1).With(x => x.PropA = 70)
+                       .TheLast(1).With(x => x.PropA = 60)
+                       .TheLast(1).With(x => x.PropA = 50)
+                       .Build();
+
+            var listB = Builder<SimpleClass>.CreateListOfSize(3)
+                .TheLast(1).With(x => x.PropA = 100)
+                .TheLast(1).With(x => x.PropA = 90)
+                .TheLast(1).With(x => x.PropA = 80)
+                .TheLast(1).With(x => x.PropA = 70)
+                .TheLast(1).With(x => x.PropA = 60)
+                .TheLast(1).With(x => x.PropA = 50)
+                .Build();
+
+            var listC = Builder<SimpleClass>.CreateListOfSize(3)
+                .TheLast(1).With(x => x.PropA = 90)
+                .TheLast(1).With(x => x.PropA = 80)
+                .TheLast(1).With(x => x.PropA = 70)
+                .TheLast(1).With(x => x.PropA = 60)
+                .TheLast(1).With(x => x.PropA = 50)
+                .Build();
+
+            var listD = Builder<SimpleClass>.CreateListOfSize(3)
+                .TheLast(1).With(x => x.PropA = 80)
+                .TheLast(1).With(x => x.PropA = 70)
+                .TheLast(1).With(x => x.PropA = 60)
+                .TheLast(1).With(x => x.PropA = 50)
+                .Build();
+
+            var listE = Builder<SimpleClass>.CreateListOfSize(3)
+                .TheLast(1).With(x => x.PropA = 70)
+                .TheLast(1).With(x => x.PropA = 60)
+                .TheLast(1).With(x => x.PropA = 50)
+                .Build();
+
+            var listF = Builder<SimpleClass>.CreateListOfSize(3)
+                .TheLast(1).With(x => x.PropA = 60)
+                .TheLast(1).With(x => x.PropA = 50)
+                .Build();
+
+            var listG = Builder<SimpleClass>.CreateListOfSize(3)
+                .TheLast(1).With(x => x.PropA = 50)
+                .Build();
+
+            foreach (var list in new[] { listA, listB, listC, listD, listE, listF, listG })
+            {
+                list[2].PropA.ShouldBe(50);
+            }
         }
     }
 }

@@ -20,7 +20,7 @@ namespace FizzWare.NBuilder.Tests.Integration
                     .CreateListOfSize< MyClassWithConstructor>(10)
                     .All()
                     .Do((row, index) => row.Int = index*2)
-                    .WithConstructor(() => new MyClassWithConstructor(1, 2f))
+                    .WithFactory(() => new MyClassWithConstructor(1, 2f))
                     .Build();
 
             for (int i = 0; i < 10; i++)
@@ -40,7 +40,7 @@ namespace FizzWare.NBuilder.Tests.Integration
                     .All()
                     .Do((row, index) => row.Int = index * 2)
                     .And((row, index) => row.Int = index * 3)
-                    .WithConstructor(() => new MyClassWithConstructor(1, 2f))
+                    .WithFactory(() => new MyClassWithConstructor(1, 2f))
                     .Build();
 
             for (int i = 0; i < 10; i++)
@@ -59,7 +59,7 @@ namespace FizzWare.NBuilder.Tests.Integration
                 .CreateListOfSize< MyClassWithConstructor>(10)
                 .All()
                 .Do((row, index) => row.Int = index * 2)
-                .WithConstructor(index => new MyClassWithConstructor(index, 2f))
+                .WithFactory(index => new MyClassWithConstructor(index, 2f))
                 .Build();
 
             for (int i = 0; i < 10; i++)

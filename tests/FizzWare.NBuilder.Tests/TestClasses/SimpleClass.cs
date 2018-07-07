@@ -8,5 +8,15 @@ namespace FizzWare.NBuilder.Tests.TestClasses
 
         public string String1 { get; set; }
         public string String2 { get; set; }
+
+        public SimpleClass()
+        {
+            
+        }
+
+        public SimpleClass(string string1)
+        {
+            this.String1 = string1;
+        }
     }
 }

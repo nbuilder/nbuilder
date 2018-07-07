@@ -6,12 +6,13 @@ namespace FizzWare.NBuilder.Implementation
 {
     public class DeclarationQueue<T> : IDeclarationQueue<T>
     {
-        private readonly int listCapacity;
 
         public DeclarationQueue(int listCapacity)
         {
-            this.listCapacity = listCapacity;
+            this.ListCapacity = listCapacity;
         }
+
+        public int ListCapacity { get; private set; }
 
         private readonly List<IDeclaration<T>> queuedDeclarations = new List<IDeclaration<T>>();
 
@@ -28,7 +29,7 @@ namespace FizzWare.NBuilder.Implementation
         
         public void Enqueue(IDeclaration<T> item)
         {
-            if (item.End > listCapacity)
+            if (item.End > ListCapacity)
                 throw new BuilderException("A declaration was added which had an end index greater than the capacity of the list being generated");
 
             if (item.Start < 0)
@@ -56,7 +57,7 @@ namespace FizzWare.NBuilder.Implementation
 
         public int GetDistinctAffectedItemCount()
         {
-            var distinctAffectedItemCalculator = new DistinctAffectedItemCalculator(listCapacity);
+            var distinctAffectedItemCalculator = new DistinctAffectedItemCalculator(ListCapacity);
 
             foreach (IDeclaration<T> declaration in this.queuedDeclarations)
             {

@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
+using FizzWare.NBuilder.Generators;
 using FizzWare.NBuilder.Tests.TestClasses;
 
 using Shouldly;
@@ -174,10 +177,17 @@ namespace FizzWare.NBuilder.Tests.Unit
             value.ShouldNotBe(Guid.Empty);
         }
 
-        [Fact]
-        public void ShouldBeAbleToGenerateDateTimeUsingNext()
+        [Theory]
+        [InlineData(DateTimeKind.Local)]
+        [InlineData(DateTimeKind.Unspecified)]
+        [InlineData(DateTimeKind.Utc)]
+        public void ShouldBeAbleToGenerateDateTimeUsingNext(DateTimeKind kind)
         {
-            randomGenerator.Next(DateTime.MinValue, DateTime.MaxValue);
+            // Arrange & Act.
+            var result = randomGenerator.Next(DateTime.MinValue, DateTime.MaxValue, kind);
+        
+            // Assert.
+            result.Kind.ShouldBe(kind);
         }
 
         [Fact]
@@ -277,25 +287,49 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
 
         [Fact]
-        public void should_be_able_to_generate_enum_using_type_param()
+        public void Should_be_able_to_generate_enum_using_type_param()
         {
             randomGenerator.Enumeration<MyEnum>();
         }
 
         [Fact]
-        public void should_be_able_to_generate_enum()
+        public void Should_be_able_to_generate_enum()
         {
             randomGenerator.Enumeration(typeof(MyEnum));
         }
 
         [Fact]
-        public void should_be_able_to_generate_a_phrase()
+        public void Should_be_able_to_generate_a_phrase()
         {
             var phrase = randomGenerator.Phrase(50);
 
             phrase.Length.ShouldBeLessThanOrEqualTo(50);
         }
 
+
+        public enum StatusType
+        {
+            Unknown,
+            Red,
+            Green,
+            Blue,
+            Pink
+        }
+
+        [Fact]
+        public void GenerateRandomEnum_ShouldIncludeAllEnumValues()
+        {
+            var expected = Enum.GetValues(typeof(StatusType)).Cast<StatusType>().ToList();
+            var actual = new List<StatusType>();
+
+            for (var i = 0; i < 100000; i++)
+            {
+                var statusType = GetRandom.Enumeration<StatusType>();
+                actual.Add(statusType);
+            }
+
+            expected.ShouldAllBe(e => actual.Contains(e));
+        }
 
         [Theory]
         [InlineData(4, 5)]

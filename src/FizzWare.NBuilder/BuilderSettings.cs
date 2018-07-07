@@ -76,24 +76,25 @@ namespace FizzWare.NBuilder
             return propertyNamers[typeof (T)];
         }
 
-        public  void DisablePropertyNamingFor<T, TFunc>(Expression<Func<T, TFunc>> func)
+        public void DisablePropertyNamingFor<T, TFunc>(Expression<Func<T, TFunc>> func)
         {
-            HasDisabledAutoNameProperties = true;
-            disabledAutoNameProperties.Add(GetProperty(func));
+            var propertyInfo = GetProperty(func);
+            DisablePropertyNamingFor(propertyInfo);
         }
 
-        public  bool ShouldIgnoreProperty(PropertyInfo info)
+        public void DisablePropertyNamingFor(PropertyInfo propertyInfo)
         {
-            if (disabledAutoNameProperties.Any(x => {
+            HasDisabledAutoNameProperties = true;
+            disabledAutoNameProperties.Add(propertyInfo);
+        }
+
+        public bool ShouldIgnoreProperty(PropertyInfo info)
+        {
+            return disabledAutoNameProperties.Any(x => {
                 var typeInfo = x.DeclaringType.GetTypeInfo(); 
                 return (typeInfo.IsInterface ? typeInfo.IsAssignableFrom(info.DeclaringType) : x.DeclaringType == info.DeclaringType) &&
-                x.Name == info.Name;
-                }))
-            {
-                return true;
-            }
-
-            return false;
+                       x.Name == info.Name;
+            });
         }
 
         private  PropertyInfo GetProperty<TModel, T>(Expression<Func<TModel, T>> expression)

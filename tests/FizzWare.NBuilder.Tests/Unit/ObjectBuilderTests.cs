@@ -5,6 +5,7 @@ using FizzWare.NBuilder.PropertyNaming;
 using FizzWare.NBuilder.Tests.TestClasses;
 
 using NSubstitute;
+using NSubstitute.Routing.Handlers;
 using Shouldly;
 using Xunit;
 
@@ -63,6 +64,20 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
 
         [Fact]
+        public void ShouldBeAbleToReplaceAnObjectUsingWithFactory()
+        {
+            var myClass = new SimpleClass();
+
+            var results = new Builder().CreateListOfSize<SimpleClass>(3)
+                    .All()
+                    .WithFactory(() => myClass)
+                    .Build()
+                ;
+
+            results.ShouldAllBe(e => e == myClass);
+        }
+
+        [Fact]
         public void ShouldBeAbleToConstructAnObjectWithNullableConstructorArgs_using_expression_syntax()
         {
             const string arg1 = null;
@@ -76,7 +91,7 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             {
                 myClassWithConstructorBuilder
-                        .WithConstructor(() => new MyClassWithConstructor(arg1))
+                        .WithFactory(() => new MyClassWithConstructor(arg1))
                         .Construct(Arg.Any<int>());
             }
         }
@@ -96,20 +111,8 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             {
                 myClassWithConstructorBuilder
-                        .WithConstructor(() => new MyClassWithConstructor(arg1, arg2))
+                        .WithFactory(() => new MyClassWithConstructor(arg1, arg2))
                         .Construct(1);
-            }
-        }
-
-        [Fact]
-        public void WithConstructor_NotANewExpressionSupplied_Throws()
-        {
-
-
-
-            {
-                var myClass = new MyClassWithConstructor(1, 2);
-                Should.Throw<ArgumentException>(() => myClassWithConstructorBuilder.WithConstructor(() => myClass));
             }
         }
 
@@ -239,6 +242,23 @@ namespace FizzWare.NBuilder.Tests.Unit
                 builder2.DoMultiple((x, y) => x.Add(y), list);
                 builder2.CallFunctions(myClass);
             }
+        }
+
+        public class MyTestClassWithPrivateMembers
+        {
+            private string Fredbob { get; set; }
+
+            public string GetFredbob()
+            {
+                return Fredbob;
+            }
+        }
+
+        [Fact]
+        public void DoesNotSetValueOnPrivateMembers()
+        {
+            var result = new Builder().CreateNew<MyTestClassWithPrivateMembers>().Build();
+            result.GetFredbob().ShouldBe(null);
         }
     }
 }

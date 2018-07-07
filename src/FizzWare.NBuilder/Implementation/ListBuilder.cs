@@ -7,29 +7,21 @@ namespace FizzWare.NBuilder.Implementation
 {
     public class ListBuilder<T> : IListBuilderImpl<T>
     {
-        private readonly int size;
         private readonly IPropertyNamer propertyNamer;
         private readonly IReflectionUtil reflectionUtil;
         private readonly T[] mainList;
         private readonly DeclarationQueue<T> declarations;
         public BuilderSettings BuilderSettings { get; set; }
 
-        public virtual int Capacity
-        {
-            get
-            {
-                return size;
-            }
-        }
+        public int Length => declarations.ListCapacity;
 
-        public IDeclarationQueue<T> Declarations
-        {
-            get { return declarations; }
-        }
+        public virtual int Capacity { get; }
+
+        public IDeclarationQueue<T> Declarations => declarations;
 
         public ListBuilder(int size, IPropertyNamer propertyNamer, IReflectionUtil reflectionUtil, BuilderSettings builderSettings)
         {
-            this.size = size;
+            this.Capacity = size;
             this.propertyNamer = propertyNamer;
             this.reflectionUtil = reflectionUtil;
             BuilderSettings = builderSettings;
@@ -45,8 +37,6 @@ namespace FizzWare.NBuilder.Implementation
         {
             return new ObjectBuilder<T>(reflectionUtil,this.BuilderSettings);
         }
-
-   
 
         public IOperable<T> All()
         {
