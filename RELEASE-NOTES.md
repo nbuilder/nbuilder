@@ -1,4 +1,4 @@
-# 6.0.0 - ???
+# 6.0.0 - 2018-07-07
 
 * **Breaking Change:** `WithConstructor` 
   * No longer takes an `Expression<Func<T>>`. 
