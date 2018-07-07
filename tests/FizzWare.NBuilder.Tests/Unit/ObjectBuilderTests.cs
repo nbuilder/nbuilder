@@ -5,6 +5,7 @@ using FizzWare.NBuilder.PropertyNaming;
 using FizzWare.NBuilder.Tests.TestClasses;
 
 using NSubstitute;
+using NSubstitute.Routing.Handlers;
 using Shouldly;
 using Xunit;
 
@@ -241,6 +242,23 @@ namespace FizzWare.NBuilder.Tests.Unit
                 builder2.DoMultiple((x, y) => x.Add(y), list);
                 builder2.CallFunctions(myClass);
             }
+        }
+
+        public class MyTestClassWithPrivateMembers
+        {
+            private string Fredbob { get; set; }
+
+            public string GetFredbob()
+            {
+                return Fredbob;
+            }
+        }
+
+        [Fact]
+        public void DoesNotSetValueOnPrivateMembers()
+        {
+            var result = new Builder().CreateNew<MyTestClassWithPrivateMembers>().Build();
+            result.GetFredbob().ShouldBe(null);
         }
     }
 }
