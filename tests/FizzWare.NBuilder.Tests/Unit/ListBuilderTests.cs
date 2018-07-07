@@ -161,5 +161,63 @@ namespace FizzWare.NBuilder.Tests.Unit
             results.Take(2).ToList().ForEach(e => e.String1.ShouldBe("One"));
             results.Skip(2).ToList().ForEach(e => e.String1.ShouldBe("Ten"));
         }
+
+        [Fact]
+        public void TheLast_WhenCalledMultipleTimes()
+        {
+            var listA = Builder<SimpleClass>.CreateListOfSize(3)
+                       .TheLast(1).With(x => x.PropA = 110)
+                       .TheLast(1).With(x => x.PropA = 100)
+                       .TheLast(1).With(x => x.PropA = 90)
+                       .TheLast(1).With(x => x.PropA = 80)
+                       .TheLast(1).With(x => x.PropA = 70)
+                       .TheLast(1).With(x => x.PropA = 60)
+                       .TheLast(1).With(x => x.PropA = 50)
+                       .Build();
+
+            var listB = Builder<SimpleClass>.CreateListOfSize(3)
+                .TheLast(1).With(x => x.PropA = 100)
+                .TheLast(1).With(x => x.PropA = 90)
+                .TheLast(1).With(x => x.PropA = 80)
+                .TheLast(1).With(x => x.PropA = 70)
+                .TheLast(1).With(x => x.PropA = 60)
+                .TheLast(1).With(x => x.PropA = 50)
+                .Build();
+
+            var listC = Builder<SimpleClass>.CreateListOfSize(3)
+                .TheLast(1).With(x => x.PropA = 90)
+                .TheLast(1).With(x => x.PropA = 80)
+                .TheLast(1).With(x => x.PropA = 70)
+                .TheLast(1).With(x => x.PropA = 60)
+                .TheLast(1).With(x => x.PropA = 50)
+                .Build();
+
+            var listD = Builder<SimpleClass>.CreateListOfSize(3)
+                .TheLast(1).With(x => x.PropA = 80)
+                .TheLast(1).With(x => x.PropA = 70)
+                .TheLast(1).With(x => x.PropA = 60)
+                .TheLast(1).With(x => x.PropA = 50)
+                .Build();
+
+            var listE = Builder<SimpleClass>.CreateListOfSize(3)
+                .TheLast(1).With(x => x.PropA = 70)
+                .TheLast(1).With(x => x.PropA = 60)
+                .TheLast(1).With(x => x.PropA = 50)
+                .Build();
+
+            var listF = Builder<SimpleClass>.CreateListOfSize(3)
+                .TheLast(1).With(x => x.PropA = 60)
+                .TheLast(1).With(x => x.PropA = 50)
+                .Build();
+
+            var listG = Builder<SimpleClass>.CreateListOfSize(3)
+                .TheLast(1).With(x => x.PropA = 50)
+                .Build();
+
+            foreach (var list in new[] { listA, listB, listC, listD, listE, listF, listG })
+            {
+                list[2].PropA.ShouldBe(50);
+            }
+        }
     }
 }

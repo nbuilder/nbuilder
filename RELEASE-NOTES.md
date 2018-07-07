@@ -32,7 +32,7 @@ var results = new Builder()
 
 * **Bug:** Last item in enum is never generated when generating property values randomly.
 * **Bug:** Lost strong name when porting to .NET Standard.
-
+* **Bug:** Non-deterministic behavior when calling `TheLast` multiple times for the same range.
 
 # 5.1.0 - 2018-05-15
 
