@@ -323,7 +323,7 @@ namespace FizzWare.NBuilder.Tests.Integration
         }
 
         [Fact]
-        public void CreatingAListOfATypeWithAConstructor()
+        public void CreatingAListOfATypeWithAFactory()
         {
             // ctor: BasketItem(ShoppingBasket basket, Product product, int quantity)
 
@@ -335,7 +335,7 @@ namespace FizzWare.NBuilder.Tests.Integration
             var basketItems =
                builder.CreateListOfSize<BasketItem>(10)
                     .All()
-                        .WithConstructor(() => new BasketItem(basket, product, quantity)) // passes these arguments to the constructor
+                        .WithFactory(() => new BasketItem(basket, product, quantity)) // passes these arguments to the constructor
                     .Build();
 
             foreach (var basketItem in basketItems)
@@ -360,9 +360,9 @@ namespace FizzWare.NBuilder.Tests.Integration
             var items = new Builder()
                 .CreateListOfSize<BasketItem>(4)
                 .TheFirst(2)
-                    .WithConstructor(() => new BasketItem(basket1, product1, quantity1))
+                    .WithFactory(() => new BasketItem(basket1, product1, quantity1))
                 .TheNext(2)
-                    .WithConstructor(() => new BasketItem(basket2, product2, quantity2))
+                    .WithFactory(() => new BasketItem(basket2, product2, quantity2))
                 .Build();
 
             items[0].Basket.ShouldBe(basket1);
@@ -667,7 +667,7 @@ namespace FizzWare.NBuilder.Tests.Integration
             var locations = new Builder()
                 .CreateListOfSize<WarehouseLocation>(10)
                 .Section(5, 6)
-                    .WithConstructor(() => new WarehouseLocation('A', 1, 2))
+                    .WithFactory(() => new WarehouseLocation('A', 1, 2))
                 .Build()
                 ;
 

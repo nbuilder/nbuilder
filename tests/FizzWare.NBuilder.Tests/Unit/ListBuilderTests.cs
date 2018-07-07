@@ -94,5 +94,55 @@ namespace FizzWare.NBuilder.Tests.Unit
             reflectionUtil.CreateInstanceOf<MyClass>().Returns(myClass);
             builder.Construct();
         }
+
+        private class Faker
+        {
+            private readonly string[] _names;
+            private int indexer = 0;
+
+            public string Next()
+            {
+                if (indexer > _names.Length - 1)
+                    indexer = 0;
+
+                return _names[indexer++];
+            }
+
+            public Faker(params string[] names)
+            {
+                _names = names;
+            }
+        }
+
+        [Fact]
+        public void WithConstructor_ShouldCreateMultipleInstances()
+        {
+
+            var faker = new Faker("value1", "value2", "value3");
+            var results = new Builder()
+                    .CreateListOfSize<SimpleClass>(2)
+                    .All()
+                    .WithFactory(() => new SimpleClass(faker.Next()))
+                    .Build()
+                ;
+
+            results[0].ShouldNotBe(results[1]);
+        }
+
+
+        [Fact]
+        public void WithConstructor_InstancesShouldReevaluateExpressionEachTime()
+        {
+
+            var faker = new Faker("value1", "value2", "value3");
+            var results = new Builder()
+                    .CreateListOfSize<SimpleClass>(2)
+                    .All()
+                    .WithFactory(() => new SimpleClass(faker.Next()))
+                    .Build()
+                ;
+
+            results[0].String1.ShouldNotBe(results[1].String1);
+        }
     }
 }

@@ -21,7 +21,7 @@ namespace FizzWare.NBuilder.Tests.Integration
                new Builder(builderSetup)
                     .CreateListOfSize< MyClassWithConstructor>(10)
                     .All()
-                        .WithConstructor(() => new MyClassWithConstructor(theString, theDecimal))
+                        .WithFactory(() => new MyClassWithConstructor(theString, theDecimal))
                     .Build();
 
             list.Count.ShouldBe(10);
@@ -36,7 +36,7 @@ namespace FizzWare.NBuilder.Tests.Integration
                new Builder(builderSetup)
                     .CreateListOfSize< MyClassWithConstructor>(10)
                     .All()
-                        .WithConstructor(() => new MyClassWithConstructor(1, 2f))
+                        .WithFactory(() => new MyClassWithConstructor(1, 2f))
                     .Build();
 
             list.Count.ShouldBe(10);
@@ -50,7 +50,7 @@ namespace FizzWare.NBuilder.Tests.Integration
                new Builder(builderSetup)
                     .CreateListOfSize< MyClassWithConstructor>(1)
                     .TheFirst(1)
-                        .WithConstructor(() => new MyClassWithConstructor(1, 2f))
+                        .WithFactory(() => new MyClassWithConstructor(1, 2f))
                     .Build();
 
             list.Count.ShouldBe(1);

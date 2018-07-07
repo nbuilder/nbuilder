@@ -78,10 +78,24 @@ namespace FizzWare.NBuilder
         /// 
         /// WithConstructor( () => new MyType(arg1, arg2) )
         /// </summary>
-        public static IOperable<T> WithConstructor<T>(this IOperable<T> operable, Expression<Func<T>> constructor)
+        [Obsolete("Use WithFactory instead.")]
+        public static IOperable<T> WithConstructor<T>(this IOperable<T> operable, Func<T> constructor)
+        {
+            return operable.WithFactory(constructor);
+            //var declaration = GetDeclaration(operable);
+            //declaration.ObjectBuilder.WithConstructor(constructor);
+            //return (IOperable<T>)declaration;
+        }
+
+        /// <summary>
+        /// Specify the constructor for the type like this:
+        /// 
+        /// WithFactory( () => new MyType(arg1, arg2) )
+        /// </summary>
+        public static IOperable<T> WithFactory<T>(this IOperable<T> operable, Func<T> factory)
         {
             var declaration = GetDeclaration(operable);
-            declaration.ObjectBuilder.WithConstructor(constructor);
+            declaration.ObjectBuilder.WithFactory(factory);
             return (IOperable<T>)declaration;
         }
 
@@ -90,10 +104,21 @@ namespace FizzWare.NBuilder
         /// 
         /// WithConstructor( () => new MyType(arg1, arg2) )
         /// </summary>
-        public static IOperable<T> WithConstructor<T>(this IOperable<T> operable, Expression<Func<int, T>> constructor)
+        [Obsolete("Use WithFactory instead.")]
+        public static IOperable<T> WithConstructor<T>(this IOperable<T> operable, Func<int, T> constructor)
+        {
+            return operable.WithFactory(constructor);
+        }
+
+        /// <summary>
+        /// Specify the constructor for the type like this:
+        /// 
+        /// WithFactory( () => new MyType(arg1, arg2) )
+        /// </summary>
+        public static IOperable<T> WithFactory<T>(this IOperable<T> operable, Func<int, T> factory)
         {
             var declaration = GetDeclaration(operable);
-            declaration.ObjectBuilder.WithConstructor(constructor);
+            declaration.ObjectBuilder.WithFactory(factory);
             return (IOperable<T>)declaration;
         }
 

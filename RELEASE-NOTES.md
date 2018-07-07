@@ -1,10 +1,15 @@
 # 6.0.0 - ???
 
-* [@AdemCatamak](https://github.com/AdemCatamak) Added support for `IndexOf` as part of the `ListBuilder` implementation.
-* [@PureKrome](https://github.com/PureKrome) Added support for `DateTimeKind` to `RandomGenerator`
+* Breaking Change: `WithConstructor` 
+  * No longer takes an `Expression<Func<T>>`. 
+  * Takes a `Func<T>`.
+  * Marked `[Obsolete]` in favor of `WithFactory`
+  * This change was to address an [issue](https://github.com/nbuilder/nbuilder/issues/42) in which the constructor expression was not being reevaluated for each item in a list. 
+* Feature: [@AdemCatamak](https://github.com/AdemCatamak) Added support for `IndexOf` as part of the `ListBuilder` implementation.
+* Feature: [@PureKrome](https://github.com/PureKrome) Added support for `DateTimeKind` to `RandomGenerator`
+* Feature: Added `DisablePropertyNamingFor(PropertyInfo)` overload to `BuilderSettings`.
 * Bug: Last item in enum is never generated when generating property values randomly.
 * Bug: Lost strong name when porting to .NET Standard.
-* Feature: Added `DisablePropertyNamingFor(PropertyInfo)` overload to `BuilderSettings`.
 
 ## ListBuilder.IndexOf
 

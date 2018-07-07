@@ -76,7 +76,7 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             {
                 myClassWithConstructorBuilder
-                        .WithConstructor(() => new MyClassWithConstructor(arg1))
+                        .WithFactory(() => new MyClassWithConstructor(arg1))
                         .Construct(Arg.Any<int>());
             }
         }
@@ -96,20 +96,8 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             {
                 myClassWithConstructorBuilder
-                        .WithConstructor(() => new MyClassWithConstructor(arg1, arg2))
+                        .WithFactory(() => new MyClassWithConstructor(arg1, arg2))
                         .Construct(1);
-            }
-        }
-
-        [Fact]
-        public void WithConstructor_NotANewExpressionSupplied_Throws()
-        {
-
-
-
-            {
-                var myClass = new MyClassWithConstructor(1, 2);
-                Should.Throw<ArgumentException>(() => myClassWithConstructorBuilder.WithConstructor(() => myClass));
             }
         }
 

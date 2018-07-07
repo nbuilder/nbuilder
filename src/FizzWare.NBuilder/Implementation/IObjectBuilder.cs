@@ -7,13 +7,16 @@ namespace FizzWare.NBuilder.Implementation
 {
     public interface IObjectBuilder<T> : ISingleObjectBuilder<T>
     {
-        /// <summary>
-        /// Specify a constructor in the form WithConstructor( () => new MyClass(arg1, arg2) )
-        /// </summary>
-        /// <param name="constructor"></param>
-        /// <returns>An object builder</returns>
-        IObjectBuilder<T> WithConstructor(Expression<Func<T>> constructor);
-        IObjectBuilder<T> WithConstructor(Expression<Func<int, T>> constructor);
+        [Obsolete("Use WithFactory instead.")]
+        IObjectBuilder<T> WithConstructor(Func<T> constructor);
+
+        [Obsolete("Use WithFactory instead")]
+        IObjectBuilder<T> WithConstructor(Func<int, T> constructor);
+
+        IObjectBuilder<T> WithFactory(Func<T> constructor);
+
+        IObjectBuilder<T> WithFactory(Func<int, T> constructor);
+
 
         IObjectBuilder<T> With<TFunc>(Func<T, TFunc> func);
         IObjectBuilder<T> With(Action<T, int> action);

@@ -35,7 +35,7 @@ namespace FizzWare.NBuilder.Tests.Integration.WebsiteExamples
         public void HomePage_1()
         {
             BuilderSettings builderSettings = new BuilderSettings();
-            var products = new Builder(builderSettings).CreateListOfSize< Product>(10)
+            var products = new Builder(builderSettings).CreateListOfSize<Product>(10)
                                .TheFirst(2)
                                    .With(x => x.Title = "special title")
                                .Build();
@@ -44,11 +44,11 @@ namespace FizzWare.NBuilder.Tests.Integration.WebsiteExamples
         public void HomePage_2()
         {
             BuilderSettings builderSettings = new BuilderSettings();
-            var products = new Builder(builderSettings).CreateListOfSize< Product>(10)
+            var products = new Builder(builderSettings).CreateListOfSize<Product>(10)
                                .All()
-                                   .WithConstructor(() => new Product("my title"))
+                                   .WithFactory(() => new Product("my title"))
                                .Random(5)
-                                   .WithConstructor(() => new Product("my other title"))
+                                   .WithFactory(() => new Product("my other title"))
                                    .And(x => x.Created = August.The17th.At(09, 00))
                                .Build();
         }
@@ -58,7 +58,7 @@ namespace FizzWare.NBuilder.Tests.Integration.WebsiteExamples
             BuilderSettings builderSettings = new BuilderSettings();
             var generator = new UniqueRandomGenerator();
 
-            var products = new Builder(builderSettings).CreateListOfSize< Product>(10)
+            var products = new Builder(builderSettings).CreateListOfSize<Product>(10)
                                            .TheFirst(2)
                                                .With(x => x.Title = "special title 1")
                                                .And(x => x.Description = "special description 1")
@@ -73,14 +73,14 @@ namespace FizzWare.NBuilder.Tests.Integration.WebsiteExamples
         public void Building_single_objects_1()
         {
             BuilderSettings builderSettings = new BuilderSettings();
-            var product = new Builder(builderSettings).CreateNew< Product>().Build();
+            var product = new Builder(builderSettings).CreateNew<Product>().Build();
         }
 
         public void Building_single_objects_2()
         {
             BuilderSettings builderSettings = new BuilderSettings();
             var product = new Builder(builderSettings)
-                                .CreateNew< Product>()
+                                .CreateNew<Product>()
                                     .With(x => x.Description = "A custom description here")
                                 .Build();
         }
@@ -89,7 +89,7 @@ namespace FizzWare.NBuilder.Tests.Integration.WebsiteExamples
         {
             BuilderSettings builderSettings = new BuilderSettings();
             var product = new Builder(builderSettings)
-                            .CreateNew< Product>()
+                            .CreateNew<Product>()
                                 .With(x => x.Title = "Special title")
                                 .And(x => x.Description = "Special description")
                                 .And(x => x.Id = 2)
@@ -102,28 +102,25 @@ namespace FizzWare.NBuilder.Tests.Integration.WebsiteExamples
             var product = new Models.Product();
             var quantity = 1;
 
-            BuilderSettings builderSettings = new BuilderSettings();
-            var basketItem = new Builder(builderSettings)
-                    .CreateNew< BasketItem>()
-                        .WithConstructor(() => new BasketItem(basket, product, quantity))
+            var basketItem = new Builder()
+                    .CreateNew<BasketItem>()
+                        .WithFactory(() => new BasketItem(basket, product, quantity))
                     .Build();
         }
 
         public void Building_single_objects_5()
         {
-            BuilderSettings builderSettings = new BuilderSettings();
             var child = new Category();
-            var category = new Builder(builderSettings).CreateNew< Category>()
+            var category = new Builder().CreateNew<Category>()
                     .Do(x => x.AddChild(child))
                 .Build();
         }
 
         public void Building_single_objects_6()
         {
-            BuilderSettings builderSettings = new BuilderSettings();
             var child = new Category();
-            var category = new Builder(builderSettings)
-                .CreateNew< Category>()
+            var category = new Builder()
+                .CreateNew<Category>()
                     .Do(x => x.AddChild(child))
                 .Build();
         }
@@ -134,7 +131,7 @@ namespace FizzWare.NBuilder.Tests.Integration.WebsiteExamples
             var child = new Category();
             var anotherChild = new Category();
             var category = new Builder(builderSettings)
-                    .CreateNew< Category>()
+                    .CreateNew<Category>()
                         .Do(x => x.AddChild(child))
                         .And(x => x.AddChild(anotherChild))
                     .Build();
@@ -144,10 +141,10 @@ namespace FizzWare.NBuilder.Tests.Integration.WebsiteExamples
         {
             BuilderSettings builderSettings = new BuilderSettings();
             var builder = new Builder(builderSettings);
-            var categories = builder.CreateListOfSize< Category>(5).Build();
+            var categories = builder.CreateListOfSize<Category>(5).Build();
 
             var product = builder
-                .CreateNew< Product>()
+                .CreateNew<Product>()
                     .DoForAll((prod, cat) => prod.AddToCategory(cat), categories)
                 .Build();
         }
@@ -155,14 +152,14 @@ namespace FizzWare.NBuilder.Tests.Integration.WebsiteExamples
         public void Lists_1()
         {
             BuilderSettings builderSettings = new BuilderSettings();
-            var products = new Builder(builderSettings).CreateListOfSize< Product>(10).Build();
+            var products = new Builder(builderSettings).CreateListOfSize<Product>(10).Build();
         }
 
         public void Lists_2()
         {
             BuilderSettings builderSettings = new BuilderSettings();
             var products = new Builder(builderSettings)
-                .CreateListOfSize< Product>(10)
+                .CreateListOfSize<Product>(10)
                 .All()
                     .With(x => x.Title = "A special title")
                 .Build();
@@ -172,7 +169,7 @@ namespace FizzWare.NBuilder.Tests.Integration.WebsiteExamples
         {
             BuilderSettings builderSettings = new BuilderSettings();
             var products = new Builder(builderSettings)
-                .CreateListOfSize< Product>(10)
+                .CreateListOfSize<Product>(10)
                 .TheFirst(2)
                     .With(x => x.Title = "A special title")
                 .Build();
@@ -182,21 +179,21 @@ namespace FizzWare.NBuilder.Tests.Integration.WebsiteExamples
         {
             BuilderSettings builderSettings = new BuilderSettings();
             var list = new Builder(builderSettings)
-                        .CreateListOfSize< Product>(30)
+                        .CreateListOfSize<Product>(30)
                         .TheFirst(10)
                             .With(x => x.Title = "Special Title 1")
                         .TheNext(10)
                             .With(x => x.Title = "Special Title 2")
                         .TheNext(10)
                             .With(x => x.Title = "Special Title 3")
-                        .Build();    
+                        .Build();
         }
 
         public void Lists_5()
         {
             BuilderSettings builderSettings = new BuilderSettings();
             var list = new Builder(builderSettings)
-                    .CreateListOfSize< Product>(30)
+                    .CreateListOfSize<Product>(30)
                     .TheLast(10)
                         .With(x => x.Title = "Special Title 1")
                     .ThePrevious(10)
@@ -208,7 +205,7 @@ namespace FizzWare.NBuilder.Tests.Integration.WebsiteExamples
         {
             BuilderSettings builderSettings = new BuilderSettings();
             var list = new Builder(builderSettings)
-                    .CreateListOfSize< Product>(30)
+                    .CreateListOfSize<Product>(30)
                     .All()
                         .With(x => x.Title = "Special Title 1")
                     .Section(12, 14)
@@ -222,10 +219,10 @@ namespace FizzWare.NBuilder.Tests.Integration.WebsiteExamples
         {
             BuilderSettings builderSettings = new BuilderSettings();
             var builder = new Builder(builderSettings);
-            var children = builder.CreateListOfSize< Category>(3).Build();
+            var children = builder.CreateListOfSize<Category>(3).Build();
 
             var list = builder
-                .CreateListOfSize< Category>(10)
+                .CreateListOfSize<Category>(10)
                 .TheFirst(2)
                     .Do(x => x.AddChild(children[0]))
                     .And(x => x.AddChild(children[1]))
@@ -237,10 +234,10 @@ namespace FizzWare.NBuilder.Tests.Integration.WebsiteExamples
         public void Lists_8()
         {
             BuilderSettings builderSettings = new BuilderSettings();
-            var children = new Builder(builderSettings).CreateListOfSize< Category>(10).Build();
+            var children = new Builder(builderSettings).CreateListOfSize<Category>(10).Build();
 
             var categories = new Builder(builderSettings)
-                .CreateListOfSize< Category>(10)
+                .CreateListOfSize<Category>(10)
                 .TheFirst(2)
                             .Do(x => x.AddChild(Pick<Category>.RandomItemFrom(children)))
                 .Build();
@@ -249,7 +246,7 @@ namespace FizzWare.NBuilder.Tests.Integration.WebsiteExamples
         public void Lists_9()
         {
             BuilderSettings builderSettings = new BuilderSettings();
-            var products = new Builder(builderSettings).CreateListOfSize< Product>(5).Build();
+            var products = new Builder(builderSettings).CreateListOfSize<Product>(5).Build();
             Pick<Product>.UniqueRandomList(With.Between(5).And(10).Elements).From(products);
         }
 
@@ -261,7 +258,7 @@ namespace FizzWare.NBuilder.Tests.Integration.WebsiteExamples
             builderSettings.SetCreatePersistenceMethod<Models.Product>(productRepository.Create);
             builderSettings.SetCreatePersistenceMethod<IList<Models.Product>>(productRepository.CreateAll);
 
-            new Builder(builderSettings).CreateNew< Product>().Persist();
+            new Builder(builderSettings).CreateNew<Product>().Persist();
         }
 
         public void Dates_1()
@@ -293,7 +290,7 @@ namespace FizzWare.NBuilder.Tests.Integration.WebsiteExamples
             var generator = new RandomGenerator();
 
             var products = new Builder(builderSettings)
-                .CreateListOfSize< Product>(100)
+                .CreateListOfSize<Product>(100)
                 .All()
                     .With(x => x.Created = generator.Next(July.The(1), November.The(10)))
                 .Build();
@@ -312,7 +309,7 @@ namespace FizzWare.NBuilder.Tests.Integration.WebsiteExamples
                 NumberOfRoots = 5
             };
 
-            var categories = new Builder(builderSettings).CreateListOfSize< Category>(10000)
+            var categories = new Builder(builderSettings).CreateListOfSize<Category>(10000)
                                                     .PersistHierarchy(hierarchySpec);
         }
 
@@ -328,14 +325,14 @@ namespace FizzWare.NBuilder.Tests.Integration.WebsiteExamples
                                             true,
                                             DateTime.Now,
                                             DateTime.Now.AddDays(10),
-                                            true,builderSettings);
+                                            true, builderSettings);
 
             builderSettings.SetDefaultPropertyNamer(namer);
         }
 
         public void Configuration_3(BuilderSettings builderSettings)
         {
-            builderSettings.SetPropertyNamerFor<Product>(new CustomProductPropertyNamer(new ReflectionUtil(),builderSettings));
+            builderSettings.SetPropertyNamerFor<Product>(new CustomProductPropertyNamer(new ReflectionUtil(), builderSettings));
         }
 
         public void Configuration_4(BuilderSettings builderSettings)
@@ -377,5 +374,5 @@ namespace FizzWare.NBuilder.Tests.Integration.WebsiteExamples
         }
     }
 
-    
+
 }

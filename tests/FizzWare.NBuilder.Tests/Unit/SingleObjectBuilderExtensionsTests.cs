@@ -43,11 +43,11 @@ namespace FizzWare.NBuilder.Tests.Unit
         [Fact]
         public void ShouldBeAbleToUseWithConstructor()
         {
-            Expression<Func<MyClass>> constructor = () => new MyClass();
+            Func<MyClass> factory = () => new MyClass();
 
-            objectBuilder.WithConstructor(constructor).Returns(objectBuilder);
+            objectBuilder.WithFactory(factory).Returns(objectBuilder);
 
-            SingleObjectBuilderExtensions.WithConstructor(objectBuilder, constructor);
+            SingleObjectBuilderExtensions.WithFactory(objectBuilder, factory);
         }
 
         [Fact]

@@ -8,7 +8,7 @@ using Xunit;
 namespace FizzWare.NBuilder.Tests.Integration
 {
     // Note: The assertions are intentionally verbose to show how NBuilder works
-    
+
     public class SingleObjectBuilderTests
     {
         private interface IMyInterface { }
@@ -24,7 +24,7 @@ namespace FizzWare.NBuilder.Tests.Integration
         public void CreatingAnObject()
         {
             var builderSetup = new BuilderSettings();
-            var product = new Builder(builderSetup).CreateNew< Product>().Build();
+            var product = new Builder(builderSetup).CreateNew<Product>().Build();
 
             product.Id.ShouldBe(1);
             product.Title.ShouldBe("Title1");
@@ -39,7 +39,7 @@ namespace FizzWare.NBuilder.Tests.Integration
         {
             var builderSetup = new BuilderSettings();
             var product = new Builder(builderSetup)
-                .CreateNew< Product>()
+                .CreateNew<Product>()
                     .With(x => x.Description = "A custom description here")
                 .Build();
 
@@ -53,9 +53,9 @@ namespace FizzWare.NBuilder.Tests.Integration
         {
             var builderSetup = new BuilderSettings();
             var product = new Builder(builderSetup)
-                .CreateNew< Product>()
+                .CreateNew<Product>()
                 .With(x => x.Title = "Special title")
-                .And(x => x.Description = "Special description") 
+                .And(x => x.Description = "Special description")
                 .And(x => x.Id = 2)
                 .Build();
 
@@ -73,7 +73,7 @@ namespace FizzWare.NBuilder.Tests.Integration
         {
             var builderSetup = new BuilderSettings();
             var invoice = new Builder(builderSetup)
-                .CreateNew< Invoice>()
+                .CreateNew<Invoice>()
                 .With(x => x.Amount, 100)
                 .Build();
 
@@ -85,7 +85,7 @@ namespace FizzWare.NBuilder.Tests.Integration
         {
             var builderSetup = new BuilderSettings();
             var invoice = new Builder(builderSetup)
-                .CreateNew< Invoice>()
+                .CreateNew<Invoice>()
                 .With(x => x.Id, 100)
                 .Build();
 
@@ -97,7 +97,7 @@ namespace FizzWare.NBuilder.Tests.Integration
         {
             var builderSetup = new BuilderSettings();
             var invoice = new Builder(builderSetup)
-                .CreateNew< Invoice>()
+                .CreateNew<Invoice>()
                 .With(x => x.Amount, 100)
                 .And(x => x.Id, 200)
                 .Build();
@@ -111,7 +111,7 @@ namespace FizzWare.NBuilder.Tests.Integration
         {
             var builderSetup = new BuilderSettings();
             var product = new Builder(builderSetup)
-                .CreateNew< Product>()
+                .CreateNew<Product>()
                 .With(x => x.Title, "special title")
                 .Build();
 
@@ -122,14 +122,14 @@ namespace FizzWare.NBuilder.Tests.Integration
         public void CreatingAClassThatHasAConstructorUsingLegacySyntax()
         {
             var builder = new Builder();
-            var basket = builder.CreateNew< ShoppingBasket>().Build();
-            var product = builder.CreateNew< Product>().Build();
+            var basket = builder.CreateNew<ShoppingBasket>().Build();
+            var product = builder.CreateNew<Product>().Build();
             const int quantity = 5;
 
             // BasketItem's ctor: BasketItem(ShoppingBasket basket, Product product, int quantity)
             var basketItem = new Builder()
-                .CreateNew< BasketItem>()
-                    .WithConstructor(() => new BasketItem(basket, product, quantity))
+                .CreateNew<BasketItem>()
+                    .WithFactory(() => new BasketItem(basket, product, quantity))
                 .Build();
 
             // The property namer will still apply sequential names to the properties
@@ -145,14 +145,14 @@ namespace FizzWare.NBuilder.Tests.Integration
         public void CreatingAClassThatHasAConstructorUsingExpressionSyntax()
         {
             var builder = new Builder();
-            var basket = builder.CreateNew< ShoppingBasket>().Build();
-            var product = builder.CreateNew< Product>().Build();
+            var basket = builder.CreateNew<ShoppingBasket>().Build();
+            var product = builder.CreateNew<Product>().Build();
             const int quantity = 5;
 
             // BasketItem's ctor: BasketItem(ShoppingBasket basket, Product product, int quantity)
             var basketItem = builder
-                .CreateNew< BasketItem>()
-                    .WithConstructor(() => new BasketItem(basket, product, quantity))
+                .CreateNew<BasketItem>()
+                    .WithFactory(() => new BasketItem(basket, product, quantity))
                 .Build();
 
             // The property namer will still apply sequential names to the properties
@@ -168,10 +168,10 @@ namespace FizzWare.NBuilder.Tests.Integration
         public void UsingDo()
         {
             var builder = new Builder();
-            var child = builder.CreateNew< Category>().Build();
+            var child = builder.CreateNew<Category>().Build();
 
             var category = builder
-                .CreateNew< Category>()
+                .CreateNew<Category>()
                     .Do(x => x.AddChild(child))
                 .Build();
 
@@ -183,11 +183,11 @@ namespace FizzWare.NBuilder.Tests.Integration
         {
             var builderSetup = new BuilderSettings();
             var builder = new Builder(builderSetup);
-            var child = builder.CreateNew< Category>().Build();
-            var anotherChild = builder.CreateNew< Category>().Build();
+            var child = builder.CreateNew<Category>().Build();
+            var anotherChild = builder.CreateNew<Category>().Build();
 
             var category = builder
-                .CreateNew< Category>()
+                .CreateNew<Category>()
                     .Do(x => x.AddChild(child))
                     .And(x => x.AddChild(anotherChild))
                 .Build();
@@ -202,11 +202,11 @@ namespace FizzWare.NBuilder.Tests.Integration
         {
             var builderSetup = new BuilderSettings();
             var builder = new Builder(builderSetup);
-            var categories = builder.CreateListOfSize< Category>(5).Build();
+            var categories = builder.CreateListOfSize<Category>(5).Build();
 
             var product = builder
-                    .CreateNew< Product>()
-                        .DoForAll( (prod, cat) => prod.AddToCategory(cat), categories)
+                    .CreateNew<Product>()
+                        .DoForAll((prod, cat) => prod.AddToCategory(cat), categories)
                     .Build();
 
             // Assertions are intentionally verbose for clarity
@@ -224,7 +224,7 @@ namespace FizzWare.NBuilder.Tests.Integration
             var builderSetup = new BuilderSettings();
             Should.Throw<TypeCreationException>(() =>
             {
-                new Builder(builderSetup).CreateNew< IProduct>().Build();
+                new Builder(builderSetup).CreateNew<IProduct>().Build();
             });
         }
 
@@ -232,7 +232,7 @@ namespace FizzWare.NBuilder.Tests.Integration
         public void NBuilderCannotBeUsedToBuildInterfaces()
         {
             var builderSetup = new BuilderSettings();
-            var ex = Should.Throw<TypeCreationException>(() => new Builder(builderSetup).CreateNew< IMyInterface>().Build());
+            var ex = Should.Throw<TypeCreationException>(() => new Builder(builderSetup).CreateNew<IMyInterface>().Build());
             ex.Message.ShouldBe("Cannot build an interface");
         }
 
@@ -240,7 +240,7 @@ namespace FizzWare.NBuilder.Tests.Integration
         public void NBuilderCannotBeUsedToBuildAbstractClasses()
         {
             var builderSetup = new BuilderSettings();
-            var ex = Should.Throw<TypeCreationException>(() => new Builder(builderSetup).CreateNew< MyAbstractClass>().Build(), "Cannot build an abstract class");
+            var ex = Should.Throw<TypeCreationException>(() => new Builder(builderSetup).CreateNew<MyAbstractClass>().Build(), "Cannot build an abstract class");
             ex.Message.ShouldBe("Cannot build an abstract class");
         }
 
@@ -250,7 +250,7 @@ namespace FizzWare.NBuilder.Tests.Integration
             var builderSetup = new BuilderSettings();
             Should.Throw<TypeCreationException>(() =>
             {
-                new Builder(builderSetup).CreateNew< ChuckNorris>().Build();
+                new Builder(builderSetup).CreateNew<ChuckNorris>().Build();
             });
         }
 
