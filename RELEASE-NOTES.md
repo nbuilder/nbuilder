@@ -18,6 +18,18 @@ var products = new Builder()
 var result = randomGenerator.Next(DateTime.MinValue, DateTime.MaxValue, DateTimeKind.Utc);
 ```
 * **Feature:** Added `DisablePropertyNamingFor(PropertyInfo)` overload to `BuilderSettings`.
+* **Feature:** Added `TheRest` as an extension to the `ListBuilder`.
+```csharp
+var results = new Builder()
+        .CreateListOfSize<SimpleClass>(10)
+        .TheFirst(2)
+        .Do(row => row.String1 = "One")
+        .TheRest()
+        .Do(row => row.String1 = "Ten")
+        .Build()
+    ;
+```
+
 * **Bug:** Last item in enum is never generated when generating property values randomly.
 * **Bug:** Lost strong name when porting to .NET Standard.
 

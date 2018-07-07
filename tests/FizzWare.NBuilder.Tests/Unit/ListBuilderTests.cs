@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using FizzWare.NBuilder.Implementation;
 using FizzWare.NBuilder.PropertyNaming;
 using FizzWare.NBuilder.Tests.TestClasses;
@@ -115,7 +116,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
 
         [Fact]
-        public void WithConstructor_ShouldCreateMultipleInstances()
+        public void WithFactory_ShouldCreateMultipleInstances()
         {
 
             var faker = new Faker("value1", "value2", "value3");
@@ -131,7 +132,7 @@ namespace FizzWare.NBuilder.Tests.Unit
 
 
         [Fact]
-        public void WithConstructor_InstancesShouldReevaluateExpressionEachTime()
+        public void WithFactory_InstancesShouldReevaluateExpressionEachTime()
         {
 
             var faker = new Faker("value1", "value2", "value3");
@@ -143,6 +144,22 @@ namespace FizzWare.NBuilder.Tests.Unit
                 ;
 
             results[0].String1.ShouldNotBe(results[1].String1);
+        }
+
+        [Fact]
+        public void TheRest_OperatesOnRemainingItems()
+        {
+            var results = new Builder()
+                    .CreateListOfSize<SimpleClass>(10)
+                    .TheFirst(2)
+                    .Do(row => row.String1 = "One")
+                    .TheRest()
+                    .Do(row => row.String1 = "Ten")
+                    .Build()
+                ;
+
+            results.Take(2).ToList().ForEach(e => e.String1.ShouldBe("One"));
+            results.Skip(2).ToList().ForEach(e => e.String1.ShouldBe("Ten"));
         }
     }
 }

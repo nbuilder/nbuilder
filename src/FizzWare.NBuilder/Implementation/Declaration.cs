@@ -19,6 +19,8 @@ namespace FizzWare.NBuilder.Implementation
             BuilderSettings = listBuilderImpl.BuilderSettings;
         }
 
+        public int Length => listBuilderImpl.Declarations.ListCapacity;
+
         /// <summary>
         /// A reference to the list builder that contains this declaration
         /// </summary>

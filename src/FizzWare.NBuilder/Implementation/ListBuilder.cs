@@ -13,6 +13,8 @@ namespace FizzWare.NBuilder.Implementation
         private readonly DeclarationQueue<T> declarations;
         public BuilderSettings BuilderSettings { get; set; }
 
+        public int Length => declarations.ListCapacity;
+
         public virtual int Capacity { get; }
 
         public IDeclarationQueue<T> Declarations => declarations;

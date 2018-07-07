@@ -107,6 +107,26 @@ namespace FizzWare.NBuilder
             return andTheNextDeclaration;
         }
 
+
+        public static IOperable<T> TheRest<T>(this IListBuilder<T> listBuilder)
+        {
+            var listBuilderImpl = GetListBuilderImpl<T>(listBuilder);
+            var lastDeclaration = listBuilderImpl.Declarations.GetLastItem();
+            var rangeDeclaration = lastDeclaration as RangeDeclaration<T>;
+
+            if (rangeDeclaration == null)
+                throw new BuilderException("Before using TheNext you must have just used a RangeDeclaration - i.e. (TheFirst or Section)");
+
+            int start = rangeDeclaration.End + 1;
+            int end = listBuilderImpl.Length - start;
+
+            var andTheNextDeclaration = new RangeDeclaration<T>(listBuilderImpl, listBuilderImpl.CreateObjectBuilder(),
+                start, listBuilderImpl.Length-1);
+
+            listBuilderImpl.AddDeclaration(andTheNextDeclaration);
+            return andTheNextDeclaration;
+        }
+
         public static IOperable<T> ThePrevious<T>(this IListBuilder<T> listBuilder, int amount)
         {
             var listBuilderImpl = GetListBuilderImpl<T>(listBuilder);

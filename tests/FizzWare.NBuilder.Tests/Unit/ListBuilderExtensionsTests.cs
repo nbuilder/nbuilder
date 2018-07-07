@@ -168,6 +168,8 @@ namespace FizzWare.NBuilder.Tests.Unit
             {
             }
 
+            public int Length { get; }
+
             public void CallFunctions(IList<T> masterList)
             {
                 throw new NotImplementedException();
