@@ -63,6 +63,20 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
 
         [Fact]
+        public void ShouldBeAbleToReplaceAnObjectUsingWithFactory()
+        {
+            var myClass = new SimpleClass();
+
+            var results = new Builder().CreateListOfSize<SimpleClass>(3)
+                    .All()
+                    .WithFactory(() => myClass)
+                    .Build()
+                ;
+
+            results.ShouldAllBe(e => e == myClass);
+        }
+
+        [Fact]
         public void ShouldBeAbleToConstructAnObjectWithNullableConstructorArgs_using_expression_syntax()
         {
             const string arg1 = null;
