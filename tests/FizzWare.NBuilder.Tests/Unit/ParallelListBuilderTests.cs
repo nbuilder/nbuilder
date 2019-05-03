@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
+using FizzWare.NBuilder.Tests.TestClasses;
 using Shouldly;
 using Xunit;
 
@@ -9,12 +10,6 @@ namespace FizzWare.NBuilder.Tests.Unit
 {
     public class ParallelListBuilderTests
     {
-        private class MyClass
-        {
-            public int IntProperty { get; set; }
-            public string StringProperty { get; set; }
-        }
-
         [Fact]
         public void CreateListOfSize_Parallel_PropertiesHaveSequentialNaming()
         {
@@ -26,11 +21,14 @@ namespace FizzWare.NBuilder.Tests.Unit
             {
                 try
                 {
-                    IList<MyClass> instances = Builder<MyClass>.CreateListOfSize(listSize).Build();
+                    IList<SimpleClass> instances = Builder<SimpleClass>.CreateListOfSize(listSize).Build();
                     for (int i = 0; i < listSize; i++)
                     {
-                        instances[i].IntProperty.ShouldBe(i + 1);
-                        instances[i].StringProperty.ShouldBe("StringProperty" + (i + 1));
+                        instances[i].PropA.ShouldBe(i + 1);
+                        instances[i].PropB.ShouldBe(i + 1);
+                        instances[i].PropC.ShouldBe(i + 1);
+                        instances[i].String1.ShouldBe("String1" + (i + 1));
+                        instances[i].String2.ShouldBe("String2" + (i + 1));
                     }
                 }
                 catch (Exception ex)
