@@ -88,15 +88,18 @@ namespace FizzWare.NBuilder.PropertyNaming
 
         protected virtual void SetValue<T>(MemberInfo memberInfo, T obj, object value)
         {
-            if (value != null)
+            if (value == null) return;
+            if (memberInfo.Name == "Empty" && memberInfo.DeclaringType == typeof(Guid)) return;
+            switch (memberInfo)
             {
-                if (memberInfo is FieldInfo)
-                    ((FieldInfo)memberInfo).SetValue(obj, value);
-
-                if (memberInfo is PropertyInfo)
+                case FieldInfo info:
+                    info.SetValue(obj, value);
+                    break;
+                case PropertyInfo info:
                 {
-                    if (((PropertyInfo)memberInfo).CanWrite)
-                        ((PropertyInfo)memberInfo).SetValue(obj, value, null);
+                    if (info.CanWrite)
+                        info.SetValue(obj, value, null);
+                    break;
                 }
             }
         }
