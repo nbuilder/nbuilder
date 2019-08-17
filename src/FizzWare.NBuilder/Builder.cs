@@ -18,7 +18,7 @@ namespace FizzWare.NBuilder
         public static IListBuilder<T> CreateListOfSize(int size)
         {
             Guard.Against(size < 1, "Size of list must be 1 or greater");
-            var propertyNamer = BuilderSetup.GetPropertyNamerFor<T>();
+            IPropertyNamer propertyNamer = new SequentialPropertyNamer(new ReflectionUtil(), BuilderSetup.Instance);
             return CreateListOfSize(size, propertyNamer);
         }
 
