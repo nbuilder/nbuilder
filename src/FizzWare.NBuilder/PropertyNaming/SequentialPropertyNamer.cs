@@ -161,15 +161,12 @@ namespace FizzWare.NBuilder.PropertyNaming
         protected override Guid GetGuid(MemberInfo memberInfo)
         {
             var bytes = new byte[16];
-            var convertedBytes = BitConverter.GetBytes(_sequenceNumber);
-
-            bytes[12] = convertedBytes[3];
-            bytes[13] = convertedBytes[2];
-            bytes[14] = convertedBytes[1];
-            bytes[15] = convertedBytes[0];
-
+            BitConverter.GetBytes(_sequenceNumber).CopyTo(bytes, 0);
+            if (BitConverter.IsLittleEndian)
+                Array.Reverse(bytes);
             return new Guid(bytes);
         }
+        
 
         protected override TimeSpan GetTimeSpan(MemberInfo memberInfo)
         {

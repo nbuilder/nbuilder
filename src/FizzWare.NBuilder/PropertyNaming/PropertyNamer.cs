@@ -47,7 +47,7 @@ namespace FizzWare.NBuilder.PropertyNaming
                 {
                     if (((PropertyInfo)memberInfo).GetGetMethod() != null)
                     {
-                        currentValue = ((PropertyInfo) memberInfo).GetValue(obj, null);
+                        currentValue = ((PropertyInfo)memberInfo).GetValue(obj, null);
                     }
                 }
                 catch (Exception)
@@ -83,21 +83,48 @@ namespace FizzWare.NBuilder.PropertyNaming
 
         private static bool IsNullableType(Type type)
         {
-            return (type.IsGenericType() && type.GetGenericTypeDefinition() == typeof (Nullable<>));
+            return (type.IsGenericType() && type.GetGenericTypeDefinition() == typeof(Nullable<>));
         }
 
         protected virtual void SetValue<T>(MemberInfo memberInfo, T obj, object value)
         {
-            if (value != null)
-            {
-                if (memberInfo is FieldInfo)
-                    ((FieldInfo)memberInfo).SetValue(obj, value);
+            if (value == null) return;
+            if (!IsMutable(memberInfo)) return;
 
-                if (memberInfo is PropertyInfo)
-                {
-                    if (((PropertyInfo)memberInfo).CanWrite)
-                        ((PropertyInfo)memberInfo).SetValue(obj, value, null);
-                }
+            switch (memberInfo)
+            {
+                case FieldInfo info:
+                    info.SetValue(obj, value);
+                    break;
+                case PropertyInfo info:
+                    {
+                        if (info.CanWrite)
+                            info.SetValue(obj, value, null);
+                        break;
+                    }
+            }
+        }
+
+        protected virtual bool IsMutable(MemberInfo member)
+        {
+            var declaringType = member.DeclaringType;
+            switch (member.MemberType)
+            {
+                case MemberTypes.Constructor:
+                case MemberTypes.Event:
+                case MemberTypes.Method:
+                case MemberTypes.TypeInfo:
+                case MemberTypes.Custom:
+                case MemberTypes.NestedType:
+                case MemberTypes.All:
+                    return false;
+                case MemberTypes.Field:
+                    return !declaringType.GetFields().First(f => f.Name == member.Name).IsStatic;
+                case MemberTypes.Property:
+                    return !declaringType.GetProperties().First(f => f.Name == member.Name).GetAccessors(true)
+                        .Any(x => x.IsStatic);
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 
@@ -127,7 +154,7 @@ namespace FizzWare.NBuilder.PropertyNaming
         protected virtual bool ShouldIgnore(MemberInfo memberInfo)
         {
             if (memberInfo is PropertyInfo)
-                if (BuilderSettings.ShouldIgnoreProperty(((PropertyInfo) memberInfo)))
+                if (BuilderSettings.ShouldIgnoreProperty(((PropertyInfo)memberInfo)))
                     return true;
 
             return false;
