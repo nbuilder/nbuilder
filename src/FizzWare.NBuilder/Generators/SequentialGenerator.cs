@@ -10,10 +10,10 @@ namespace FizzWare.NBuilder
         private const double DefaultIncrementDateValue = 1;
         private const int DefaultIncrementValue = 1;
 
-        private IDictionary<Type, Action> typeAdvancers = new Dictionary<Type, Action>();
+        private readonly IDictionary<Type, Action> typeAdvancers = new Dictionary<Type, Action>();
 
-        private IDictionary<IncrementDate, Func<DateTime, DateTime>> dateTimeAdvancerIncrementers = new Dictionary<IncrementDate, Func<DateTime, DateTime>>();
-        private IDictionary<IncrementDate, Func<DateTime, DateTime>> dateTimeAdvancerDecrementers = new Dictionary<IncrementDate, Func<DateTime, DateTime>>();
+        private readonly IDictionary<IncrementDate, Func<DateTime, DateTime>> dateTimeAdvancerIncrementers = new Dictionary<IncrementDate, Func<DateTime, DateTime>>();
+        private readonly IDictionary<IncrementDate, Func<DateTime, DateTime>> dateTimeAdvancerDecrementers = new Dictionary<IncrementDate, Func<DateTime, DateTime>>();
 
         public SequentialGenerator()
         {

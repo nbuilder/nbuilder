@@ -1,6 +1,6 @@
 # feature branches
 -
-  version: '6.0.0.{build}'
+  version: '6.0.1.{build}'
   configuration: Release
 
   branches:
@@ -49,7 +49,7 @@
 # release branches
 # compile, test, release beta version to nuget
 -
-  version: '6.0.0.{build}'
+  version: '6.0.1.{build}'
   configuration: Release
 
   branches:
@@ -69,7 +69,7 @@
   deploy:
     provider: NuGet
     api_key:
-      secure: rEqnyErKFkhgxjUgir8i3zftWJ6AqqzYn/wXPXVSTJo1o9nQML8KU3pmG3sXOqCU
+      secure: ZW7B2bmgmhp70X5h/WIB3dIcKuo5Tkb1+1gLfviPTEodYsk0lZ69rSy8y7bZ8KgU
     artifact: nuget-package
 
   before_build:
@@ -99,7 +99,7 @@
 
 # compile, test, release version to nuget
 -
-  version: '6.0.0.{build}'
+  version: '6.0.1.{build}'
   configuration: Release
 
   branches:
@@ -119,7 +119,7 @@
   deploy:
     provider: NuGet
     api_key:
-      secure: rEqnyErKFkhgxjUgir8i3zftWJ6AqqzYn/wXPXVSTJo1o9nQML8KU3pmG3sXOqCU
+      secure: ZW7B2bmgmhp70X5h/WIB3dIcKuo5Tkb1+1gLfviPTEodYsk0lZ69rSy8y7bZ8KgU
     artifact: nuget-package
 
   before_build:

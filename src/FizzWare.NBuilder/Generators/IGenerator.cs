@@ -1,6 +1,6 @@
 namespace FizzWare.NBuilder
 {
-    public interface IGenerator<T>
+    public interface IGenerator<out T>
     {
         T Generate();
     }

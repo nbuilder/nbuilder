@@ -1,3 +1,8 @@
+﻿# 6.0.1 - 2018-08-19
+
+* **Bug** `Guid.Empty` being incremented. [Solution](https://github.com/nbuilder/nbuilder/pull/93) was to disable NBuilder's property name for static or read-only fields. Thanks to [Dominic Hemken](https://github.com/DHemken97) for the PR.
+* **Bug** `CreateListOfSize` had undefined behavior when called from the static `Builder` and executed on multiple threads at the same time. While the future of NBulider will be to remove the static builder, it's a defect in the current implementation. Thanks to [Ovidiu Rădoi](https://github.com/oviradoi) for the PR.
+
 # 6.0.0 - 2018-07-07
 
 * **Breaking Change:** `WithConstructor` 

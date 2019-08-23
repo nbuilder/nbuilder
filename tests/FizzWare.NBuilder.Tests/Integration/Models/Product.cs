@@ -10,13 +10,7 @@ namespace FizzWare.NBuilder.Tests.Integration.Models
         {
             Categories = new List<Category>();
         }
-
-        public Product(string title)
-            : this()
-        {
-            Title = title;
-        }
-
+        
         public int Id { get; set; }
 
         

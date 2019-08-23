@@ -3,15 +3,13 @@ namespace FizzWare.NBuilder.Tests.Integration.Models
     
     public class BasketItem
     {
-        int Id { get; set; }
+        public ShoppingBasket Basket { get; }
 
-        public virtual ShoppingBasket Basket { get; set; }
+        public Product Product { get; }
 
-        public virtual Product Product { get; set; }
+        public int Quantity { get; }
 
-        public int Quantity { get; set; }
-
-        public BasketItem(ShoppingBasket basket)
+        private BasketItem(ShoppingBasket basket)
         {
             Basket = basket;
         }
@@ -23,29 +21,11 @@ namespace FizzWare.NBuilder.Tests.Integration.Models
             Quantity = quantity;
         }
 
-        public decimal PriceBeforeTax
-        {
-            get
-            {
-                return Product.PriceBeforeTax * Quantity;
-            }
-        }
+        public decimal PriceBeforeTax => Product.PriceBeforeTax * Quantity;
 
-        public decimal PriceAfterTax
-        {
-            get
-            {
-                return Product.PriceAfterTax * Quantity;
-            }
-        }
+        public decimal PriceAfterTax => Product.PriceAfterTax * Quantity;
 
-        public decimal Tax
-        {
-            get
-            {
-                return Product.Tax * Quantity;
-            }
-        }
+        public decimal Tax => Product.Tax * Quantity;
 
         public string DiscountCode { get; set; }
     }
