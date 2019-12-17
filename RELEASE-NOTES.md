@@ -1,9 +1,19 @@
-﻿# 6.0.1 - 2018-08-19
+﻿# Release Notes
+
+## 6.1.0 - 2019-12-17
+
+[Doug Murphy](https://github.com/Doug-Murphy) has added a couple of PR's to nbuilder.
+
+* **Bug:** [Random generation of enums never includes the last enum value](https://github.com/nbuilder/nbuilder/issues/79).
+
+* **Feature:** Add support for IPv6 addresses and MAC addresses to the `GetRandom` static class which is used to generate random, properly formatted values for specific property types.
+
+## 6.0.1 - 2018-08-19
 
 * **Bug** `Guid.Empty` being incremented. [Solution](https://github.com/nbuilder/nbuilder/pull/93) was to disable NBuilder's property name for static or read-only fields. Thanks to [Dominic Hemken](https://github.com/DHemken97) for the PR.
 * **Bug** `CreateListOfSize` had undefined behavior when called from the static `Builder` and executed on multiple threads at the same time. While the future of NBulider will be to remove the static builder, it's a defect in the current implementation. Thanks to [Ovidiu Rădoi](https://github.com/oviradoi) for the PR.
 
-# 6.0.0 - 2018-07-07
+## 6.0.0 - 2018-07-07
 
 * **Breaking Change:** `WithConstructor` 
   * No longer takes an `Expression<Func<T>>`. 
@@ -39,7 +49,7 @@ var results = new Builder()
 * **Bug:** Lost strong name when porting to .NET Standard.
 * **Bug:** Non-deterministic behavior when calling `TheLast` multiple times for the same range.
 
-# 5.1.0 - 2018-05-15
+## 5.1.0 - 2018-05-15
 
 * Added support for disabling property naming via an interface:
 
@@ -68,33 +78,33 @@ When writing tests for the db layer, it is useful to disable the autoassignment 
 
 
 
-# 5.0.0 - 2017-08-08
+## 5.0.0 - 2017-08-08
 
 * Dropped support for .NET 3.5
 * Added support for .NET Standard 1.6
 
 
-# 4.0.0 - 2016-11-28
+## 4.0.0 - 2016-11-28
 
 This is a catch-up release of cumulative changes to NBuilder that have accrued since the last offical release in 2011.
 As it's been 5 years since the last official release, it's hard to know everthing that's changed.
 
 
-## Breaking changes
+### Breaking changes
 
 
-### Obsolete methods have been removed. 
+#### Obsolete methods have been removed. 
 
 Any method previously marked with the `Obsolete` attribute has now been removed.
 
-### Silverlight No Longer Supported
+#### Silverlight No Longer Supported
 
 As Silverlight is effective a dead technology, we have officially ended support for it. This will allow us to better focus on
 a  forthcoming release with .NET Core support.
 
-## New Features
+### New Features
 
-### `Builder` has a non-static implementation.
+#### `Builder` has a non-static implementation.
 
 This will allow you to create customized `BuilderSettings` for different testing scenarios.
 
@@ -110,7 +120,7 @@ This will allow you to create customized `BuilderSettings` for different testing
     var results = new Builder(settings).CreateListOfSize<MyObject>(10).Build();
 ```
 
-### `With` and `Do` action now supports a signature that receives an index 
+#### `With` and `Do` action now supports a signature that receives an index 
 
 ***Example***
 
@@ -125,7 +135,7 @@ This will allow you to create customized `BuilderSettings` for different testing
 
 ```
 
-## Bug Fixes
+### Bug Fixes
 
 * The decimal separator was wrong for some cultures.
 * Random number generation of decimals was sometimes incorrect.

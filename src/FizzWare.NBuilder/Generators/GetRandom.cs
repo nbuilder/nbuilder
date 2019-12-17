@@ -368,9 +368,32 @@ namespace FizzWare.NBuilder.Generators
             return string.Format("{0}.{1}.com", String(5, false), String(10, false));
         }
 
+        /// <summary>
+        /// Generate a random IPv4 Address
+        /// </summary>
+        /// <returns></returns>
         public static string IpAddress()
         {
             return $"{PositiveInt(255)}.{PositiveInt(255)}.{PositiveInt(255)}.{PositiveInt(255)}";
+        }
+
+        /// <summary>
+        /// Generate a random IPv6 Address
+        /// </summary>
+        /// <returns></returns>
+        public static string IpAddressV6()
+        {
+            return $"{PositiveShort(16):X}{PositiveShort(16):X}{PositiveShort(16):X}{PositiveShort(16):X}:{PositiveShort(16):X}{PositiveShort(16):X}{PositiveShort(16):X}{PositiveShort(16):X}:{PositiveShort(16):X}{PositiveShort(16):X}{PositiveShort(16):X}{PositiveShort(16):X}:{PositiveShort(16):X}{PositiveShort(16):X}{PositiveShort(16):X}{PositiveShort(16):X}:{PositiveShort(16):X}{PositiveShort(16):X}{PositiveShort(16):X}{PositiveShort(16):X}:{PositiveShort(16):X}{PositiveShort(16):X}{PositiveShort(16):X}{PositiveShort(16):X}:{PositiveShort(16):X}{PositiveShort(16):X}{PositiveShort(16):X}{PositiveShort(16):X}:{PositiveShort(16):X}{PositiveShort(16):X}{PositiveShort(16):X}{PositiveShort(16):X}";
+        }
+
+        /// <summary>
+        /// Generate a random MAC address.
+        /// </summary>
+        /// <param name="separator">Optional to override the default separator from - used in IEEE 802</param>
+        /// <returns></returns>
+        public static string MacAddress(string separator = "-")
+        {
+            return $"{PositiveShort(16):X}{PositiveShort(16):X}{separator}{PositiveShort(16):X}{PositiveShort(16):X}{separator}{PositiveShort(16):X}{PositiveShort(16):X}{separator}{PositiveShort(16):X}{PositiveShort(16):X}{separator}{PositiveShort(16):X}{PositiveShort(16):X}{separator}{PositiveShort(16):X}{PositiveShort(16):X}";
         }
 
         public static T Enumeration<T>() where T : struct
@@ -395,7 +418,7 @@ namespace FizzWare.NBuilder.Generators
                 throw new ArgumentException(string.Format("{0} is not an enum type.", type.FullName), "type");
             }
             var values = EnumHelper.GetValues(type);
-            var index = PositiveInt(values.Length - 1);
+            var index = PositiveInt(values.Length);
             return (Enum)values.GetValue(index);
         }   
     }
