@@ -331,6 +331,21 @@ namespace FizzWare.NBuilder.Tests.Unit
             expected.ShouldAllBe(e => actual.Contains(e));
         }
 
+        [Fact]
+        public void GenerateRandomEnumUsingType_ShouldIncludeAllEnumValues()
+        {
+            var expected = Enum.GetValues(typeof(StatusType)).Cast<StatusType>().ToList();
+            var actual = new List<Enum>();
+
+            for (var i = 0; i < 100000; i++)
+            {
+                var statusType = GetRandom.Enumeration(typeof(StatusType));
+                actual.Add(statusType);
+            }
+
+            expected.ShouldAllBe(e => actual.Contains(e));
+        }
+
         [Theory]
         [InlineData(4, 5)]
         [InlineData(16, 20)]

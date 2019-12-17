@@ -395,7 +395,7 @@ namespace FizzWare.NBuilder.Generators
                 throw new ArgumentException(string.Format("{0} is not an enum type.", type.FullName), "type");
             }
             var values = EnumHelper.GetValues(type);
-            var index = PositiveInt(values.Length - 1);
+            var index = PositiveInt(values.Length);
             return (Enum)values.GetValue(index);
         }   
     }
