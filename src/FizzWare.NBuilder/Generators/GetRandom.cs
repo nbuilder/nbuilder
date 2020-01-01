@@ -207,12 +207,12 @@ namespace FizzWare.NBuilder.Generators
 
         public static string FirstName()
         {
-            return firstNames[generator.Next(0, firstNames.Length - 1)];
+            return firstNames[generator.Next(0, firstNames.Length)];
         }
 
         public static string LastName()
         {
-            return lastNames[generator.Next(0, lastNames.Length - 1)];
+            return lastNames[generator.Next(0, lastNames.Length)];
         }
 
         public static string Phrase(int length)
@@ -328,7 +328,7 @@ namespace FizzWare.NBuilder.Generators
 
             public static string County()
             {
-                return _counties[generator.Next(0, _counties.Length - 1)];
+                return _counties[generator.Next(0, _counties.Length)];
             }
         }
 
@@ -380,7 +380,7 @@ namespace FizzWare.NBuilder.Generators
             /// </summary>
             public static string State()
             {
-                return states[generator.Next(0, states.Length - 1)];
+                return states[generator.Next(0, states.Length)];
             }
 
             /// <summary>
