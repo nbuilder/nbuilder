@@ -59,7 +59,7 @@ namespace FizzWare.NBuilder.PropertyNaming
             return currentValue;
         }
 
-        protected static Type GetMemberType(MemberInfo memberInfo)
+        protected static Type GetMemberType(MemberInfo memberInfo, bool maintainNullability = false)
         {
             Type type = null;
 
@@ -72,8 +72,7 @@ namespace FizzWare.NBuilder.PropertyNaming
             {
                 type = ((PropertyInfo)memberInfo).PropertyType;
             }
-
-            if (type != null && IsNullableType(type))
+            if (type != null && !maintainNullability && IsNullableType(type))
             {
                 type = Nullable.GetUnderlyingType(type);
             }
@@ -160,9 +159,15 @@ namespace FizzWare.NBuilder.PropertyNaming
             return false;
         }
 
+        protected virtual bool ShouldMaintainNullForProperty(MemberInfo memberInfo)
+        {
+            return memberInfo is PropertyInfo propertyInfo && BuilderSettings.ShouldBuildNullableTypeAsNull(propertyInfo);
+        }
+
         protected virtual void SetMemberValue<T>(MemberInfo memberInfo, T obj)
         {
-            Type type = GetMemberType(memberInfo);
+            var maintainNullForProperty = BuilderSettings.IsBuildingAllNullablePropertiesAsNull || ShouldMaintainNullForProperty(memberInfo);
+            Type type = GetMemberType(memberInfo, maintainNullForProperty);
 
             if (BuilderSettings.HasDisabledAutoNameProperties && ShouldIgnore(memberInfo))
                 return;
@@ -173,8 +178,12 @@ namespace FizzWare.NBuilder.PropertyNaming
                 return;
 
             object value = null;
+            if (maintainNullForProperty && IsNullableType(type))
+            {
+                SetValue(memberInfo, obj, value);
+            }
 
-            if (type == typeof(short))
+            else if (type == typeof(short))
             {
                 value = GetInt16(memberInfo);
             }
