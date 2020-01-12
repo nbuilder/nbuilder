@@ -187,7 +187,7 @@ namespace FizzWare.NBuilder
             var done = false;
             while (!done)
             {
-                var word = latinWords[Next(0, count - 1)];
+                var word = latinWords[Next(0, count)];
                 if (result.Length + word.Length + 1 > length)
                 {
                     done = true;

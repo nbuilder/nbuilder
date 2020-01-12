@@ -27,7 +27,7 @@ namespace FizzWare.NBuilder.Generators
             var sb = new StringBuilder(length);
             for (var i = 0; i < length; i++)
             {
-                sb.Append(generator.Next(0, 9).ToString());
+                sb.Append(generator.Next(0, 10).ToString());
             }
             return sb.ToString();
         }
