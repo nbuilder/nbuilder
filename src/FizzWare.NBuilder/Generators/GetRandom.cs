@@ -432,7 +432,7 @@ namespace FizzWare.NBuilder.Generators
         }
 
         /// <summary>
-        /// This class can randomly generated data specifically for the United Kingdom.
+        /// This class can randomly generate data specifically for the United Kingdom.
         /// </summary>
         public static class UK
         {
@@ -514,7 +514,7 @@ namespace FizzWare.NBuilder.Generators
         }
 
         /// <summary>
-        /// This class can randomly generated data specifically for the United States.
+        /// This class can randomly generate data specifically for the United States.
         /// </summary>
         public static class Usa
         {
