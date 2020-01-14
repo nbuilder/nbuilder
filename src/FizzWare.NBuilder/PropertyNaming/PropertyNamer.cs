@@ -98,7 +98,7 @@ namespace FizzWare.NBuilder.PropertyNaming
                     break;
                 case PropertyInfo info:
                     {
-                        if (info.CanWrite)
+                        if (info.GetSetMethod() != null)
                             info.SetValue(obj, value, null);
                         break;
                     }
