@@ -11,6 +11,7 @@ namespace FizzWare.NBuilder
     // Resharper incorrectly advises that the typecasts are redundant
 
     // ReSharper disable RedundantCast
+    [Obsolete("RandomGenerator will be removed in a future release. Please instead use the GetRandom static class from NBuilder instead.")]
     public class RandomGenerator : IRandomGenerator
     {
         private readonly Random rnd;
