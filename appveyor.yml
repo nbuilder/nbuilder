@@ -65,12 +65,13 @@
   artifacts:
   - path: NBuilder*.nupkg
     name: nuget-package
+  - path: '**\*.snupkg'
+    name: nuget-symbols
 
   deploy:
     provider: NuGet
     api_key:
       secure: ZW7B2bmgmhp70X5h/WIB3dIcKuo5Tkb1+1gLfviPTEodYsk0lZ69rSy8y7bZ8KgU
-    artifact: nuget-package
 
   before_build:
     - ps: |  
@@ -115,12 +116,13 @@
   artifacts:
   - path: NBuilder*.nupkg
     name: nuget-package
+  - path: '**\*.snupkg'
+    name: nuget-symbols
 
   deploy:
     provider: NuGet
     api_key:
       secure: ZW7B2bmgmhp70X5h/WIB3dIcKuo5Tkb1+1gLfviPTEodYsk0lZ69rSy8y7bZ8KgU
-    artifact: nuget-package
 
   before_build:
     - ps: |  
