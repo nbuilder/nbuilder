@@ -51,7 +51,7 @@ namespace FizzWare.NBuilder.Extensions
             }
             else if (m is PropertyInfo)
             {
-                if (((PropertyInfo)m).CanWrite)
+                if (((PropertyInfo)m).GetSetMethod() != null)
                 {
                     ((PropertyInfo)m).SetValue(instance, value, null);
                 }
