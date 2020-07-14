@@ -6,21 +6,14 @@ using FizzWare.NBuilder.PropertyNaming;
 
 namespace FizzWare.NBuilder
 {
+    [Obsolete("Support for the static BuilderSetup will be removed in a future major version. Please migrate to instance-based builders.")]
     public static class BuilderSetup
     {
         internal static readonly BuilderSettings Instance =new BuilderSettings();
         public static bool IsBuildingAllNullablePropertiesAsNull => Instance.IsBuildingAllNullablePropertiesAsNull;
         public static bool AutoNameProperties => Instance.AutoNameProperties;
-        //{
-        //    get { return Instance.AutoNameProperties; }
-        //    set { Instance.AutoNameProperties = value; }
-        //}
 
         public static bool HasDisabledAutoNameProperties => Instance.HasDisabledAutoNameProperties;
-        //{
-        //    get { return Instance.HasDisabledAutoNameProperties;  }
-        //    set { Instance.HasDisabledAutoNameProperties = value; }
-        //}
 
         public static bool ShouldIgnoreProperty(PropertyInfo info)
         {
@@ -75,16 +68,16 @@ namespace FizzWare.NBuilder
         /// <summary>
         /// Set the builder to build all properties that are nullable value types as null instead of the non-null equivalent type's default value.
         /// </summary>
-        public static void BuildAllNullablePropertiesAsNull()
+        public static void UseNullAsDefaultValueForAllNullableTypes()
         {
-            Instance.IsBuildingAllNullablePropertiesAsNull = true;
+            Instance.UseNullAsDefaultValueForAllNullableTypes();
         }
 
         /// <summary>
         /// Specify any nullable value types that should be set to null when building instead of the non-null equivalent's default value.
         /// </summary>
         /// <param name="types">The nullable value types that you wish to leave as null when building.</param>
-        public static void BuildNullablePropertiesAsNullForType(params Type[] types)
+        public static void UseNullAsDefaultValueForNullableType(params Type[] types)
         {
             foreach (Type type in types)
             {
@@ -92,7 +85,7 @@ namespace FizzWare.NBuilder
                 {
                     throw new ArgumentException($"{type} is not a nullable type.");
                 }
-                Instance.BuildNullableTypeAsNull(type);
+                Instance.UseNullAsDefaultValueForNullableType(type);
             }
         }
 

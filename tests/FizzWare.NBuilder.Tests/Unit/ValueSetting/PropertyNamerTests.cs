@@ -60,7 +60,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         public void SetValuesOf_BuildAllNullablePropertiesAsNull_DoesntSetTheValueOfNullableProperty()
         {
             BuilderSettings builderSettings = new BuilderSettings();
-            BuilderSetup.BuildAllNullablePropertiesAsNull();
+            BuilderSetup.UseNullAsDefaultValueForAllNullableTypes();
             IReflectionUtil reflectionUtil = Substitute.For<IReflectionUtil>();
             propertyNamer = new PropertyNamerStub(reflectionUtil, builderSettings);
 
@@ -78,7 +78,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         public void SetValuesOf_BuildNullablePropertiesAsNullForTypeWithInt_DoesntSetTheValueOfNullableProperty()
         {
             BuilderSettings builderSettings = new BuilderSettings();
-            BuilderSetup.BuildNullablePropertiesAsNullForType(typeof(int?));
+            BuilderSetup.UseNullAsDefaultValueForNullableType(typeof(int?));
             IReflectionUtil reflectionUtil = Substitute.For<IReflectionUtil>();
             propertyNamer = new PropertyNamerStub(reflectionUtil, builderSettings);
 
@@ -95,7 +95,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         public void SetValuesOf_BuildNullablePropertiesAsNullForTypeWithIntAndGuid_DoesntSetTheValueOfNullableProperty()
         {
             BuilderSettings builderSettings = new BuilderSettings();
-            BuilderSetup.BuildNullablePropertiesAsNullForType(typeof(int?), typeof(Guid?));
+            BuilderSetup.UseNullAsDefaultValueForNullableType(typeof(int?), typeof(Guid?));
             IReflectionUtil reflectionUtil = Substitute.For<IReflectionUtil>();
             propertyNamer = new PropertyNamerStub(reflectionUtil, builderSettings);
 
