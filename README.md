@@ -74,6 +74,20 @@ This will create a category tree and by supplying a naming method, will even nam
 
 NBuilder is highly configurable. Through the BuilderSetup class you can control how NBuilder names objects and disable naming for certain properties of certain types.
 
+##### Nullable Value Types
+
+By default, NBuilder will build nullable value types using their non-null equivalent type's default value. Ex: `public int? Foo { get; set; }` will be built as `1` instead of `null`. This can be overriden based on the specific nullable value type, or for all nullable value types.
+
+```c#
+//Set all nullable value types to be built as null
+BuilderSetup.BuildAllNullablePropertiesAsNull();
+```
+
+```c#
+//Specify only specific nullable value types to be built as null
+BuilderSetup.BuildNullablePropertiesAsNullForType(typeof(Guid?), typeof(int?), typeof(double?), typeof(decimal?), typeof(short?));
+```
+
 ##### Custom persistence service
 
 Easily add your own custom persistence service, allowing you to use any `ORM`.
