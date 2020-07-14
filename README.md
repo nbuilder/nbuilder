@@ -80,12 +80,16 @@ By default, NBuilder will build nullable value types using their non-null equiva
 
 ```c#
 //Set all nullable value types to be built as null
-BuilderSetup.BuildAllNullablePropertiesAsNull();
+var settings = new BuilderSettings();
+settings.UseNullAsDefaultValueForAllNullableTypes();
+var builder = new Builder(settings);
 ```
 
 ```c#
 //Specify only specific nullable value types to be built as null
-BuilderSetup.BuildNullablePropertiesAsNullForType(typeof(Guid?), typeof(int?), typeof(double?), typeof(decimal?), typeof(short?));
+var settings = new BuilderSettings();
+settings.UseNullAsDefaultValueForNullableType(typeof(Guid?), typeof(int?), typeof(double?), typeof(decimal?), typeof(short?));
+var builder = new Builder(settings);
 ```
 
 ##### Custom persistence service

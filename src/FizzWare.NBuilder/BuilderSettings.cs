@@ -18,7 +18,13 @@ namespace FizzWare.NBuilder
         private IPropertyNamer defaultPropertyNamer;
 
         private List<PropertyInfo> disabledAutoNameProperties;
-        public bool IsBuildingAllNullablePropertiesAsNull { get; internal set; }
+        internal bool IsBuildingAllNullablePropertiesAsNull { get; set; }
+
+        public void UseNullAsDefaultValueForAllNullableTypes()
+        {
+            this.IsBuildingAllNullablePropertiesAsNull = true;
+        }
+
         private List<Type> nullableTypesToBuildAsNull;
 
         internal  bool HasDisabledAutoNameProperties;
@@ -86,7 +92,7 @@ namespace FizzWare.NBuilder
             DisablePropertyNamingFor(propertyInfo);
         }
 
-        internal void BuildNullableTypeAsNull(Type type)
+        public void UseNullAsDefaultValueForNullableType(Type type)
         {
             nullableTypesToBuildAsNull.Add(type);
         }
