@@ -26,16 +26,6 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
 
         [Fact]
-        public void SetValuesOf_GivenObjectWithNullableProperty_SetsTheValueOfTheProperty()
-        {
-            MyClass mc = new MyClass { NullableInt = null };
-
-            propertyNamer.SetValuesOf(mc);
-
-            mc.NullableInt.HasValue.ShouldBeTrue();
-        }
-
-        [Fact]
         public void SetValuesOf_ClassWithNullCharConst_CharConstantIsNotSetByNamer()
         {
             MyClassWithCharConst mc = new MyClassWithCharConst();
@@ -54,59 +44,6 @@ namespace FizzWare.NBuilder.Tests.Unit
             propertyNamer.SetValuesOf(myClass);
 
             myClass.IsSet.ShouldBeFalse();
-        }
-
-        [Fact]
-        public void SetValuesOf_BuildAllNullablePropertiesAsNull_DoesntSetTheValueOfNullableProperty()
-        {
-            BuilderSettings builderSettings = new BuilderSettings();
-            BuilderSetup.UseNullAsDefaultValueForAllNullableTypes();
-            IReflectionUtil reflectionUtil = Substitute.For<IReflectionUtil>();
-            propertyNamer = new PropertyNamerStub(reflectionUtil, builderSettings);
-
-            MyClass mc = new MyClass { NullableInt = null };
-            
-            propertyNamer.SetValuesOf(mc);
-
-            mc.NullableGuid.HasValue.ShouldBeFalse();
-            mc.NullableInt.HasValue.ShouldBeFalse();
-
-            BuilderSetup.ResetToDefaults();
-        }
-
-        [Fact]
-        public void SetValuesOf_BuildNullablePropertiesAsNullForTypeWithInt_DoesntSetTheValueOfNullableProperty()
-        {
-            BuilderSettings builderSettings = new BuilderSettings();
-            BuilderSetup.UseNullAsDefaultValueForNullableType(typeof(int?));
-            IReflectionUtil reflectionUtil = Substitute.For<IReflectionUtil>();
-            propertyNamer = new PropertyNamerStub(reflectionUtil, builderSettings);
-
-            MyClass mc = new MyClass { NullableInt = null };
-
-            propertyNamer.SetValuesOf(mc);
-
-            mc.NullableInt.HasValue.ShouldBeFalse();
-
-            BuilderSetup.ResetToDefaults();
-        }
-
-        [Fact]
-        public void SetValuesOf_BuildNullablePropertiesAsNullForTypeWithIntAndGuid_DoesntSetTheValueOfNullableProperty()
-        {
-            BuilderSettings builderSettings = new BuilderSettings();
-            BuilderSetup.UseNullAsDefaultValueForNullableType(typeof(int?), typeof(Guid?));
-            IReflectionUtil reflectionUtil = Substitute.For<IReflectionUtil>();
-            propertyNamer = new PropertyNamerStub(reflectionUtil, builderSettings);
-
-            MyClass mc = new MyClass { NullableGuid = null, NullableInt = null };
-
-            propertyNamer.SetValuesOf(mc);
-
-            mc.NullableGuid.HasValue.ShouldBeFalse();
-            mc.NullableInt.HasValue.ShouldBeFalse();
-
-            BuilderSetup.ResetToDefaults();
         }
 
         private class PropertyNamerStub : PropertyNamer
