@@ -4,7 +4,6 @@
     <TargetFrameworks>netstandard1.6;net40</TargetFrameworks>
     <AssemblyName>FizzWare.NBuilder</AssemblyName>
     <RootNamespace>FizzWare.NBuilder</RootNamespace>
-    <DocumentationFile>FizzWare.NBuilder.xml</DocumentationFile>
 
     <PackageId>NBuilder</PackageId>
     <Authors>Gareth Down and awesome contributors!</Authors>
@@ -29,6 +28,11 @@
     <DefineConstants>NET40;NETFULL</DefineConstants>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+  </PropertyGroup>
+  
   <ItemGroup>
     <Compile Remove="obj\**" />
     <EmbeddedResource Remove="obj\**" />
