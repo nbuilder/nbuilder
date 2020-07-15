@@ -350,7 +350,7 @@ namespace FizzWare.NBuilder.Generators
         /// </summary>
         public static string FirstName()
         {
-            return firstNames[generator.Next(0, firstNames.Length - 1)];
+            return firstNames[generator.Next(0, firstNames.Length)];
         }
 
         /// <summary>
@@ -358,7 +358,7 @@ namespace FizzWare.NBuilder.Generators
         /// </summary>
         public static string LastName()
         {
-            return lastNames[generator.Next(0, lastNames.Length - 1)];
+            return lastNames[generator.Next(0, lastNames.Length)];
         }
 
         /// <summary>
@@ -509,7 +509,7 @@ namespace FizzWare.NBuilder.Generators
             /// </summary>
             public static string County()
             {
-                return _counties[generator.Next(0, _counties.Length - 1)];
+                return _counties[generator.Next(0, _counties.Length)];
             }
         }
 
@@ -518,6 +518,10 @@ namespace FizzWare.NBuilder.Generators
         /// </summary>
         public static class Usa
         {
+            private static readonly string[] secondaryDesignators = { "Apt", "Bldg", "Ste", "Unit" };
+            private static readonly string[] streets = { "Elm", "Hartham Park", "Hunter Hills", "Main", "Middletown", "Oak", "Sparrowwood", "State", "Waxwing" };
+            private static readonly string[] streetSuffixes = { "Ave", "Blvd", "Cir", "Dr", "Rd", "St" };
+            private static readonly string[] cities = { "Abingdon", "Bristol", "Coeburn", "Raleigh", "Wake Forest" };
             private static readonly string[] states = { "TX", "CO", "GA", "LA", "NY", "CA" };
 
             /// <summary>
@@ -537,9 +541,52 @@ namespace FizzWare.NBuilder.Generators
                 return string.Format("{0}-{1}-{2}", NumericString(3), NumericString(2), NumericString(4));
             }
 
+            /// <summary>
+            /// Generate a random line 1 of an address for the United States.
+            /// </summary>
+            public static string AddressLine1()
+            {
+                return $"{Int(10, 9999)} {streets[generator.Next(0, streets.Length)]} {streetSuffixes[generator.Next(0, streetSuffixes.Length)]}";
+            }
+
+            /// <summary>
+            /// Generate a random line 2 of an address for the United States.
+            /// </summary>
+            public static string AddressLine2()
+            {
+                return $"{secondaryDesignators[generator.Next(0, secondaryDesignators.Length)]} {Int(10, 9999)}";
+            }
+
+            /// <summary>
+            /// Generate a random city for the United States.
+            /// </summary>
+            public static string City()
+            {
+                return cities[generator.Next(0, cities.Length)];
+            }
+
+            /// <summary>
+            /// Generate a random two-digit abbreviated state for the United States.
+            /// </summary>
             public static string State()
             {
-                return states[generator.Next(0, states.Length - 1)];
+                return states[generator.Next(0, states.Length)];
+            }
+
+            /// <summary>
+            /// Generate a 5 digit zip code for the United States.
+            /// </summary>
+            public static string ZipCodeShort()
+            {
+                return $"{NumericString(5)}";
+            }
+
+            /// <summary>
+            /// Generate a 5 digit + 4 digit zip code for the United States.
+            /// </summary>
+            public static string ZipCodeLong()
+            {
+                return $"{NumericString(5)}-{NumericString(4)}";
             }
         }
 
