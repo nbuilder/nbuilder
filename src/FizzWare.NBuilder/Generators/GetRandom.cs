@@ -345,9 +345,11 @@ namespace FizzWare.NBuilder.Generators
             return generator.Guid();
         }
 
+
         /// <summary>
         /// Generate a random first name from a pre-defined list of names.
         /// </summary>
+        [Obsolete("Use new ValueSet<string>(name1, name2...) instead.")]
         public static string FirstName()
         {
             return firstNames[generator.Next(0, firstNames.Length - 1)];
@@ -356,6 +358,7 @@ namespace FizzWare.NBuilder.Generators
         /// <summary>
         /// Generate a random last name from a pre-defined list of names.
         /// </summary>
+        [Obsolete("Use new ValueSet<string>(name1, name2...) instead.")]
         public static string LastName()
         {
             return lastNames[generator.Next(0, lastNames.Length - 1)];
@@ -365,6 +368,7 @@ namespace FizzWare.NBuilder.Generators
         /// Generate a random phrase using words from Lorem Ipsum as a string that is at most the specified length.
         /// </summary>
         /// <param name="length">The maximum length the phrase should be.</param>
+        [Obsolete("Use new ValueSet<string>(phrase1, phrase2...) instead.")]
         public static string Phrase(int length)
         {
             return generator.Phrase(length);
@@ -516,6 +520,7 @@ namespace FizzWare.NBuilder.Generators
         /// <summary>
         /// This class can randomly generate data specifically for the United States.
         /// </summary>
+        [Obsolete("Use Generators.Usa instead. For states, use ValueSet<string>()")]
         public static class Usa
         {
             private static readonly string[] states = { "TX", "CO", "GA", "LA", "NY", "CA" };
@@ -546,6 +551,7 @@ namespace FizzWare.NBuilder.Generators
         /// <summary>
         /// Generate a random e-mail address on a .com domain.
         /// </summary>
+        [Obsolete("Use Generators.Email.Random() instead.")]
         public static string Email()
         {
             return string.Format("{0}@{1}.com", String(8), String(7));
@@ -554,6 +560,7 @@ namespace FizzWare.NBuilder.Generators
         /// <summary>
         /// Generate a random website URL preceded with www.
         /// </summary>
+        [Obsolete("use Generators.Url.RandomWithWWW() instead.")]
         public static string WwwUrl()
         {
             return string.Format("www.{0}.com", String(10, false));
@@ -562,6 +569,7 @@ namespace FizzWare.NBuilder.Generators
         /// <summary>
         /// Generate a random website URL with a subdomain, but not beginning with www.
         /// </summary>
+        [Obsolete("Use Generators.Url.Random() instead.")]
         public static string Url()
         {
             return string.Format("{0}.{1}.com", String(5, false), String(10, false));
@@ -570,6 +578,7 @@ namespace FizzWare.NBuilder.Generators
         /// <summary>
         /// Generate a random IPv4 Address.
         /// </summary>
+        [Obsolete("Use Generators.IpAddress.Random() instead.")]
         public static string IpAddress()
         {
             return $"{PositiveInt(255)}.{PositiveInt(255)}.{PositiveInt(255)}.{PositiveInt(255)}";
@@ -578,6 +587,7 @@ namespace FizzWare.NBuilder.Generators
         /// <summary>
         /// Generate a random IPv6 Address.
         /// </summary>
+        [Obsolete("Use Generators.IpAddress.RandomV6() instead.")]
         public static string IpAddressV6()
         {
             return $"{PositiveShort(16):X}{PositiveShort(16):X}{PositiveShort(16):X}{PositiveShort(16):X}:{PositiveShort(16):X}{PositiveShort(16):X}{PositiveShort(16):X}{PositiveShort(16):X}:{PositiveShort(16):X}{PositiveShort(16):X}{PositiveShort(16):X}{PositiveShort(16):X}:{PositiveShort(16):X}{PositiveShort(16):X}{PositiveShort(16):X}{PositiveShort(16):X}:{PositiveShort(16):X}{PositiveShort(16):X}{PositiveShort(16):X}{PositiveShort(16):X}:{PositiveShort(16):X}{PositiveShort(16):X}{PositiveShort(16):X}{PositiveShort(16):X}:{PositiveShort(16):X}{PositiveShort(16):X}{PositiveShort(16):X}{PositiveShort(16):X}:{PositiveShort(16):X}{PositiveShort(16):X}{PositiveShort(16):X}{PositiveShort(16):X}";
@@ -587,6 +597,7 @@ namespace FizzWare.NBuilder.Generators
         /// Generate a random MAC address.
         /// </summary>
         /// <param name="separator">Optional to override the default separator from - used in IEEE 802</param>
+        [Obsolete("Use Generators.MacAddress.Random() instead.")]
         public static string MacAddress(string separator = "-")
         {
             return $"{PositiveShort(16):X}{PositiveShort(16):X}{separator}{PositiveShort(16):X}{PositiveShort(16):X}{separator}{PositiveShort(16):X}{PositiveShort(16):X}{separator}{PositiveShort(16):X}{PositiveShort(16):X}{separator}{PositiveShort(16):X}{PositiveShort(16):X}{separator}{PositiveShort(16):X}{PositiveShort(16):X}";
