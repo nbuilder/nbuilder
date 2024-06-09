@@ -192,6 +192,11 @@ namespace FizzWare.NBuilder.Tests.Unit
                 throw new NotImplementedException();
             }
 
+            public IList<T> BuildRecursive()
+            {
+                throw new NotImplementedException();
+            }
+
             public IOperable<T> All()
             {
                 throw new NotImplementedException();

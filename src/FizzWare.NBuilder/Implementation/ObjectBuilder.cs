@@ -19,6 +19,16 @@ namespace FizzWare.NBuilder.Implementation
         private Func<T> _factoryFunction;
         private Func<int, T> _indexedFactoryFunction;
         public BuilderSettings BuilderSettings { get; set; }
+
+        public ObjectBuilder()
+        {
+            BuilderSettings = new BuilderSettings
+            {
+                AutoNameProperties = true,
+            };
+            this.reflectionUtil = new ReflectionUtil();
+            propertyNamer = BuilderSettings.GetPropertyNamerFor<T>();
+        }
         public ObjectBuilder(IReflectionUtil reflectionUtil, BuilderSettings builderSettings)
         {
             BuilderSettings = builderSettings;
@@ -94,6 +104,42 @@ namespace FizzWare.NBuilder.Implementation
             return obj;
         }
 
+        public T BuildRecursive()
+        {
+            var obj = Build();
+            
+            var t = typeof(T);
+
+            foreach (var propertyInfo in t.GetProperties())
+            {
+                if (propertyInfo.GetValue(obj,null) != null)
+                 continue;
+
+                var propType = propertyInfo.PropertyType;
+
+                // Create an instance of the generic class with the specified type
+                Type genericClassType = typeof(ObjectBuilder<>);
+                Type constructedClassType = genericClassType.MakeGenericType(propType);
+
+                // Create an instance of the constructed type
+                object instance = Activator.CreateInstance(constructedClassType);
+                MethodInfo methodInfo = constructedClassType.GetTypeInfo().GetMethods().FirstOrDefault(x => x.Name == "BuildRecursive");
+                if (methodInfo == null)
+                {
+                    Console.WriteLine("Method not found.");
+                    return default(T);
+                }
+
+                // Invoke the BuildRecursive method on the instance
+                var result = methodInfo.Invoke(instance, null);
+              
+                propertyInfo.SetValue(obj, result, null);
+            }
+
+            return obj;
+        }
+        
+
         public void CallFunctions(T obj)
         {
             CallFunctions(obj, 0);
@@ -124,12 +170,17 @@ namespace FizzWare.NBuilder.Implementation
 
         public T Construct(int index)
         {
-            var requiresArgs = reflectionUtil.RequiresConstructorArgs(typeof(T));
+            var obj = Construct(index,typeof(T));
+            return (T) obj;
+        }
+        public object Construct(int index, Type objType)
+        {
+            var requiresArgs = reflectionUtil.RequiresConstructorArgs(objType);
 
-            if (typeof(T).IsInterface())
+            if (objType.IsInterface())
                 throw new TypeCreationException("Cannot build an interface");
 
-            if (typeof(T).IsAbstract())
+            if (objType.IsAbstract())
                 throw new TypeCreationException("Cannot build an abstract class");
 
             if (_factoryFunction != null)
@@ -142,29 +193,12 @@ namespace FizzWare.NBuilder.Implementation
                 return _indexedFactoryFunction.Invoke(index);
             }
 
-            //if (_indexedConstructorExpression != null)
-            //{
-            //    return _indexedConstructorExpression.Compile().Invoke(index);
-            //}
-
-            //if (_constructorExpression != null)
-            //{
-            //    return _constructorExpression.Compile().Invoke();
-            //}
-
-            //if (requiresArgs && constructorArgs != null)
-            //{
-            //    return reflectionUtil.CreateInstanceOf<T>(constructorArgs);
-            //}
-            //if (constructorArgs != null)
-            //{
-            //    return reflectionUtil.CreateInstanceOf<T>(constructorArgs);
-            //}
-
-            return reflectionUtil.CreateInstanceOf<T>();
+            
+            return  reflectionUtil.CreateInstanceOf(objType);
         }
         public T Name(T obj)
         {
+ 
             if (!BuilderSettings.AutoNameProperties)
                 return obj;
 

@@ -68,6 +68,11 @@ namespace FizzWare.NBuilder.Implementation
             return listBuilderImpl.Build();
         }
 
+        public IList<T> BuildRecursive()
+        {
+            throw new NotImplementedException();
+        }
+
         public abstract void Construct();
 
         public virtual void CallFunctions(IList<T> masterList)

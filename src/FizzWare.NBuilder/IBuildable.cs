@@ -4,5 +4,7 @@ namespace FizzWare.NBuilder
     {
         BuilderSettings BuilderSettings { get; set; }
         T Build();
+        T BuildRecursive();
+
     }
 }

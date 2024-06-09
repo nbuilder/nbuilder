@@ -211,7 +211,7 @@ namespace FizzWare.NBuilder.Tests.Unit
 
 
             {
-                reflectionUtil.CreateInstanceOf<MyClass>().Returns(myClass);
+                reflectionUtil.CreateInstanceOf(Arg.Any<Type>()).Returns(myClass);
                 propertyNamer.SetValuesOf(Arg.Any<MyClass>());
             }
 

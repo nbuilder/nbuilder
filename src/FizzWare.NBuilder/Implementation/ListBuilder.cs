@@ -86,6 +86,11 @@ namespace FizzWare.NBuilder.Implementation
             return list;
         }
 
+        public IList<T> BuildRecursive()
+        {
+            throw new NotImplementedException();
+        }
+
         public IDeclaration<T> AddDeclaration(IDeclaration<T> declaration)
         {
             this.declarations.Enqueue(declaration);
