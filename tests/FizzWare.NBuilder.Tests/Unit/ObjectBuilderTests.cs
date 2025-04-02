@@ -84,15 +84,13 @@ namespace FizzWare.NBuilder.Tests.Unit
 
 
             {
-                reflectionUtil.RequiresConstructorArgs(typeof(MyClassWithConstructor)).Returns(true);
+                reflectionUtil.RequiresConstructorArgs(typeof(MyClassWithConstructor)).Returns(false);
                 reflectionUtil.CreateInstanceOf<MyClassWithConstructor>(arg1).Returns(new MyClassWithConstructor(arg1));
             }
 
 
             {
-                myClassWithConstructorBuilder
-                        .WithFactory(() => new MyClassWithConstructor(arg1))
-                        .Construct(Arg.Any<int>());
+                myClassWithConstructorBuilder.WithFactory(() => new MyClassWithConstructor(arg1)).Construct(0);
             }
         }
 

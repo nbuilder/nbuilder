@@ -103,7 +103,7 @@ namespace FizzWare.NBuilder.Implementation
         {
             foreach (var del in functions)
             {
-                var parameterCount = del.GetMethodInfo().GetParameters().Count();
+                var parameterCount = Extensions.TypeExtensions.GetMethodInfo(del).GetParameters().Length;
                 switch (parameterCount)
                 {
                     case 1:
