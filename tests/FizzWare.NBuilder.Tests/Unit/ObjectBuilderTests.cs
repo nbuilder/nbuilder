@@ -84,7 +84,7 @@ namespace FizzWare.NBuilder.Tests.Unit
 
 
             {
-                reflectionUtil.RequiresConstructorArgs(typeof(MyClassWithConstructor)).Returns(false);
+                reflectionUtil.RequiresConstructorArgs(typeof(MyClassWithConstructor)).Returns(true);
                 reflectionUtil.CreateInstanceOf<MyClassWithConstructor>(arg1).Returns(new MyClassWithConstructor(arg1));
             }
 
