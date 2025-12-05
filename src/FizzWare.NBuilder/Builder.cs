@@ -46,11 +46,12 @@ namespace FizzWare.NBuilder
 
         public ISingleObjectBuilder<T> CreateNew<T>()
         {
-          
+
             var reflectionUtil = new ReflectionUtil();
             var propertyNamer = BuilderSettings.GetPropertyNamerFor<T>();
             return new ObjectBuilder<T>(reflectionUtil, BuilderSettings).WithPropertyNamer(propertyNamer);
         }
+
 
         public IListBuilder<T> CreateListOfSize<T>(int size)
         {

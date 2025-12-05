@@ -5,9 +5,16 @@ namespace FizzWare.NBuilder.Tests.Unit
 {
     public class BuilderTests
     {
+        public class MyMasterClass
+        {
+            public string MasterStringProperty { get; set; }
+            public MyClass SubClass { get; set; }
+
+        }
 
         public class MyClass
         {
+            public MyClass(){}
             public string StringProperty { get; set; }
         }
 
@@ -31,6 +38,18 @@ namespace FizzWare.NBuilder.Tests.Unit
             var result = builder.CreateNew<MyClass>().Build();
 
             result.StringProperty.ShouldBe(null);
+        }
+
+        [Fact]
+        public void BuilderShouldAllowSubPropertiesToBeSet()
+        {
+            var builder = new Builder();
+
+            var result = builder.CreateNew<MyMasterClass>().BuildRecursive();
+
+            result.MasterStringProperty.ShouldBe("MasterStringProperty1");
+            result.SubClass.StringProperty.ShouldBe("StringProperty1");
+
         }
     }
 }
