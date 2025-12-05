@@ -24,7 +24,7 @@ namespace FizzWare.NBuilder.Implementation
         {
             var requiresArgs = RequiresConstructorArgs(t);
             if (!requiresArgs)
-            return CreateInstanceOf(t, null);
+                return CreateInstanceOf(t, null);
 
             return CreateInstanceOf(t,BuildConstructorArgs(t));
         }
