@@ -90,9 +90,7 @@ namespace FizzWare.NBuilder.Tests.Unit
 
 
             {
-                myClassWithConstructorBuilder
-                        .WithFactory(() => new MyClassWithConstructor(arg1))
-                        .Construct(Arg.Any<int>());
+                myClassWithConstructorBuilder.WithFactory(() => new MyClassWithConstructor(arg1)).Construct(0);
             }
         }
 

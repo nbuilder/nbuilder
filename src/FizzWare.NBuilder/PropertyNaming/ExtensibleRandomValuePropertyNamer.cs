@@ -97,7 +97,7 @@ namespace FizzWare.NBuilder.PropertyNaming
             {
                 return;
             }
-            var value = handler.GetMethodInfo().GetParameters().Length == 1 ? 
+            var value = handler.Method.GetParameters().Length == 1 ?
                 handler.DynamicInvoke(memberInfo) : 
                 handler.DynamicInvoke();
             memberInfo.SetFieldOrPropertyValue(instance, value);
@@ -145,7 +145,7 @@ namespace FizzWare.NBuilder.PropertyNaming
 
         protected void NameWith(Delegate handler)
         {
-            var returnType = handler.GetMethodInfo().ReturnType;
+            var returnType = handler.Method.ReturnType;
             if (Handlers.ContainsKey(returnType))
             {
                 Handlers.Remove(returnType);

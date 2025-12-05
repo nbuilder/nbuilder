@@ -1,8 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
 using FizzWare.NBuilder.Extensions;
 using FizzWare.NBuilder.PropertyNaming;
 
@@ -103,7 +100,7 @@ namespace FizzWare.NBuilder.Implementation
         {
             foreach (var del in functions)
             {
-                var parameterCount = del.GetMethodInfo().GetParameters().Count();
+                var parameterCount = del.Method.GetParameters().Length;
                 switch (parameterCount)
                 {
                     case 1:

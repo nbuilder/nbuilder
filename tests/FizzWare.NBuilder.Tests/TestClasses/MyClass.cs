@@ -43,7 +43,7 @@ namespace FizzWare.NBuilder.Tests.TestClasses
 
         public bool Bool { get; set; }
 
-		public MyEnum EnumProperty { get; set; }
+		public MyEnum? EnumProperty { get; set; }
 
         public MyByteEnum ByteEnumProperty { get; set; }
 
