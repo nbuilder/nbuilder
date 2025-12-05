@@ -113,7 +113,7 @@ namespace FizzWare.NBuilder.Implementation
             foreach (var propertyInfo in t.GetProperties())
             {
                 if (propertyInfo.GetValue(obj,null) != null)
-                 continue;
+                    continue;
 
                 var propType = propertyInfo.PropertyType;
 
