@@ -13,7 +13,7 @@ runs:
       shell: bash
       run: |
         cd tests/FizzWare.NBuilder.Tests
-        dotnet run --no-build --configuration Debug -- --coverage --coverage-output-format cobertura
+        dotnet run --no-build -- --coverage --coverage-output-format cobertura
         
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v4
