@@ -1,0 +1,24 @@
+name: 'Run Tests with Coverage'
+description: 'Run tests using xUnit 3 with Microsoft Testing Platform and upload coverage to Codecov'
+
+inputs:
+  codecov-token:
+    description: 'Codecov token for uploading coverage'
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Run tests with code coverage
+      shell: bash
+      run: |
+        cd tests/FizzWare.NBuilder.Tests
+        dotnet run --no-build --configuration Debug -- --coverage --coverage-output-format cobertura
+        
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v4
+      with:
+        files: ./tests/FizzWare.NBuilder.Tests/TestResults/**/*.cobertura.xml
+        fail_ci_if_error: false
+      env:
+        CODECOV_TOKEN: ${{ inputs.codecov-token }}

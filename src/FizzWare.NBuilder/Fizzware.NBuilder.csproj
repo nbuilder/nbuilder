@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
     <AssemblyName>FizzWare.NBuilder</AssemblyName>
     <RootNamespace>FizzWare.NBuilder</RootNamespace>
      
@@ -19,11 +18,5 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>NBuilder.snk</AssemblyOriginatorKeyFile> 
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="obj\**" />
-    <EmbeddedResource Remove="obj\**" />
-    <None Remove="obj\**" />
-  </ItemGroup>
 
 </Project>

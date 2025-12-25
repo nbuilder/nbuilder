@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113 d17.12
+# Visual Studio Version 18
+VisualStudioVersion = 18.1.11312.151 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FC94E63F-2ACD-4E49-97FB-4EE2A7535374}"
 	ProjectSection(SolutionItems) = preProject
@@ -13,12 +13,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fizzware.NBuilder", "src\FizzWare.NBuilder\Fizzware.NBuilder.csproj", "{D7F1E34F-2976-4B83-B3C2-4EFEB665E805}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FizzWare.NBuilder.Tests", "tests\FizzWare.NBuilder.Tests\FizzWare.NBuilder.Tests.csproj", "{A697F75B-FAFE-404E-A6C0-554249ED5B52}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{FE4C4BE3-B996-488F-BE38-6CB1E9B9E890}"
-	ProjectSection(SolutionItems) = preProject
-		appveyor.yml = appveyor.yml
-		Invoke-EmulateAppVeyor.ps1 = Invoke-EmulateAppVeyor.ps1
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
