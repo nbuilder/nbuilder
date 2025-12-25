@@ -31,7 +31,7 @@ jobs:
         echo "Package version: $VERSION"
       
     - name: Setup .NET and restore
-      uses: ./.github/actions/setup-dotnet
+      uses: ./.github/actions/setup-dotnet.yml
       
     - name: Build (Release)
       run: dotnet build --no-restore --configuration ${{ env.CONFIGURATION }} /p:AssemblyVersion=${{ steps.set-version.outputs.version }} /p:ProductVersion=${{ steps.set-version.outputs.version }}
@@ -54,13 +54,13 @@ jobs:
       uses: actions/checkout@v4
       
     - name: Setup .NET and restore
-      uses: ./.github/actions/setup-dotnet
+      uses: ./.github/actions/setup-dotnet.yml
       
     - name: Build (Debug for coverage)
       run: dotnet build --no-restore --configuration Debug
       
     - name: Run tests with coverage
-      uses: ./.github/actions/test-with-coverage
+      uses: ./.github/actions/test-with-coverage.yml
       with:
         codecov-token: ${{ secrets.CODECOV_TOKEN }}
   
