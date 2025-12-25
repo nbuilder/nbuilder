@@ -245,7 +245,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         public class MyTestClassWithPrivateMembers
         {
             private string Fredbob { get; set; }
-
+            
             public string GetFredbob()
             {
                 return Fredbob;
@@ -256,6 +256,23 @@ namespace FizzWare.NBuilder.Tests.Unit
         public void DoesNotSetValueOnPrivateMembers()
         {
             var result = new Builder().CreateNew<MyTestClassWithPrivateMembers>().Build();
+            result.GetFredbob().ShouldBe(null);
+        }
+
+        public class MyTestClassWithPrivateMemberSetters
+        {
+            public string Fredbob { get; private set; }
+
+            public string GetFredbob()
+            {
+                return Fredbob;
+            }
+        }
+
+        [Fact]
+        public void DoesNotSetValueOnPrivateSetterMembers()
+        {
+            var result = new Builder().CreateNew<MyTestClassWithPrivateMemberSetters>().Build();
             result.GetFredbob().ShouldBe(null);
         }
     }

@@ -64,7 +64,7 @@ namespace FizzWare.NBuilder.PropertyNaming
 
             for (int i = 0; i < objects.Count; i++)
             {
-                foreach (var propertyInfo in type.GetProperties(FLAGS).Where(p => p.CanWrite))
+                foreach (var propertyInfo in type.GetProperties(FLAGS).Where(p => p.GetSetMethod() != null))
                 {
                     SetMemberValue(propertyInfo, objects[i]);
                 }

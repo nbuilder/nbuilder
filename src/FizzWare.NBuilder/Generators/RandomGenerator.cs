@@ -11,6 +11,7 @@ namespace FizzWare.NBuilder
     // Resharper incorrectly advises that the typecasts are redundant
 
     // ReSharper disable RedundantCast
+    [Obsolete("RandomGenerator will be removed in a future release. Please instead use the GetRandom static class from NBuilder instead.")]
     public class RandomGenerator : IRandomGenerator
     {
         private readonly Random rnd;
@@ -187,7 +188,7 @@ namespace FizzWare.NBuilder
             var done = false;
             while (!done)
             {
-                var word = latinWords[Next(0, count - 1)];
+                var word = latinWords[Next(0, count)];
                 if (result.Length + word.Length + 1 > length)
                 {
                     done = true;

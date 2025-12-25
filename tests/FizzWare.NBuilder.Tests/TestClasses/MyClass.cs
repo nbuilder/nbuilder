@@ -55,6 +55,7 @@ namespace FizzWare.NBuilder.Tests.TestClasses
 
         public static int StaticInt { get; set; }
 
+        public Guid? NullableGuid { get; set; }
         public int? NullableInt { get; set; }
 
         public int PublicFieldInt;

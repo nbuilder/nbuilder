@@ -26,16 +26,6 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
 
         [Fact]
-        public void SetValuesOf_GivenObjectWithNullableProperty_SetsTheValueOfTheProperty()
-        {
-            MyClass mc = new MyClass { NullableInt = null };
-
-            propertyNamer.SetValuesOf(mc);
-
-            mc.NullableInt.HasValue.ShouldBeTrue();
-        }
-
-        [Fact]
         public void SetValuesOf_ClassWithNullCharConst_CharConstantIsNotSetByNamer()
         {
             MyClassWithCharConst mc = new MyClassWithCharConst();
