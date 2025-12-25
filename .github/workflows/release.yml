@@ -79,6 +79,6 @@ jobs:
       run: dotnet nuget push ./artifacts/*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json --skip-duplicate
       
     - name: Publish to NuGet.org (when API key available)
-      if: secrets.NUGET_API_KEY != ''
+      if: ${{ secrets.NUGET_API_KEY != '' }}
       run: dotnet nuget push ./artifacts/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
       continue-on-error: true
