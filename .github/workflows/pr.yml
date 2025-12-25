@@ -1,7 +1,7 @@
 name: PR Build
 
 on:
-  pull_request
+  pull_request:
 
 env:
   CONFIGURATION: Release
