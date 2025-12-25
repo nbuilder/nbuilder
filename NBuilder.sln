@@ -28,9 +28,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "actions", "actions", "{062A8212-BA0E-41AA-B87B-D0EF811284B9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "setup-dotnet", "setup-dotnet", "{D82FDF08-1AF0-4047-B80F-F3A622847499}"
 	ProjectSection(SolutionItems) = preProject
-		.github\actions\setup-dotnet.yml = .github\actions\setup-dotnet.yml
-		.github\actions\test-with-coverage.yml = .github\actions\test-with-coverage.yml
+		.github\actions\setup-dotnet\action.yml = .github\actions\setup-dotnet\action.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test-with-coverage", "test-with-coverage", "{07219B71-9E4E-4E5A-8F9E-4F71777F16EC}"
+	ProjectSection(SolutionItems) = preProject
+		.github\actions\test-with-coverage\action.yml = .github\actions\test-with-coverage\action.yml
 	EndProjectSection
 EndProject
 Global
@@ -55,6 +61,8 @@ Global
 		{86E01351-3400-48AC-BA87-0AF665DEFE7C} = {FC94E63F-2ACD-4E49-97FB-4EE2A7535374}
 		{DC151B37-6845-475E-84AD-43B381062C56} = {86E01351-3400-48AC-BA87-0AF665DEFE7C}
 		{062A8212-BA0E-41AA-B87B-D0EF811284B9} = {86E01351-3400-48AC-BA87-0AF665DEFE7C}
+		{D82FDF08-1AF0-4047-B80F-F3A622847499} = {062A8212-BA0E-41AA-B87B-D0EF811284B9}
+		{07219B71-9E4E-4E5A-8F9E-4F71777F16EC} = {062A8212-BA0E-41AA-B87B-D0EF811284B9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {36BA9388-F9F6-45FD-B4C3-AA967E6B649B}
