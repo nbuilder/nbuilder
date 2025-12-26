@@ -5,6 +5,10 @@ inputs:
   codecov-token:
     description: 'Codecov token for uploading coverage'
     required: true
+  configuration:
+    description: 'Build configuration (Debug or Release)'
+    required: false
+    default: 'Debug'
 
 runs:
   using: composite
@@ -13,7 +17,7 @@ runs:
       shell: bash
       run: |
         cd tests/FizzWare.NBuilder.Tests
-        dotnet run --no-build -- --coverage --coverage-output-format cobertura
+        dotnet run --no-build --configuration ${{ inputs.configuration }} -- --coverage --coverage-output-format cobertura
         
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v4

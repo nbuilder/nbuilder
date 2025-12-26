@@ -46,6 +46,7 @@ jobs:
       uses: ./.github/actions/test-with-coverage
       with:
         codecov-token: ${{ secrets.CODECOV_TOKEN }}
+        configuration: Debug
   
   publish:
     runs-on: ubuntu-latest
