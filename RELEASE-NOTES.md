@@ -20,9 +20,9 @@ This is a major release with breaking changes, updated framework support, and mo
 * **Nullable Value Type Support:** Added ability to configure NBuilder to generate `null` values for nullable value types instead of default non-null values. Configure via `BuilderSettings`.
   ```csharp
   var settings = new BuilderSettings();
-  settings.SetCreateNullableAs<int?>(null);
+  settings.UseNullAsDefaultValueForNullableType(typeof(int?));
   // Or for all nullable value types:
-  settings.SetDefaultNullableValueTypeHandling(NullableValueTypeHandling.GenerateNulls);
+  settings.UseNullAsDefaultValueForAllNullableTypes();
   ```
 
 * **XML Documentation:** Added comprehensive XML documentation comments to the `GetRandom` class and enabled XML documentation file generation.
