@@ -110,9 +110,9 @@ namespace FizzWare.NBuilder.PropertyNaming
             return (type.IsGenericType() && type.GetGenericTypeDefinition() == typeof(Nullable<>));
         }
 
-        protected virtual void SetValue<T>(MemberInfo memberInfo, T obj, object value)
+        protected virtual void SetValue<T>(MemberInfo memberInfo, T obj, object value, bool allowNull = false)
         {
-            if (value == null) return;
+            if (value == null && !allowNull) return;
             if (!IsMutable(memberInfo)) return;
 
             switch (memberInfo)
@@ -214,9 +214,10 @@ namespace FizzWare.NBuilder.PropertyNaming
             object value = null;
             
             // If we should maintain null AND type is still nullable (because we passed maintainNullForProperty=true 
-            // to GetMemberType), then leave property as null and return early
+            // to GetMemberType), then explicitly set the property to null
             if (maintainNullForProperty && IsNullableType(type))
             {
+                SetValue(memberInfo, obj, value, allowNull: true);
                 return;
             }
 
