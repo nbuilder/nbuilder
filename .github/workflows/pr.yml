@@ -31,7 +31,6 @@ jobs:
   
   test:
     runs-on: ubuntu-latest
-    needs: build-and-pack
     
     steps:
     - name: Checkout code
