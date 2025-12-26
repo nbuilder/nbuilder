@@ -20,7 +20,7 @@ runs:
         dotnet run --no-build --configuration ${{ inputs.configuration }} -- --coverage --coverage-output-format cobertura --results-directory $GITHUB_WORKSPACE/TestResults
         
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v4
+      uses: codecov/codecov-action@v5
       with:
         directory: ./TestResults
         fail_ci_if_error: false
