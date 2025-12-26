@@ -76,7 +76,7 @@ NBuilder is highly configurable. Through the BuilderSetup class you can control 
 
 ##### Nullable Value Types
 
-By default, NBuilder will build nullable value types using their non-null equivalent type's default value. Ex: `public int? Foo { get; set; }` will be built as `1` instead of `null`. This can be overriden based on the specific nullable value type, or for all nullable value types.
+By default, NBuilder will build nullable value types using their non-null equivalent type's default value. Ex: `public int? Foo { get; set; }` will be built as `1` instead of `null`. This can be overridden based on the specific nullable value type, or for all nullable value types.
 
 ```c#
 //Set all nullable value types to be built as null
