@@ -345,21 +345,21 @@ namespace FizzWare.NBuilder.Generators
             return generator.Guid();
         }
 
-        /// <summary>
-        /// Generate a random first name from a pre-defined list of names.
-        /// </summary>
-        public static string FirstName()
-        {
-            return firstNames[generator.Next(0, firstNames.Length)];
-        }
+                /// <summary>
+                /// Generate a random first name from a pre-defined list of names.
+                /// </summary>
+                public static string FirstName()
+                {
+                    return firstNames[generator.Next(0, firstNames.Length)];
+                }
 
-        /// <summary>
-        /// Generate a random last name from a pre-defined list of names.
-        /// </summary>
-        public static string LastName()
-        {
-            return lastNames[generator.Next(0, lastNames.Length)];
-        }
+                /// <summary>
+                /// Generate a random last name from a pre-defined list of names.
+                /// </summary>
+                public static string LastName()
+                {
+                    return lastNames[generator.Next(0, lastNames.Length)];
+                }
 
         /// <summary>
         /// Generate a random phrase using words from Lorem Ipsum as a string that is at most the specified length.
@@ -509,7 +509,7 @@ namespace FizzWare.NBuilder.Generators
             /// </summary>
             public static string County()
             {
-                return _counties[generator.Next(0, _counties.Length - 1)];
+                return _counties[generator.Next(0, _counties.Length)];
             }
         }
 
