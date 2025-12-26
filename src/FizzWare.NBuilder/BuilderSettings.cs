@@ -93,6 +93,16 @@ namespace FizzWare.NBuilder
 
         public void UseNullAsDefaultValueForNullableType(Type type)
         {
+            if (type == null) throw new ArgumentNullException(nameof(type));
+
+            var typeInfo = type.GetTypeInfo();
+            if (typeInfo.IsValueType)
+            {
+                if (!typeInfo.IsGenericType || typeInfo.GetGenericTypeDefinition() != typeof(Nullable<>))
+                {
+                    throw new ArgumentException("Type must be a nullable type (Nullable<T> for value types).", nameof(type));
+                }
+            }
             nullableTypesToBuildAsNull.Add(type);
         }
 
