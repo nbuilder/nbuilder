@@ -118,8 +118,7 @@ namespace FizzWare.NBuilder
         public bool ShouldIgnoreProperty(PropertyInfo info)
         {
             return disabledAutoNameProperties.Any(x => {
-                var typeInfo = System.Reflection.IntrospectionExtensions.GetTypeInfo(x.DeclaringType); 
-                return (typeInfo.IsInterface ? typeInfo.IsAssignableFrom(info.DeclaringType) : x.DeclaringType == info.DeclaringType) &&
+                return (x.DeclaringType.IsInterface() ? x.DeclaringType.IsAssignableFrom(info.DeclaringType) : x.DeclaringType == info.DeclaringType) &&
                        x.Name == info.Name;
             });
         }
