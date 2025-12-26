@@ -1,6 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <!-- Microsoft Testing Platform v2 requires test projects to be executables (Exe) rather than libraries.
+         This is a requirement for the new test platform architecture. See: https://learn.microsoft.com/en-us/dotnet/core/testing/unit-testing-platform-intro -->
     <OutputType>Exe</OutputType>
     <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
   </PropertyGroup>
