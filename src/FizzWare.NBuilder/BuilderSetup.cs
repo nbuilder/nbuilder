@@ -83,7 +83,7 @@ namespace FizzWare.NBuilder
             {
                 if (!type.IsGenericType() || type.GetGenericTypeDefinition() != typeof(Nullable<>))
                 {
-                    throw new ArgumentException($"{type} is not a nullable type.");
+                    throw new ArgumentException($"Type '{type.FullName}' is not a nullable value type. Only nullable value types like 'int?' or 'Guid?' are allowed.");
                 }
                 Instance.UseNullAsDefaultValueForNullableType(type);
             }
