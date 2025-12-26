@@ -22,7 +22,7 @@ runs:
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v5
       with:
-        directory: ./TestResults
+        directory: $GITHUB_WORKSPACE/TestResults
         fail_ci_if_error: false
       env:
         CODECOV_TOKEN: ${{ inputs.codecov-token }}
