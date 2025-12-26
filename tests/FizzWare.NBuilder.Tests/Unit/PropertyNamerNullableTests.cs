@@ -1,10 +1,9 @@
-using System;
-using System.Collections.Generic;
 using FizzWare.NBuilder.Implementation;
 using FizzWare.NBuilder.PropertyNaming;
 using FizzWare.NBuilder.Tests.TestClasses;
-
 using Shouldly;
+using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace FizzWare.NBuilder.Tests.Unit
@@ -15,8 +14,8 @@ namespace FizzWare.NBuilder.Tests.Unit
     /// </summary>
     public class PropertyNamerNullableTests
     {
-        private BuilderSettings builderSettings;
-        private IReflectionUtil reflectionUtil;
+        private readonly BuilderSettings builderSettings;
+        private readonly IReflectionUtil reflectionUtil;
 
         public PropertyNamerNullableTests()
         {
