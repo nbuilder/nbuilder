@@ -207,20 +207,20 @@ var premiumUser = builder.CreateNew<UserProfile>
 // Result: Age = 25, Balance = 1000.00, LastLogin = null (still null)
 ```
 
-###### Disabling Null Behavior for Specific Properties
+###### Opting Out of Auto-Naming for Specific Properties
 
-If you want most nullable properties to be null but specific ones to get values, you can disable auto-naming for those properties:
+If you want most properties to follow the configured auto-naming and null behavior, but specific ones to keep their constructor/type defaults, you can disable auto-naming for those properties:
 
 ```c#
 var settings = new BuilderSettings();
 settings.UseNullAsDefaultValueForAllNullableTypes();
 
-// Disable the null behavior for a specific property
+// Exclude a specific property from auto-naming so it keeps its default value
 settings.DisablePropertyNamingFor<Order, decimal?>(x => x.ShippingCost);
 
 var builder = new Builder(settings);
 var order = builder.CreateNew<Order>().Build();
-// Result: TrackingId = null, DiscountPercent = null, ShippingCost = default(decimal) [0]
+// Result: TrackingId = null, DiscountPercent = null, ShippingCost = null (default for decimal?)
 ```
 
 ###### Summary: When to Use Each Approach
