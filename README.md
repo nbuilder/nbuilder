@@ -76,21 +76,162 @@ NBuilder is highly configurable. Through the BuilderSetup class you can control 
 
 ##### Nullable Value Types
 
-By default, NBuilder will build nullable value types using their non-null equivalent type's default value. Ex: `public int? Foo { get; set; }` will be built as `1` instead of `null`. This can be overridden based on the specific nullable value type, or for all nullable value types.
+NBuilder provides flexible control over how nullable value types are handled during test data generation. Understanding and controlling this behavior is crucial for creating realistic test scenarios.
+
+###### Default Behavior (Nullable Properties Get Values)
+
+By default, NBuilder will populate nullable value types with actual values (not null), using the same generators as their non-nullable counterparts.
 
 ```c#
-//Set all nullable value types to be built as null
+public class Product
+{
+    public int Id { get; set; }
+    public int? Rating { get; set; }        // Will be set to 1, 2, 3, etc.
+    public Guid? SessionId { get; set; }    // Will be set to a generated Guid
+    public decimal? Discount { get; set; }  // Will be set to 1, 2, 3, etc.
+}
+
+// Default behavior - all properties get values
+var product = Builder<Product>.CreateNew().Build();
+// Result: Rating = 1, SessionId = [some-guid], Discount = 1
+```
+
+**Why this is useful:**
+- Most of the time, you want populated objects for testing
+- Avoids null reference exceptions in your tests
+- Creates more realistic test data
+
+###### Setting All Nullable Types to Null
+
+Sometimes you need to test null-handling scenarios. You can configure NBuilder to set all nullable properties to null:
+
+```c#
+public class UserProfile
+{
+    public string Username { get; set; }     // Always gets a value
+    public int? Age { get; set; }            // Will be null
+    public DateTime? LastLogin { get; set; } // Will be null
+    public decimal? Balance { get; set; }    // Will be null
+}
+
+// Set all nullable value types to null
 var settings = new BuilderSettings();
 settings.UseNullAsDefaultValueForAllNullableTypes();
 var builder = new Builder(settings);
+
+var profile = builder.CreateNew<UserProfile>().Build();
+// Result: Age = null, LastLogin = null, Balance = null
 ```
 
+**When to use this:**
+- Testing null-handling logic in your application
+- Verifying default values are applied correctly
+- Testing optional fields in forms or APIs
+- Simulating incomplete data scenarios
+
+###### Setting Specific Nullable Types to Null
+
+For more granular control, you can specify which nullable types should be null while others get values:
+
 ```c#
-//Specify only specific nullable value types to be built as null
+public class Order
+{
+    public int OrderId { get; set; }
+    public Guid? TrackingId { get; set; }      // Will be null
+    public int? DiscountPercent { get; set; }  // Will be null
+    public decimal? ShippingCost { get; set; } // Will get a value
+    public DateTime? DeliveredAt { get; set; } // Will get a value
+}
+
+// Only specific nullable types are set to null
 var settings = new BuilderSettings();
-settings.UseNullAsDefaultValueForNullableType(typeof(Guid?), typeof(int?), typeof(double?), typeof(decimal?), typeof(short?));
+settings.UseNullAsDefaultValueForNullableType(typeof(Guid?), typeof(int?));
 var builder = new Builder(settings);
+
+var order = builder.CreateNew<Order>().Build();
+// Result: TrackingId = null, DiscountPercent = null, ShippingCost = 1, DeliveredAt = [some-date]
 ```
+
+**When to use this:**
+- Testing mixed scenarios (some nulls, some values)
+- Simulating optional vs. required fields
+- Testing business rules that depend on specific nullable fields
+
+###### Practical Example: Testing Null-Safe Code
+
+```c#
+public class PricingService
+{
+    public decimal CalculateTotal(Order order)
+    {
+        var subtotal = order.Subtotal;
+        var shipping = order.ShippingCost ?? 0m;  // Null-coalescing
+        var discount = order.DiscountPercent.HasValue 
+            ? subtotal * (order.DiscountPercent.Value / 100m) 
+            : 0m;
+        
+        return subtotal + shipping - discount;
+    }
+}
+
+// Test with nulls to ensure null-safe logic works
+var settings = new BuilderSettings();
+settings.UseNullAsDefaultValueForNullableType(typeof(decimal?), typeof(int?));
+var builder = new Builder(settings);
+
+var orders = builder.CreateListOfSize<Order>(100).Build();
+// All orders have ShippingCost = null and DiscountPercent = null
+
+var service = new PricingService();
+foreach (var order in orders)
+{
+    var total = service.CalculateTotal(order); // Should not throw NullReferenceException
+    Assert.IsTrue(total >= 0);
+}
+```
+
+###### Combining with Property-Specific Overrides
+
+You can still override individual properties even when using global nullable settings:
+
+```c#
+var settings = new BuilderSettings();
+settings.UseNullAsDefaultValueForAllNullableTypes();
+var builder = new Builder(settings);
+
+// Most nullable properties will be null, but we override specific ones
+var premiumUser = builder.CreateNew<UserProfile>
+    .With(x => x.Age = 25)              // Override to set a value
+    .With(x => x.Balance = 1000.00m)    // Override to set a value
+    .Build();
+// Result: Age = 25, Balance = 1000.00, LastLogin = null (still null)
+```
+
+###### Disabling Null Behavior for Specific Properties
+
+If you want most nullable properties to be null but specific ones to get values, you can disable auto-naming for those properties:
+
+```c#
+var settings = new BuilderSettings();
+settings.UseNullAsDefaultValueForAllNullableTypes();
+
+// Disable the null behavior for a specific property
+settings.DisablePropertyNamingFor<Order, decimal?>(x => x.ShippingCost);
+
+var builder = new Builder(settings);
+var order = builder.CreateNew<Order>().Build();
+// Result: TrackingId = null, DiscountPercent = null, ShippingCost = default(decimal) [0]
+```
+
+###### Summary: When to Use Each Approach
+
+| Scenario | Approach |
+|----------|----------|
+| General testing with realistic data | Default behavior (nullable properties get values) |
+| Testing null-handling logic | `UseNullAsDefaultValueForAllNullableTypes()` |
+| Testing optional fields in business logic | `UseNullAsDefaultValueForNullableType(...)` for specific types |
+| Testing incomplete/partial data | Mix of global and property-specific overrides |
+| Performance testing with sparse data | `UseNullAsDefaultValueForAllNullableTypes()` |
 
 ##### Custom persistence service
 
