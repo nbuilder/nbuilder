@@ -22,7 +22,7 @@ runs:
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v4
       with:
-        files: ./tests/FizzWare.NBuilder.Tests/TestResults/**/*.cobertura.xml
+        directory: ./tests/FizzWare.NBuilder.Tests/TestResults
         fail_ci_if_error: false
       env:
         CODECOV_TOKEN: ${{ inputs.codecov-token }}
