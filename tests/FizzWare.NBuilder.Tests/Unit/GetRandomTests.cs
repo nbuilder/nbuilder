@@ -108,11 +108,12 @@ namespace FizzWare.NBuilder.Tests.Unit
                 generatedNames.Add(GetRandom.FirstName());
             }
 
-            // Assert - verify we can generate a very diverse set of names (at least 390 of 400)
-            // This statistically ensures the fix is working. With 1M attempts and 400 items,
-            // we should see almost all of them. The exact count may vary due to randomness.
-            Assert.True(generatedNames.Count >= 390, 
-                $"Expected at least 390 unique first names but got {generatedNames.Count}. " +
+            // Assert - verify we can generate a very diverse set of names
+            // With 1M attempts and 400 items, we expect to see at least 390 unique names (97.5%)
+            // This statistically ensures the fix is working and boundary elements are accessible
+            var expectedMinimumUniqueNames = 390; // 97.5% coverage threshold
+            Assert.True(generatedNames.Count >= expectedMinimumUniqueNames, 
+                $"Expected at least {expectedMinimumUniqueNames} unique first names but got {generatedNames.Count}. " +
                 "This may indicate the last name(s) in the array cannot be generated.");
         }
 
@@ -133,10 +134,12 @@ namespace FizzWare.NBuilder.Tests.Unit
                 generatedNames.Add(GetRandom.LastName());
             }
 
-            // Assert - verify we can generate all 100 last names
-            // With 200K attempts and 100 items, we should reliably see all of them
-            Assert.True(generatedNames.Count >= 98, 
-                $"Expected at least 98 unique last names but got {generatedNames.Count}. " +
+            // Assert - verify we can generate a very diverse set of names
+            // With 200K attempts and 100 items, we expect to see at least 98 unique names (98% coverage)
+            // This statistically ensures the fix is working and boundary elements are accessible
+            var expectedMinimumUniqueNames = 98; // 98% coverage threshold
+            Assert.True(generatedNames.Count >= expectedMinimumUniqueNames, 
+                $"Expected at least {expectedMinimumUniqueNames} unique last names but got {generatedNames.Count}. " +
                 "This may indicate the last name(s) in the array cannot be generated.");
         }
     }
