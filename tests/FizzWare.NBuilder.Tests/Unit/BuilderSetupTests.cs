@@ -108,5 +108,47 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             persistenceService.Received().SetPersistenceUpdateMethod(func);
         }
+
+        [Fact]
+        public void UseNullAsDefaultValueForNullableType_WithNonNullableType_ThrowsArgumentException()
+        {
+            var exception = Should.Throw<ArgumentException>(() => 
+                BuilderSetup.UseNullAsDefaultValueForNullableType(typeof(int)));
+
+            exception.Message.ShouldContain("Type 'System.Int32' is not a nullable value type");
+            exception.Message.ShouldContain("Only nullable value types like 'int?' or 'Guid?' are allowed");
+        }
+
+        [Fact]
+        public void UseNullAsDefaultValueForNullableType_WithReferenceType_ThrowsArgumentException()
+        {
+            var exception = Should.Throw<ArgumentException>(() => 
+                BuilderSetup.UseNullAsDefaultValueForNullableType(typeof(string)));
+
+            exception.Message.ShouldContain("Type 'System.String' is not a nullable value type");
+            exception.Message.ShouldContain("Only nullable value types like 'int?' or 'Guid?' are allowed");
+        }
+
+        [Fact]
+        public void UseNullAsDefaultValueForNullableType_WithNullableType_DoesNotThrow()
+        {
+            Should.NotThrow(() => BuilderSetup.UseNullAsDefaultValueForNullableType(typeof(int?)));
+        }
+
+        [Fact]
+        public void UseNullAsDefaultValueForNullableType_WithMultipleNullableTypes_DoesNotThrow()
+        {
+            Should.NotThrow(() => 
+                BuilderSetup.UseNullAsDefaultValueForNullableType(typeof(int?), typeof(Guid?), typeof(DateTime?)));
+        }
+
+        [Fact]
+        public void UseNullAsDefaultValueForNullableType_WithMixedTypes_ThrowsArgumentException()
+        {
+            var exception = Should.Throw<ArgumentException>(() => 
+                BuilderSetup.UseNullAsDefaultValueForNullableType(typeof(int?), typeof(int)));
+
+            exception.Message.ShouldContain("Type 'System.Int32' is not a nullable value type");
+        }
     }
 }
