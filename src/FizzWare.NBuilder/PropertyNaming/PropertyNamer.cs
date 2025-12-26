@@ -181,6 +181,7 @@ namespace FizzWare.NBuilder.PropertyNaming
             if (maintainNullForProperty && IsNullableType(type))
             {
                 SetValue(memberInfo, obj, value);
+                return;
             }
 
             else if (type == typeof(short))
