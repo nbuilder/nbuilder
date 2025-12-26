@@ -150,5 +150,55 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             exception.Message.ShouldContain("Type 'System.Int32' is not a nullable value type");
         }
+
+        // BuilderSettings validation tests (instance-based API)
+        [Fact]
+        public void BuilderSettings_UseNullAsDefaultValueForNullableType_WithNonNullableType_ThrowsArgumentException()
+        {
+            var settings = new BuilderSettings();
+            var exception = Should.Throw<ArgumentException>(() => 
+                settings.UseNullAsDefaultValueForNullableType(typeof(int)));
+
+            exception.Message.ShouldContain("Type 'System.Int32' is not a nullable value type");
+            exception.Message.ShouldContain("Only nullable value types like 'int?' or 'Guid?' are allowed");
+        }
+
+        [Fact]
+        public void BuilderSettings_UseNullAsDefaultValueForNullableType_WithReferenceType_ThrowsArgumentException()
+        {
+            var settings = new BuilderSettings();
+            var exception = Should.Throw<ArgumentException>(() => 
+                settings.UseNullAsDefaultValueForNullableType(typeof(string)));
+
+            exception.Message.ShouldContain("Type 'System.String' is not a nullable value type");
+            exception.Message.ShouldContain("Only nullable value types like 'int?' or 'Guid?' are allowed");
+        }
+
+        [Fact]
+        public void BuilderSettings_UseNullAsDefaultValueForNullableType_WithNullableType_DoesNotThrow()
+        {
+            var settings = new BuilderSettings();
+            Should.NotThrow(() => settings.UseNullAsDefaultValueForNullableType(typeof(int?)));
+        }
+
+        [Fact]
+        public void BuilderSettings_UseNullAsDefaultValueForNullableType_WithNull_ThrowsArgumentNullException()
+        {
+            var settings = new BuilderSettings();
+            Should.Throw<ArgumentNullException>(() => 
+                settings.UseNullAsDefaultValueForNullableType(null));
+        }
+
+        [Fact]
+        public void BuilderSettings_UseNullAsDefaultValueForNullableType_WithMultipleValidTypes_DoesNotThrow()
+        {
+            var settings = new BuilderSettings();
+            Should.NotThrow(() => 
+            {
+                settings.UseNullAsDefaultValueForNullableType(typeof(int?));
+                settings.UseNullAsDefaultValueForNullableType(typeof(Guid?));
+                settings.UseNullAsDefaultValueForNullableType(typeof(DateTime?));
+            });
+        }
     }
 }

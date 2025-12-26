@@ -93,6 +93,21 @@ namespace FizzWare.NBuilder
 
         public void UseNullAsDefaultValueForNullableType(Type type)
         {
+            if (type == null) throw new ArgumentNullException(nameof(type));
+
+            var typeInfo = type.GetTypeInfo();
+            if (typeInfo.IsValueType)
+            {
+                if (!typeInfo.IsGenericType || typeInfo.GetGenericTypeDefinition() != typeof(Nullable<>))
+                {
+                    throw new ArgumentException($"Type '{type.FullName}' is not a nullable value type. Only nullable value types like 'int?' or 'Guid?' are allowed.", nameof(type));
+                }
+            }
+            else
+            {
+                throw new ArgumentException($"Type '{type.FullName}' is not a nullable value type. Only nullable value types like 'int?' or 'Guid?' are allowed.", nameof(type));
+            }
+
             nullableTypesToBuildAsNull.Add(type);
         }
 
