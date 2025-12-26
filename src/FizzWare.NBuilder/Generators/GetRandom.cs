@@ -111,7 +111,7 @@ namespace FizzWare.NBuilder.Generators
         }
 
         /// <summary>
-        /// Generate a random short within a specified range.
+        /// Generate a random long within a specified range.
         /// </summary>
         /// <param name="minValue">The minimum possible value to generate. This value is inclusive.</param>
         /// <param name="maxValue">The maximum possible value to generate. This value is exclusive.</param>
