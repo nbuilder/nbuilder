@@ -509,7 +509,7 @@ namespace FizzWare.NBuilder.Generators
             /// </summary>
             public static string County()
             {
-                return _counties[generator.Next(0, _counties.Length - 1)];
+                return _counties[generator.Next(0, _counties.Length)];
             }
         }
 
