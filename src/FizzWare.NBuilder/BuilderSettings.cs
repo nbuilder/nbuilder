@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using FizzWare.NBuilder.Extensions;
 using FizzWare.NBuilder.Implementation;
 using FizzWare.NBuilder.PropertyNaming;
 
@@ -95,8 +96,7 @@ namespace FizzWare.NBuilder
         {
             if (type == null) throw new ArgumentNullException(nameof(type));
 
-            var typeInfo = type.GetTypeInfo();
-            if (!typeInfo.IsValueType || !typeInfo.IsGenericType || typeInfo.GetGenericTypeDefinition() != typeof(Nullable<>))
+            if (!type.IsValueType() || !type.IsGenericType() || type.GetGenericTypeDefinition() != typeof(Nullable<>))
             {
                 throw new ArgumentException($"Type '{type.FullName}' is not a nullable value type. Only nullable value types like 'int?' or 'Guid?' are allowed.", nameof(type));
             }
@@ -118,7 +118,7 @@ namespace FizzWare.NBuilder
         public bool ShouldIgnoreProperty(PropertyInfo info)
         {
             return disabledAutoNameProperties.Any(x => {
-                var typeInfo = x.DeclaringType.GetTypeInfo(); 
+                var typeInfo = System.Reflection.IntrospectionExtensions.GetTypeInfo(x.DeclaringType); 
                 return (typeInfo.IsInterface ? typeInfo.IsAssignableFrom(info.DeclaringType) : x.DeclaringType == info.DeclaringType) &&
                        x.Name == info.Name;
             });
