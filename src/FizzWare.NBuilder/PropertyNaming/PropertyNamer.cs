@@ -224,7 +224,7 @@ namespace FizzWare.NBuilder.PropertyNaming
             // At this point, either maintainNullForProperty was false (so 'type' may have been unwrapped to its
             // underlying type) OR 'type' was not nullable, so we can match against concrete types and use the
             // appropriate value generators
-            else if (type == typeof(short))
+            if (type == typeof(short))
             {
                 value = GetInt16(memberInfo);
             }
