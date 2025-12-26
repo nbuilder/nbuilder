@@ -350,7 +350,7 @@ namespace FizzWare.NBuilder.Generators
         /// </summary>
         public static string FirstName()
         {
-            return firstNames[generator.Next(0, firstNames.Length - 1)];
+            return firstNames[generator.Next(0, firstNames.Length)];
         }
 
         /// <summary>
@@ -358,7 +358,7 @@ namespace FizzWare.NBuilder.Generators
         /// </summary>
         public static string LastName()
         {
-            return lastNames[generator.Next(0, lastNames.Length - 1)];
+            return lastNames[generator.Next(0, lastNames.Length)];
         }
 
         /// <summary>
