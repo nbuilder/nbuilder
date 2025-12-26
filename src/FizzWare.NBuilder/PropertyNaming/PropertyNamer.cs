@@ -211,15 +211,15 @@ namespace FizzWare.NBuilder.PropertyNaming
             if (!ReflectionUtil.IsDefaultValue(currentValue))
                 return;
 
-            object value = null;
-            
             // If we should maintain null AND type is still nullable (because we passed maintainNullForProperty=true 
             // to GetMemberType), then explicitly set the property to null
             if (maintainNullForProperty && IsNullableType(type))
             {
-                SetValue(memberInfo, obj, value, allowNull: true);
+                SetValue(memberInfo, obj, null, allowNull: true);
                 return;
             }
+
+            object value = null;
 
             // At this point, either maintainNullForProperty was false (so 'type' may have been unwrapped to its
             // underlying type) OR 'type' was not nullable, so we can match against concrete types and use the
