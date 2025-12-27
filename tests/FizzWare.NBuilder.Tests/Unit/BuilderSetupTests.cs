@@ -1,4 +1,5 @@
-﻿using System;
+﻿#pragma warning disable CS0618 // Type or member is obsolete
+using System;
 using System.Collections.Generic;
 using FizzWare.NBuilder.Tests.Integration;
 using FizzWare.NBuilder.Tests.Integration.Models;
@@ -202,3 +203,4 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
     }
 }
+#pragma warning restore CS0618 // Type or member is obsolete

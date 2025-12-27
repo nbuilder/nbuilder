@@ -1,6 +1,7 @@
 ﻿using System;
 using FizzWare.NBuilder.Dates;
 using FizzWare.NBuilder.Tests.Integration.Models;
+using FizzWare.NBuilder.Generators;
 
 using Shouldly;
 using Xunit;
@@ -31,12 +32,11 @@ namespace FizzWare.NBuilder.Tests.Integration
         public void Using_random_dates()
         {
             var builderSetup = new BuilderSettings();
-            var generator = new RandomGenerator();
             
             var products = new Builder(builderSetup)
                             .CreateListOfSize< Product>(100)
                             .All()
-                                .With(x => x.Created = generator.Next(July.The(1), November.The(10)))
+                                .With(x => x.Created = GetRandom.DateTime(July.The(1), November.The(10)))
                             .Build();
 
             var expectedStart = new DateTime(DateTime.Now.Year, 7, 1, 00, 00, 00);

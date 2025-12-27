@@ -6,6 +6,7 @@ using FizzWare.NBuilder.PropertyNaming;
 using FizzWare.NBuilder.Tests.Integration.Extensibility;
 using FizzWare.NBuilder.Tests.Integration.Models;
 using FizzWare.NBuilder.Tests.Integration.Models.Repositories;
+using FizzWare.NBuilder.Generators;
 
 namespace FizzWare.NBuilder.Tests.Integration.WebsiteExamples
 {
@@ -56,7 +57,6 @@ namespace FizzWare.NBuilder.Tests.Integration.WebsiteExamples
         public void HomePage_3()
         {
             BuilderSettings builderSettings = new BuilderSettings();
-            var generator = new UniqueRandomGenerator();
 
             var products = new Builder(builderSettings).CreateListOfSize<Product>(10)
                                            .TheFirst(2)
@@ -66,7 +66,7 @@ namespace FizzWare.NBuilder.Tests.Integration.WebsiteExamples
                                                .With(x => x.Title = "special title 2")
                                            .TheNext(5)
                                                .With(x => x.Title = "special title 3")
-                                               .And(x => x.Price = generator.Next(0m, 10m))
+                                               .And(x => x.Price = GetRandom.Decimal(0m, 10m))
                                            .Build();
         }
 
@@ -287,12 +287,11 @@ namespace FizzWare.NBuilder.Tests.Integration.WebsiteExamples
         public void Dates_2()
         {
             BuilderSettings builderSettings = new BuilderSettings();
-            var generator = new RandomGenerator();
 
             var products = new Builder(builderSettings)
                 .CreateListOfSize<Product>(100)
                 .All()
-                    .With(x => x.Created = generator.Next(July.The(1), November.The(10)))
+                    .With(x => x.Created = GetRandom.DateTime(July.The(1), November.The(10)))
                 .Build();
         }
 
@@ -320,7 +319,7 @@ namespace FizzWare.NBuilder.Tests.Integration.WebsiteExamples
 
         public void Configuration_2(BuilderSettings builderSettings)
         {
-            var namer = new RandomValuePropertyNamer(new RandomGenerator(),
+            var namer = new RandomValuePropertyNamer(new UniqueRandomGenerator(),
                                             new ReflectionUtil(),
                                             true,
                                             DateTime.Now,
@@ -373,6 +372,4 @@ namespace FizzWare.NBuilder.Tests.Integration.WebsiteExamples
             }
         }
     }
-
-
 }

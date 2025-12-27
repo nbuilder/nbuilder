@@ -20,7 +20,7 @@ namespace FizzWare.NBuilder.PropertyNaming
         private readonly bool useLoremIpsumForStrings;
 
         public RandomValuePropertyNamer(BuilderSettings builderSettings)
-            : this (new RandomGenerator(), new ReflectionUtil(), false, builderSettings)
+            : this (new UniqueRandomGenerator(), new ReflectionUtil(), false, builderSettings)
         {
         }
 

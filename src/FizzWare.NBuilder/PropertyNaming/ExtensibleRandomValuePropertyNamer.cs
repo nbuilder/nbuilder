@@ -11,7 +11,7 @@ namespace FizzWare.NBuilder.PropertyNaming
         protected IDictionary<Type, Delegate> Handlers = new Dictionary<Type, Delegate>();
         private BuilderSettings BuilderSettings;
         public ExtensibleRandomValuePropertyNamer(BuilderSettings builderSettings)
-            : this (new RandomGenerator(),builderSettings)
+            : this (new UniqueRandomGenerator(),builderSettings)
         {
         }
 

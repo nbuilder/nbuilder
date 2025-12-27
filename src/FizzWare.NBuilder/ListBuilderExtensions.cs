@@ -154,7 +154,7 @@ namespace FizzWare.NBuilder
 
             var hierarchy = new HierarchyGenerator<T>(list, hierarchySpec.AddMethod, hierarchySpec.NumberOfRoots, hierarchySpec.Depth,
                                       hierarchySpec.MinimumChildren, hierarchySpec.MaximumChildren,
-                                      new RandomGenerator(), hierarchySpec.NamingMethod, null).Generate();
+                                      new UniqueRandomGenerator(), hierarchySpec.NamingMethod, null).Generate();
 
             return hierarchy;
         }
@@ -167,7 +167,7 @@ namespace FizzWare.NBuilder
             // 2. Reorganise
             var hierarchy = new HierarchyGenerator<T>(list, hierarchySpec.AddMethod, hierarchySpec.NumberOfRoots, hierarchySpec.Depth,
                                       hierarchySpec.MinimumChildren, hierarchySpec.MaximumChildren,
-                                      new RandomGenerator(), hierarchySpec.NamingMethod, listBuilder.BuilderSettings.GetPersistenceService()).Generate();
+                                      new UniqueRandomGenerator(), hierarchySpec.NamingMethod, listBuilder.BuilderSettings.GetPersistenceService()).Generate();
 
             return hierarchy;
         }

@@ -1,3 +1,4 @@
+#pragma warning disable CS0618 // Type or member is obsolete
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -126,3 +127,4 @@ namespace FizzWare.NBuilder
         }
     }
 }
+#pragma warning restore CS0618 // Type or member is obsolete
