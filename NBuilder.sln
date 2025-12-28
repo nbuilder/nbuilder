@@ -19,6 +19,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FizzWare.NBuilder.Tests", "tests\FizzWare.NBuilder.Tests\FizzWare.NBuilder.Tests.csproj", "{A697F75B-FAFE-404E-A6C0-554249ED5B52}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{86E01351-3400-48AC-BA87-0AF665DEFE7C}"
+	ProjectSection(SolutionItems) = preProject
+		.github\copilot-instructions.md = .github\copilot-instructions.md
+		.github\dependabot.yml = .github\dependabot.yml
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{DC151B37-6845-475E-84AD-43B381062C56}"
 	ProjectSection(SolutionItems) = preProject
