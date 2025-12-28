@@ -78,7 +78,7 @@ namespace FizzWare.NBuilder.Tests.Unit
         {
             var myClass = new MyClass();
             const int intValue = 234;
-            target.NameWith(() => GetRandom.Int(intValue, intValue));
+            target.NameWith(() => RandomGenerator.Default.Int(intValue, intValue));
             target.SetValuesOf(myClass);
             myClass.Int.ShouldBe(intValue);
         }

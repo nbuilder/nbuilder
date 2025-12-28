@@ -36,7 +36,7 @@ namespace FizzWare.NBuilder.Tests.Integration
             var products = new Builder(builderSetup)
                             .CreateListOfSize< Product>(100)
                             .All()
-                                .With(x => x.Created = GetRandom.DateTime(July.The(1), November.The(10)))
+                                .With(x => x.Created = RandomGenerator.Default.DateTime(July.The(1), November.The(10)))
                             .Build();
 
             var expectedStart = new DateTime(DateTime.Now.Year, 7, 1, 00, 00, 00);

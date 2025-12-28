@@ -16,7 +16,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             for (int i = 0; i < 100; i++)
             {
                 // Act
-                var result = GetRandom.IpAddress();
+                var result = RandomGenerator.Default.IpAddress();
 
                 // Assert
                 Assert.Matches(expectedRegex, result);
@@ -31,7 +31,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             for (int i = 0; i < 100; i++)
             {
                 // Act
-                var result = GetRandom.IpAddressV6();
+                var result = RandomGenerator.Default.IpAddressV6();
 
                 // Assert
                 Assert.Matches(expectedRegex, result);
@@ -46,7 +46,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             for (int i = 0; i < 100; i++)
             {
                 // Act
-                var result = GetRandom.MacAddress();
+                var result = RandomGenerator.Default.MacAddress();
 
                 // Assert
                 Assert.Matches(expectedRegex, result);
@@ -62,7 +62,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             for (int i = 0; i < 100; i++)
             {
                 // Act
-                var result = GetRandom.MacAddress(overriddenSeparator);
+                var result = RandomGenerator.Default.MacAddress(overriddenSeparator);
 
                 // Assert
                 Assert.Matches(expectedRegex, result);
@@ -80,7 +80,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             // Act
             for (int i = 0; i < maxAttempts && generatedDigits.Count < 10; i++)
             {
-                var numericString = GetRandom.NumericString(10);
+                var numericString = RandomGenerator.Default.NumericString(10);
                 foreach (var digit in numericString)
                 {
                     generatedDigits.Add(digit);
@@ -106,7 +106,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             // Act
             for (int i = 0; i < attempts; i++)
             {
-                generatedNames.Add(GetRandom.FirstName());
+                generatedNames.Add(RandomGenerator.Default.FirstName());
             }
 
             // Assert - verify we can generate a very diverse set of names
@@ -133,7 +133,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             // Act
             for (int i = 0; i < attempts; i++)
             {
-                generatedNames.Add(GetRandom.LastName());
+                generatedNames.Add(RandomGenerator.Default.LastName());
             }
 
             // Assert - verify we can generate a very diverse set of names

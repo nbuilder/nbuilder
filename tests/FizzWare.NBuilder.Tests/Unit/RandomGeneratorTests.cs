@@ -323,7 +323,7 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             for (var i = 0; i < 100000; i++)
             {
-                var statusType = GetRandom.Enumeration<StatusType>();
+                var statusType = RandomGenerator.Default.Enumeration<StatusType>();
                 actual.Add(statusType);
             }
 
@@ -338,7 +338,7 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             for (var i = 0; i < 100000; i++)
             {
-                var statusType = GetRandom.Enumeration(typeof(StatusType));
+                var statusType = RandomGenerator.Default.Enumeration(typeof(StatusType));
                 actual.Add(statusType);
             }
 

@@ -146,7 +146,7 @@ namespace FizzWare.NBuilder.Tests.Integration
             var products = new Builder()
                 .CreateListOfSize<Product>(10)
                 .All()
-                    .With(x => x.PriceBeforeTax = GetRandom.Decimal(50, 1000))
+                    .With(x => x.PriceBeforeTax = RandomGenerator.Default.Decimal(50, 1000))
                 .Build();
 
 
@@ -616,7 +616,7 @@ namespace FizzWare.NBuilder.Tests.Integration
             var list = new Builder()
                 .CreateListOfSize<Product>(3)
                 .All()
-                .With(x => x.QuantityInStock = GetRandom.Int(1000, 2000))
+                .With(x => x.QuantityInStock = RandomGenerator.Default.Int(1000, 2000))
                 .Build();
 
             list[0].QuantityInStock.ShouldBeGreaterThanOrEqualTo(1000);

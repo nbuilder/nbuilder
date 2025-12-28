@@ -66,7 +66,7 @@ namespace FizzWare.NBuilder.Tests.Integration.WebsiteExamples
                                                .With(x => x.Title = "special title 2")
                                            .TheNext(5)
                                                .With(x => x.Title = "special title 3")
-                                               .And(x => x.Price = GetRandom.Decimal(0m, 10m))
+                                               .And(x => x.Price = RandomGenerator.Default.Decimal(0m, 10m))
                                            .Build();
         }
 
@@ -291,7 +291,7 @@ namespace FizzWare.NBuilder.Tests.Integration.WebsiteExamples
             var products = new Builder(builderSettings)
                 .CreateListOfSize<Product>(100)
                 .All()
-                    .With(x => x.Created = GetRandom.DateTime(July.The(1), November.The(10)))
+                    .With(x => x.Created = RandomGenerator.Default.DateTime(July.The(1), November.The(10)))
                 .Build();
         }
 
