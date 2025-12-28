@@ -1,11 +1,10 @@
-﻿using System;
+﻿using FizzWare.NBuilder.Generators;
+using FizzWare.NBuilder.Tests.TestClasses;
+using Shouldly;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using FizzWare.NBuilder.Generators;
-using FizzWare.NBuilder.Tests.TestClasses;
-
-using Shouldly;
 using Xunit;
 
 
@@ -14,7 +13,7 @@ namespace FizzWare.NBuilder.Tests.Unit
     
     public class RandomGeneratorTests
     {
-        readonly IRandomGenerator randomGenerator = new RandomGenerator();
+        private readonly RandomGenerator randomGenerator = new RandomGenerator();
 
 
         [Fact]
@@ -324,7 +323,7 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             for (var i = 0; i < 100000; i++)
             {
-                var statusType = GetRandom.Enumeration<StatusType>();
+                var statusType = RandomGenerator.Default.Enumeration<StatusType>();
                 actual.Add(statusType);
             }
 
@@ -339,7 +338,7 @@ namespace FizzWare.NBuilder.Tests.Unit
 
             for (var i = 0; i < 100000; i++)
             {
-                var statusType = GetRandom.Enumeration(typeof(StatusType));
+                var statusType = RandomGenerator.Default.Enumeration(typeof(StatusType));
                 actual.Add(statusType);
             }
 

@@ -1,5 +1,54 @@
 ﻿# Release Notes
 
+## 7.0.0 - TBD
+
+This is a major release with breaking changes, updated framework support, and modernized build infrastructure.
+
+### Breaking Changes
+
+* **Framework Support:** Dropped support for .NET Standard 2.1 and .NET 9. Now targets .NET 10 only.
+* **Build Infrastructure:** Migrated from AppVeyor to GitHub Actions for CI/CD.
+* **Testing Framework:** Upgraded from xUnit 2 to xUnit 3 using the Microsoft Testing Platform (MTP).
+* **License Change:** Changed license from LGPL to MIT.
+
+### Deprecations
+
+* **`RandomGenerator` marked as `[Obsolete]`** in preparation for removal in a future release. Use `GetRandom` instead.
+
+### New Features
+
+* **Nullable Value Type Support:** Added ability to configure NBuilder to generate `null` values for nullable value types instead of default non-null values. Configure via `BuilderSettings`.
+  ```csharp
+  var settings = new BuilderSettings();
+  settings.UseNullAsDefaultValueForNullableType(typeof(int?));
+  // Or for all nullable value types:
+  settings.UseNullAsDefaultValueForAllNullableTypes();
+  ```
+
+* **XML Documentation:** Added comprehensive XML documentation comments to the `GetRandom` class and enabled XML documentation file generation.
+
+* **Dependabot Integration:** Added automated dependency updates via GitHub Dependabot.
+
+### Bug Fixes
+
+* **Bug:** Fixed issue where NBuilder could not set public properties with private setters ([#102](https://github.com/nbuilder/nbuilder/issues/102)). Thanks to [Jay McLain](https://github.com/jay-mcclain) for the PR.
+
+* **Bug:** Fixed upper-exclusive bounds issues in random value generation.
+
+### Infrastructure & Development
+
+* **GitHub Actions:** Implemented comprehensive CI/CD workflows including:
+  - PR builds with parallel build and test execution
+  - Automated NuGet package creation and publishing to GitHub Packages
+  - Code coverage reporting via Codecov
+  - Release workflows for publishing to NuGet.org
+
+* **Composite Actions:** Created reusable GitHub Actions for .NET setup and test execution with coverage.
+
+* **Contributors Guide:** Renamed `CONTRIBUTORS-GUIDE.md` to `CONTRIBUTING.md` to follow GitHub conventions ([#109](https://github.com/nbuilder/nbuilder/issues/109)).
+
+---
+
 ## 6.1.0 - 2019-12-17
 
 [Doug Murphy](https://github.com/Doug-Murphy) has added a couple of PR's to nbuilder.

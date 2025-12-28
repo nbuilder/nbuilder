@@ -1,7 +1,4 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace FizzWare.NBuilder
 {
@@ -19,7 +16,7 @@ namespace FizzWare.NBuilder
 
         public static T RandomItemFrom(IList<T> list)
         {
-            return new RandomItemPicker<T>(list, new RandomGenerator()).Pick();
+            return new RandomItemPicker<T>(list, new UniqueRandomGenerator()).Pick();
         }
     }
 }

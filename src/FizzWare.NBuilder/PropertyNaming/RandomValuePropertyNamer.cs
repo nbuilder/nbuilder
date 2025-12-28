@@ -20,7 +20,7 @@ namespace FizzWare.NBuilder.PropertyNaming
         private readonly bool useLoremIpsumForStrings;
 
         public RandomValuePropertyNamer(BuilderSettings builderSettings)
-            : this (new RandomGenerator(), new ReflectionUtil(), false, builderSettings)
+            : this (RandomGenerator.Default, new ReflectionUtil(), false, builderSettings)
         {
         }
 
@@ -42,7 +42,7 @@ namespace FizzWare.NBuilder.PropertyNaming
 
         static RandomValuePropertyNamer()
         {
-            allowedChars = new List<char>();
+            allowedChars = [];
             for (char c = 'a'; c < 'z'; c++)
                 allowedChars.Add(c);
 
@@ -64,7 +64,7 @@ namespace FizzWare.NBuilder.PropertyNaming
 
             for (int i = 0; i < objects.Count; i++)
             {
-                foreach (var propertyInfo in type.GetProperties(FLAGS).Where(p => p.CanWrite))
+                foreach (var propertyInfo in type.GetProperties(FLAGS).Where(p => p.GetSetMethod() != null))
                 {
                     SetMemberValue(propertyInfo, objects[i]);
                 }

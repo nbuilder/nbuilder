@@ -1,8 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using FizzWare.NBuilder.Extensions;
 using FizzWare.NBuilder.Implementation;
 using FizzWare.NBuilder.PropertyNaming;
 
@@ -17,6 +18,14 @@ namespace FizzWare.NBuilder
         private IPropertyNamer defaultPropertyNamer;
 
         private List<PropertyInfo> disabledAutoNameProperties;
+        internal bool IsBuildingAllNullablePropertiesAsNull { get; set; }
+
+        public void UseNullAsDefaultValueForAllNullableTypes()
+        {
+            this.IsBuildingAllNullablePropertiesAsNull = true;
+        }
+
+        private List<Type> nullableTypesToBuildAsNull;
 
         internal  bool HasDisabledAutoNameProperties;
 
@@ -32,6 +41,8 @@ namespace FizzWare.NBuilder
             AutoNameProperties = true;
             propertyNamers = new Dictionary<Type, IPropertyNamer>();
             HasDisabledAutoNameProperties = false;
+            IsBuildingAllNullablePropertiesAsNull = false;
+            nullableTypesToBuildAsNull = new List<Type>();
             disabledAutoNameProperties = new List<PropertyInfo>();
         }
 
@@ -67,18 +78,42 @@ namespace FizzWare.NBuilder
 
         public  IPropertyNamer GetPropertyNamerFor<T>()
         {
-            if (!propertyNamers.ContainsKey(typeof(T)))
+            var type = typeof(T);
+            if (propertyNamers.TryGetValue(type, out var propertyNamer))
             {
-                return defaultPropertyNamer;
+                return propertyNamer;
             }
 
-            return propertyNamers[typeof (T)];
+            return defaultPropertyNamer;
+            //if (!propertyNamers.ContainsKey(typeof(T)))
+            //{
+            //    return defaultPropertyNamer;
+            //}
+
+            //return propertyNamers[typeof (T)];
         }
 
         public void DisablePropertyNamingFor<T, TFunc>(Expression<Func<T, TFunc>> func)
         {
             var propertyInfo = GetProperty(func);
             DisablePropertyNamingFor(propertyInfo);
+        }
+
+        public void UseNullAsDefaultValueForNullableType(Type type)
+        {
+            if (type == null) throw new ArgumentNullException(nameof(type));
+
+            if (!type.IsValueType() || !type.IsGenericType() || type.GetGenericTypeDefinition() != typeof(Nullable<>))
+            {
+                throw new ArgumentException($"Type '{type.FullName}' is not a nullable value type. Only nullable value types like 'int?' or 'Guid?' are allowed.", nameof(type));
+            }
+
+            nullableTypesToBuildAsNull.Add(type);
+        }
+
+        internal bool ShouldBuildNullableTypeAsNull(PropertyInfo info)
+        {
+            return nullableTypesToBuildAsNull.Any(x => x == info.PropertyType);
         }
 
         public void DisablePropertyNamingFor(PropertyInfo propertyInfo)
@@ -90,8 +125,7 @@ namespace FizzWare.NBuilder
         public bool ShouldIgnoreProperty(PropertyInfo info)
         {
             return disabledAutoNameProperties.Any(x => {
-                var typeInfo = x.DeclaringType.GetTypeInfo(); 
-                return (typeInfo.IsInterface ? typeInfo.IsAssignableFrom(info.DeclaringType) : x.DeclaringType == info.DeclaringType) &&
+                return (x.DeclaringType.IsInterface() ? x.DeclaringType.IsAssignableFrom(info.DeclaringType) : x.DeclaringType == info.DeclaringType) &&
                        x.Name == info.Name;
             });
         }

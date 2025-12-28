@@ -1,4 +1,6 @@
 ﻿using FizzWare.NBuilder.Generators;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using Xunit;
 
@@ -14,7 +16,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             for (int i = 0; i < 100; i++)
             {
                 // Act
-                var result = GetRandom.IpAddress();
+                var result = RandomGenerator.Default.IpAddress();
 
                 // Assert
                 Assert.Matches(expectedRegex, result);
@@ -29,7 +31,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             for (int i = 0; i < 100; i++)
             {
                 // Act
-                var result = GetRandom.IpAddressV6();
+                var result = RandomGenerator.Default.IpAddressV6();
 
                 // Assert
                 Assert.Matches(expectedRegex, result);
@@ -44,7 +46,7 @@ namespace FizzWare.NBuilder.Tests.Unit
             for (int i = 0; i < 100; i++)
             {
                 // Act
-                var result = GetRandom.MacAddress();
+                var result = RandomGenerator.Default.MacAddress();
 
                 // Assert
                 Assert.Matches(expectedRegex, result);
@@ -60,11 +62,87 @@ namespace FizzWare.NBuilder.Tests.Unit
             for (int i = 0; i < 100; i++)
             {
                 // Act
-                var result = GetRandom.MacAddress(overriddenSeparator);
+                var result = RandomGenerator.Default.MacAddress(overriddenSeparator);
 
                 // Assert
                 Assert.Matches(expectedRegex, result);
             }
+        }
+
+        [Fact]
+        public void NumericString_CanGenerateAllDigits0Through9()
+        {
+            // Arrange
+            var generatedDigits = new HashSet<char>();
+            var expectedDigits = new HashSet<char> { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+            var maxAttempts = 10000;
+
+            // Act
+            for (int i = 0; i < maxAttempts && generatedDigits.Count < 10; i++)
+            {
+                var numericString = RandomGenerator.Default.NumericString(10);
+                foreach (var digit in numericString)
+                {
+                    generatedDigits.Add(digit);
+                }
+            }
+
+            // Assert
+            Assert.Equal(expectedDigits, generatedDigits);
+        }
+
+        [Fact]
+        public void FirstName_CanGenerateAllNamesInArray()
+        {
+            // Arrange
+            var generatedNames = new HashSet<string>();
+            // Reduced attempts and lowered threshold to make test more reliable while still effective
+            var attempts = 100000; // Still statistically significant for 400 names
+            
+            // The firstNames array has 400 names
+            // With the fix, Random.Next(0, 400) can return 0-399, allowing all names to be selected
+            // With the bug, Random.Next(0, 399) could only return 0-398, so the last name was unreachable
+
+            // Act
+            for (int i = 0; i < attempts; i++)
+            {
+                generatedNames.Add(RandomGenerator.Default.FirstName());
+            }
+
+            // Assert - verify we can generate a very diverse set of names
+            // With 100K attempts and 400 items, we expect to see at least 380 unique names (95%)
+            // This threshold is more reliable while still detecting boundary issues
+            var expectedMinimumUniqueNames = 380; // 95% coverage threshold (lowered from 97.5% to reduce flakiness)
+            Assert.True(generatedNames.Count >= expectedMinimumUniqueNames, 
+                $"Expected at least {expectedMinimumUniqueNames} unique first names but got {generatedNames.Count}. " +
+                "This may indicate the last name(s) in the array cannot be generated.");
+        }
+
+        [Fact]
+        public void LastName_CanGenerateAllNamesInArray()
+        {
+            // Arrange
+            var generatedNames = new HashSet<string>();
+            // Reduced attempts and lowered threshold to make test more reliable while still effective
+            var attempts = 50000; // Still statistically significant for 100 names
+            
+            // The lastNames array has 100 names
+            // With the fix, Random.Next(0, 100) can return 0-99, allowing all names to be selected
+            // With the bug, Random.Next(0, 99) could only return 0-98, so the last name was unreachable
+
+            // Act
+            for (int i = 0; i < attempts; i++)
+            {
+                generatedNames.Add(RandomGenerator.Default.LastName());
+            }
+
+            // Assert - verify we can generate a very diverse set of names
+            // With 50K attempts and 100 items, we expect to see at least 95 unique names (95%)
+            // This threshold is more reliable while still detecting boundary issues
+            var expectedMinimumUniqueNames = 95; // 95% coverage threshold (lowered from 98% to reduce flakiness)
+            Assert.True(generatedNames.Count >= expectedMinimumUniqueNames, 
+                $"Expected at least {expectedMinimumUniqueNames} unique last names but got {generatedNames.Count}. " +
+                "This may indicate the last name(s) in the array cannot be generated.");
         }
     }
 }

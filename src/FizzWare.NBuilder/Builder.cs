@@ -6,7 +6,6 @@ namespace FizzWare.NBuilder
 
     public static class Builder<T>
     {
-
         public static ISingleObjectBuilder<T> CreateNew()
         {
 

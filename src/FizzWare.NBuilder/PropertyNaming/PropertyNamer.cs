@@ -25,7 +25,7 @@ namespace FizzWare.NBuilder.PropertyNaming
         {
             var type = typeof(T);
 
-            foreach (var propertyInfo in type.GetProperties(FLAGS).Where(p => p.CanWrite))
+            foreach (var propertyInfo in type.GetProperties(FLAGS).Where(p => p.GetSetMethod() != null))
                 SetMemberValue(propertyInfo, obj);
 
             foreach (var propertyInfo in type.GetFields(FLAGS).Where(f => !f.IsLiteral))
@@ -59,21 +59,45 @@ namespace FizzWare.NBuilder.PropertyNaming
             return currentValue;
         }
 
-        protected static Type GetMemberType(MemberInfo memberInfo)
+        /// <summary>
+        /// Gets the type of a member (field or property).
+        /// </summary>
+        /// <param name="memberInfo">The member to get the type for</param>
+        /// <param name="maintainNullability">
+        /// If false (default), nullable types (e.g., int?) are unwrapped to their underlying type (e.g., int).
+        /// If true, nullable types are preserved as-is. This is used when we need to detect if a property
+        /// should be set to null based on BuilderSettings.
+        /// </param>
+        /// <returns>The type of the member, either unwrapped or as-is based on maintainNullability</returns>
+        protected static Type GetMemberType(MemberInfo memberInfo, bool maintainNullability = false)
         {
+            if (memberInfo == null)
+            {
+                throw new ArgumentNullException(nameof(memberInfo));
+            }
+
             Type type = null;
 
-            if (memberInfo is FieldInfo)
+            if (memberInfo is FieldInfo fieldInfo)
             {
-                type = ((FieldInfo)memberInfo).FieldType;
+                type = fieldInfo.FieldType;
+            }
+            else if (memberInfo is PropertyInfo propertyInfo)
+            {
+                type = propertyInfo.PropertyType;
             }
 
-            if (memberInfo is PropertyInfo)
+            if (type == null)
             {
-                type = ((PropertyInfo)memberInfo).PropertyType;
+                return null;
             }
 
-            if (type != null && IsNullableType(type))
+            // If maintainNullability is false and the type is nullable (e.g., int?),
+            // unwrap it to the underlying type (e.g., int) so we can use the same
+            // value generators for both nullable and non-nullable properties.
+            // If maintainNullability is true, keep it as nullable so we can detect
+            // when to set the property to null instead of generating a value.
+            if (!maintainNullability && IsNullableType(type))
             {
                 type = Nullable.GetUnderlyingType(type);
             }
@@ -86,9 +110,9 @@ namespace FizzWare.NBuilder.PropertyNaming
             return (type.IsGenericType() && type.GetGenericTypeDefinition() == typeof(Nullable<>));
         }
 
-        protected virtual void SetValue<T>(MemberInfo memberInfo, T obj, object value)
+        protected virtual void SetValue<T>(MemberInfo memberInfo, T obj, object value, bool allowNull = false)
         {
-            if (value == null) return;
+            if (value == null && !allowNull) return;
             if (!IsMutable(memberInfo)) return;
 
             switch (memberInfo)
@@ -98,7 +122,7 @@ namespace FizzWare.NBuilder.PropertyNaming
                     break;
                 case PropertyInfo info:
                     {
-                        if (info.CanWrite)
+                        if (info.GetSetMethod() != null)
                             info.SetValue(obj, value, null);
                         break;
                     }
@@ -160,9 +184,24 @@ namespace FizzWare.NBuilder.PropertyNaming
             return false;
         }
 
+        protected virtual bool ShouldMaintainNullForProperty(MemberInfo memberInfo)
+        {
+            return memberInfo is PropertyInfo propertyInfo && BuilderSettings.ShouldBuildNullableTypeAsNull(propertyInfo);
+        }
+
         protected virtual void SetMemberValue<T>(MemberInfo memberInfo, T obj)
         {
-            Type type = GetMemberType(memberInfo);
+            // Determine if this property should be kept as null based on BuilderSettings
+            var maintainNullForProperty = BuilderSettings.IsBuildingAllNullablePropertiesAsNull || ShouldMaintainNullForProperty(memberInfo);
+            
+            // Get type: if maintainNullForProperty=true, preserve nullable wrapper (e.g., int?), 
+            // else unwrap to underlying type (e.g., int) for value generation
+            Type type = GetMemberType(memberInfo, maintainNullForProperty);
+
+            if (type == null)
+            {
+                return;
+            }
 
             if (BuilderSettings.HasDisabledAutoNameProperties && ShouldIgnore(memberInfo))
                 return;
@@ -172,8 +211,19 @@ namespace FizzWare.NBuilder.PropertyNaming
             if (!ReflectionUtil.IsDefaultValue(currentValue))
                 return;
 
+            // If we should maintain null AND type is still nullable (because we passed maintainNullForProperty=true 
+            // to GetMemberType), then explicitly set the property to null
+            if (maintainNullForProperty && IsNullableType(type))
+            {
+                SetValue(memberInfo, obj, null, allowNull: true);
+                return;
+            }
+
             object value = null;
 
+            // At this point, either maintainNullForProperty was false (so 'type' may have been unwrapped to its
+            // underlying type) OR 'type' was not nullable, so we can match against concrete types and use the
+            // appropriate value generators
             if (type == typeof(short))
             {
                 value = GetInt16(memberInfo);

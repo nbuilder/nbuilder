@@ -1,425 +1,353 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-using FizzWare.NBuilder.Extensions;
 
 namespace FizzWare.NBuilder.Generators
 {
-    public class GetRandom
+    /// <summary>
+    /// Static class used to generate specific random data.
+    /// </summary>
+    [Obsolete("GetRandom will be removed in a future release. Please use RandomGenerator.Default instead for better testability and control.")]
+    public static class GetRandom
     {
-        private static readonly IRandomGenerator generator = new RandomGenerator();        
+        private static readonly RandomGenerator _generator = RandomGenerator.Default;        
         
-        private static DateTime minSqlServerDate = new DateTime(1753, 1, 1);
-        private static DateTime maxSqlServerDate = new DateTime(9999, 12, 31);
+        /// <summary>
+        /// Generate a random string of specified length that is composed only of the numeric characters 0-9.
+        /// </summary>
+        /// <param name="length">The length of the string to generate.</param>
+        public static string NumericString(int length) => _generator.NumericString(length);
 
-        private static readonly string[] firstNames = { "Jacob", "Michael", "Matthew", "Joshua", "Christopher", "Nicholas", "Andrew", "Joseph", "Daniel", "Tyler", "William", "Brandon", "Ryan", "John", "Zachary", "David", "Anthony", "James", "Justin", "Alexander", "Jonathan", "Christian", "Austin", "Dylan", "Ethan", "Benjamin", "Noah", "Samuel", "Robert", "Nathan", "Cameron", "Kevin", "Thomas", "Jose", "Hunter", "Jordan", "Kyle", "Caleb", "Jason", "Logan", "Aaron", "Eric", "Brian", "Gabriel", "Adam", "Jack", "Isaiah", "Juan", "Luis", "Connor", "Charles", "Elijah", "Isaac", "Steven", "Evan", "Jared", "Sean", "Timothy", "Luke", "Cody", "Nathaniel", "Alex", "Seth", "Mason", "Richard", "Carlos", "Angel", "Patrick", "Devin", "Bryan", "Cole", "Jackson", "Ian", "Garrett", "Trevor", "Jesus", "Chase", "Adrian", "Mark", "Blake", "Sebastian", "Antonio", "Lucas", "Jeremy", "Gavin", "Miguel", "Julian", "Dakota", "Alejandro", "Jesse", "Dalton", "Bryce", "Tanner", "Kenneth", "Stephen", "Jake", "Victor", "Spencer", "Marcus", "Paul", "Brendan", "Xavier", "Jeremiah", "Jeffrey", "Tristan", "Jalen", "Jorge", "Edward", "Riley", "Colton", "Wyatt", "Joel", "Maxwell", "Aidan", "Travis", "Shane", "Colin", "Dominic", "Carson", "Vincent", "Derek", "Oscar", "Grant", "Eduardo", "Peter", "Henry", "Parker", "Hayden", "Collin", "George", "Bradley", "Mitchell", "Devon", "Ricardo", "Shawn", "Taylor", "Nicolas", "Gregory", "Francisco", "Liam", "Kaleb", "Preston", "Erik", "Alexis", "Owen", "Omar", "Diego", "Dustin", "Corey", "Fernando", "Clayton", "Carter", "Ivan", "Jaden", "Javier", "Alec", "Johnathan", "Scott", "Manuel", "Cristian", "Alan", "Raymond", "Brett", "Max", "Andres", "Gage", "Mario", "Dawson", "Dillon", "Cesar", "Wesley", "Levi", "Jakob", "Chandler", "Martin", "Malik", "Edgar", "Trenton", "Sergio", "Nolan", "Josiah", "Marco", "Peyton", "Harrison", "Hector", "Micah", "Roberto", "Drew", "Erick", "Brady", "Conner", "Jonah", "Casey", "Jayden", "Emmanuel", "Edwin", "Andre", "Phillip", "Brayden", "Landon", "Emily", "Hannah", "Madison", "Ashley", "Sarah", "Alexis", "Samantha", "Jessica", "Taylor", "Elizabeth", "Lauren", "Alyssa", "Kayla", "Abigail", "Brianna", "Olivia", "Emma", "Megan", "Grace", "Victoria", "Rachel", "Anna", "Sydney", "Destiny", "Morgan", "Jennifer", "Jasmine", "Haley", "Julia", "Kaitlyn", "Nicole", "Amanda", "Katherine", "Natalie", "Hailey", "Alexandra", "Savannah", "Chloe", "Rebecca", "Stephanie", "Maria", "Sophia", "Mackenzie", "Allison", "Isabella", "Amber", "Mary", "Danielle", "Gabrielle", "Jordan", "Brooke", "Michelle", "Sierra", "Katelyn", "Andrea", "Madeline", "Sara", "Kimberly", "Courtney", "Erin", "Brittany", "Vanessa", "Jacqueline", "Jenna", "Caroline", "Faith", "Makayla", "Bailey", "Paige", "Shelby", "Melissa", "Kaylee", "Christina", "Trinity", "Caitlin", "Mariah", "Autumn", "Marissa", "Angela", "Breanna", "Catherine", "Zoe", "Briana", "Jada", "Laura", "Claire", "Alexa", "Kelsey", "Kathryn", "Leslie", "Alexandria", "Sabrina", "Isabel", "Mia", "Molly", "Leah", "Katie", "Gabriella", "Cheyenne", "Cassandra", "Tiffany", "Erica", "Lindsey", "Kylie", "Diana", "Amy", "Cassidy", "Mikayla", "Ariana", "Margaret", "Kelly", "Miranda", "Maya", "Melanie", "Audrey", "Jade", "Gabriela", "Caitlyn", "Angel", "Jillian", "Alicia", "Jocelyn", "Erika", "Lily", "Madelyn", "Heather", "Adriana", "Arianna", "Lillian", "Kiara", "Riley", "Crystal", "Mckenzie", "Meghan", "Skylar", "Ana", "Britney", "Angelica", "Kennedy", "Chelsea", "Daisy", "Kristen", "Veronica", "Isabelle", "Summer", "Hope", "Brittney", "Hayley", "Lydia", "Evelyn", "Bethany", "Shannon", "Michaela", "Karen", "Jamie", "Daniela", "Angelina", "Kaitlin", "Karina", "Sophie", "Sofia", "Diamond", "Payton", "Cynthia", "Alexia", "Valerie", "Monica", "Peyton", "Carly", "Bianca", "Hanna", "Brenda", "Rebekah", "Alejandra", "Mya", "Avery", "Brooklyn", "Ashlyn", "Lindsay", "Ava", "Desiree", "Alondra", "Camryn", "Ariel", "Naomi", "Jordyn", "Kendra", "Mckenna", "Holly", "Julie", "Kendall", "Kara", "Jasmin", "Selena", "Esmeralda", "Amaya", "Kylee", "Maggie", "Makenzie", "Claudia" };
-        private static readonly string[] lastNames = { "Smith", "Johnson", "Williams", "Brown", "Jones", "Miller", "Davis", "García", "Rodríguez", "Wilson", "Martínez", "Anderson", "Taylor", "Thomas", "Hernández", "Moore", "Martin", "Jackson", "Thompson", "White", "López", "Lee", "González", "Harris", "Clark", "Lewis", "Robinson", "Walker", "Pérez", "Hall", "Young", "Allen", "Sánchez", "Wright", "King", "Scott", "Green", "Baker", "Adams", "Nelson", "Hill", "Ramírez", "Campbell", "Mitchell", "Roberts", "Carter", "Phillips", "Evans", "Turner", "Torres", "Parker", "Collins", "Edwards", "Stewart", "Flores", "Morris", "Nguyen", "Murphy", "Rivera", "Cook", "Rogers", "Morgan", "Peterson", "Cooper", "Reed", "Bailey", "Bell", "Gómez", "Kelly", "Howard", "Ward", "Cox", "Díaz", "Richardson", "Wood", "Watson", "Brooks", "Bennett", "Gray", "James", "Reyes", "Cruz", "Hughes", "Price", "Myers", "Long", "Foster", "Sanders", "Ross", "Morales", "Powell", "Sullivan", "Russell", "Ortiz", "Jenkins", "Gutiérrez", "Perry", "Butler", "Barnes", "Fisher" };
+        /// <summary>
+        /// Generate a random integer.
+        /// </summary>
+        public static int Int() => _generator.Int();
 
-        public static string NumericString(int length)
-        {
-            var sb = new StringBuilder(length);
-            for (var i = 0; i < length; i++)
-            {
-                sb.Append(generator.Next(0, 9).ToString());
-            }
-            return sb.ToString();
-        }
+        /// <summary>
+        /// Generate a random integer within a specified range.
+        /// </summary>
+        /// <param name="minValue">The minimum possible value to generate. This value is inclusive.</param>
+        /// <param name="maxValue">The maximum possible value to generate. This value is exclusive.</param>
+        public static int Int(int minValue, int maxValue) => _generator.Int(minValue, maxValue);
 
-        public static int Int()
-        {
-            return generator.Int();
-        }
+        /// <summary>
+        /// Generate a random positive integer.
+        /// </summary>
+        public static int PositiveInt() => _generator.PositiveInt();
 
-        public static int Int(int minValue, int maxValue)
-        {
-            return generator.Next(minValue, maxValue);
-        }
+        /// <summary>
+        /// Generate a random positive integer with a specified maximum value.
+        /// </summary>
+        /// <param name="maxValue">The maximum possible value to generate. This value is exclusive.</param>
+        public static int PositiveInt(int maxValue) => _generator.PositiveInt(maxValue);
 
-        public static int PositiveInt()
-        {
-            return Int(0, int.MaxValue);
-        }
+        /// <summary>
+        /// Generate a random short.
+        /// </summary>
+        public static short Short() => _generator.Short();
 
-        public static int PositiveInt(int maxValue)
-        {
-            return Int(0, maxValue);
-        }
+        /// <summary>
+        /// Generate a random short within a specified range.
+        /// </summary>
+        /// <param name="minValue">The minimum possible value to generate. This value is inclusive.</param>
+        /// <param name="maxValue">The maximum possible value to generate. This value is exclusive.</param>
+        public static short Short(short minValue, short maxValue) => _generator.Short(minValue, maxValue);
 
-        public static short Short()
-        {
-            return generator.Next(short.MinValue, short.MaxValue);
-        }
+        /// <summary>
+        /// Generate a random positive short.
+        /// </summary>
+        public static short PositiveShort() => Short(0, short.MaxValue);
 
-        public static short Short(short minVaue, short maxValue)
-        {
-            return generator.Next(minVaue, maxValue);
-        }
+        /// <summary>
+        /// Generate a random positive short with a specified maximum value.
+        /// </summary>
+        /// <param name="maxValue">The maximum possible value to generate. This value is exclusive.</param>
+        public static short PositiveShort(short maxValue) => _generator.PositiveShort(maxValue);
 
-        public static short PositiveShort()
-        {
-            return Short(0, short.MaxValue);
-        }
+        /// <summary>
+        /// Generate a random long.
+        /// </summary>
+        public static long Long() => _generator.Long();
 
-        public static short PositiveShort(short maxValue)
-        {
-            return Short(0, maxValue);
-        }
+        /// <summary>
+        /// Generate a random long within a specified range.
+        /// </summary>
+        /// <param name="minValue">The minimum possible value to generate. This value is inclusive.</param>
+        /// <param name="maxValue">The maximum possible value to generate. This value is exclusive.</param>
+        public static long Long(long minValue, long maxValue) => _generator.Long(minValue, maxValue);
 
-        public static long Long()
-        {
-            return generator.Long();
-        }
+        /// <summary>
+        /// Generate a random positive long.
+        /// </summary>
+        public static long PositiveLong() => _generator.PositiveLong();
 
-        public static long Long(long minVaue, long maxValue)
-        {
-            return generator.Next(minVaue, maxValue);
-        }
+        /// <summary>
+        /// Generate a random positive long with a specified maximum value.
+        /// </summary>
+        /// <param name="maxValue">The maximum possible value to generate. This value is exclusive.</param>
+        public static long PositiveLong(long maxValue) => _generator.PositiveLong(maxValue);
 
-        public static long PositiveLong()
-        {
-            return Long(0, long.MaxValue);
-        }
+        /// <summary>
+        /// Generate a random uint.
+        /// </summary>
+        public static uint UInt() => _generator.UInt();
 
-        public static long PositiveLong(long maxValue)
-        {
-            return Long(0, maxValue);
-        }
+        /// <summary>
+        /// Generate a random ulong.
+        /// </summary>
+        public static ulong ULong() => _generator.ULong();
 
-        public static uint UInt()
-        {
-            return generator.UInt();
-        }
+        /// <summary>
+        /// Generate a random ushort.
+        /// </summary>
+        public static ushort UShort() => _generator.UShort();
 
-        public static ulong ULong()
-        {
-            return generator.ULong();
-        }
+        /// <summary>
+        /// Generate a random decimal.
+        /// </summary>
+        public static decimal Decimal() => _generator.Decimal();
 
-        public static ushort UShort()
-        {
-            return generator.UShort();
-        }
+        /// <summary>
+        /// Generate a random decimal within a specified range.
+        /// </summary>
+        /// <param name="minValue">The minimum possible value to generate. This value is inclusive.</param>
+        /// <param name="maxValue">The maximum possible value to generate. This value is exclusive.</param>
+        public static decimal Decimal(decimal minValue, decimal maxValue) => _generator.Decimal(minValue, maxValue);
 
-        public static decimal Decimal()
-        {
-            return generator.Decimal();
-        }
+        /// <summary>
+        /// Generate a random positive decimal.
+        /// </summary>
+        public static decimal PositiveDecimal() => _generator.PositiveDecimal();
 
-        public static decimal Decimal(decimal minValue, decimal maxValue)
-        {
-            return generator.Next(minValue, maxValue);
-        }
+        /// <summary>
+        /// Generate a random positive decimal with a specified maximum value.
+        /// </summary>
+        /// <param name="maxValue">The maximum possible value to generate. This value is exclusive.</param>
+        public static decimal PositiveDecimal(decimal maxValue) => _generator.PositiveDecimal(maxValue);
 
-        public static decimal PositiveDecimal()
-        {
-            return Decimal(0, decimal.MaxValue);
-        }
+        /// <summary>
+        /// Generate a random float.
+        /// </summary>
+        public static float Float() => _generator.Float();
 
-        public static decimal PositiveDecimal(decimal maxValue)
-        {
-            return Decimal(0, maxValue);
-        }
+        /// <summary>
+        /// Generate a random float within a specified range.
+        /// </summary>
+        /// <param name="minValue">The minimum possible value to generate. This value is inclusive.</param>
+        /// <param name="maxValue">The maximum possible value to generate. This value is exclusive.</param>
+        public static float Float(float minValue, float maxValue) => _generator.Float(minValue, maxValue);
 
-        public static float Float()
-        {
-            return generator.Float();
-        }
+        /// <summary>
+        /// Generate a random positive float.
+        /// </summary>
+        public static float PositiveFloat() => _generator.PositiveFloat();
 
-        public static float Float(float minVaue, float maxValue)
-        {
-            return generator.Next(minVaue, maxValue);
-        }
+        /// <summary>
+        /// Generate a random positive float with a specified maximum value.
+        /// </summary>
+        /// <param name="maxValue">The maximum possible value to generate. This value is exclusive.</param>
+        public static float PositiveFloat(float maxValue) => _generator.PositiveFloat(maxValue);
 
-        public static float PositiveFloat()
-        {
-            return Float(0, float.MaxValue);
-        }
+        /// <summary>
+        /// Generate a random double.
+        /// </summary>
+        public static double Double() => _generator.Double();
 
-        public static float PositiveFloat(float maxValue)
-        {
-            return Float(0, maxValue);
-        }
+        /// <summary>
+        /// Generate a random double within a specified range.
+        /// </summary>
+        /// <param name="minValue">The minimum possible value to generate. This value is inclusive.</param>
+        /// <param name="maxValue">The maximum possible value to generate. This value is exclusive.</param>
+        public static double Double(double minValue, double maxValue) => _generator.Double(minValue, maxValue);
 
-        public static double Double()
-        {
-            return generator.Double();
-        }
+        /// <summary>
+        /// Generate a random positive double.
+        /// </summary>
+        public static double PositiveDouble() => _generator.PositiveDouble();
 
-        public static double Double(double minVaue, double maxValue)
-        {
-            return generator.Next(minVaue, maxValue);
-        }
+        /// <summary>
+        /// Generate a random positive double with a specified maximum value.
+        /// </summary>
+        /// <param name="maxValue">The maximum possible value to generate. This value is exclusive.</param>
+        public static double PositiveDouble(double maxValue) => _generator.PositiveDouble(maxValue);
 
-        public static double PositiveDouble()
-        {
-            return Double(0, double.MaxValue);
-        }
+        /// <summary>
+        /// Generate a random DateTime.
+        /// </summary>
+        public static DateTime DateTime() => _generator.DateTime();
 
-        public static double PositiveDouble(double maxValue)
-        {
-            return Double(0, maxValue);
-        }
+        /// <summary>
+        /// Generate a random DateTime within a specified range.
+        /// </summary>
+        /// <param name="minValue">The earliest possible value to generate. This value is inclusive.</param>
+        /// <param name="maxValue">The latest possible value to generate. This value is exclusive.</param>
+        /// <param name="kind">The DateTimeKind to generate the DateTime as.</param>
+        public static DateTime DateTime(DateTime minValue, DateTime maxValue, DateTimeKind kind = DateTimeKind.Unspecified) => _generator.DateTime(minValue, maxValue, kind);
 
-        public static DateTime DateTime()
-        {
-            return generator.DateTime();
-        }
+        /// <summary>
+        /// Generate a random DateTime with a specified earliest DateTime value. The latest date will be the maximum value possible for a SQL Server datetime of December 31, 9999.
+        /// </summary>
+        /// <param name="minValue">The earliest possible value to generate.</param>
+        /// <param name="kind">The DateTimeKind to generate the DateTime as.</param>
+        public static DateTime DateTimeFrom(DateTime minValue, DateTimeKind kind = DateTimeKind.Unspecified) => _generator.DateTimeFrom(minValue, kind);
 
-        public static DateTime DateTime(DateTime minValue, DateTime maxValue, DateTimeKind kind = DateTimeKind.Unspecified)
-        {
-            return generator.Next(minValue, maxValue, kind);
-        }
+        /// <summary>
+        /// Generate a random DateTime with a specified latest DateTime value. The earliest date will be the minimum value possible for a SQL Server datetime of January 1, 1753.
+        /// </summary>
+        /// <param name="maxValue">The latest possible value to generate.</param>
+        /// <param name="kind">The DateTimeKind to generate the DateTime as.</param>
+        public static DateTime DateTimeThrough(DateTime maxValue, DateTimeKind kind = DateTimeKind.Unspecified) => _generator.DateTimeThrough(maxValue, kind);
 
-        public static DateTime DateTimeFrom(DateTime minValue, DateTimeKind kind = DateTimeKind.Unspecified)
-        {
-            return generator.Next(minValue, maxSqlServerDate, kind);
-        }
+        /// <summary>
+        /// Generate a random bool value.
+        /// </summary>
+        public static bool Boolean() => _generator.Boolean();
 
-        public static DateTime DateTimeThrough(DateTime maxValue, DateTimeKind kind = DateTimeKind.Unspecified)
-        {
-            return generator.Next(minSqlServerDate, maxValue, kind);
-        }
+        /// <summary>
+        /// Generate a random byte.
+        /// </summary>
+        public static byte Byte() => _generator.Byte();
 
-        public static bool Boolean()
-        {
-            return generator.Next(0, 2) != 0;
-        }
+        /// <summary>
+        /// Generate a random sbyte.
+        /// </summary>
+        public static sbyte SByte() => _generator.SByte();
 
-        public static byte Byte()
-        {
-            return generator.Next(byte.MinValue, byte.MaxValue);
-        }
+        /// <summary>
+        /// Generate a random char.
+        /// </summary>
+        public static char Char() => _generator.Char();
 
-        public static sbyte SByte()
-        {
-            return generator.Next(sbyte.MinValue, sbyte.MaxValue);
-        }
+        /// <summary>
+        /// Generate a random Guid.
+        /// </summary>
+        public static Guid Guid() => _generator.Guid();
 
-        public static char Char()
-        {
-            return generator.Next(char.MinValue, char.MaxValue);
-        }
+        /// <summary>
+        /// Generate a random first name from a pre-defined list of names.
+        /// </summary>
+        public static string FirstName() => _generator.FirstName();
 
-        public static Guid Guid()
-        {
-            return generator.Guid();
-        }
+        /// <summary>
+        /// Generate a random last name from a pre-defined list of names.
+        /// </summary>
+        public static string LastName() => _generator.LastName();
 
-        public static string FirstName()
-        {
-            return firstNames[generator.Next(0, firstNames.Length - 1)];
-        }
+        /// <summary>
+        /// Generate a random phrase using words from Lorem Ipsum as a string that is at most the specified length.
+        /// </summary>
+        /// <param name="length">The maximum length the phrase should be.</param>
+        public static string Phrase(int length) => _generator.Phrase(length);
 
-        public static string LastName()
-        {
-            return lastNames[generator.Next(0, lastNames.Length - 1)];
-        }
+        /// <summary>
+        /// Generate a random string of specified length. Each letter will randomly be uppercase or lowercase.
+        /// </summary>
+        /// <param name="length">The length of the string to generate.</param>
+        public static string String(int length) => _generator.String(length, null, null);
 
-        public static string Phrase(int length)
-        {
-            return generator.Phrase(length);
-        }
+        /// <summary>
+        /// Generate a random string of specified length. Every letter will be uppercase.
+        /// </summary>
+        /// <param name="length">The length of the string to generate.</param>
+        public static string UpperCaseString(int length) => _generator.String(length, true, null);
 
-        public static string String(int length)
-        {
-            return String(length, null, null);
-        }
+        /// <summary>
+        /// Generate a random string of specified length. Every letter will be lowercase.
+        /// </summary>
+        /// <param name="length">The length of the string to generate.</param>
+        public static string LowerCaseString(int length) => _generator.String(length, false, null);
 
-        public static string UpperCaseString(int length)
-        {
-            return String(length, true, null);
-        }
+        /// <summary>
+        /// Generate a random string of specified length. Can choose if the string should be entirely uppercase or lowercase. Can also choose any characters that should not be included.
+        /// </summary>
+        /// <param name="length">The length of the string to generate.</param>
+        /// <param name="upperCase">Whether or not the string should be uppercase. Leave null to have each character randomly determined as uppercase or lowercase.</param>
+        /// <param name="characterToExclude">Any characters that should not be included in the randomly generated string.</param>
+        public static string String(int length, bool? upperCase, params char[] characterToExclude) => _generator.String(length, upperCase, characterToExclude);
 
-        public static string LowerCaseString(int length)
-        {
-            return String(length, false, null);
-        }
+        /// <summary>
+        /// Generate a random character.
+        /// </summary>
+        /// <param name="upperCase">Whether or not the character should be uppercase. If specified as null, case will be randomly determined.</param>
+        public static char Letter(bool? upperCase) => _generator.Letter(upperCase);
 
-        public static string String(int length, bool? upperCase, params char[] characterToExclude)
-        {
-            var sb = new StringBuilder();
-            var exclude = new List<char>(characterToExclude ?? new char[] { });
-            var i = 0;
-            while (i < length)
-            {
-                var c = Letter(upperCase);
-                if (!exclude.Contains(c))
-                {
-                    sb.Append(c);
-                    i++;
-                }
-            }
-            return sb.ToString();
-        }
-
-        public static char Letter(bool? upperCase)
-        {
-            upperCase = upperCase ?? Boolean();
-            var startingCharCode = (short)(upperCase.Value ? 'A' : 'a');
-            return ((char)(generator.Next(startingCharCode, startingCharCode + 26)));
-        }
-
+        /// <summary>
+        /// This class can randomly generate data specifically for the United Kingdom.
+        /// </summary>
         public static class UK
         {
-            // TODO: Add wales and scotland
-            private static string[] _counties = new[]
-                                                    {
-                                                        "Bedfordshire",
-                                                        "Berkshire",
-                                                        "Buckinghamshire",
-                                                        "Cambridgeshire",
-                                                        "Cheshire",
-                                                        "Cornwall",
-                                                        "Cumberland",
-                                                        "Derbyshire",
-                                                        "Devon",
-                                                        "Dorset",
-                                                        "Durham",
-                                                        "Essex",
-                                                        "Gloucestershire",
-                                                        "Hampshire",
-                                                        "Herefordshire",
-                                                        "Hertfordshire",
-                                                        "Huntingdonshire",
-                                                        "Kent",
-                                                        "Lancashire",
-                                                        "Leicestershire",
-                                                        "Lincolnshire",
-                                                        "Middlesex",
-                                                        "Norfolk",
-                                                        "Northamptonshire",
-                                                        "Northumberland",
-                                                        "Nottinghamshire",
-                                                        "Oxfordshire",
-                                                        "Rutland",
-                                                        "Shropshire",
-                                                        "Somerset",
-                                                        "Staffordshire",
-                                                        "Suffolk",
-                                                        "Surrey",
-                                                        "Sussex",
-                                                        "Warwickshire",
-                                                        "Westmorland",
-                                                        "Wiltshire",
-                                                        "Worcestershire",
-                                                        "Yorkshire"
-                                                    };
+            private static readonly RandomGenerator.UK _ukGenerator = RandomGenerator.UK.Default;
 
-            public static string PhoneNumber()
-            {
-                // TODO: This could be improved upon
-                //
-                // e.g. London:  020 xxxx xxxx
-                //      Cardiff: 029 xxxx xxxx
-                //      Mobile:  07xxx xxx xxx
-                //      Other landlines: 01xxx xxx xxx
-                //      Freephone: 0800 xxx xxx
+            /// <summary>
+            /// Generate a random phone number in the format #### ### ###
+            /// </summary>
+            public static string PhoneNumber() => _ukGenerator.PhoneNumber();
 
-                return string.Format("0{0:0000} {1:000} {2:000}",
-                    Int(0, 9999), Int(0, 999), Int(0, 999));
-            }
-
-            // TODO: Add postcode, national insurance number
-
-            //public static string PostCode()
-            //{
-                
-            //}
-
-            public static string County()
-            {
-                return _counties[generator.Next(0, _counties.Length - 1)];
-            }
+            /// <summary>
+            /// Generate a random county in the United Kingdom.
+            /// </summary>
+            public static string County() => _ukGenerator.County();
         }
 
+        /// <summary>
+        /// This class can randomly generate data specifically for the United States.
+        /// </summary>
         public static class Usa
         {
-            private static readonly string[] states = { "TX", "CO", "GA", "LA", "NY", "CA" };
+            private static readonly RandomGenerator.USA _usaGenerator = RandomGenerator.USA.Default;
 
-            public static string PhoneNumber()
-            {
-                return string.Format("{0:000}-{1:000}-{2:0000}",
-                    Int(200, 999), Int(200, 999), Int(0, 9999));
-            }
+            /// <summary>
+            /// Generate a random phone number in the format ###-###-####.
+            /// </summary>
+            public static string PhoneNumber() => _usaGenerator.PhoneNumber();
 
-            public static string SocialSecurityNumber()
-            {
-                return string.Format("{0}-{1}-{2}", NumericString(3), NumericString(2), NumericString(4));
-            }
+            /// <summary>
+            /// Generate a random SSN in the format of ###-##-####.
+            /// </summary>
+            public static string SocialSecurityNumber() => _usaGenerator.SocialSecurityNumber();
 
-            public static string State()
-            {
-                return states[generator.Next(0, states.Length - 1)];
-            }
-        }
-
-        public static string Email()
-        {
-            return string.Format("{0}@{1}.com", String(8), String(7));
-        }
-
-        public static string WwwUrl()
-        {
-            return string.Format("www.{0}.com", String(10, false));
-        }
-
-        public static string Url()
-        {
-            return string.Format("{0}.{1}.com", String(5, false), String(10, false));
+            public static string State() => _usaGenerator.State();
         }
 
         /// <summary>
-        /// Generate a random IPv4 Address
+        /// Generate a random e-mail address on a .com domain.
         /// </summary>
-        /// <returns></returns>
-        public static string IpAddress()
-        {
-            return $"{PositiveInt(255)}.{PositiveInt(255)}.{PositiveInt(255)}.{PositiveInt(255)}";
-        }
+        public static string Email() => _generator.Email();
 
         /// <summary>
-        /// Generate a random IPv6 Address
+        /// Generate a random website URL preceded with www.
         /// </summary>
-        /// <returns></returns>
-        public static string IpAddressV6()
-        {
-            return $"{PositiveShort(16):X}{PositiveShort(16):X}{PositiveShort(16):X}{PositiveShort(16):X}:{PositiveShort(16):X}{PositiveShort(16):X}{PositiveShort(16):X}{PositiveShort(16):X}:{PositiveShort(16):X}{PositiveShort(16):X}{PositiveShort(16):X}{PositiveShort(16):X}:{PositiveShort(16):X}{PositiveShort(16):X}{PositiveShort(16):X}{PositiveShort(16):X}:{PositiveShort(16):X}{PositiveShort(16):X}{PositiveShort(16):X}{PositiveShort(16):X}:{PositiveShort(16):X}{PositiveShort(16):X}{PositiveShort(16):X}{PositiveShort(16):X}:{PositiveShort(16):X}{PositiveShort(16):X}{PositiveShort(16):X}{PositiveShort(16):X}:{PositiveShort(16):X}{PositiveShort(16):X}{PositiveShort(16):X}{PositiveShort(16):X}";
-        }
+        public static string WwwUrl() => _generator.WwwUrl();
+
+        /// <summary>
+        /// Generate a random website URL with a subdomain, but not beginning with www.
+        /// </summary>
+        public static string Url() => _generator.Url();
+
+        /// <summary>
+        /// Generate a random IPv4 Address.
+        /// </summary>
+        public static string IpAddress() => _generator.IpAddress();
+
+        /// <summary>
+        /// Generate a random IPv6 Address.
+        /// </summary>
+        public static string IpAddressV6() => _generator.IpAddressV6();
 
         /// <summary>
         /// Generate a random MAC address.
         /// </summary>
         /// <param name="separator">Optional to override the default separator from - used in IEEE 802</param>
-        /// <returns></returns>
-        public static string MacAddress(string separator = "-")
-        {
-            return $"{PositiveShort(16):X}{PositiveShort(16):X}{separator}{PositiveShort(16):X}{PositiveShort(16):X}{separator}{PositiveShort(16):X}{PositiveShort(16):X}{separator}{PositiveShort(16):X}{PositiveShort(16):X}{separator}{PositiveShort(16):X}{PositiveShort(16):X}{separator}{PositiveShort(16):X}{PositiveShort(16):X}";
-        }
+        public static string MacAddress(string separator = "-") => _generator.MacAddress(separator);
 
-        public static T Enumeration<T>() where T : struct
-        {
-            var values = EnumHelper.GetValues(typeof(T));
+        /// <summary>
+        /// Get a random option from a specified enum type.
+        /// </summary>
+        /// <typeparam name="T">An enum type</typeparam>
+        public static T Enumeration<T>() where T : struct => _generator.Enumeration<T>();
 
-            /*
-             * This method is called to generate random enum values. Because
-             * Random.Next(min, max) is not upper-inclusive, we pass values.Length
-             * rather than values.Length - 1 as the upper bound to make sure all
-             * enum values are potentially returned.
-             */
-
-            var index = PositiveInt(values.Length); 
-            return (T)values.GetValue(index);
-        }
-
-        public static Enum Enumeration(Type type)
-        {
-            if (!type.IsEnum())
-            {
-                throw new ArgumentException(string.Format("{0} is not an enum type.", type.FullName), "type");
-            }
-            var values = EnumHelper.GetValues(type);
-            var index = PositiveInt(values.Length);
-            return (Enum)values.GetValue(index);
-        }   
+        /// <summary>
+        /// Get a random option from a specified enum type.
+        /// </summary>
+        /// <param name="type">The enum type you wish to get a random value of.</param>
+        public static Enum Enumeration(Type type) => _generator.Enumeration(type);
     }
 }

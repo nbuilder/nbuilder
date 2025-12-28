@@ -5,6 +5,7 @@ using FizzWare.NBuilder.Implementation;
 using FizzWare.NBuilder.PropertyNaming;
 using FizzWare.NBuilder.Tests.Integration.Models;
 using FizzWare.NBuilder.Tests.TestClasses;
+using FizzWare.NBuilder.Generators;
 
 using Shouldly;
 using Xunit;
@@ -142,12 +143,10 @@ namespace FizzWare.NBuilder.Tests.Integration
         [Fact]
         public void UsingAGenerator()
         {
-            var generator = new RandomGenerator();
-
             var products = new Builder()
                 .CreateListOfSize<Product>(10)
                 .All()
-                    .With(x => x.PriceBeforeTax = generator.Next(50, 1000))
+                    .With(x => x.PriceBeforeTax = RandomGenerator.Default.Decimal(50, 1000))
                 .Build();
 
 
@@ -614,12 +613,10 @@ namespace FizzWare.NBuilder.Tests.Integration
         [Fact]
         public void UsingRandomGenerator()
         {
-            var generator = new RandomGenerator();
-
             var list = new Builder()
                 .CreateListOfSize<Product>(3)
                 .All()
-                .With(x => x.QuantityInStock = generator.Next(1000, 2000))
+                .With(x => x.QuantityInStock = RandomGenerator.Default.Int(1000, 2000))
                 .Build();
 
             list[0].QuantityInStock.ShouldBeGreaterThanOrEqualTo(1000);
