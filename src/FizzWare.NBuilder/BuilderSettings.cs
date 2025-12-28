@@ -78,12 +78,19 @@ namespace FizzWare.NBuilder
 
         public  IPropertyNamer GetPropertyNamerFor<T>()
         {
-            if (!propertyNamers.ContainsKey(typeof(T)))
+            var type = typeof(T);
+            if (propertyNamers.TryGetValue(type, out var propertyNamer))
             {
-                return defaultPropertyNamer;
+                return propertyNamer;
             }
 
-            return propertyNamers[typeof (T)];
+            return defaultPropertyNamer;
+            //if (!propertyNamers.ContainsKey(typeof(T)))
+            //{
+            //    return defaultPropertyNamer;
+            //}
+
+            //return propertyNamers[typeof (T)];
         }
 
         public void DisablePropertyNamingFor<T, TFunc>(Expression<Func<T, TFunc>> func)

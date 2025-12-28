@@ -1,12 +1,10 @@
-﻿#pragma warning disable CS0618 // Type or member is obsolete
+﻿using FizzWare.NBuilder.Generators;
+using FizzWare.NBuilder.Tests.TestClasses;
+using Shouldly;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using FizzWare.NBuilder.Generators;
-using FizzWare.NBuilder.Tests.TestClasses;
-
-using Shouldly;
 using Xunit;
 
 
@@ -15,7 +13,7 @@ namespace FizzWare.NBuilder.Tests.Unit
     
     public class RandomGeneratorTests
     {
-        readonly IRandomGenerator randomGenerator = new RandomGenerator();
+        private readonly RandomGenerator randomGenerator = new RandomGenerator();
 
 
         [Fact]
@@ -404,4 +402,3 @@ namespace FizzWare.NBuilder.Tests.Unit
         }
     }
 }
-#pragma warning restore CS0618 // Type or member is obsolete

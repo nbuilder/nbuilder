@@ -1,4 +1,3 @@
-#pragma warning disable CS0618 // Type or member is obsolete
 using FizzWare.NBuilder.Implementation;
 using FizzWare.NBuilder.PropertyNaming;
 
@@ -7,7 +6,6 @@ namespace FizzWare.NBuilder
 
     public static class Builder<T>
     {
-
         public static ISingleObjectBuilder<T> CreateNew()
         {
 
@@ -28,7 +26,6 @@ namespace FizzWare.NBuilder
             return new ListBuilder<T>(size, propertyNamer, new ReflectionUtil(), BuilderSetup.Instance);
         }
     }
-#pragma warning restore CS0618 // Type or member is obsolete
 
 
 
