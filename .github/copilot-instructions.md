@@ -17,7 +17,8 @@
 ## 4. Testing Guidelines
 - Test edge cases, including permission boundaries and edge cases.
 - Use Theories over Facts when testing the same logic with different data.
-- Use xUnit v3 with MTP v 2+ for testing framework.
+- Use xUnit v3 with MTP version 2+ for testing framework.
+- The cli command for testing with MTP version 2+ is `dotnet run` and *not* `dotnet test`
 
 ## 6. Naming Conventions
 - Use PascalCase for public members, method names, and component names.
