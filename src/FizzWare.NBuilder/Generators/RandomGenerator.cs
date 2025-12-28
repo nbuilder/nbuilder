@@ -3,22 +3,21 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Reflection.Emit;
 using System.Text;
 
 namespace FizzWare.NBuilder
 {
     public class RandomGenerator : IRandomGenerator
     {
-        private static readonly Lazy<RandomGenerator> _default = new(() => new RandomGenerator());
+        private static readonly Lazy<RandomGenerator> _default = new(() => new RandomGenerator(Random.Shared));
         
         /// <summary>
-        /// Gets the default shared instance of RandomGenerator.
+        /// Gets the default shared instance of RandomGenerator. This is THREAD-SAFE.
         /// </summary>
         public static RandomGenerator Default => _default.Value;
         
         private readonly Random _random;
-
+ 
         private static readonly DateTime _minSqlServerDate = new(1753, 1, 1);
         private static readonly DateTime _maxSqlServerDate = new(9999, 12, 31);
 
@@ -32,15 +31,9 @@ namespace FizzWare.NBuilder
 
         public RandomGenerator(Random random) => _random = random;
 
-        public virtual short Next(short min, short max)
-        {
-            return (short)Next((int)min, max);
-        }
+        public virtual short Next(short min, short max) => (short)Next((int)min, max);
 
-        public virtual int Next(int min, int max)
-        {
-            return _random.Next(min, max);
-        }
+        public virtual int Next(int min, int max) => _random.Next(min, max);
 
         public virtual long Next(long min, long max)
         {
@@ -48,15 +41,9 @@ namespace FizzWare.NBuilder
             return Convert.ToInt64(rn);
         }
 
-        public virtual float Next(float min, float max)
-        {
-            return (float)Next((double)min, (double)max);
-        }
+        public virtual float Next(float min, float max) => (float)Next((double)min, (double)max);
 
-        public virtual double Next(double min, double max)
-        {
-            return min + _random.NextDouble() * (max - min);
-        }
+        public virtual double Next(double min, double max) => min + _random.NextDouble() * (max - min);
 
         public virtual decimal Next(decimal min, decimal max)
         {
@@ -77,20 +64,11 @@ namespace FizzWare.NBuilder
             return (decimal)Convert.ToDecimal(string.Format("{0}{1}{2}", integer, separator, fraction));
         }
 
-        public virtual char Next(char min, char max)
-        {
-            return (char)Next((int)min, (int)max);
-        }
+        public virtual char Next(char min, char max) => (char)Next((int)min, (int)max);
 
-        public virtual byte Next(byte min, byte max)
-        {
-            return (byte)Next((int)min, (int)max);
-        }
+        public virtual byte Next(byte min, byte max) => (byte)Next((int)min, (int)max);
 
-        public virtual sbyte Next(sbyte min, sbyte max)
-        {
-            return (sbyte)Next((int)min, (int)max);
-        }
+        public virtual sbyte Next(sbyte min, sbyte max) => (sbyte)Next((int)min, (int)max);
 
         public DateTime Next(DateTime min, DateTime max, DateTimeKind kind = DateTimeKind.Unspecified)
         {
@@ -100,13 +78,9 @@ namespace FizzWare.NBuilder
                - Convert.ToDouble(minTicks)) * _random.NextDouble()
                + Convert.ToDouble(minTicks);
             return new DateTime(Convert.ToInt64(rn), kind);
-
         }
 
-        public virtual bool Next()
-        {
-            return _random.Next(2) == 1;
-        }
+        public virtual bool Next() => _random.Next(2) == 1;
 
         /// <inheritdoc/>
         public Guid Guid() => System.Guid.NewGuid();
