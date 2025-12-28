@@ -9,9 +9,10 @@ namespace FizzWare.NBuilder.PropertyNaming
     {
         private readonly IRandomGenerator randomGenerator;
         protected IDictionary<Type, Delegate> Handlers = new Dictionary<Type, Delegate>();
-        private BuilderSettings BuilderSettings;
+        private readonly BuilderSettings BuilderSettings;
+
         public ExtensibleRandomValuePropertyNamer(BuilderSettings builderSettings)
-            : this (new UniqueRandomGenerator(),builderSettings)
+            : this (RandomGenerator.Default, builderSettings)
         {
         }
 
@@ -50,10 +51,7 @@ namespace FizzWare.NBuilder.PropertyNaming
 
         public ExtensibleRandomValuePropertyNamer DontName(Type type)
         {
-            if (Handlers.ContainsKey(type))
-            {
-                Handlers.Remove(type);
-            }
+            Handlers.Remove(type);
             return this;
         }
 
@@ -106,22 +104,20 @@ namespace FizzWare.NBuilder.PropertyNaming
         protected Delegate GetTypeHandler(MemberInfo memberInfo)
         {
             var type = memberInfo.GetFieldOrPropertyType();
-            if (Handlers.ContainsKey(type))
+            if (Handlers.TryGetValue(type, out Delegate value))
             {
-                return Handlers[type];
+                return value;
             }
+
             var typeWithoutNullability = type.GetTypeWithoutNullability();
-            return Handlers.ContainsKey(typeWithoutNullability)
-                ? Handlers[typeWithoutNullability]
-                : type.IsEnum()
+            var result = Handlers.TryGetValue(typeWithoutNullability, out Delegate value1)
+                ? value1 : type.IsEnum()
                     ? GetDefaultEnumHandler(typeWithoutNullability)
                     : null;
+            return result;
         }
 
-        protected Func<Enum> GetDefaultEnumHandler(Type type)
-        {
-            return () => randomGenerator.Enumeration(type);
-        }
+        protected Func<Enum> GetDefaultEnumHandler(Type type) => () => randomGenerator.Enumeration(type);
 
         protected IEnumerable<Delegate> GetDefaultHandlers()
         {
@@ -146,10 +142,7 @@ namespace FizzWare.NBuilder.PropertyNaming
         protected void NameWith(Delegate handler)
         {
             var returnType = handler.Method.ReturnType;
-            if (Handlers.ContainsKey(returnType))
-            {
-                Handlers.Remove(returnType);
-            }
+            Handlers.Remove(returnType);
             Handlers.Add(new KeyValuePair<Type, Delegate>(returnType, handler));
         }
     }
